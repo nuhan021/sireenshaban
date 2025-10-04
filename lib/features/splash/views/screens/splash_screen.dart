@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
-import '../../../core/utils/constants/image_path.dart';
-import '../../../routes/app_routes.dart';
+import '../../../../core/utils/constants/image_path.dart';
+import '../../../../routes/app_routes.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});

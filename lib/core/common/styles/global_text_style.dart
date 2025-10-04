@@ -10,7 +10,7 @@ TextStyle getTextStyle({
   TextAlign textAlign = TextAlign.center,
   Color color = Colors.black,
 }) {
-  return GoogleFonts.inter(
+  return GoogleFonts.roboto(
     fontSize: fontSize.sp,
     fontWeight: fontWeight,
     height: lineHeight,
