@@ -10,9 +10,14 @@ class AppColors {
   static const Color bodyDarkGray = Color(0xFF111827);
   static const Color secondaryMediumGray = Color(0xFF6B7280);
   static const Color secondaryInfoMediumGray = Color(0xFF30333A);
+  static const Color secondaryInfoMediumGrayNormal = Color(0xFF6B7280);
   static const Color secondaryInfoMediumGrayDarker = Color(0xFF25282D);
   static const Color softGray = Color(0xFFF9FAFB);
   static const Color deepBlueLight = Color(0xFFE9EBF3);
+  static const Color cardBackgroundSoftGray = Color(0xFFFFFFFF);
+  static const Color secondaryAquaNormal = Color(0xFF14B8A6);
+  static const Color secondaryTealLight = Color(0xFFE6F2F2);
+  static const Color secondaryTealNormal = Color(0xFF008080);
 
 
   // Utility Colors
