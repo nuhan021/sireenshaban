@@ -4,6 +4,13 @@ import 'package:flutter/material.dart';
 
 void main() {
 
+  SystemChrome.setSystemUIOverlayStyle(
+    const SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+      systemNavigationBarColor: Colors.transparent,
+    ),
+  );
+
   runApp(const MyApp());
 }
 
