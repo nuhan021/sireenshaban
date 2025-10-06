@@ -6,7 +6,8 @@ import '../features/authentication/views/screens/forget_password_screen.dart';
 import '../features/authentication/views/screens/verification_code_send_success_screen.dart';
 import '../features/authentication/views/screens/login_screen.dart';
 import '../features/authentication/views/screens/sign_up_screen.dart';
-import '../features/customer/home/views/screens/customer_home_screen.dart';
+import '../features/customer/customer_bottom_nav_bar/views/screens/customer_bottom_nav_bar.dart';
+import '../features/customer/vendors/views/screens/vendors_screen.dart';
 import '../features/onboarding/views/screens/onboarding_screen.dart';
 import '../features/select_role/views/screens/select_role_screen.dart';
 
@@ -19,8 +20,13 @@ class AppRoute {
   static String verificationCodeSendSuccessScreen = "/verificationCodeSendSuccessScreen";
   static String forgetPasswordScreen = "/forgetPasswordScreen";
   static String changePasswordScreen = "/changePasswordScreen";
-  // customer screens
-  static String customerHomeScreen = "/customerHomeScreen";
+  static String vendorsScreen = "/vendorsScreen";
+
+  // customer bottom nav bar
+  static String customerBottomNavBar = "/customerBottomNavBar";
+
+
+
 
   static String getLoginScreen() => loginScreen;
   static String getSignUpScreen() => signUpScreen;
@@ -30,8 +36,13 @@ class AppRoute {
   static String getVerificationCodeSendSuccessScreen() => verificationCodeSendSuccessScreen;
   static String getForgetPasswordScreen() => forgetPasswordScreen;
   static String getChangePasswordScreen() => changePasswordScreen;
-  // customer screens
-  static String getCustomerHomeScreen() => customerHomeScreen;
+  static String getVendorsScreen() => vendorsScreen;
+
+  // customer bottom nav bar
+  static String getCustomerBottomNavBar() => customerBottomNavBar;
+
+
+
 
   static List<GetPage> routes = [
     GetPage(name: loginScreen, page: () => LoginScreen()),
@@ -42,7 +53,9 @@ class AppRoute {
     GetPage(name: verificationCodeSendSuccessScreen, page: () => VerificationCodeSendSuccessScreen()),
     GetPage(name: forgetPasswordScreen, page: () => ForgetPasswordScreen()),
     GetPage(name: changePasswordScreen, page: () => ChangePasswordScreen()),
-    // customer screens
-    GetPage(name: customerHomeScreen, page: () => CustomerHomeScreen()),
+    GetPage(name: vendorsScreen, page: () => VendorsScreen()),
+
+    // customer bottom nav bar
+    GetPage(name: customerBottomNavBar, page: () => CustomerBottomNavBar()),
   ];
 }

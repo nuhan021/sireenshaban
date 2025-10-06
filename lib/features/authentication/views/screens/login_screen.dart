@@ -1,4 +1,5 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:logger/logger.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
@@ -141,9 +142,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     text: 'Log In',
                     color: AppColors.primaryDeepBlueNormal,
                     onPressed: () {
-                      if(widget.selectRoleController.role.value == "customer") {
-                        Get.offAllNamed(AppRoute.customerHomeScreen);
-                      }
+                      AppLoggerHelper.debug(
+                        widget.selectRoleController.role.value,
+                      );
+                      Get.offAllNamed(AppRoute.customerBottomNavBar);
                     },
                   ),
 
@@ -152,7 +154,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   Align(
                     alignment: Alignment.center,
                     child: TextButton(
-                      onPressed: () => Get.toNamed(AppRoute.forgetPasswordScreen),
+                      onPressed: () =>
+                          Get.toNamed(AppRoute.forgetPasswordScreen),
                       child: Text(
                         'Forgot Password?',
                         style: getTextStyle(

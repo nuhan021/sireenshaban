@@ -12,7 +12,7 @@ import '../../controller/select_role_controller.dart';
 class SelectRoleScreen extends StatelessWidget {
   SelectRoleScreen({super.key});
 
-  final controller = Get.put(SelectRoleController());
+  final controller = Get.find<SelectRoleController>();
 
   @override
   Widget build(BuildContext context) {

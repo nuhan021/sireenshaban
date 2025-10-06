@@ -7,69 +7,94 @@ import '../../../../../core/utils/constants/colors.dart';
 import '../../../../../core/utils/constants/icon_path.dart';
 
 class HomeSearchBar extends StatelessWidget {
-  const HomeSearchBar({super.key, required this.searchController});
+  const HomeSearchBar({super.key, required this.onTap});
 
-  final TextEditingController searchController;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Expanded(
-          child: Container(
-            height: 47.h,
-            decoration: BoxDecoration(
-              color: AppColors.softGray,
-              border: Border.all(color: AppColors.deepBlueLight),
-              borderRadius: BorderRadius.circular(8.r),
+          child: GestureDetector(
+            onTap: onTap,
+            child: Container(
+              height: 47.h,
+              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              decoration: BoxDecoration(
+                color: AppColors.softGray,
+                border: Border.all(color: AppColors.deepBlueLight),
+                borderRadius: BorderRadius.circular(8.r),
 
-              boxShadow: [
-                BoxShadow(
-                  color: const Color.fromRGBO(13, 10, 44, 0.06),
-                  offset: const Offset(0, 3),
-                  blurRadius: 10,
-                  spreadRadius: 0,
-                ),
-              ],
-            ),
-            child: Center(
-              child: TextField(
-                controller: searchController,
-                onTapOutside: (_) {
-                  FocusScope.of(context).unfocus();
-                },
-                cursorColor: AppColors.primaryDeepBlueNormal,
-                decoration: InputDecoration(
-                  hintText: "Search venues & services... ",
-                  hintStyle: getTextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.secondaryInfoMediumGray,
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color.fromRGBO(13, 10, 44, 0.06),
+                    offset: const Offset(0, 3),
+                    blurRadius: 10,
+                    spreadRadius: 0,
                   ),
-                  border: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.transparent,
+                ],
+              ),
+
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      "Search venues & services",
+                      style: getTextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.secondaryInfoMediumGray,
+                      ),
                     ),
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: const BorderSide(
-                      color: Colors.transparent,
-                    ),
-                  ),
-                  suffixIcon: Icon(
+
+                  // mic icon
+                  Icon(
                     Icons.mic_none_outlined,
                     color: AppColors.secondaryInfoMediumGray,
-                  ),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 10,
-                  ),
-                ),
+                  )
+                ],
               ),
+              // child: Center(
+              //   child: TextField(
+              //     controller: searchController,
+              //     onTapOutside: (_) {
+              //       FocusScope.of(context).unfocus();
+              //     },
+              //     cursorColor: AppColors.primaryDeepBlueNormal,
+              //     decoration: InputDecoration(
+              //       hintText: "Search venues & services... ",
+              //       hintStyle: getTextStyle(
+              //         fontSize: 14.sp,
+              //         fontWeight: FontWeight.w500,
+              //         color: AppColors.secondaryInfoMediumGray,
+              //       ),
+              //       border: OutlineInputBorder(
+              //         borderSide: const BorderSide(
+              //           color: Colors.transparent,
+              //         ),
+              //       ),
+              //       enabledBorder: OutlineInputBorder(
+              //         borderSide: const BorderSide(
+              //           color: Colors.transparent,
+              //         ),
+              //       ),
+              //       focusedBorder: OutlineInputBorder(
+              //         borderSide: const BorderSide(
+              //           color: Colors.transparent,
+              //         ),
+              //       ),
+              //       suffixIcon: Icon(
+              //         Icons.mic_none_outlined,
+              //         color: AppColors.secondaryInfoMediumGray,
+              //       ),
+              //       contentPadding: const EdgeInsets.symmetric(
+              //         horizontal: 10,
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ),
           ),
         ),

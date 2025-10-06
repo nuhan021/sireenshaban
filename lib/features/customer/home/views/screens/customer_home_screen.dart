@@ -5,9 +5,11 @@ import 'package:sireenshaban/core/utils/constants/icon_path.dart';
 import 'package:sireenshaban/core/utils/constants/image_path.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/additional_service.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/additional_service_card.dart';
+import 'package:sireenshaban/features/customer/home/views/widget/community_events.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/deals_and_promotions.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/featured_vendors.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/home_search_bar.dart';
+import 'package:sireenshaban/features/customer/home/views/widget/trending_nearby.dart';
 
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
@@ -18,7 +20,6 @@ class CustomerHomeScreen extends StatelessWidget {
 
   final controller = Get.put(HomeController());
 
-  TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class CustomerHomeScreen extends StatelessWidget {
               36.verticalSpace,
 
               // search bar
-              HomeSearchBar(searchController: searchController),
+              HomeSearchBar(onTap: () {},),
 
               40.verticalSpace,
 
@@ -57,6 +58,16 @@ class CustomerHomeScreen extends StatelessWidget {
 
               // featured vendors
               FeaturedVendors(),
+
+              40.verticalSpace,
+
+              // community events
+              CommunityEvents(),
+
+              40.verticalSpace,
+
+              // trending nearby
+              TrendingNearby(),
 
               40.verticalSpace,
               

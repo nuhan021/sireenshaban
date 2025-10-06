@@ -6,9 +6,24 @@ import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
 
 class FeaturedVendorsCard extends StatelessWidget {
-  const FeaturedVendorsCard({super.key, required this.image});
+  const FeaturedVendorsCard({
+    super.key,
+    required this.image,
+    required this.title,
+    required this.subtitle,
+    required this.service,
+    required this.price,
+    required this.date,
+    required this.location,
+  });
 
   final String image;
+  final String title;
+  final String subtitle;
+  final String service;
+  final String price;
+  final String date;
+  final String location;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +66,7 @@ class FeaturedVendorsCard extends StatelessWidget {
                   children: [
                     // title
                     Text(
-                      'Serenity Spa & Well',
+                      title,
                       overflow: TextOverflow.ellipsis,
                       style: getTextStyle(
                         fontSize: 18.sp,
@@ -62,7 +77,7 @@ class FeaturedVendorsCard extends StatelessWidget {
 
                     // subtitle
                     Text(
-                      'Beauty & Wellness',
+                      subtitle,
                       overflow: TextOverflow.ellipsis,
                       style: getTextStyle(
                         fontSize: 14.sp,
@@ -73,7 +88,7 @@ class FeaturedVendorsCard extends StatelessWidget {
 
                     // service
                     Text(
-                      'Deep Tissue Massage',
+                      service,
                       overflow: TextOverflow.ellipsis,
                       style: getTextStyle(
                         fontSize: 12.sp,
@@ -87,7 +102,7 @@ class FeaturedVendorsCard extends StatelessWidget {
 
               // price
               Text(
-                '\$85',
+                price,
                 style: getTextStyle(
                   fontSize: 20.sp,
                   fontWeight: FontWeight.w700,
@@ -115,7 +130,7 @@ class FeaturedVendorsCard extends StatelessWidget {
                       ),
                       5.horizontalSpace,
                       Text(
-                        '15 March,2025',
+                        date,
                         style: getTextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w400,
@@ -137,7 +152,7 @@ class FeaturedVendorsCard extends StatelessWidget {
 
                       5.horizontalSpace,
                       Text(
-                        'Near you',
+                        location,
                         style: getTextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w400,
@@ -155,7 +170,10 @@ class FeaturedVendorsCard extends StatelessWidget {
                 width: 120.w,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(6.r),
-                  border: Border.all(color: AppColors.primaryDeepBlueNormal,width: 2),
+                  border: Border.all(
+                    color: AppColors.primaryDeepBlueNormal,
+                    width: 2,
+                  ),
                 ),
                 alignment: Alignment.center,
                 child: Text(
@@ -166,7 +184,7 @@ class FeaturedVendorsCard extends StatelessWidget {
                     color: AppColors.primaryDeepBlueNormal,
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ],
