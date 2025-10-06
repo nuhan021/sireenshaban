@@ -83,7 +83,7 @@ class VerificationCodeSendSuccessScreen extends StatelessWidget {
               CustomPrimaryButton(
                 text: 'Continue',
                 color: AppColors.primaryDeepBlueNormal,
-                onPressed: () => isFromSignUpScreen ? Get.offAllNamed(AppRoute.loginScreen) : Get.toNamed(AppRoute.changePasswordScreen),
+                onPressed: () => isFromSignUpScreen ? Get.toNamed(AppRoute.loginScreen) : Get.toNamed(AppRoute.changePasswordScreen),
               ),
             ],
           ).paddingSymmetric(horizontal: 20.w),

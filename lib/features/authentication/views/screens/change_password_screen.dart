@@ -123,7 +123,7 @@ class ChangePasswordScreen extends StatelessWidget {
                   CustomPrimaryButton(
                     text: 'Change',
                     color: AppColors.primaryDeepBlueNormal,
-                    onPressed: () => Get.offAllNamed(AppRoute.loginScreen),
+                    onPressed: () => Get.toNamed(AppRoute.loginScreen),
                   ),
                 ],
               ),
