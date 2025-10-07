@@ -5,6 +5,7 @@ import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
 import 'package:sireenshaban/core/utils/constants/icon_path.dart';
+import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
 import 'package:sireenshaban/routes/app_routes.dart';
 
 import '../../../../core/utils/constants/image_path.dart';
@@ -51,7 +52,7 @@ class OnboardingScreen extends StatelessWidget {
               ),
             ).paddingSymmetric(horizontal: 50.w),
 
-            SizedBox(height: 40.h),
+            SizedBox(height: 30.h),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -95,7 +96,7 @@ class OnboardingScreen extends StatelessWidget {
               ],
             ),
 
-            SizedBox(height: 40.h),
+            SizedBox(height: 30.h),
 
             Text(
               'Discover Local',
@@ -154,7 +155,7 @@ class OnboardingScreen extends StatelessWidget {
               ),
             ),
 
-            SizedBox(height: 40.h),
+            SizedBox(height: 30.h),
 
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -231,7 +232,7 @@ class OnboardingScreen extends StatelessWidget {
               ],
             ),
 
-            SizedBox(height: 80.h),
+            SizedBox(height: AppHelperFunctions.screenHeight() * 0.07),
 
             CustomPrimaryButton(
               text: 'Get Started',

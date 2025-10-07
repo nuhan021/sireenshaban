@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:sireenshaban/core/utils/constants/icon_path.dart';
 import 'package:sireenshaban/core/utils/constants/image_path.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/additional_service.dart';
-import 'package:sireenshaban/features/customer/home/views/widget/additional_service_card.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/community_events.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/deals_and_promotions.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/featured_vendors.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/home_search_bar.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/trending_nearby.dart';
-
-import '../../../../../core/common/styles/global_text_style.dart';
-import '../../../../../core/utils/constants/colors.dart';
 import '../../controller/home_controller.dart';
 
 class CustomerHomeScreen extends StatelessWidget {
@@ -29,7 +24,7 @@ class CustomerHomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              36.verticalSpace,
+              20.verticalSpace,
 
               // search bar
               HomeSearchBar(onTap: () {},),
@@ -38,7 +33,6 @@ class CustomerHomeScreen extends StatelessWidget {
 
               // banner
               SizedBox(
-                height: 230.h,
                 width: double.maxFinite,
                 child: Image.asset(ImagePath.bannerImg, fit: BoxFit.cover),
               ),
