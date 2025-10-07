@@ -21,8 +21,8 @@ class AdditionalServiceCard extends StatelessWidget {
     return Column(
       children: [
         Container(
-          height: 85.h,
-          width: 104.w,
+          height: 80.h,
+          width: 80.w,
           padding: EdgeInsets.all(10),
           decoration: BoxDecoration(
             color: const Color(0xFFFFFFFF), // Card Background Soft Gray

@@ -1,9 +1,5 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:sireenshaban/core/utils/constants/colors.dart';
 import 'package:sireenshaban/features/customer/package_booking/views/widgets/booking_app_bar.dart';
 import 'package:sireenshaban/features/customer/package_booking/views/widgets/thumbnail_image.dart';
 

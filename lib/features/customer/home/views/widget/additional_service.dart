@@ -69,82 +69,68 @@ class AdditionalService extends StatelessWidget {
         // additional services
         Obx(() {
           return SizedBox(
-            height: controller.isAdditionalServicesClose.value
-                ? 380.h
-                : 120.h,
+            height: controller.isAdditionalServicesClose.value ? 380.h : 120.h,
             child: SingleChildScrollView(
-              physics: NeverScrollableScrollPhysics(),
-              child: Column(
-                children: [
-                  // 1st row
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AdditionalServiceCard(
-                        img: ImagePath.doctorImg,
-                        title: 'Doctors',
-                        onPressed: () {},
-                      ),
-                      AdditionalServiceCard(
-                        img: ImagePath.salonImg,
-                        title: 'Salons',
-                        onPressed: () {},
-                      ),
-                      AdditionalServiceCard(
-                        img: ImagePath.restaurantImg,
-                        title: 'Restaurants',
-                        onPressed: () {},
-                      ),
-                    ],
-                  ).paddingSymmetric(horizontal: 20.w),
-
-                  20.verticalSpace,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AdditionalServiceCard(
-                        img: ImagePath.doctorImg,
-                        title: 'Doctors',
-                        onPressed: () {},
-                      ),
-                      AdditionalServiceCard(
-                        img: ImagePath.salonImg,
-                        title: 'Salons',
-                        onPressed: () {},
-                      ),
-                      AdditionalServiceCard(
-                        img: ImagePath.restaurantImg,
-                        title: 'Restaurants',
-                        onPressed: () {},
-                      ),
-                    ],
-                  ).paddingSymmetric(horizontal: 20.w),
-                  20.verticalSpace,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AdditionalServiceCard(
-                        img: ImagePath.doctorImg,
-                        title: 'Doctors',
-                        onPressed: () {},
-                      ),
-                      AdditionalServiceCard(
-                        img: ImagePath.salonImg,
-                        title: 'Salons',
-                        onPressed: () {},
-                      ),
-                      AdditionalServiceCard(
-                        img: ImagePath.restaurantImg,
-                        title: 'Restaurants',
-                        onPressed: () {},
-                      ),
-                    ],
-                  ).paddingSymmetric(horizontal: 20.w),
-                ],
+              physics: const NeverScrollableScrollPhysics(),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: Wrap(
+                  spacing: 20, // horizontal space between cards
+                  runSpacing: 20.h, // vertical space between rows
+                  crossAxisAlignment: WrapCrossAlignment.start,
+                  children: [
+                    AdditionalServiceCard(
+                      img: ImagePath.doctorImg,
+                      title: 'Doctors',
+                      onPressed: () {},
+                    ),
+                    AdditionalServiceCard(
+                      img: ImagePath.salonImg,
+                      title: 'Salons',
+                      onPressed: () {},
+                    ),
+                    AdditionalServiceCard(
+                      img: ImagePath.restaurantImg,
+                      title: 'Restaurants',
+                      onPressed: () {},
+                    ),
+                    AdditionalServiceCard(
+                      img: ImagePath.doctorImg,
+                      title: 'Doctors',
+                      onPressed: () {},
+                    ),
+                    AdditionalServiceCard(
+                      img: ImagePath.salonImg,
+                      title: 'Salons',
+                      onPressed: () {},
+                    ),
+                    AdditionalServiceCard(
+                      img: ImagePath.restaurantImg,
+                      title: 'Restaurants',
+                      onPressed: () {},
+                    ),
+                    AdditionalServiceCard(
+                      img: ImagePath.doctorImg,
+                      title: 'Doctors',
+                      onPressed: () {},
+                    ),
+                    AdditionalServiceCard(
+                      img: ImagePath.salonImg,
+                      title: 'Salons',
+                      onPressed: () {},
+                    ),
+                    AdditionalServiceCard(
+                      img: ImagePath.restaurantImg,
+                      title: 'Restaurants',
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
               ),
             ),
           );
-        }),
+        })
+
       ],
     );
   }

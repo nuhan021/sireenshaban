@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:sireenshaban/features/authentication/controllers/forget_password_controller.dart';
 import 'package:sireenshaban/features/authentication/views/screens/verification_code_send_success_screen.dart';
 
@@ -9,7 +8,6 @@ import '../../../../core/common/styles/global_text_style.dart';
 import '../../../../core/common/widgets/IField.dart';
 import '../../../../core/common/widgets/custom_primary_button.dart';
 import '../../../../core/utils/constants/colors.dart';
-import '../../../../routes/app_routes.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
   const ForgetPasswordScreen({super.key});

@@ -4,8 +4,6 @@ import 'package:get/get.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/featured_vendors_card.dart';
 import 'package:sireenshaban/features/customer/vendors/views/screens/vendors_screen.dart';
-import 'package:sireenshaban/routes/app_routes.dart';
-
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
 
