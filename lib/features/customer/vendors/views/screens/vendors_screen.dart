@@ -22,11 +22,6 @@ class VendorsScreen extends StatelessWidget {
           children: [
             30.verticalSpace,
 
-            // search bar
-            HomeSearchBar(onTap: () {}),
-
-            40.verticalSpace,
-
             // title and button
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -40,19 +35,13 @@ class VendorsScreen extends StatelessWidget {
                   ),
                 ),
 
-                Row(
-                  children: [
-                    Text(
-                      'All',
-                      style: getTextStyle(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.primaryDeepBlueNormal,
-                      ),
-                    ),
-
-                    Icon(Icons.keyboard_arrow_down_rounded, color: AppColors.primaryDeepBlueNormal,)
-                  ],
+                Text(
+                  'Doctors',
+                  style: getTextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.primaryDeepBlueNormal,
+                  ),
                 ),
               ],
             ).paddingSymmetric(horizontal: 20.sp),

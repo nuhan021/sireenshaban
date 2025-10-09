@@ -14,7 +14,7 @@ class BookingAppBar extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4), // blur strength
         child: Container(
           padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top), // safe area for notch/status bar
-          height: 60.h + MediaQuery.of(context).padding.top,
+          height: 50.h + MediaQuery.of(context).padding.top,
           decoration: BoxDecoration(
               color: Colors.white.withOpacity(0.1), // frosted glass effect
               border: Border.all(

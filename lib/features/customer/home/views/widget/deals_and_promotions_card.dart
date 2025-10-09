@@ -61,7 +61,7 @@ class DealsAndPromotionsCard extends StatelessWidget {
                 // image
                 ClipRRect(
                   borderRadius: BorderRadius.circular(4.r),
-                  child: Image.asset(
+                  child: Image.network(
                     image,
                     fit: BoxFit.cover,
                   ),
@@ -181,7 +181,7 @@ class DealsAndPromotionsCard extends StatelessWidget {
             CustomPrimaryButton(
               text: 'View Deal',
               color: AppColors.primaryDeepBlueNormal,
-              onPressed: () => AppHelperFunctions.navigateToScreen(context, PackageBookingPage(image: image,)),
+              onPressed: () => AppHelperFunctions.navigateToScreen(context, PackageBookingPage(image: image, title: shopTitle,)),
             ),
           ],
         ),

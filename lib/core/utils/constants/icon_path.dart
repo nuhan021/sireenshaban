@@ -23,4 +23,5 @@ class IconPath{
   static const String navFillMessage = "assets/icons/nav_fill_message.png";
   static const String navFillProfile = "assets/icons/nav_fill_profile.png";
   static const String navFillSearch = "assets/icons/nav_fill_search.png";
+  static const String arrowForword = "assets/icons/arrow_forword.png";
 }

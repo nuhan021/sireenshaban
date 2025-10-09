@@ -17,7 +17,9 @@ class ThumbnailImage extends StatelessWidget {
       child: Stack(
         children: [
           // thumbnail image
-          Image.asset(image, height: 326.h, width: double.maxFinite, fit: BoxFit.cover,),
+          ClipRRect(
+              borderRadius: BorderRadius.only(bottomRight: Radius.circular(10.r), bottomLeft: Radius.circular(10.r)),
+              child: Image.network(image, height: 326.h, width: double.maxFinite, fit: BoxFit.cover,)),
 
           // rating and reviews
           Align(
