@@ -18,7 +18,7 @@ class DealsAndPromotions extends StatelessWidget {
 
   final List<Widget> dealsAndPromotionsCardSliders = [
     DealsAndPromotionsCard(
-      image: ImagePath.restaurantBannerImg,
+      image: "https://media.istockphoto.com/id/1497806504/photo/hair-styling-in-beauty-salon-woman-does-her-hair-in-modern-beauty-salon-woman-stylist-dries.jpg?s=612x612&w=0&k=20&c=3dO_HWS8WvSGNbGmxTsqK70vZMGqM2REnbVJG09YnmI=",
       shopTitle: 'Marco\'s Kitchen',
       discount: '15% off',
       subtitle: 'Dinner for two',
@@ -27,7 +27,7 @@ class DealsAndPromotions extends StatelessWidget {
     ),
 
     DealsAndPromotionsCard(
-      image: ImagePath.salonBannerImg,
+      image: "https://lesroches.edu/wp-content/uploads/2022/08/Restaurant_business_plan_main.jpg",
       shopTitle: 'Bella vista Salon',
       discount: '15% off',
       subtitle: 'First haircut & styling',
@@ -36,7 +36,7 @@ class DealsAndPromotions extends StatelessWidget {
     ),
 
     DealsAndPromotionsCard(
-      image: ImagePath.gymBannerImg,
+      image: "https://img.freepik.com/free-photo/woman-sportswear-lifting-dumbbell_23-2147688028.jpg?semt=ais_hybrid&w=740&q=80",
       shopTitle: 'FitLife Gym',
       discount: '15% off',
       subtitle: 'Trial membership',

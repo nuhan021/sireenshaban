@@ -19,6 +19,7 @@ class CustomerHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFF9FAFB),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -51,9 +52,9 @@ class CustomerHomeScreen extends StatelessWidget {
               40.verticalSpace,
 
               // featured vendors
-              FeaturedVendors(),
-
-              40.verticalSpace,
+              // FeaturedVendors(),
+              //
+              // 40.verticalSpace,
 
               // community events
               CommunityEvents(),

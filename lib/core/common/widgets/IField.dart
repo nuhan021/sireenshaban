@@ -16,6 +16,7 @@ class IField extends StatelessWidget {
     this.keyboardType,
     this.hintTextStyle,
     this.skipValidator = false,
+    this.borderColor = AppColors.primaryDeepBlueNormal,
     super.key,
   });
 
@@ -33,6 +34,7 @@ class IField extends StatelessWidget {
   final bool overrideValidator;
   final TextStyle? hintTextStyle;
   final bool skipValidator;
+  final Color borderColor;
 
   @override
   Widget build(BuildContext context) {
@@ -54,21 +56,21 @@ class IField extends StatelessWidget {
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(
-            color: Colors.grey,
+          borderSide: BorderSide(
+            color: borderColor,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(
-            color: AppColors.primaryDeepBlueNormal,
+          borderSide: BorderSide(
+            color: borderColor,
             width: 1,
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: const BorderSide(
-            color: AppColors.primaryDeepBlueNormal,
+          borderSide: BorderSide(
+            color: borderColor,
             width: 2,
           ),
         ),
