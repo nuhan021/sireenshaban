@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
 
@@ -19,7 +21,16 @@ class ThumbnailImage extends StatelessWidget {
           // thumbnail image
           ClipRRect(
               borderRadius: BorderRadius.only(bottomRight: Radius.circular(10.r), bottomLeft: Radius.circular(10.r)),
-              child: Image.network(image, height: 326.h, width: double.maxFinite, fit: BoxFit.cover,)),
+              child: CachedNetworkImage(
+                imageUrl: image,
+                fit: BoxFit.cover,
+                height: 326.h,
+                width: double.maxFinite,
+                placeholder: (context, url) => Center(
+                  child: LoadingAnimationWidget.staggeredDotsWave(color: AppColors.primaryDeepBlueLight, size: 25.h),
+                ),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              )),
 
           // rating and reviews
           Align(

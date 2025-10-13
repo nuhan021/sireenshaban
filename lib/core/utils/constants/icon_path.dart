@@ -10,6 +10,15 @@ class IconPath{
   static const  String arrowBack ='assets/icons/arrow_back.png';
   static const  String mic ='assets/icons/mic.png';
   static const  String sliders ='assets/icons/sliders.png';
+  static const  String mobile ='assets/icons/mobile.png';
+  static const  String wallet ='assets/icons/wallet.png';
+  static const  String clock ='assets/icons/clock.png';
+  static const  String people ='assets/icons/people.png';
+  static const  String directBox ='assets/icons/directbox.png';
+  static const  String call ='assets/icons/call.png';
+  static const  String message ='assets/icons/message.png';
+  static const  String userSquare ='assets/icons/user_square.png';
+  static const  String notification ='assets/icons/notification.png';
 
   // bottom nav bar icon
   static const String navHome = "assets/icons/nav_home.png";

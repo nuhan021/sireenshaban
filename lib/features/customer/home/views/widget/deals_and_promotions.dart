@@ -11,39 +11,37 @@ import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
 import '../../../../../core/utils/constants/image_path.dart';
 
-class DealsAndPromotions extends StatelessWidget {
+class DealsAndPromotions extends StatefulWidget {
   DealsAndPromotions({super.key, required this.controller});
 
   final HomeController controller;
 
-  final List<Widget> dealsAndPromotionsCardSliders = [
-    DealsAndPromotionsCard(
-      image: "https://media.istockphoto.com/id/1497806504/photo/hair-styling-in-beauty-salon-woman-does-her-hair-in-modern-beauty-salon-woman-stylist-dries.jpg?s=612x612&w=0&k=20&c=3dO_HWS8WvSGNbGmxTsqK70vZMGqM2REnbVJG09YnmI=",
-      shopTitle: 'Marco\'s Kitchen',
-      discount: '15% off',
-      subtitle: 'Dinner for two',
-      validityDate: 'Valid until Feb 20',
-      role: 'restaurant',
-    ),
+  @override
+  State<DealsAndPromotions> createState() => _DealsAndPromotionsState();
+}
 
-    DealsAndPromotionsCard(
-      image: "https://lesroches.edu/wp-content/uploads/2022/08/Restaurant_business_plan_main.jpg",
-      shopTitle: 'Bella vista Salon',
-      discount: '15% off',
-      subtitle: 'First haircut & styling',
-      validityDate: 'Valid until Feb 20',
-      role: 'salon',
-    ),
+class _DealsAndPromotionsState extends State<DealsAndPromotions> {
+  final List<Widget> dealsAndPromotionsCardSliders = [];
 
-    DealsAndPromotionsCard(
-      image: "https://img.freepik.com/free-photo/woman-sportswear-lifting-dumbbell_23-2147688028.jpg?semt=ais_hybrid&w=740&q=80",
-      shopTitle: 'FitLife Gym',
-      discount: '15% off',
-      subtitle: 'Trial membership',
-      validityDate: 'Valid until Feb 20',
-      role: 'gym',
-    )
-  ];
+  @override
+  void initState() {
+    super.initState();
+
+    for (var dealsAndPromotion in widget.controller.dealsAndPromotion) {
+      dealsAndPromotionsCardSliders.add(
+        DealsAndPromotionsCard(
+          image: dealsAndPromotion.image,
+          shopTitle: dealsAndPromotion.shopTitle,
+          discount: dealsAndPromotion.discount,
+          subtitle: dealsAndPromotion.shopTitle,
+          validityDate: dealsAndPromotion.validityDate,
+          role: dealsAndPromotion.role,
+          group: dealsAndPromotion.group,
+          controller: widget.controller,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,13 +70,13 @@ class DealsAndPromotions extends StatelessWidget {
             enableInfiniteScroll: false,
             initialPage: 1,
             onPageChanged: (index, reason) {
-              controller.changeCarouselCurrentIndex(value: index);
+              widget.controller.changeCarouselCurrentIndex(value: index);
             },
           ),
           itemBuilder: (context, index, realIndex) {
             return Obx(() {
               final bool isCenter =
-                  realIndex == controller.carouselCurrentIndex.value;
+                  realIndex == widget.controller.carouselCurrentIndex.value;
               return AnimatedContainer(
                 duration: const Duration(milliseconds: 200),
                 curve: Curves.easeOut,

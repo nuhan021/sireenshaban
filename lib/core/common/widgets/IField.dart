@@ -17,6 +17,7 @@ class IField extends StatelessWidget {
     this.hintTextStyle,
     this.skipValidator = false,
     this.borderColor = AppColors.primaryDeepBlueNormal,
+    this.maxLine = 1,
     super.key,
   });
 
@@ -35,6 +36,7 @@ class IField extends StatelessWidget {
   final TextStyle? hintTextStyle;
   final bool skipValidator;
   final Color borderColor;
+  final int maxLine;
 
   @override
   Widget build(BuildContext context) {
@@ -49,6 +51,7 @@ class IField extends StatelessWidget {
       onTapOutside: (_) {
         FocusScope.of(context).unfocus();
       },
+      maxLines: maxLine,
       cursorColor: AppColors.primaryDeepBlueNormal,
       keyboardType: keyboardType,
       obscureText: obscureText,

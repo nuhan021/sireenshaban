@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
+import 'package:sireenshaban/features/customer/chat/views/screens/chat_list_screen.dart';
 import 'package:sireenshaban/features/customer/customer_bottom_nav_bar/controller/customer_bottom_nav_bar_controller.dart';
 import 'package:sireenshaban/features/customer/home/views/screens/customer_home_screen.dart';
 
@@ -19,7 +20,7 @@ class CustomerBottomNavBar extends StatelessWidget {
       CustomerHomeScreen(),
       Placeholder(),
       Placeholder(),
-      Placeholder(),
+      ChatListScreen(),
       Placeholder()
     ];
   }
