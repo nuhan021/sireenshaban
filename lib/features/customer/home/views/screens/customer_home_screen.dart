@@ -57,12 +57,12 @@ class CustomerHomeScreen extends StatelessWidget {
               // 40.verticalSpace,
 
               // community events
-              CommunityEvents(),
+              CommunityEvents(controller: controller,),
 
               40.verticalSpace,
 
               // trending nearby
-              TrendingNearby(),
+              TrendingNearby(controller: controller,),
 
               40.verticalSpace,
               

@@ -16,3 +16,9 @@ enum PaymentMethods {
   razorPay,
   paytm
 }
+
+enum ServicesGroup {
+  businessAndCreativeServices,
+  personalCareAndEducation,
+  homeAndMaintenanceServices
+}

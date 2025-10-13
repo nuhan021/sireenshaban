@@ -8,11 +8,13 @@ class CustomPrimaryButton extends StatelessWidget {
     super.key,
     required this.text,
     required this.color,
+    this.textColor = AppColors.primaryDeepBlueLight,
     required this.onPressed,
   });
 
   final String text;
   final Color color;
+  final Color textColor;
   final VoidCallback onPressed;
 
   @override
@@ -32,7 +34,7 @@ class CustomPrimaryButton extends StatelessWidget {
             style: getTextStyle(
               fontSize: 16.sp,
               fontWeight: FontWeight.w500,
-              color: AppColors.primaryDeepBlueLight
+              color: textColor
             ),
           )
         ),

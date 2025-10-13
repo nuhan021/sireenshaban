@@ -6,6 +6,7 @@ import '../features/authentication/views/screens/forget_password_screen.dart';
 import '../features/authentication/views/screens/verification_code_send_success_screen.dart';
 import '../features/authentication/views/screens/login_screen.dart';
 import '../features/authentication/views/screens/sign_up_screen.dart';
+import '../features/customer/chat/views/screens/chat_screen.dart';
 import '../features/customer/customer_bottom_nav_bar/views/screens/customer_bottom_nav_bar.dart';
 import '../features/customer/vendors/views/screens/vendors_screen.dart';
 import '../features/onboarding/views/screens/onboarding_screen.dart';
@@ -21,6 +22,7 @@ class AppRoute {
   static String forgetPasswordScreen = "/forgetPasswordScreen";
   static String changePasswordScreen = "/changePasswordScreen";
   static String vendorsScreen = "/vendorsScreen";
+  static String chatScreen = "/chatScreen";
 
   // customer bottom nav bar
   static String customerBottomNavBar = "/customerBottomNavBar";
@@ -37,6 +39,7 @@ class AppRoute {
   static String getForgetPasswordScreen() => forgetPasswordScreen;
   static String getChangePasswordScreen() => changePasswordScreen;
   static String getVendorsScreen() => vendorsScreen;
+  static String getChatScreen() => chatScreen;
 
   // customer bottom nav bar
   static String getCustomerBottomNavBar() => customerBottomNavBar;
@@ -54,6 +57,7 @@ class AppRoute {
     GetPage(name: forgetPasswordScreen, page: () => ForgetPasswordScreen()),
     GetPage(name: changePasswordScreen, page: () => ChangePasswordScreen()),
     GetPage(name: vendorsScreen, page: () => VendorsScreen()),
+    GetPage(name: chatScreen, page: () => ChatScreen(avatar: '', name: '',)),
 
     // customer bottom nav bar
     GetPage(name: customerBottomNavBar, page: () => CustomerBottomNavBar()),

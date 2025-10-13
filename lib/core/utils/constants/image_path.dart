@@ -9,4 +9,7 @@ class ImagePath{
   static const  String restaurantBannerImg = 'assets/images/restaurant_banner.png';
   static const  String salonBannerImg = 'assets/images/salon_banner.png';
   static const  String gymBannerImg = 'assets/images/gym_banner.png';
+  static const  String successfulImg = 'assets/images/successful.png';
+  static const  String logo = 'assets/images/logo.png';
+  static const  String personImg = 'assets/images/person.png';
 }

@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
+import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/customer/package_booking/views/screens/package_booking_page.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+
+import '../../../../../core/utils/constants/enums.dart';
 
 class DealsAndPromotionsCard extends StatelessWidget {
   const DealsAndPromotionsCard({
@@ -16,6 +21,7 @@ class DealsAndPromotionsCard extends StatelessWidget {
     required this.subtitle,
     required this.validityDate,
     required this.role,
+    required this.group, required this.controller,
   });
 
   final String image;
@@ -24,6 +30,8 @@ class DealsAndPromotionsCard extends StatelessWidget {
   final String subtitle;
   final String validityDate;
   final String role;
+  final ServicesGroup group;
+  final HomeController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -61,10 +69,16 @@ class DealsAndPromotionsCard extends StatelessWidget {
                 // image
                 ClipRRect(
                   borderRadius: BorderRadius.circular(4.r),
-                  child: Image.network(
-                    image,
+                  child: CachedNetworkImage(
+                    imageUrl: image,
                     fit: BoxFit.cover,
-                  ),
+                    height: 160.h,
+                    width: double.maxFinite,
+                    placeholder: (context, url) => Center(
+                      child: LoadingAnimationWidget.staggeredDotsWave(color: AppColors.primaryDeepBlueLight, size: 25.h),
+                    ),
+                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                  )
                 ),
 
                 Row(
@@ -116,7 +130,7 @@ class DealsAndPromotionsCard extends StatelessWidget {
             ),
 
 
-            20.verticalSpace,
+            30.verticalSpace,
 
             // shop title and discount
             Row(
@@ -176,12 +190,12 @@ class DealsAndPromotionsCard extends StatelessWidget {
               ),
             ),
 
-            20.verticalSpace,
+            27.verticalSpace,
 
             CustomPrimaryButton(
               text: 'View Deal',
               color: AppColors.primaryDeepBlueNormal,
-              onPressed: () => AppHelperFunctions.navigateToScreen(context, PackageBookingPage(image: image, title: shopTitle,)),
+              onPressed: () => AppHelperFunctions.navigateToScreen(context, PackageBookingPage(image: image, title: shopTitle, controller: controller, group: group,)),
             ),
           ],
         ),
