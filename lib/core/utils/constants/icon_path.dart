@@ -19,6 +19,10 @@ class IconPath{
   static const  String message ='assets/icons/message.png';
   static const  String userSquare ='assets/icons/user_square.png';
   static const  String notification ='assets/icons/notification.png';
+  static const  String notificationOutline ='assets/icons/notification_outline.png';
+  static const  String ticket ='assets/icons/ticket.png';
+  static const  String logout ='assets/icons/logout.png';
+  static const  String edit ='assets/icons/edit.png';
 
   // bottom nav bar icon
   static const String navHome = "assets/icons/nav_home.png";

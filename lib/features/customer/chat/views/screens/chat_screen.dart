@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_core/flutter_chat_core.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
 
@@ -50,7 +52,9 @@ class _ChatScreenState extends State<ChatScreen> {
       appBar: AppBar(
         centerTitle: false,
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Get.back();
+          },
           icon: Container(
             height: 40.h,
             width: 40.w,
@@ -116,8 +120,6 @@ class _ChatScreenState extends State<ChatScreen> {
                   IconButton(
                     icon: Icon(Icons.play_arrow),
                     onPressed: () {
-                      // এখানে অডিও প্লে করার কোড দিতে হবে
-
                     },
                   ),
                   Expanded(
