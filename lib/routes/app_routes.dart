@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:sireenshaban/features/customer/notification/views/screens/notification_screen.dart';
 import 'package:sireenshaban/features/splash/views/screens/splash_screen.dart';
 
 import '../features/authentication/views/screens/change_password_screen.dart';
@@ -23,6 +24,7 @@ class AppRoute {
   static String changePasswordScreen = "/changePasswordScreen";
   static String vendorsScreen = "/vendorsScreen";
   static String chatScreen = "/chatScreen";
+  static String notificationScreen = "/notificationScreen";
 
   // customer bottom nav bar
   static String customerBottomNavBar = "/customerBottomNavBar";
@@ -40,6 +42,7 @@ class AppRoute {
   static String getChangePasswordScreen() => changePasswordScreen;
   static String getVendorsScreen() => vendorsScreen;
   static String getChatScreen() => chatScreen;
+  static String getNotificationScreen() => notificationScreen;
 
   // customer bottom nav bar
   static String getCustomerBottomNavBar() => customerBottomNavBar;
@@ -58,6 +61,7 @@ class AppRoute {
     GetPage(name: changePasswordScreen, page: () => ChangePasswordScreen()),
     GetPage(name: vendorsScreen, page: () => VendorsScreen()),
     GetPage(name: chatScreen, page: () => ChatScreen(avatar: '', name: '',)),
+    GetPage(name: notificationScreen, page: () => NotificationScreen()),
 
     // customer bottom nav bar
     GetPage(name: customerBottomNavBar, page: () => CustomerBottomNavBar()),

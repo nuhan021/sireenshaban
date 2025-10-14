@@ -31,7 +31,9 @@ class ChatListScreen extends StatelessWidget {
 
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Get.toNamed(AppRoute.getNotificationScreen());
+            },
             icon: Container(
               height: 40.h,
               width: 40.w,
