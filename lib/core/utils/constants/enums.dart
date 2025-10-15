@@ -22,3 +22,8 @@ enum ServicesGroup {
   personalCareAndEducation,
   homeAndMaintenanceServices
 }
+
+enum UserRole {
+  customer,
+  vendor,
+}

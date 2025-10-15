@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
+import 'package:sireenshaban/core/utils/constants/enums.dart';
 import 'package:sireenshaban/core/utils/constants/icon_path.dart';
 import 'package:sireenshaban/routes/app_routes.dart';
 
@@ -44,7 +45,7 @@ class SelectRoleScreen extends StatelessWidget {
 
             Obx(() {
               return GestureDetector(
-                onTap: () => controller.selectRole(userRole: 'business'),
+                onTap: () => controller.selectRole(userRole: UserRole.vendor),
                 child: Container(
                   height: 80.h,
                   width: double.maxFinite,
@@ -52,7 +53,7 @@ class SelectRoleScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16.r),
                     border: Border.all(
-                      color: controller.role.value == 'business'
+                      color: controller.role.value == UserRole.vendor
                           ? AppColors.primaryDeepBlueNormal
                           : Colors.transparent,
                     ),
@@ -96,7 +97,7 @@ class SelectRoleScreen extends StatelessWidget {
 
             Obx(() {
               return GestureDetector(
-                onTap: () => controller.selectRole(userRole: 'customer'),
+                onTap: () => controller.selectRole(userRole: UserRole.customer),
                 child: Container(
                   height: 80.h,
                   width: double.maxFinite,
@@ -104,7 +105,7 @@ class SelectRoleScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(16.r),
                     border: Border.all(
-                      color: controller.role.value == 'customer'
+                      color: controller.role.value == UserRole.customer
                           ? AppColors.primaryDeepBlueNormal
                           : Colors.transparent,
                     ),

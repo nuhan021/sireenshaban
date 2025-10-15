@@ -1,7 +1,8 @@
 import 'package:get/get.dart';
+import 'package:sireenshaban/core/utils/constants/enums.dart';
 
 class SelectRoleController extends GetxController {
-  RxString role = 'business'.obs;
+  var role = UserRole.customer.obs;
 
-  void selectRole({required String userRole}) => role.value = userRole;
+  void selectRole({required UserRole userRole}) => role.value = userRole;
 }

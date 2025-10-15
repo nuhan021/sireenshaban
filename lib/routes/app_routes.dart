@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:sireenshaban/features/customer/notification/views/screens/notification_screen.dart';
 import 'package:sireenshaban/features/splash/views/screens/splash_screen.dart';
+import 'package:sireenshaban/features/vendor/vendor_bottom_nav_bar/views/screens/vendor_bottom_nav_bar.dart';
 
 import '../features/authentication/views/screens/change_password_screen.dart';
 import '../features/authentication/views/screens/forget_password_screen.dart';
@@ -29,6 +30,9 @@ class AppRoute {
   // customer bottom nav bar
   static String customerBottomNavBar = "/customerBottomNavBar";
 
+  // vendor bottom nav bar
+  static String vendorBottomNavBar = "/vendorBottomNavBar";
+
 
 
 
@@ -46,6 +50,9 @@ class AppRoute {
 
   // customer bottom nav bar
   static String getCustomerBottomNavBar() => customerBottomNavBar;
+
+  // vendor bottom nav bar
+  static String getVendorBottomNavBar() => vendorBottomNavBar;
 
 
 
@@ -65,5 +72,9 @@ class AppRoute {
 
     // customer bottom nav bar
     GetPage(name: customerBottomNavBar, page: () => CustomerBottomNavBar()),
+
+    // vendor bottom nav bar
+    GetPage(name: vendorBottomNavBar, page: () => VendorBottomNavBar()),
+
   ];
 }
