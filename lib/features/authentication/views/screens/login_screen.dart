@@ -11,6 +11,7 @@ import 'package:sireenshaban/features/select_role/controller/select_role_control
 import 'package:sireenshaban/routes/app_routes.dart';
 
 import '../../../../core/common/widgets/IField.dart';
+import '../../../../core/utils/constants/enums.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({super.key});
@@ -140,10 +141,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     text: 'Log In',
                     color: AppColors.primaryDeepBlueNormal,
                     onPressed: () {
-                      AppLoggerHelper.debug(
-                        widget.selectRoleController.role.value,
-                      );
-                      Get.offAllNamed(AppRoute.customerBottomNavBar);
+                      if(widget.selectRoleController.role.value == UserRole.customer) {
+                        Get.offAllNamed(AppRoute.customerBottomNavBar);
+                      } else {
+                        Get.offAllNamed(AppRoute.vendorBottomNavBar);
+                      }
                     },
                   ),
 
