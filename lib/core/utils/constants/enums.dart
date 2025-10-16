@@ -27,3 +27,9 @@ enum UserRole {
   customer,
   vendor,
 }
+
+enum BookingRequest {
+  newRequest,
+  quotedRequest,
+  rejectedRequest,
+}

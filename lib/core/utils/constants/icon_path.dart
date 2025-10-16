@@ -21,6 +21,7 @@ class IconPath{
   static const  String notification ='assets/icons/notification.png';
   static const  String notificationOutline ='assets/icons/notification_outline.png';
   static const  String ticket ='assets/icons/ticket.png';
+  static const  String ticketFill ='assets/icons/ticket_fill.png';
   static const  String logout ='assets/icons/logout.png';
   static const  String edit ='assets/icons/edit.png';
 
