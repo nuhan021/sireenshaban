@@ -171,7 +171,7 @@ class VendorProfileScreen extends StatelessWidget {
               ),
             ),
 
-            // my booking
+            // Completed booking
             GestureDetector(
               onTap: () => AppHelperFunctions.navigateToScreen(context, BookingScreen()),
               child: Container(
@@ -189,7 +189,7 @@ class VendorProfileScreen extends StatelessWidget {
                     Image.asset(IconPath.ticket, height: 20.h, color: AppColors.bodyDarkGray,),
                     10.horizontalSpace,
                     Text(
-                      'My Booking',
+                      'Completed Booking',
                       style: getTextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w400,

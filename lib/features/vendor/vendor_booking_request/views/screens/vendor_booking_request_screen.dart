@@ -2,15 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
-import 'package:sireenshaban/features/vendor/vendor_schedule/views/widgets/vendor_schedule_card.dart';
+import 'package:sireenshaban/features/vendor/vendor_booking_request/controller/vendor_booking_request_controller.dart';
+import 'package:sireenshaban/features/vendor/vendor_booking_request/views/widgets/booking_request_card.dart';
+import 'package:sireenshaban/features/vendor/vendor_booking_request/views/widgets/request_tabs.dart';
 
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
 import '../../../../../core/utils/constants/icon_path.dart';
 import '../../../../../routes/app_routes.dart';
 
-class VendorScheduleScreen extends StatelessWidget {
-  const VendorScheduleScreen({super.key});
+class VendorBookingRequestScreen extends StatelessWidget {
+  VendorBookingRequestScreen({super.key});
+
+  VendorBookingController controller = Get.put(VendorBookingController());
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +24,7 @@ class VendorScheduleScreen extends StatelessWidget {
         backgroundColor: Color(0xFFF4F4F4),
         centerTitle: false,
         title: Text(
-          'Schedule',
+          'Booking Request',
           style: getTextStyle(
             fontSize: 20.sp,
             fontWeight: FontWeight.w600,
@@ -49,43 +53,19 @@ class VendorScheduleScreen extends StatelessWidget {
 
       body: Column(
         children: [
-          10.verticalSpace,
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Today',
-                style: getTextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.primaryDeepBlueNormal,
-                ),
-              ),
-              
-              Container(
-                height: 40.h,
-                width: 40.w,
-                padding: EdgeInsets.all(8.w),
-                decoration: BoxDecoration(
-                  color: Color(0xFFE9EAEC),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-
-                child: Image.asset(IconPath.calenderMonth, color: AppColors.secondaryInfoMediumGrayNormal,),
-              )
-            ],
-          ),
-
+          20.verticalSpace,
+          // request tab
+          RequestTabs(controller: controller,),
 
           20.verticalSpace,
 
 
+          // requests
           Expanded(
             child: ListView.separated(
-              itemCount: 15,
-              separatorBuilder: (context , index) => 10.verticalSpace,
-              itemBuilder: (context, index) => VendorScheduleCard(),
+              itemCount: 10,
+              separatorBuilder: (context, index) => 10.verticalSpace,
+              itemBuilder: (context, index) => BookingRequestCard(),
             ),
           )
         ],

@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
+import 'package:sireenshaban/features/customer/chat/views/screens/chat_list_screen.dart';
+import 'package:sireenshaban/features/vendor/vendor_booking_request/views/screens/vendor_booking_request_screen.dart';
 import 'package:sireenshaban/features/vendor/vendor_bottom_nav_bar/controller/vendor_bottom_nav_bar_controller.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile/views/screens/vendor_profile_screen.dart';
 import 'package:sireenshaban/features/vendor/vendor_schedule/views/screens/vendor_schedule_screen.dart';
@@ -18,9 +20,9 @@ class VendorBottomNavBar extends StatelessWidget {
   List<Widget> _buildScreens() {
     return [
       Placeholder(),
-      Placeholder(),
+      VendorBookingRequestScreen(),
       VendorScheduleScreen(),
-      Placeholder(),
+      ChatListScreen(),
       VendorProfileScreen(),
     ];
   }
@@ -52,11 +54,11 @@ class VendorBottomNavBar extends StatelessWidget {
                 () {
               return Image.asset(
                 width: 25.w,
-                navaberController.currentIndex.value == 1 ? IconPath.navFillSearch :IconPath.navSearch,
+                navaberController.currentIndex.value == 1 ? IconPath.ticketFill :IconPath.ticket,
               );
             }
         ),
-        title: "Search",
+        title: "Request",
         textStyle: getTextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
         activeForegroundColor: AppColors.primaryDeepBlueNormal,
         inactiveForegroundColor: AppColors.secondaryInfoMediumGrayNormal,

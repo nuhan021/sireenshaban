@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
+import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
+import 'package:sireenshaban/features/vendor/vendor_schedule/views/screens/vendor_request_status_screen.dart';
 
 class VendorScheduleCard extends StatelessWidget {
   const VendorScheduleCard({super.key});
@@ -150,21 +152,24 @@ class VendorScheduleCard extends StatelessWidget {
               12.horizontalSpace,
 
               Expanded(
-                child: Container(
-                  height: 40.h,
-                  width: double.maxFinite,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.r),
-                    color: AppColors.primaryDeepBlueNormal,
-                  ),
-
-                  child: Center(
-                    child: Text(
-                      'View details',
-                      style: getTextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
+                child: GestureDetector(
+                  onTap: () => AppHelperFunctions.navigateToScreen(context, VendorRequestStatusScreen()),
+                  child: Container(
+                    height: 40.h,
+                    width: double.maxFinite,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12.r),
+                      color: AppColors.primaryDeepBlueNormal,
+                    ),
+                  
+                    child: Center(
+                      child: Text(
+                        'View details',
+                        style: getTextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
