@@ -45,99 +45,97 @@ class PaymentHistoryScreen extends StatelessWidget {
         ],
       ),
 
-      body: Expanded(
-        child: ListView.separated(
-          itemCount: 10,
-          separatorBuilder: (context, index) => 10.verticalSpace,
-          itemBuilder: (context, index) => ListTile(
-            isThreeLine: true,
-            tileColor: Colors.white,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.r)
+      body: ListView.separated(
+        itemCount: 10,
+        separatorBuilder: (context, index) => 10.verticalSpace,
+        itemBuilder: (context, index) => ListTile(
+          isThreeLine: true,
+          tileColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.r)
+          ),
+
+          leading: Container(
+            height: 48.h,
+            width: 48.w,
+            decoration: BoxDecoration(
+              color: AppColors.primaryDeepBlueNormal,
+              borderRadius: BorderRadius.circular(9.r)
             ),
 
-            leading: Container(
-              height: 48.h,
-              width: 48.w,
-              decoration: BoxDecoration(
-                color: AppColors.primaryDeepBlueNormal,
-                borderRadius: BorderRadius.circular(9.r)
+            alignment: AlignmentGeometry.center,
+            child: Image.asset(IconPath.wallet, height: 28.h, color: Colors.white,),
+          ),
+
+          title: Text(
+            'Payment confirmed',
+            style: getTextStyle(
+              fontSize: 14.sp,
+              fontWeight: FontWeight.w500,
+              color: AppColors.primaryDeepBlueNormal
+            ),
+          ),
+
+          subtitle: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // payment method
+              Text(
+                'From Visa Card',
+                style: getTextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.primaryDeepBlueNormal
+                ),
               ),
 
-              alignment: AlignmentGeometry.center,
-              child: Image.asset(IconPath.wallet, height: 28.h, color: Colors.white,),
-            ),
-
-            title: Text(
-              'Payment confirmed',
-              style: getTextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-                color: AppColors.primaryDeepBlueNormal
-              ),
-            ),
-
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // payment method
-                Text(
-                  'From Visa Card',
-                  style: getTextStyle(
+              // transaction ID
+              Text(
+                'Transaction ID - 5621456325542',
+                style: getTextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
-                    color: AppColors.primaryDeepBlueNormal
-                  ),
+                    color: AppColors.secondaryInfoMediumGrayNormal
                 ),
+              ),
+            ],
+          ),
 
-                // transaction ID
-                Text(
-                  'Transaction ID - 5621456325542',
-                  style: getTextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.secondaryInfoMediumGrayNormal
-                  ),
+
+          trailing: Column(
+
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              // amount
+              Text(
+                '\$100.00',
+                style: getTextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.primaryDeepBlueNormal
                 ),
-              ],
-            ),
+              ),
 
-
-            trailing: Column(
-
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                // amount
-                Text(
-                  '\$100.00',
-                  style: getTextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.primaryDeepBlueNormal
-                  ),
+              Text(
+                '17 Sep 2025',
+                style: getTextStyle(
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.secondaryInfoMediumGrayNormal
                 ),
-
-                Text(
-                  '17 Sep 2025',
-                  style: getTextStyle(
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.secondaryInfoMediumGrayNormal
-                  ),
-                ),Text(
-                  '10:30 am',
-                  style: getTextStyle(
-                      fontSize: 10.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.secondaryInfoMediumGrayNormal
-                  ),
+              ),Text(
+                '10:30 am',
+                style: getTextStyle(
+                    fontSize: 10.sp,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.secondaryInfoMediumGrayNormal
                 ),
+              ),
 
-              ],
-            ),
+            ],
+          ),
 
-          ).paddingOnly(top: index == 0 ? 40.h : 0, bottom: index == 9 ? 20.h : 0),
-        ),
+        ).paddingOnly(top: index == 0 ? 40.h : 0, bottom: index == 9 ? 20.h : 0),
       ).paddingSymmetric(horizontal: 20.w),
     );
   }

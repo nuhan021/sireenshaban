@@ -3,13 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/common/widgets/IField.dart';
 import 'package:sireenshaban/core/utils/constants/icon_path.dart';
-import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
-import 'package:sireenshaban/features/customer/home/views/widget/home_search_bar.dart';
-
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
-import '../../../../../core/utils/constants/image_path.dart';
 import '../../../../../core/utils/helpers/app_helper.dart';
 import '../../../vendors/views/screens/vendors_screen.dart';
 import 'additional_service_card.dart';

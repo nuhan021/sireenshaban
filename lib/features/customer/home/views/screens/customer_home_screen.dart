@@ -5,15 +5,16 @@ import 'package:sireenshaban/core/utils/constants/image_path.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/additional_service.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/community_events.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/deals_and_promotions.dart';
-import 'package:sireenshaban/features/customer/home/views/widget/featured_vendors.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/home_search_bar.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/trending_nearby.dart';
+import '../../../customer_bottom_nav_bar/controller/customer_bottom_nav_bar_controller.dart';
 import '../../controller/home_controller.dart';
 
 class CustomerHomeScreen extends StatelessWidget {
   CustomerHomeScreen({super.key});
 
   final controller = Get.put(HomeController());
+  CustomerBottomNavBarController navBarController = Get.find<CustomerBottomNavBarController>();
 
 
   @override
@@ -28,7 +29,9 @@ class CustomerHomeScreen extends StatelessWidget {
               20.verticalSpace,
 
               // search bar
-              HomeSearchBar(onTap: () {},),
+              HomeSearchBar(onTap: () {
+                navBarController.jumpToScreen(1);
+              },),
 
               40.verticalSpace,
 

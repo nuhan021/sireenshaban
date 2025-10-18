@@ -12,7 +12,6 @@ import '../../../../../core/utils/helpers/app_helper.dart';
 import '../../../../../routes/app_routes.dart';
 import '../../../../customer/booking/views/screens/booking_screen.dart';
 import '../../../../customer/payment_history/views/screens/payment_history_screen.dart';
-import '../../../../customer/user_profile/views/screens/user_profile_screen.dart';
 
 
 class VendorProfileScreen extends StatelessWidget {

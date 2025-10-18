@@ -17,7 +17,7 @@ void main() {
   runApp(
     DevicePreview(
       // enabled: !kReleaseMode,
-      enabled: true,
+      enabled: false,
       builder: (context) => MyApp(),
     ),
   );

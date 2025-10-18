@@ -2,16 +2,48 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:palette_generator/palette_generator.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
 
-class EventCard extends StatelessWidget {
-  const EventCard({super.key, required this.bannerImage, required this.title});
+import '../../../../../core/utils/helpers/app_helper.dart';
+import '../../../community_event_booking/views/screens/community_event_booking_screen.dart';
+
+class EventCard extends StatefulWidget {
+  const EventCard({
+    super.key,
+    required this.bannerImage,
+    required this.title,
+  });
 
   final String bannerImage;
   final String title;
 
+  @override
+  State<EventCard> createState() => _EventCardState();
+}
+
+class _EventCardState extends State<EventCard> {
+  Color? dominantColor;
+
+  @override
+  void initState() {
+    super.initState();
+    _updatePalette();
+  }
+
+  Future<void> _updatePalette() async {
+    final paletteGenerator = await PaletteGenerator.fromImageProvider(
+      NetworkImage(widget.bannerImage),
+      size: const Size(200, 100),
+      maximumColorCount: 10,
+    );
+
+    setState(() {
+      dominantColor = paletteGenerator.dominantColor?.color ?? AppColors.primaryDeepBlueNormal;
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -30,8 +62,7 @@ class EventCard extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(7.r),
             child: CachedNetworkImage(
-              imageUrl:
-                  bannerImage,
+              imageUrl: widget.bannerImage,
               fit: BoxFit.cover,
               height: 185.h,
               width: double.maxFinite,
@@ -47,7 +78,7 @@ class EventCard extends StatelessWidget {
 
           // title
           Text(
-            title,
+            widget.title,
             style: getTextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.w500,
@@ -113,8 +144,12 @@ class EventCard extends StatelessWidget {
               ),
             ],
           ),
-          
-          CustomPrimaryButton(text: "View details", color: AppColors.primaryDeepBlueNormal, onPressed: (){})
+
+          CustomPrimaryButton(
+            text: "View details",
+            color: dominantColor ?? AppColors.primaryDeepBlueNormal,
+            onPressed: () => AppHelperFunctions.navigateToScreen(context, CommunityEventBookingScreen(image: widget.bannerImage, title: widget.title,)),
+          )
         ],
       ),
     );
