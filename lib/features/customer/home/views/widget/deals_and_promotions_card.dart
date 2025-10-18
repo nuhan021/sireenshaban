@@ -21,7 +21,9 @@ class DealsAndPromotionsCard extends StatelessWidget {
     required this.subtitle,
     required this.validityDate,
     required this.role,
-    required this.group, required this.controller,
+    required this.group,
+    required this.controller,
+    this.isFromVendorScreen = false,
   });
 
   final String image;
@@ -32,6 +34,7 @@ class DealsAndPromotionsCard extends StatelessWidget {
   final String role;
   final ServicesGroup group;
   final HomeController controller;
+  final bool isFromVendorScreen;
 
   @override
   Widget build(BuildContext context) {
@@ -63,7 +66,6 @@ class DealsAndPromotionsCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             Stack(
               children: [
                 // image
@@ -75,17 +77,20 @@ class DealsAndPromotionsCard extends StatelessWidget {
                     height: 160.h,
                     width: double.maxFinite,
                     placeholder: (context, url) => Center(
-                      child: LoadingAnimationWidget.staggeredDotsWave(color: AppColors.primaryDeepBlueLight, size: 25.h),
+                      child: LoadingAnimationWidget.staggeredDotsWave(
+                        color: AppColors.primaryDeepBlueLight,
+                        size: 25.h,
+                      ),
                     ),
-                    errorWidget: (context, url, error) => const Icon(Icons.error),
-                  )
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  ),
                 ),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-
                     // rating
                     Container(
                       height: 20.h,
@@ -93,7 +98,7 @@ class DealsAndPromotionsCard extends StatelessWidget {
                       padding: EdgeInsets.symmetric(horizontal: 6.w),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(4.r),
-                        color: Color(0xFFFFC70F)
+                        color: Color(0xFFFFC70F),
                       ),
                       alignment: Alignment.center,
                       child: Row(
@@ -104,11 +109,15 @@ class DealsAndPromotionsCard extends StatelessWidget {
                             style: getTextStyle(
                               fontSize: 10.sp,
                               fontWeight: FontWeight.w600,
-                              color: AppColors.bodyDarkGray
+                              color: AppColors.bodyDarkGray,
                             ),
                           ),
 
-                          Icon(Icons.star, color: AppColors.bodyDarkGray, size: 15,)
+                          Icon(
+                            Icons.star,
+                            color: AppColors.bodyDarkGray,
+                            size: 15,
+                          ),
                         ],
                       ),
                     ).paddingOnly(left: 12.w),
@@ -119,16 +128,19 @@ class DealsAndPromotionsCard extends StatelessWidget {
                       width: 25.w,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: AppColors.cardBackgroundSoftGray
+                        color: AppColors.cardBackgroundSoftGray,
                       ),
                       alignment: Alignment.center,
-                      child: Icon(Icons.favorite_border, color: AppColors.bodyDarkGray, size: 15,),
-                    ).paddingOnly(right: 12.w)
+                      child: Icon(
+                        Icons.favorite_border,
+                        color: AppColors.bodyDarkGray,
+                        size: 15,
+                      ),
+                    ).paddingOnly(right: 12.w),
                   ],
                 ).paddingOnly(top: 12.h),
               ],
             ),
-
 
             30.verticalSpace,
 
@@ -195,7 +207,16 @@ class DealsAndPromotionsCard extends StatelessWidget {
             CustomPrimaryButton(
               text: 'View Deal',
               color: AppColors.primaryDeepBlueNormal,
-              onPressed: () => AppHelperFunctions.navigateToScreen(context, PackageBookingPage(image: image, title: shopTitle, controller: controller, group: group,)),
+              onPressed: () => AppHelperFunctions.navigateToScreen(
+                context,
+                PackageBookingPage(
+                  image: image,
+                  title: shopTitle,
+                  controller: controller,
+                  group: group,
+                  isFromVendorScreen: isFromVendorScreen,
+                ),
+              ),
             ),
           ],
         ),

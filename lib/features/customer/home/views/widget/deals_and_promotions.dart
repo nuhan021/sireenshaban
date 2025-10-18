@@ -9,12 +9,16 @@ import 'package:sireenshaban/features/customer/home/views/widget/deals_and_promo
 
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
-import '../../../../../core/utils/constants/image_path.dart';
 
 class DealsAndPromotions extends StatefulWidget {
-  DealsAndPromotions({super.key, required this.controller});
+  const DealsAndPromotions({
+    super.key,
+    required this.controller,
+    this.isFromVendorScreen = false,
+  });
 
   final HomeController controller;
+  final bool isFromVendorScreen;
 
   @override
   State<DealsAndPromotions> createState() => _DealsAndPromotionsState();
@@ -38,6 +42,7 @@ class _DealsAndPromotionsState extends State<DealsAndPromotions> {
           role: dealsAndPromotion.role,
           group: dealsAndPromotion.group,
           controller: widget.controller,
+          isFromVendorScreen: widget.isFromVendorScreen,
         ),
       );
     }

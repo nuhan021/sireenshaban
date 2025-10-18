@@ -38,9 +38,9 @@ class VendorProfileHeader extends StatelessWidget {
               ),
               Positioned(
                 bottom: 0,
-                left: 15.w,
+                left: 20.w,
                 child: CircleAvatar(
-                  radius: 50.r,
+                  radius: 60.r,
                   backgroundImage: NetworkImage(profilePhoto),
                 ),
               )

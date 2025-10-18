@@ -7,6 +7,7 @@ import 'package:sireenshaban/core/utils/constants/colors.dart';
 import 'package:sireenshaban/features/customer/chat/views/screens/chat_list_screen.dart';
 import 'package:sireenshaban/features/vendor/vendor_booking_request/views/screens/vendor_booking_request_screen.dart';
 import 'package:sireenshaban/features/vendor/vendor_bottom_nav_bar/controller/vendor_bottom_nav_bar_controller.dart';
+import 'package:sireenshaban/features/vendor/vendor_home/views/screens/vendor_home_screen.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile/views/screens/vendor_profile_screen.dart';
 import 'package:sireenshaban/features/vendor/vendor_schedule/views/screens/vendor_schedule_screen.dart';
 
@@ -19,7 +20,7 @@ class VendorBottomNavBar extends StatelessWidget {
 
   List<Widget> _buildScreens() {
     return [
-      Placeholder(),
+      VendorHomeScreen(),
       VendorBookingRequestScreen(),
       VendorScheduleScreen(),
       ChatListScreen(),

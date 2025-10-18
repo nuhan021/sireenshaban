@@ -24,12 +24,14 @@ class PackageBookingPage extends StatelessWidget {
     required this.title,
     required this.group,
     required this.controller,
+    this.isFromVendorScreen = false,
   });
 
   final String image;
   final String title;
   final HomeController controller;
   final ServicesGroup group;
+  final bool isFromVendorScreen;
 
   @override
   Widget build(BuildContext context) {
@@ -164,16 +166,18 @@ class PackageBookingPage extends StatelessWidget {
                 40.verticalSpace,
 
                 // book now button
-                CustomPrimaryButton(
-                  text: 'Book Now',
-                  color: AppColors.primaryDeepBlueNormal,
-                  onPressed: () => AppHelperFunctions.navigateToScreen(
-                    context,
-                    ConfirmBookingScreen(image: image, title: title),
-                  ),
-                ),
+                isFromVendorScreen
+                    ? SizedBox()
+                    : CustomPrimaryButton(
+                        text: 'Book Now',
+                        color: AppColors.primaryDeepBlueNormal,
+                        onPressed: () => AppHelperFunctions.navigateToScreen(
+                          context,
+                          ConfirmBookingScreen(image: image, title: title),
+                        ),
+                      ),
 
-                20.verticalSpace,
+                isFromVendorScreen ? 0.verticalSpace : 20.verticalSpace,
               ],
             ).paddingSymmetric(horizontal: 20.w),
           ],

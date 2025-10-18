@@ -100,23 +100,23 @@ class RequestTabs extends StatelessWidget {
 
                     5.horizontalSpace,
 
-                    Container(
-                      height: 20.h,
-                      width: 20.w,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: controller.bookingRequest.value == BookingRequest.quotedRequest ? AppColors.cardBackgroundSoftGray : AppColors.primaryDeepBlueNormal
-                      ),
-                      alignment: AlignmentGeometry.center,
-                      child: Text(
-                        '3',
-                        style: getTextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: controller.bookingRequest.value == BookingRequest.quotedRequest ? AppColors.primaryDeepBlueNormal : AppColors.cardBackgroundSoftGray
-                        ),
-                      ),
-                    )
+                    // Container(
+                    //   height: 20.h,
+                    //   width: 20.w,
+                    //   decoration: BoxDecoration(
+                    //       shape: BoxShape.circle,
+                    //       color: controller.bookingRequest.value == BookingRequest.quotedRequest ? AppColors.cardBackgroundSoftGray : AppColors.primaryDeepBlueNormal
+                    //   ),
+                    //   alignment: AlignmentGeometry.center,
+                    //   child: Text(
+                    //     '3',
+                    //     style: getTextStyle(
+                    //         fontSize: 12.sp,
+                    //         fontWeight: FontWeight.w400,
+                    //         color: controller.bookingRequest.value == BookingRequest.quotedRequest ? AppColors.primaryDeepBlueNormal : AppColors.cardBackgroundSoftGray
+                    //     ),
+                    //   ),
+                    // )
                   ],
                 ),
               ),
@@ -153,23 +153,23 @@ class RequestTabs extends StatelessWidget {
 
                     5.horizontalSpace,
 
-                    Container(
-                      height: 20.h,
-                      width: 20.w,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: controller.bookingRequest.value == BookingRequest.rejectedRequest ? AppColors.cardBackgroundSoftGray : AppColors.primaryDeepBlueNormal
-                      ),
-                      alignment: AlignmentGeometry.center,
-                      child: Text(
-                        '3',
-                        style: getTextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: controller.bookingRequest.value == BookingRequest.rejectedRequest ? AppColors.primaryDeepBlueNormal : AppColors.cardBackgroundSoftGray
-                        ),
-                      ),
-                    )
+                    // Container(
+                    //   height: 20.h,
+                    //   width: 20.w,
+                    //   decoration: BoxDecoration(
+                    //       shape: BoxShape.circle,
+                    //       color: controller.bookingRequest.value == BookingRequest.rejectedRequest ? AppColors.cardBackgroundSoftGray : AppColors.primaryDeepBlueNormal
+                    //   ),
+                    //   alignment: AlignmentGeometry.center,
+                    //   child: Text(
+                    //     '3',
+                    //     style: getTextStyle(
+                    //         fontSize: 12.sp,
+                    //         fontWeight: FontWeight.w400,
+                    //         color: controller.bookingRequest.value == BookingRequest.rejectedRequest ? AppColors.primaryDeepBlueNormal : AppColors.cardBackgroundSoftGray
+                    //     ),
+                    //   ),
+                    // )
                   ],
                 ),
               ),
