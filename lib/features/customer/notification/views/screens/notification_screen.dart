@@ -44,33 +44,31 @@ class NotificationScreen extends StatelessWidget {
         ],
       ),
 
-      body: Expanded(
-        child: ListView.builder(
-          itemCount: 20,
-          itemBuilder: (context, index) => ListTile(
-            leading: CircleAvatar(
-              radius: 25.r,
-              backgroundImage: NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBRfNX_1coQjpFuoF1ky07sOzLxPc8SNj2Pg&s"),
-              backgroundColor: Colors.white,
+      body: ListView.builder(
+        itemCount: 20,
+        itemBuilder: (context, index) => ListTile(
+          leading: CircleAvatar(
+            radius: 25.r,
+            backgroundImage: NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBRfNX_1coQjpFuoF1ky07sOzLxPc8SNj2Pg&s"),
+            backgroundColor: Colors.white,
+          ),
+
+          title: Text(
+            "The venue owner wants to contact you.",
+            style: getTextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w600,
+              color: AppColors.bodyDarkGray,
             ),
-        
-            title: Text(
-              "The venue owner wants to contact you.",
-              style: getTextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-                color: AppColors.bodyDarkGray,
-              ),
-            ),
-        
-            subtitle: Text(
-              "10 min . Ago",
-              overflow: TextOverflow.ellipsis,
-              style: getTextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w400,
-                color: Color(0xFF8D8D8D),
-              ),
+          ),
+
+          subtitle: Text(
+            "10 min . Ago",
+            overflow: TextOverflow.ellipsis,
+            style: getTextStyle(
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w400,
+              color: Color(0xFF8D8D8D),
             ),
           ),
         ),

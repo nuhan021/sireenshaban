@@ -79,7 +79,7 @@ class SelectRoleScreen extends StatelessWidget {
                         SizedBox(width: 12.w),
 
                         Text(
-                          'Business profile 🎉',
+                          'Business profile',
                           style: getTextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w600,
@@ -128,7 +128,7 @@ class SelectRoleScreen extends StatelessWidget {
                         SizedBox(width: 12.w),
 
                         Text(
-                          'Customer🏢',
+                          'Customer',
                           style: getTextStyle(
                             fontSize: 16.sp,
                             fontWeight: FontWeight.w600,

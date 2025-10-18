@@ -9,7 +9,6 @@ import '../../../../../core/utils/constants/colors.dart';
 import '../../../../../core/utils/constants/icon_path.dart';
 import '../../../../../core/utils/helpers/app_helper.dart';
 import '../../../../../routes/app_routes.dart';
-import '../../../booking_details/views/screens/booking_details_screen.dart';
 
 class BookingScreen extends StatelessWidget {
   const BookingScreen({super.key});

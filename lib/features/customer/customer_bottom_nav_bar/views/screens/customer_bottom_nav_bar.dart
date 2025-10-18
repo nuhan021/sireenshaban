@@ -9,6 +9,7 @@ import 'package:sireenshaban/features/customer/customer_bottom_nav_bar/controlle
 import 'package:sireenshaban/features/customer/events/views/screens/events_screen.dart';
 import 'package:sireenshaban/features/customer/home/views/screens/customer_home_screen.dart';
 import 'package:sireenshaban/features/customer/profile/views/screens/profile_screen.dart';
+import 'package:sireenshaban/features/customer/search/views/screens/search_screen.dart';
 
 import '../../../../../core/utils/constants/icon_path.dart';
 
@@ -20,7 +21,7 @@ class CustomerBottomNavBar extends StatelessWidget {
   List<Widget> _buildScreens() {
     return [
       CustomerHomeScreen(),
-      Placeholder(),
+      SearchScreen(),
       EventsScreen(),
       ChatListScreen(),
       ProfileScreen()

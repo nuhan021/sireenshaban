@@ -6,14 +6,12 @@ import 'package:sireenshaban/core/utils/constants/icon_path.dart';
 import 'package:sireenshaban/features/customer/confirm_booking/views/widgets/package_booking_payment_method.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/customer/personal_care_and_education/views/widgets/header.dart';
-
 import '../../../../../core/common/widgets/IField.dart';
 import '../../../../../core/common/widgets/custom_primary_button.dart';
 import '../../../../../core/utils/constants/colors.dart';
 import '../../../../../core/utils/helpers/app_helper.dart';
 import '../../../confirm_booking/views/screens/select_time_and_date_screen.dart';
 import '../../../confirm_booking/views/widgets/booking_summary.dart';
-import '../../../home/views/widget/deals_and_promotions.dart';
 
 class HomeAndMaintenanceServicesScreens extends StatelessWidget {
   HomeAndMaintenanceServicesScreens({

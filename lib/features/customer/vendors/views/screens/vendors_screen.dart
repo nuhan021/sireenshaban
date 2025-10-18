@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/featured_vendors_card.dart';
-import 'package:sireenshaban/features/customer/home/views/widget/home_search_bar.dart';
-
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
 import '../../controller/vendors_controller.dart';
