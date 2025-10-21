@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
           locale: DevicePreview.locale(context),
           builder: DevicePreview.appBuilder,
           debugShowCheckedModeBanner: false,
-          initialRoute: AppRoute.getSplashScreen(),
+          initialRoute: AppRoute.onboardingScreen,
           getPages: AppRoute.routes,
           initialBinding: ControllerBinder(),
           themeMode: ThemeMode.light,

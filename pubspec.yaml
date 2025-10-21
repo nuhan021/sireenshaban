@@ -67,11 +67,20 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^5.0.0
+  flutter_native_splash: ^2.3.10
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
 # The following section is specific to Flutter packages.
+flutter_native_splash:
+  color: "#ffffff"
+  image: assets/logo.png
+  android_12:
+    image: assets/logo.png
+    color: "#ffffff"
+
+
 flutter:
 
   # The following line ensures that the Material Icons font is
@@ -83,6 +92,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/logo.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
