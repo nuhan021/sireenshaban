@@ -36,13 +36,13 @@ class VendorBottomNavBar extends StatelessWidget {
         icon: Obx(
                 () {
               return Image.asset(
-                width: 25.w,
+                width: 20.w,
                 navaberController.currentIndex.value == 0 ? IconPath.navFillHome :IconPath.navHome,
               );
             }
         ),
         title: "Home",
-        textStyle: getTextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
+        textStyle: getTextStyle(fontSize: 10.sp, fontWeight: FontWeight.w500),
         activeForegroundColor: AppColors.primaryDeepBlueNormal,
         inactiveForegroundColor: AppColors.secondaryInfoMediumGrayNormal,
       ),
@@ -54,13 +54,13 @@ class VendorBottomNavBar extends StatelessWidget {
         icon: Obx(
                 () {
               return Image.asset(
-                width: 25.w,
+                width: 20.w,
                 navaberController.currentIndex.value == 1 ? IconPath.ticketFill :IconPath.ticket,
               );
             }
         ),
         title: "Request",
-        textStyle: getTextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
+        textStyle: getTextStyle(fontSize: 10.sp, fontWeight: FontWeight.w500),
         activeForegroundColor: AppColors.primaryDeepBlueNormal,
         inactiveForegroundColor: AppColors.secondaryInfoMediumGrayNormal,
       ),
@@ -72,13 +72,13 @@ class VendorBottomNavBar extends StatelessWidget {
         icon: Obx(
                 () {
               return Image.asset(
-                width: 25.w,
+                width: 20.w,
                 navaberController.currentIndex.value == 2 ? IconPath.navFillCalendar :IconPath.navCalendar,
               );
             }
         ),
         title: "Schedule",
-        textStyle: getTextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
+        textStyle: getTextStyle(fontSize: 10.sp, fontWeight: FontWeight.w500),
         activeForegroundColor: AppColors.primaryDeepBlueNormal,
         inactiveForegroundColor: AppColors.secondaryInfoMediumGrayNormal,
       ),
@@ -90,13 +90,13 @@ class VendorBottomNavBar extends StatelessWidget {
         icon: Obx(
                 () {
               return Image.asset(
-                width: 25.w,
+                width: 20.w,
                 navaberController.currentIndex.value == 3 ? IconPath.navFillMessage :IconPath.navMessage,
               );
             }
         ),
         title: "Chat",
-        textStyle: getTextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
+        textStyle: getTextStyle(fontSize: 10.sp, fontWeight: FontWeight.w500),
         activeForegroundColor: AppColors.primaryDeepBlueNormal,
         inactiveForegroundColor: AppColors.secondaryInfoMediumGrayNormal,
       ),
@@ -108,13 +108,13 @@ class VendorBottomNavBar extends StatelessWidget {
         icon: Obx(
                 () {
               return Image.asset(
-                width: 25.w,
+                width: 20.w,
                 navaberController.currentIndex.value == 4 ? IconPath.navFillProfile :IconPath.navProfile,
               );
             }
         ),
         title: "Profile",
-        textStyle: getTextStyle(fontSize: 12.sp, fontWeight: FontWeight.w500),
+        textStyle: getTextStyle(fontSize: 10.sp, fontWeight: FontWeight.w500),
         activeForegroundColor: AppColors.primaryDeepBlueNormal,
         inactiveForegroundColor: AppColors.secondaryInfoMediumGrayNormal,
       ),
