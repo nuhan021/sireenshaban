@@ -6,6 +6,7 @@ import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
 import 'package:sireenshaban/core/utils/constants/enums.dart';
 import 'package:sireenshaban/core/utils/constants/icon_path.dart';
+import 'package:sireenshaban/core/utils/constants/image_path.dart';
 import 'package:sireenshaban/routes/app_routes.dart';
 
 import '../../controller/select_role_controller.dart';
@@ -21,8 +22,17 @@ class SelectRoleScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            SizedBox(height: 30.h),
+            Expanded(
+              child: Center(
+                child: Image.asset(
+                  ImagePath.selectRole,
+                ),
+              ),
+            ),
+
+            10.verticalSpace,
             Text(
               'Select Your Role',
               style: getTextStyle(
@@ -41,7 +51,6 @@ class SelectRoleScreen extends StatelessWidget {
               ),
             ),
 
-            SizedBox(height: 20.h),
 
             Obx(() {
               return GestureDetector(
@@ -93,8 +102,6 @@ class SelectRoleScreen extends StatelessWidget {
               );
             }),
 
-            SizedBox(height: 8.h),
-
             Obx(() {
               return GestureDetector(
                 onTap: () => controller.selectRole(userRole: UserRole.customer),
@@ -142,13 +149,15 @@ class SelectRoleScreen extends StatelessWidget {
               );
             }),
 
-            SizedBox(height: 40.h),
+            30.verticalSpace,
 
             CustomPrimaryButton(
               text: 'Continue',
               color: AppColors.primaryDeepBlueNormal,
-              onPressed: () => Get.offAllNamed(AppRoute.loginScreen),
+              onPressed: () => Get.toNamed(AppRoute.loginScreen),
             ),
+
+            20.verticalSpace
           ],
         ).paddingSymmetric(horizontal: 20.w),
       ),
