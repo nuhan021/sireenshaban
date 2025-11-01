@@ -57,6 +57,9 @@ dependencies:
   flutter_chat_types: ^3.6.2
   palette_generator: ^0.3.3+7
   flutter_dotenv: ^6.0.0
+  flutter_google_places_sdk: ^0.4.2+1
+  geocoding: ^4.0.0
+  flutter_typeahead: ^5.2.0
 
 dev_dependencies:
   flutter_test:

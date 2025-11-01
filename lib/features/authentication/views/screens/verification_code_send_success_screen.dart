@@ -8,7 +8,10 @@ import 'package:sireenshaban/routes/app_routes.dart';
 import '../../../../core/utils/constants/colors.dart';
 
 class VerificationCodeSendSuccessScreen extends StatelessWidget {
-  const VerificationCodeSendSuccessScreen({super.key, this.isFromSignUpScreen = true});
+  const VerificationCodeSendSuccessScreen({
+    super.key,
+    this.isFromSignUpScreen = true,
+  });
 
   final bool isFromSignUpScreen;
 
@@ -66,24 +69,32 @@ class VerificationCodeSendSuccessScreen extends StatelessWidget {
                 style: getTextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
-                  color: AppColors.bodyDarkGray
+                  color: AppColors.bodyDarkGray,
                 ),
               ),
 
               26.verticalSpace,
 
-              TextButton(onPressed: (){}, child: Text('Resend Code', style: getTextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-                color: AppColors.primaryDeepBlueNormal
-              ))),
+              TextButton(
+                onPressed: () {},
+                child: Text(
+                  'Resend Code',
+                  style: getTextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.primaryDeepBlueNormal,
+                  ),
+                ),
+              ),
 
               40.verticalSpace,
 
               CustomPrimaryButton(
                 text: 'Continue',
                 color: AppColors.primaryDeepBlueNormal,
-                onPressed: () => isFromSignUpScreen ? Get.toNamed(AppRoute.loginScreen) : Get.toNamed(AppRoute.changePasswordScreen),
+                onPressed: () => isFromSignUpScreen
+                    ? Get.toNamed(AppRoute.vendorProfileInfo)
+                    : Get.toNamed(AppRoute.changePasswordScreen),
               ),
             ],
           ).paddingSymmetric(horizontal: 20.w),

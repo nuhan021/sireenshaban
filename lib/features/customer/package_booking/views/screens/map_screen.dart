@@ -12,7 +12,6 @@ class _MapScreenState extends State<MapScreen> {
   late GoogleMapController _mapController;
   final LatLng _shopLocation = const LatLng(40.74003379333115,-73.99088234777156);
 
-  // Future<void> _getCurrentLocation() async {
   void _onMapCreated(GoogleMapController controller) {
     _mapController = controller;
   }

@@ -14,6 +14,8 @@ import '../features/customer/interest/views/screens/customer_interest_screen.dar
 import '../features/customer/vendors/views/screens/vendors_screen.dart';
 import '../features/onboarding/views/screens/onboarding_screen_1.dart';
 import '../features/select_role/views/screens/select_role_screen.dart';
+import '../features/vendor/vendor_profile_info/views/screens/vendor_profile_info.dart';
+import '../features/vendor/vendor_profile_info/views/screens/vendor_profile_info_map.dart';
 
 class AppRoute {
   static String loginScreen = "/loginScreen";
@@ -28,6 +30,8 @@ class AppRoute {
   static String vendorsScreen = "/vendorsScreen";
   static String chatScreen = "/chatScreen";
   static String notificationScreen = "/notificationScreen";
+  static String vendorProfileInfo = "/vendorProfileInfo";
+  static String vendorProfileInfoMap = "/vendorProfileInfoMap";
 
   // customer bottom nav bar
   static String customerBottomNavBar = "/customerBottomNavBar";
@@ -50,6 +54,9 @@ class AppRoute {
   static String getVendorsScreen() => vendorsScreen;
   static String getChatScreen() => chatScreen;
   static String getNotificationScreen() => notificationScreen;
+  static String getVendorProfileInfo() => vendorProfileInfo;
+  static String getVendorProfileInfoMap() => vendorProfileInfoMap;
+
 
   // customer bottom nav bar
   static String getCustomerBottomNavBar() => customerBottomNavBar;
@@ -73,6 +80,8 @@ class AppRoute {
     GetPage(name: vendorsScreen, page: () => VendorsScreen()),
     GetPage(name: chatScreen, page: () => ChatScreen(avatar: '', name: '',)),
     GetPage(name: notificationScreen, page: () => NotificationScreen()),
+    GetPage(name: vendorProfileInfo, page: () => VendorProfileInfo()),
+    GetPage(name: vendorProfileInfoMap, page: () => VendorProfileInfoMap()),
 
     // customer bottom nav bar
     GetPage(name: customerBottomNavBar, page: () => CustomerBottomNavBar()),
