@@ -1,4 +1,5 @@
 import 'package:device_preview/device_preview.dart';
+import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -23,7 +24,12 @@ class MyApp extends StatelessWidget {
           locale: DevicePreview.locale(context),
           builder: DevicePreview.appBuilder,
           debugShowCheckedModeBanner: false,
-          initialRoute: AppRoute.onboardingScreen,
+          initialRoute:
+              StorageService.getOnboardingStatus(
+                tokenName: StorageService.onboardingStatus,
+              )
+              ? AppRoute.selectRoleScreen
+              : AppRoute.onboardingScreen,
           getPages: AppRoute.routes,
           initialBinding: ControllerBinder(),
           themeMode: ThemeMode.light,

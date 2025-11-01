@@ -1,7 +1,13 @@
 
 class ImagePath{
   static const  String splashImg = 'assets/images/splash_img.png';
-  static const  String onboardingImage = 'assets/images/onboarding_img.png';
+  static const  String onboardingImage1 = 'assets/images/onboarding_1.png';
+  static const  String onboardingImage2 = 'assets/images/onboarding_2.png';
+  static const  String onboardingImage3 = 'assets/images/onboarding_3.png';
+  static const  String onboardingImage4 = 'assets/images/onboarding_4.png';
+  static const  String onboardingImage5 = 'assets/images/onboarding_5.png';
+  static const  String onboardingImage6 = 'assets/images/onboarding_6.png';
+  static const  String selectRole = 'assets/images/select_role.png';
   static const  String bannerImg = 'assets/images/banner.png';
   static const  String doctorImg = 'assets/images/doctor.png';
   static const  String restaurantImg = 'assets/images/restaurant.png';

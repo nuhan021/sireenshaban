@@ -140,10 +140,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     text: 'Log In',
                     color: AppColors.primaryDeepBlueNormal,
                     onPressed: () {
+                      // Get.offAllNamed(AppRoute.customerInterestScreen);
                       if(widget.selectRoleController.role.value == UserRole.customer) {
-                        Get.offAllNamed(AppRoute.customerBottomNavBar);
+                        // Get.offAllNamed(AppRoute.customerBottomNavBar);
+                        Get.offAllNamed(AppRoute.customerInterestScreen);
                       } else {
-                        Get.offAllNamed(AppRoute.vendorBottomNavBar);
+                        // Get.offAllNamed(AppRoute.vendorBottomNavBar);
                       }
                     },
                   ),

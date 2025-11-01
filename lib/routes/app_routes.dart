@@ -10,8 +10,9 @@ import '../features/authentication/views/screens/login_screen.dart';
 import '../features/authentication/views/screens/sign_up_screen.dart';
 import '../features/customer/chat/views/screens/chat_screen.dart';
 import '../features/customer/customer_bottom_nav_bar/views/screens/customer_bottom_nav_bar.dart';
+import '../features/customer/interest/views/screens/customer_interest_screen.dart';
 import '../features/customer/vendors/views/screens/vendors_screen.dart';
-import '../features/onboarding/views/screens/onboarding_screen.dart';
+import '../features/onboarding/views/screens/onboarding_screen_1.dart';
 import '../features/select_role/views/screens/select_role_screen.dart';
 
 class AppRoute {
@@ -20,6 +21,7 @@ class AppRoute {
   static String splashScreen = "/splashScreen";
   static String onboardingScreen = "/onboardingScreen";
   static String selectRoleScreen = "/selectRoleScreen";
+  static String customerInterestScreen = "/customerInterestScreen";
   static String verificationCodeSendSuccessScreen = "/verificationCodeSendSuccessScreen";
   static String forgetPasswordScreen = "/forgetPasswordScreen";
   static String changePasswordScreen = "/changePasswordScreen";
@@ -41,6 +43,7 @@ class AppRoute {
   static String getSplashScreen() => splashScreen;
   static String getOnboardingScreen() => onboardingScreen;
   static String getSelectRoleScreen() => selectRoleScreen;
+  static String getCustomerInterestScreen() => customerInterestScreen;
   static String getVerificationCodeSendSuccessScreen() => verificationCodeSendSuccessScreen;
   static String getForgetPasswordScreen() => forgetPasswordScreen;
   static String getChangePasswordScreen() => changePasswordScreen;
@@ -61,8 +64,9 @@ class AppRoute {
     GetPage(name: loginScreen, page: () => LoginScreen()),
     GetPage(name: signUpScreen, page: () => SignUpScreen()),
     GetPage(name: splashScreen, page: () => const SplashScreen()),
-    GetPage(name: onboardingScreen, page: () => const OnboardingScreen()),
+    GetPage(name: onboardingScreen, page: () => const OnboardingScreen1()),
     GetPage(name: selectRoleScreen, page: () => SelectRoleScreen()),
+    GetPage(name: customerInterestScreen, page: () => CustomerInterestScreen()),
     GetPage(name: verificationCodeSendSuccessScreen, page: () => VerificationCodeSendSuccessScreen()),
     GetPage(name: forgetPasswordScreen, page: () => ForgetPasswordScreen()),
     GetPage(name: changePasswordScreen, page: () => ChangePasswordScreen()),

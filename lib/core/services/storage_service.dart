@@ -4,6 +4,7 @@ class StorageService {
   // Constants for preference keys
   static const String _tokenKey = 'token';
   static const String _idKey = 'userId';
+  static const String onboardingStatus = "onboarding";
 
   // Singleton instance for SharedPreferences
   static SharedPreferences? _preferences;
@@ -11,6 +12,15 @@ class StorageService {
   // Initialize SharedPreferences (call this during app startup)
   static Future<void> init() async {
     _preferences = await SharedPreferences.getInstance();
+  }
+
+
+  static bool getOnboardingStatus({required String tokenName}) {
+    return _preferences?.getBool(onboardingStatus) ?? false;
+  }
+
+  static Future<void> setOnboardingStatus({required bool value}) async {
+    await _preferences?.setBool(onboardingStatus, value);
   }
 
   // Check if a token exists in local storage
