@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:sireenshaban/features/customer/notification/views/screens/notification_screen.dart';
 import 'package:sireenshaban/features/splash/views/screens/splash_screen.dart';
 import 'package:sireenshaban/features/vendor/vendor_bottom_nav_bar/views/screens/vendor_bottom_nav_bar.dart';
+import 'package:sireenshaban/features/vendor/vendor_setup/views/screens/vendor_setup_screen.dart';
 
 import '../features/authentication/views/screens/change_password_screen.dart';
 import '../features/authentication/views/screens/forget_password_screen.dart';
@@ -14,6 +15,8 @@ import '../features/customer/interest/views/screens/customer_interest_screen.dar
 import '../features/customer/vendors/views/screens/vendors_screen.dart';
 import '../features/onboarding/views/screens/onboarding_screen_1.dart';
 import '../features/select_role/views/screens/select_role_screen.dart';
+import '../features/vendor/vendor_profile_info/views/screens/vendor_profile_info_map.dart';
+import '../features/vendor/vendor_setup/views/screens/vendor_setup_screen.dart';
 
 class AppRoute {
   static String loginScreen = "/loginScreen";
@@ -28,6 +31,9 @@ class AppRoute {
   static String vendorsScreen = "/vendorsScreen";
   static String chatScreen = "/chatScreen";
   static String notificationScreen = "/notificationScreen";
+  static String vendorSetupScreen = "/vendorProfileInfo";
+  static String vendorProfileInfoMap = "/vendorProfileInfoMap";
+  static String vendorSetupScreen1st = '/vendorSetupProfileScreen1st';
 
   // customer bottom nav bar
   static String customerBottomNavBar = "/customerBottomNavBar";
@@ -50,6 +56,11 @@ class AppRoute {
   static String getVendorsScreen() => vendorsScreen;
   static String getChatScreen() => chatScreen;
   static String getNotificationScreen() => notificationScreen;
+  static String getVendorProfileInfo() => vendorSetupScreen;
+  static String getVendorProfileInfoMap() => vendorProfileInfoMap;
+  static String getVendorSetupProfileScreen1st() => vendorSetupScreen1st;
+
+
 
   // customer bottom nav bar
   static String getCustomerBottomNavBar() => customerBottomNavBar;
@@ -73,6 +84,10 @@ class AppRoute {
     GetPage(name: vendorsScreen, page: () => VendorsScreen()),
     GetPage(name: chatScreen, page: () => ChatScreen(avatar: '', name: '',)),
     GetPage(name: notificationScreen, page: () => NotificationScreen()),
+    GetPage(name: vendorSetupScreen, page: () => VendorSetupScreen()),
+    GetPage(name: vendorProfileInfoMap, page: () => VendorProfileInfoMap()),
+    GetPage(name: vendorSetupScreen1st, page: () => VendorSetupScreen()),
+
 
     // customer bottom nav bar
     GetPage(name: customerBottomNavBar, page: () => CustomerBottomNavBar()),

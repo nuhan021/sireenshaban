@@ -4,11 +4,19 @@ import 'package:get/get.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
+import 'package:sireenshaban/core/utils/constants/enums.dart';
+import 'package:sireenshaban/features/select_role/controller/select_role_controller.dart';
 import 'package:sireenshaban/routes/app_routes.dart';
 import '../../../../core/utils/constants/colors.dart';
 
 class VerificationCodeSendSuccessScreen extends StatelessWidget {
-  const VerificationCodeSendSuccessScreen({super.key, this.isFromSignUpScreen = true});
+  VerificationCodeSendSuccessScreen({
+    super.key,
+    this.isFromSignUpScreen = true,
+  });
+
+  final SelectRoleController selectRoleController =
+      Get.find<SelectRoleController>();
 
   final bool isFromSignUpScreen;
 
@@ -66,24 +74,35 @@ class VerificationCodeSendSuccessScreen extends StatelessWidget {
                 style: getTextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
-                  color: AppColors.bodyDarkGray
+                  color: AppColors.bodyDarkGray,
                 ),
               ),
 
               26.verticalSpace,
 
-              TextButton(onPressed: (){}, child: Text('Resend Code', style: getTextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w500,
-                color: AppColors.primaryDeepBlueNormal
-              ))),
+              TextButton(
+                onPressed: () {},
+                child: Text(
+                  'Resend Code',
+                  style: getTextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.primaryDeepBlueNormal,
+                  ),
+                ),
+              ),
 
               40.verticalSpace,
 
               CustomPrimaryButton(
                 text: 'Continue',
                 color: AppColors.primaryDeepBlueNormal,
-                onPressed: () => isFromSignUpScreen ? Get.toNamed(AppRoute.loginScreen) : Get.toNamed(AppRoute.changePasswordScreen),
+                onPressed: () => isFromSignUpScreen
+                    // ? Get.toNamed(AppRoute.vendorProfileInfo)
+                    ? selectRoleController.role.value == UserRole.vendor
+                          ? Get.toNamed(AppRoute.vendorSetupScreen)
+                          : Get.toNamed(AppRoute.customerInterestScreen)
+                    : Get.toNamed(AppRoute.changePasswordScreen),
               ),
             ],
           ).paddingSymmetric(horizontal: 20.w),
