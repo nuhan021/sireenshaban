@@ -8,9 +8,15 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:http/http.dart' as http;
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
+import 'package:sireenshaban/core/utils/logging/logger.dart';
+import 'package:sireenshaban/features/vendor/vendor_profile_info/views/controller/vendor_profile_info_map_controller.dart';
 
 class VendorProfileInfoMap extends StatefulWidget {
-  const VendorProfileInfoMap({super.key});
+  VendorProfileInfoMap({super.key});
+
+  VendorProfileInfoMapController controller = Get.put(
+    VendorProfileInfoMapController(),
+  );
 
   @override
   State<VendorProfileInfoMap> createState() => _VendorProfileInfoMapState();
@@ -18,155 +24,100 @@ class VendorProfileInfoMap extends StatefulWidget {
 
 class _VendorProfileInfoMapState extends State<VendorProfileInfoMap> {
   final TextEditingController _searchController = TextEditingController();
-  final String _googleApiKey = "AIzaSyA22IxMllRCaf9DcNTmyjKPcHpY5okWfhc";
 
-  late GoogleMapController _mapController;
-  final Set<Marker> _markers = {};
-  LatLng? _selectedPosition;
-  final LatLng _shopLocation = const LatLng(
-    40.74003379333115,
-    -73.99088234777156,
-  );
 
-  void _onMapCreated(GoogleMapController controller) {
-    _mapController = controller;
-  }
 
-  void _handleTap(LatLng tappedPoint) {
-    setState(() {
-      _markers.clear();
-      _markers.add(
-        Marker(
-          markerId: const MarkerId("tapped_location"),
-          position: tappedPoint,
-          infoWindow: InfoWindow(
-            title: "Selected Location",
-            snippet: "${tappedPoint.latitude}, ${tappedPoint.longitude}",
-          ),
-        ),
-      );
-      _selectedPosition = tappedPoint;
-    });
-  }
 
-  Future<List<Map<String, dynamic>>> _getPlaceSuggestions(String input) async {
-    if (input.isEmpty) return [];
 
-    final String url =
-        "https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$input&key=$_googleApiKey&components=country:bd";
-    final response = await http.get(Uri.parse(url));
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      final predictions = data['predictions'] as List;
-      return predictions
-          .map((p) => {
-        'description': p['description'],
-        'place_id': p['place_id'],
-      })
-          .toList();
-    } else {
-      throw Exception("Failed to fetch suggestions");
-    }
-  }
-
-  Future<LatLng> _getPlaceLatLng(String placeId) async {
-    final String url =
-        "https://maps.googleapis.com/maps/api/place/details/json?place_id=$placeId&key=$_googleApiKey";
-    final response = await http.get(Uri.parse(url));
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      final location = data['result']['geometry']['location'];
-      return LatLng(location['lat'], location['lng']);
-    } else {
-      throw Exception("Failed to fetch place details");
-    }
-  }
-
-  void _addMarker(LatLng position, {String? title}) {
-    setState(() {
-      _markers.add(Marker(
-        markerId: MarkerId(position.toString()),
-        position: position,
-        infoWindow: InfoWindow(title: title ?? "Custom Marker"),
-      ));
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: [
-          GoogleMap(
-            onMapCreated: _onMapCreated,
-            initialCameraPosition: CameraPosition(
-              target: _shopLocation,
-              zoom: 12.0,
-            ),
-            myLocationEnabled: false,
-            myLocationButtonEnabled: false,
-            zoomControlsEnabled: false, // remove + / - buttons
-            compassEnabled: false,
-            mapType: MapType.normal,
-            zoomGesturesEnabled: true, // allows pinch zoom
-            scrollGesturesEnabled: true, // allows moving map
-            rotateGesturesEnabled: true, // allows rotation
-            tiltGesturesEnabled: true, // allows tilt with two fingers
-            markers: _markers,
-            onLongPress: _handleTap,
-          ),
+          Obx(() {
+            return GoogleMap(
+              onMapCreated: widget.controller.onMapCreated,
+              initialCameraPosition: CameraPosition(
+                target: widget.controller.selectedPosition ?? widget.controller.shopLocation,
+                zoom: 12.0,
+              ),
+              myLocationEnabled: false,
+              myLocationButtonEnabled: false,
+              zoomControlsEnabled: false, // remove + / - buttons
+              compassEnabled: false,
+              mapType: MapType.normal,
+              zoomGesturesEnabled: true, // allows pinch zoom
+              scrollGesturesEnabled: true, // allows moving map
+              rotateGesturesEnabled: true, // allows rotation
+              tiltGesturesEnabled: true, // allows tilt with two fingers
+              markers: widget.controller.markers.toSet(),
+              onLongPress: widget.controller.handleTap,
+            );
+          }),
 
           SafeArea(
             child: TypeAheadField(
               controller: _searchController,
-            builder: (context, controller, focusNode) {
-              return Row(
-                children: [
-                  IconButton(onPressed: (){}, icon: Icon(Icons.arrow_back_ios)),
-                  Expanded(
-                    child: TextField(
-                      controller: _searchController,
-                      focusNode: focusNode,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        hintText: "Search location",
-                        hintStyle: getTextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.bodyDarkGray
+              builder: (context, controller, focusNode) {
+                return Row(
+                  children: [
+                    10.horizontalSpace,
+                    Expanded(
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(14.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.4),
+                              offset: const Offset(0, 0),
+                              blurRadius: 2,
+                              spreadRadius: 2,
+                            ),
+                          ],
                         ),
-                        border: OutlineInputBorder(
-                          borderSide: BorderSide(
-                            color: AppColors.secondaryInfoMediumGray,
-                            width: 1
+                        child: TextField(
+                          controller: _searchController,
+                          focusNode: focusNode,
+                          decoration: InputDecoration(
+                            filled: true,
+                            fillColor: Colors.white,
+                            hintText: "Search location",
+                            hintStyle: getTextStyle(
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.bodyDarkGray,
+                            ),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.transparent,
+                                width: 1,
+                              ),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                color: Colors.transparent,
+                                width: 1,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                color: Colors.transparent,
+                                width: 2,
+                              ),
+                            ),
                           ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: AppColors.secondaryInfoMediumGray,
-                            width: 1,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide: BorderSide(
-                            color: AppColors.secondaryInfoMediumGray,
-                            width: 2,
-                          ),
+                          onChanged: (value) => widget.controller.getPlaceSuggestions(value),
                         ),
                       ),
-                      onChanged: (value) => _getPlaceSuggestions(value),
-                    ).paddingOnly(right: 20.w),
-                  )
-                ],
-              );
-            },
+                    ),
+                  ],
+                ).paddingSymmetric(horizontal: 15.w, vertical: 10.h);
+              },
               suggestionsCallback: (pattern) async {
-                return await _getPlaceSuggestions(pattern);
+                return await widget.controller.getPlaceSuggestions(pattern);
               },
               itemBuilder: (context, suggestion) {
                 return ListTile(
@@ -176,14 +127,70 @@ class _VendorProfileInfoMapState extends State<VendorProfileInfoMap> {
               },
               onSelected: (suggestion) async {
                 _searchController.text = suggestion['description'];
-                LatLng pos = await _getPlaceLatLng(suggestion['place_id']);
-                _mapController?.animateCamera(
+                LatLng pos = await widget.controller.getPlaceLatLng(suggestion['place_id']);
+
+                widget.controller.mapController?.animateCamera(
                   CameraUpdate.newLatLngZoom(pos, 15),
                 );
-                _addMarker(pos, title: suggestion['description']);
+                widget.controller.addMarker(pos, title: suggestion['description']);
               },
             ),
           ),
+
+
+          Positioned(
+            bottom: 40.h,
+            right: 15.w,
+            child: Container(
+              padding: EdgeInsets.all(5.w),
+              decoration: BoxDecoration(
+                color: Color(0xFF1973E8),
+                // border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(14.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.4),
+                    offset: const Offset(0, 0),
+                    blurRadius: 2,
+                    spreadRadius: 2,
+                  ),
+
+                ],
+              ),
+              // alignment: Alignment.center ,
+              child: IconButton(
+                onPressed: () => widget.controller.getCurrentLocation(),
+                icon: Icon(Icons.my_location, color: Colors.white,),
+              ),
+            ),
+          ),
+
+          Positioned(
+            bottom: 110.h,
+            right: 15.w,
+            child: Container(
+              padding: EdgeInsets.all(5.w),
+              decoration: BoxDecoration(
+                color: Color(0xFF1973E8),
+                // border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(50.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.4),
+                    offset: const Offset(0, 0),
+                    blurRadius: 2,
+                    spreadRadius: 2,
+                  ),
+
+                ],
+              ),
+              // alignment: Alignment.center ,
+              child: IconButton(
+                onPressed: () => Get.back(),
+                icon: Icon(Icons.check, color: Colors.white,),
+              ),
+            ),
+          )
         ],
       ),
     );

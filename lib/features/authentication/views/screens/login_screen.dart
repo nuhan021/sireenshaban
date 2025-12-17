@@ -145,7 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         // Get.offAllNamed(AppRoute.customerBottomNavBar);
                         Get.offAllNamed(AppRoute.customerInterestScreen);
                       } else {
-                        // Get.offAllNamed(AppRoute.vendorBottomNavBar);
+                        Get.offAllNamed(AppRoute.vendorBottomNavBar);
                       }
                     },
                   ),

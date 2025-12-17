@@ -4,14 +4,19 @@ import 'package:get/get.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
+import 'package:sireenshaban/core/utils/constants/enums.dart';
+import 'package:sireenshaban/features/select_role/controller/select_role_controller.dart';
 import 'package:sireenshaban/routes/app_routes.dart';
 import '../../../../core/utils/constants/colors.dart';
 
 class VerificationCodeSendSuccessScreen extends StatelessWidget {
-  const VerificationCodeSendSuccessScreen({
+  VerificationCodeSendSuccessScreen({
     super.key,
     this.isFromSignUpScreen = true,
   });
+
+  final SelectRoleController selectRoleController =
+      Get.find<SelectRoleController>();
 
   final bool isFromSignUpScreen;
 
@@ -93,7 +98,10 @@ class VerificationCodeSendSuccessScreen extends StatelessWidget {
                 text: 'Continue',
                 color: AppColors.primaryDeepBlueNormal,
                 onPressed: () => isFromSignUpScreen
-                    ? Get.toNamed(AppRoute.vendorProfileInfo)
+                    // ? Get.toNamed(AppRoute.vendorProfileInfo)
+                    ? selectRoleController.role.value == UserRole.vendor
+                          ? Get.toNamed(AppRoute.vendorSetupScreen)
+                          : Get.toNamed(AppRoute.customerInterestScreen)
                     : Get.toNamed(AppRoute.changePasswordScreen),
               ),
             ],
