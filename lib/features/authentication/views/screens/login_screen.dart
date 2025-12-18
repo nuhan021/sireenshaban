@@ -1,5 +1,6 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
+import 'package:sireenshaban/core/common/widgets/custom_loading.dart';
 import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
@@ -25,14 +26,11 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController emailController = TextEditingController();
-
-  final TextEditingController passwordController = TextEditingController();
-
   @override
   void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
+    widget.controller.emailController.dispose();
+    widget.controller.passwordController.dispose();
+    widget.controller.dispose();
     super.dispose();
   }
 
@@ -74,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(height: 5.h),
 
                   IField(
-                    controller: emailController,
+                    controller: widget.controller.emailController,
                     hintText: "Enter your email",
                     keyboardType: TextInputType.emailAddress,
                     filled: true,
@@ -111,7 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   Obx(() {
                     return IField(
-                      controller: passwordController,
+                      controller: widget.controller.passwordController,
                       hintText: "Enter your password",
                       keyboardType: TextInputType.emailAddress,
                       filled: true,
@@ -136,19 +134,25 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   SizedBox(height: 40.h),
 
-                  CustomPrimaryButton(
-                    text: 'Log In',
-                    color: AppColors.primaryDeepBlueNormal,
-                    onPressed: () {
-                      // Get.offAllNamed(AppRoute.customerInterestScreen);
-                      if(widget.selectRoleController.role.value == UserRole.customer) {
-                        // Get.offAllNamed(AppRoute.customerBottomNavBar);
-                        Get.offAllNamed(AppRoute.customerInterestScreen);
-                      } else {
-                        Get.offAllNamed(AppRoute.vendorBottomNavBar);
-                      }
-                    },
-                  ),
+                  Obx(() {
+                    if (widget.controller.isLogInLoading.value) {
+                      return CustomLoading();
+                    }
+                    return CustomPrimaryButton(
+                      text: 'Log In',
+                      color: AppColors.primaryDeepBlueNormal,
+                      onPressed: () {
+                        widget.controller.login();
+                        // // Get.offAllNamed(AppRoute.customerInterestScreen);
+                        // if(widget.selectRoleController.role.value == UserRole.customer) {
+                        //   // Get.offAllNamed(AppRoute.customerBottomNavBar);
+                        //   Get.offAllNamed(AppRoute.customerInterestScreen);
+                        // } else {
+                        //   Get.offAllNamed(AppRoute.vendorBottomNavBar);
+                        // }
+                      },
+                    );
+                  }),
 
                   SizedBox(height: 16.h),
 

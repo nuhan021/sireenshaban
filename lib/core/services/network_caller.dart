@@ -37,7 +37,7 @@ class NetworkCaller {
 
     try {
       final Response response = await post(Uri.parse(url),
-          headers: {'Content-type': 'application/json'},
+          headers: {'Content-type': 'application/json', 'Accept': 'application/json'},
           body: jsonEncode(body))
           .timeout(Duration(seconds: timeoutDuration));
       return _handleResponse(response);
@@ -53,7 +53,7 @@ class NetworkCaller {
 
     final decodedResponse = jsonDecode(response.body);
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 200 || response.statusCode == 201) {
       if (decodedResponse['success'] == true) {
         return ResponseData(
           isSuccess: true,
