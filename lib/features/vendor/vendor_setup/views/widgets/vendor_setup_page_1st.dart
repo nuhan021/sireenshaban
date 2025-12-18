@@ -2,6 +2,7 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/vendor/vendor_setup/controller/vendor_setup_screen_controller.dart';
 
 import '../../../../../core/common/styles/global_text_style.dart';
@@ -114,7 +115,7 @@ class VendorSetupPage1st extends StatelessWidget {
                 initialSelection: vendorSetupScreenController.countryCode,
                 onChanged: (value) {
                   vendorSetupScreenController.countryCode = value.code!;
-                  vendorSetupScreenController.dialCode = value.dialCode!;
+                  vendorSetupScreenController.dialCode = value.dialCode!.toString();
                 },
               ),
               Expanded(

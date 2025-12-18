@@ -64,6 +64,7 @@ dependencies:
   country_code_picker: ^3.4.1
   smooth_page_indicator: ^1.2.1
   iconly: ^1.0.1
+  dio: ^5.9.0
 
 dev_dependencies:
   flutter_test:

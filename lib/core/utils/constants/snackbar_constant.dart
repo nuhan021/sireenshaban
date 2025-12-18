@@ -34,6 +34,6 @@ class SnackBarConstant {
     backgroundColor: AppColors.success,
     colorText: Colors.black,
     margin: EdgeInsets.all(15.w),
-    icon: const Icon(Icons.error_outline_outlined, color: Colors.black),
+    icon: const Icon(Icons.check_circle_outline_rounded, color: Colors.black),
   );
 }

@@ -19,17 +19,39 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
       // Use builder only if you need to use library outside ScreenUtilInit context
       builder: (_, child) {
+        String getInitialRoute() {
+          final isOnboarded = StorageService.getOnboardingStatus(
+            tokenName: StorageService.onboardingStatus,
+          );
+
+          if (!isOnboarded) {
+            return AppRoute.onboardingScreen;
+          }
+
+          if (!StorageService.hasToken()) {
+            return AppRoute.selectRoleScreen;
+          }
+
+          final role = StorageService.role;
+
+          if (role == 'Vendor') {
+            return AppRoute.vendorBottomNavBar;
+          }
+
+          if (role == 'Customer') {
+            return AppRoute.customerBottomNavBar;
+          }
+
+          // fallback (corrupted or missing role)
+          return AppRoute.selectRoleScreen;
+        }
+
         return GetMaterialApp(
           useInheritedMediaQuery: true,
           locale: DevicePreview.locale(context),
           builder: DevicePreview.appBuilder,
           debugShowCheckedModeBanner: false,
-          initialRoute:
-              StorageService.getOnboardingStatus(
-                tokenName: StorageService.onboardingStatus,
-              )
-              ? AppRoute.selectRoleScreen
-              : AppRoute.onboardingScreen,
+          initialRoute: getInitialRoute(),
           getPages: AppRoute.routes,
           initialBinding: ControllerBinder(),
           themeMode: ThemeMode.light,
