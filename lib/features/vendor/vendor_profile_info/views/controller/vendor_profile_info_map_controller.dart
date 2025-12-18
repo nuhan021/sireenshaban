@@ -94,6 +94,7 @@ class VendorProfileInfoMapController extends GetxController {
 
     final VendorSetupScreenController vendorSetupScreenController1st = Get.find<VendorSetupScreenController>();
     vendorSetupScreenController1st.addLocation(address['country']!, address['city']!, address['road']!);
+    vendorSetupScreenController1st.shopLocation = LatLng(position.latitude, position.longitude);
   }
 
   Future<LatLng> getPlaceLatLng(String placeId) async {

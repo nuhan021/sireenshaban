@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:sireenshaban/core/common/widgets/custom_loading.dart';
 import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
+import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/customer/confirm_booking/views/widgets/package_booking_payment_method.dart';
 
 import '../../../../../core/common/styles/global_text_style.dart';
@@ -70,14 +72,14 @@ class VendorSetupPage3rd extends StatelessWidget {
                       return PopupMenuButton(
                         onSelected: (value) {
                           HapticFeedback.heavyImpact();
-                          vendorSetupScreenController.priceType.value =
-                              value.toString();
+                          vendorSetupScreenController.priceType.value = value
+                              .toString();
                         },
 
                         itemBuilder: (context) {
-                          return vendorSetupScreenController
-                              .priceTypeList
-                              .map((item) {
+                          return vendorSetupScreenController.priceTypeList.map((
+                            item,
+                          ) {
                             return PopupMenuItem(
                               value: item,
                               child: Text(
@@ -89,8 +91,7 @@ class VendorSetupPage3rd extends StatelessWidget {
                                 ),
                               ),
                             );
-                          })
-                              .toList();
+                          }).toList();
                         },
 
                         child: Container(
@@ -105,11 +106,7 @@ class VendorSetupPage3rd extends StatelessWidget {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                vendorSetupScreenController
-                                    .priceType
-                                    .value,
-                              ),
+                              Text(vendorSetupScreenController.priceType.value),
                               const Icon(Icons.keyboard_arrow_down_sharp),
                             ],
                           ),
@@ -124,7 +121,8 @@ class VendorSetupPage3rd extends StatelessWidget {
 
               Expanded(
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start, // Align label left
+                  crossAxisAlignment:
+                      CrossAxisAlignment.start, // Align label left
                   children: [
                     Text(
                       'Travel Fee',
@@ -146,7 +144,8 @@ class VendorSetupPage3rd extends StatelessWidget {
                       ),
 
                       child: TextField(
-                        controller: vendorSetupScreenController.travelFeeController,
+                        controller:
+                            vendorSetupScreenController.travelFeeController,
                         style: getTextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w500,
@@ -154,26 +153,25 @@ class VendorSetupPage3rd extends StatelessWidget {
                         ),
                         keyboardType: const TextInputType.numberWithOptions(),
                         decoration: InputDecoration(
+                          hintText: '100',
+                          hintStyle: getTextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.secondaryInfoMediumGrayNormal,
+                          ),
+                          border: InputBorder.none,
+                          disabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
 
-                            hintText: '100',
-                            hintStyle: getTextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w800,
-                              color: AppColors.secondaryInfoMediumGrayNormal,
-                            ),
-                            border: InputBorder.none,
-                            disabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                            ),
-                            enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                            ),
+                          focusedBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.transparent),
+                          ),
 
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.transparent),
-                            ),
-
-                            suffixIcon: const Icon(Icons.attach_money_rounded)
+                          suffixIcon: const Icon(Icons.attach_money_rounded),
                         ),
                       ),
                     ),
@@ -206,8 +204,8 @@ class VendorSetupPage3rd extends StatelessWidget {
 
               itemBuilder: (context) {
                 return vendorSetupScreenController.travelDistanceList.map((
-                    item,
-                    ) {
+                  item,
+                ) {
                   return PopupMenuItem(
                     value: item,
                     child: Text(
@@ -241,7 +239,6 @@ class VendorSetupPage3rd extends StatelessWidget {
             );
           }),
 
-
           15.verticalSpace,
 
           // Maximum Travel Distance
@@ -273,24 +270,23 @@ class VendorSetupPage3rd extends StatelessWidget {
                 color: AppColors.bodyDarkGray,
               ),
               decoration: InputDecoration(
-                  hintText: '100',
-                  hintStyle: getTextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w800,
-                    color: AppColors.secondaryInfoMediumGrayNormal,
-                  ),
-                  border: InputBorder.none,
-                  disabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                  ),
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                  ),
+                hintText: 'Your travel policy',
+                hintStyle: getTextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w800,
+                  color: AppColors.secondaryInfoMediumGrayNormal,
+                ),
+                border: InputBorder.none,
+                disabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent),
+                ),
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent),
+                ),
 
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.transparent),
-                  ),
-
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.transparent),
+                ),
               ),
             ),
           ),
@@ -298,7 +294,6 @@ class VendorSetupPage3rd extends StatelessWidget {
           15.verticalSpace,
 
           // payment method
-
           Text(
             'Payment Method',
             style: getTextStyle(
@@ -312,10 +307,18 @@ class VendorSetupPage3rd extends StatelessWidget {
 
           PackageBookingPaymentMethod(),
 
-
           20.verticalSpace,
 
-          CustomPrimaryButton(text: 'Submit', color: AppColors.primaryDeepBlueNormal, onPressed: (){}),
+          Obx(() {
+            if (vendorSetupScreenController.isSubmitLoading.value) {
+              return CustomLoading();
+            }
+            return CustomPrimaryButton(
+              text: 'Submit',
+              color: AppColors.primaryDeepBlueNormal,
+              onPressed: () => vendorSetupScreenController.submit(),
+            );
+          }),
           20.verticalSpace,
         ],
       ).paddingSymmetric(horizontal: 20.w),
