@@ -6,7 +6,7 @@ import 'package:http/http.dart';
 import '../models/response_data.dart';
 
 class NetworkCaller {
-  final int timeoutDuration = 10;
+  final int timeoutDuration = 20;
 
   // GET method
   Future<ResponseData> getRequest(String url, {String? token}) async {
@@ -19,9 +19,7 @@ class NetworkCaller {
           'Authorization': token.toString(),
           'Content-type': 'application/json',
         },
-      ).timeout(
-        Duration(seconds: timeoutDuration),
-      );
+      ).timeout(Duration(seconds: timeoutDuration));
 
       return _handleResponse(response);
     } catch (e) {
@@ -30,16 +28,24 @@ class NetworkCaller {
   }
 
   // POST method
-  Future<ResponseData> postRequest(String url,
-      {Map<String, String>? body, String? token}) async {
+  Future<ResponseData> postRequest(
+    String url, {
+    Map<String, dynamic>? body,
+    String? token,
+  }) async {
     log('POST Request: $url');
     log('Request Body: ${jsonEncode(body)}');
 
     try {
-      final Response response = await post(Uri.parse(url),
-          headers: {'Content-type': 'application/json', 'Accept': 'application/json'},
-          body: jsonEncode(body))
-          .timeout(Duration(seconds: timeoutDuration));
+      final Response response = await post(
+        Uri.parse(url),
+        headers: {
+          'Authorization': token.toString(),
+          'Content-type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: jsonEncode(body),
+      ).timeout(Duration(seconds: timeoutDuration));
       return _handleResponse(response);
     } catch (e) {
       return _handleError(e);
@@ -82,7 +88,7 @@ class NetworkCaller {
         statusCode: response.statusCode,
         responseData: '',
         errorMessage:
-        decodedResponse['message'] ?? 'An unexpected error occurred!',
+            decodedResponse['message'] ?? 'An unexpected error occurred!',
       );
     } else {
       return ResponseData(

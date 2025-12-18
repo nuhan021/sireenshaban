@@ -5,6 +5,7 @@ class StorageService {
   static const String _tokenKey = 'token';
   static const String _idKey = 'userId';
   static const String onboardingStatus = "onboarding";
+  static const String _role = "role";
 
   // Singleton instance for SharedPreferences
   static SharedPreferences? _preferences;
@@ -21,6 +22,10 @@ class StorageService {
 
   static Future<void> setOnboardingStatus({required bool value}) async {
     await _preferences?.setBool(onboardingStatus, value);
+  }
+
+  static Future<void> saveRole(String role,) async {
+    await _preferences?.setString(_role, role);
   }
 
   // Check if a token exists in local storage
@@ -48,6 +53,9 @@ class StorageService {
 
   // Getter for token
   static String? get token => _preferences?.getString(_tokenKey);
+
+  // Getter for role
+  static String? get role => _preferences?.getString(_role);
 }
 
 
