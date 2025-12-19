@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:sireenshaban/core/utils/constants/enums.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/deals_and_promotions_card.dart';
 
@@ -25,29 +26,6 @@ class DealsAndPromotions extends StatefulWidget {
 }
 
 class _DealsAndPromotionsState extends State<DealsAndPromotions> {
-  final List<Widget> dealsAndPromotionsCardSliders = [];
-
-  @override
-  void initState() {
-    super.initState();
-
-    for (var dealsAndPromotion in widget.controller.dealsAndPromotion) {
-      dealsAndPromotionsCardSliders.add(
-        DealsAndPromotionsCard(
-          image: dealsAndPromotion.image,
-          shopTitle: dealsAndPromotion.shopTitle,
-          discount: dealsAndPromotion.discount,
-          subtitle: dealsAndPromotion.shopTitle,
-          validityDate: dealsAndPromotion.validityDate,
-          role: dealsAndPromotion.role,
-          group: dealsAndPromotion.group,
-          controller: widget.controller,
-          isFromVendorScreen: widget.isFromVendorScreen,
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -66,7 +44,7 @@ class _DealsAndPromotionsState extends State<DealsAndPromotions> {
         20.verticalSpace,
 
         CarouselSlider.builder(
-          itemCount: dealsAndPromotionsCardSliders.length,
+          itemCount: widget.controller.packages.value?.data.length ?? 0,
           options: CarouselOptions(
             height: 365.h,
             autoPlay: false,
@@ -80,6 +58,31 @@ class _DealsAndPromotionsState extends State<DealsAndPromotions> {
           ),
           itemBuilder: (context, index, realIndex) {
             return Obx(() {
+              final packages = widget.controller.packages.value;
+              if (packages == null) {
+                return Text(
+                  'No Data Found!',
+                  style: getTextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.secondaryInfoMediumGrayDarker,
+                  ),
+                );
+              }
+
+              final item = packages.data[index];
+              late ServicesGroup group;
+              switch(item.serviceGroup) {
+                case 'businessAndCreativeServices':
+                  group = ServicesGroup.businessAndCreativeServices;
+                  break;
+                case 'personalCareAndEducation':
+                  group = ServicesGroup.personalCareAndEducation;
+                  break;
+                case 'homeAndMaintenanceServices':
+                  group = ServicesGroup.homeAndMaintenanceServices;
+                  break;
+              }
               final bool isCenter =
                   realIndex == widget.controller.carouselCurrentIndex.value;
               return AnimatedContainer(
@@ -91,7 +94,18 @@ class _DealsAndPromotionsState extends State<DealsAndPromotions> {
                     imageFilter: isCenter
                         ? ImageFilter.blur(sigmaX: 0, sigmaY: 0)
                         : ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-                    child: dealsAndPromotionsCardSliders[realIndex],
+                    child: DealsAndPromotionsCard(
+                      image: item.image ?? '',
+                      shopTitle: item.title,
+                      discount: "0",
+                      subtitle: item.subtitle ?? '',
+                      validityDate: "${item.validUntil?.day}-${item.validUntil?.month}-${item.validUntil?.year}",
+                      role: item.category.name,
+                      group: group,
+                      controller: widget.controller,
+                      isFromVendorScreen: widget.isFromVendorScreen,
+                      rating: item.reviewsSumRating,
+                    ),
                   ),
                 ),
               );
