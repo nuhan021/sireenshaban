@@ -23,7 +23,7 @@ class DealsAndPromotionsCard extends StatelessWidget {
     required this.role,
     required this.group,
     required this.controller,
-    this.isFromVendorScreen = false,
+    this.isFromVendorScreen = false, required this.rating,
   });
 
   final String image;
@@ -35,6 +35,7 @@ class DealsAndPromotionsCard extends StatelessWidget {
   final ServicesGroup group;
   final HomeController controller;
   final bool isFromVendorScreen;
+  final int rating;
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +106,7 @@ class DealsAndPromotionsCard extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           Text(
-                            '4.5',
+                            '$rating',
                             style: getTextStyle(
                               fontSize: 10.sp,
                               fontWeight: FontWeight.w600,

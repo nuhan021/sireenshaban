@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:sireenshaban/core/utils/constants/colors.dart';
 import 'package:sireenshaban/core/utils/constants/image_path.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/additional_service.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/community_events.dart';
@@ -14,8 +16,8 @@ class CustomerHomeScreen extends StatelessWidget {
   CustomerHomeScreen({super.key});
 
   final controller = Get.put(HomeController());
-  CustomerBottomNavBarController navBarController = Get.find<CustomerBottomNavBarController>();
-
+  CustomerBottomNavBarController navBarController =
+      Get.find<CustomerBottomNavBarController>();
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +31,11 @@ class CustomerHomeScreen extends StatelessWidget {
               20.verticalSpace,
 
               // search bar
-              HomeSearchBar(onTap: () {
-                navBarController.jumpToScreen(1);
-              },),
+              HomeSearchBar(
+                onTap: () {
+                  navBarController.jumpToScreen(1);
+                },
+              ),
 
               40.verticalSpace,
 
@@ -43,14 +47,57 @@ class CustomerHomeScreen extends StatelessWidget {
 
               40.verticalSpace,
 
-             // additional service
-              AdditionalService(controller: controller),
+              // additional service
+              Obx(() {
+                if (controller.isAdditionalServiceLoading.value) {
+                  return Center(
+                    child: IconButton(
+                      onPressed: () => controller.getAdditionalService(),
+                      icon: Icon(
+                        Icons.refresh,
+                        color: AppColors.primaryDeepBlueNormal,
+                      ),
+                    ),
+                  );
+                }
 
+                if (controller.isAdditionalServiceError.value) {
+                  return Center(
+                    child: Icon(
+                      Icons.refresh,
+                      color: AppColors.primaryDeepBlueNormal,
+                    ),
+                  );
+                }
+                return AdditionalService(controller: controller);
+              }),
 
               40.verticalSpace,
 
               // deals and promotions
-              DealsAndPromotions(controller: controller,),
+              Obx(() {
+                if (controller.isDealsAndPromotionLoading.value) {
+                  return Center(
+                    child: LoadingAnimationWidget.dotsTriangle(
+                      color: AppColors.primaryDeepBlueNormal,
+                      size: 25.h,
+                    ),
+                  );
+                }
+
+                if (controller.isDealsAndPromotionError.value) {
+                  return Center(
+                    child: IconButton(
+                      onPressed: () => controller.getDealsAndPromotions(),
+                      icon: Icon(
+                        Icons.refresh,
+                        color: AppColors.primaryDeepBlueNormal,
+                      ),
+                    ),
+                  );
+                }
+                return DealsAndPromotions(controller: controller);
+              }),
 
               40.verticalSpace,
 
@@ -60,15 +107,58 @@ class CustomerHomeScreen extends StatelessWidget {
               // 40.verticalSpace,
 
               // community events
-              CommunityEvents(controller: controller,),
+              Obx(() {
+                if (controller.isCommunityEventsLoading.value) {
+                  return Center(
+                    child: LoadingAnimationWidget.dotsTriangle(
+                      color: AppColors.primaryDeepBlueNormal,
+                      size: 25.h,
+                    ),
+                  );
+                }
+
+                if (controller.isCommunityEventsError.value) {
+                  return Center(
+                    child: IconButton(
+                      onPressed: () => controller.getDealsAndPromotions(),
+                      icon: Icon(
+                        Icons.refresh,
+                        color: AppColors.primaryDeepBlueNormal,
+                      ),
+                    ),
+                  );
+                }
+                return CommunityEvents(controller: controller);
+              }),
 
               40.verticalSpace,
 
               // trending nearby
-              TrendingNearby(controller: controller,),
+              Obx(() {
+                if (controller.isTrendingNearbyLoading.value) {
+                  return Center(
+                    child: LoadingAnimationWidget.dotsTriangle(
+                      color: AppColors.primaryDeepBlueNormal,
+                      size: 25.h,
+                    ),
+                  );
+                }
+
+                if (controller.isTrendingNearbyError.value) {
+                  return Center(
+                    child: IconButton(
+                      onPressed: () => controller.getTrendingNearby(),
+                      icon: Icon(
+                        Icons.refresh,
+                        color: AppColors.primaryDeepBlueNormal,
+                      ),
+                    ),
+                  );
+                }
+                return TrendingNearby(controller: controller);
+              }),
 
               40.verticalSpace,
-              
             ],
           ),
         ),

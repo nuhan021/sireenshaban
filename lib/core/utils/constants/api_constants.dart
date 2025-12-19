@@ -9,4 +9,7 @@ class ApiConstants {
   static const String updateVendor = "$baseUrl/vendors";
   static const String categories = "$baseUrl/categories";
   static const String selectCategory = "$baseUrl/categories/complete-onboarding";
+  static const String dealsAndPromotions = "$baseUrl/packages";
+  static const String trendingNearby = "$baseUrl/trending-nearby";
+  static const String communityEvents = "$baseUrl/events";
 }

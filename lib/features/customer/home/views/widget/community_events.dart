@@ -29,38 +29,21 @@ class CommunityEvents extends StatelessWidget {
 
         20.verticalSpace,
 
-        // community events card
-        // SingleChildScrollView(
-        //   scrollDirection: Axis.horizontal,
-        //   child: Row(
-        //     children: [
-        //       CommunityEventsCard(
-        //         image:  "https://www.skylakes.org/wp-content/uploads/2023/12/healthfair2023-scaled.jpg",
-        //         title: "Community Health Fair",
-        //         date: "15 March,2025",
-        //         location: "Near you",
-        //       ),
-        //       CommunityEventsCard(
-        //         image:  "https://bestinteriordesign.com.bd/wp-content/uploads/2022/08/software-company-inteiror-deisgn.png",
-        //         title: "Local Business Expo",
-        //         date: "15 March,2025",
-        //         location: "Near you",
-        //       ),
-        //     ],
-        //   ),
-        // )
         SizedBox(
           height: 305.h,
           width: double.maxFinite,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
-            itemCount: controller.communityEvents.length,
-            itemBuilder: (context, index) => CommunityEventsCard(
-              image: controller.communityEvents[index].image,
-              title: controller.communityEvents[index].title,
-              date: controller.communityEvents[index].date,
-              location: controller.communityEvents[index].location,
-            ),
+            itemCount: controller.communityEvents.value!.data.length,
+            itemBuilder: (context, index) {
+              final item = controller.communityEvents.value!.data[index];
+              return CommunityEventsCard(
+                image: item.image ?? '',
+                title: item.title ?? '',
+                date: "${item.eventDate.day}-${item.eventDate.month}-${item.eventDate.year}",
+                location: item.location ?? '',
+              );
+            },
           ),
         ),
       ],

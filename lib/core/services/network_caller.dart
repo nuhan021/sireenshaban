@@ -66,6 +66,7 @@ class NetworkCaller {
           statusCode: response.statusCode,
           responseData: decodedResponse,
           errorMessage: '',
+
         );
       } else {
         return ResponseData(

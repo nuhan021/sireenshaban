@@ -1,84 +1,53 @@
 import 'package:get/get.dart';
+import 'package:sireenshaban/core/services/network_caller.dart';
+import 'package:sireenshaban/core/services/storage_service.dart';
+import 'package:sireenshaban/core/utils/constants/api_constants.dart';
 import 'package:sireenshaban/core/utils/constants/enums.dart';
+import 'package:sireenshaban/core/utils/constants/snackbar_constant.dart';
+import 'package:sireenshaban/core/utils/logging/logger.dart';
+import 'package:sireenshaban/features/customer/home/model/eventModel.dart';
+import 'package:sireenshaban/features/customer/home/model/packages_model.dart';
+import 'package:sireenshaban/features/customer/home/model/trendingModel.dart';
+import 'package:sireenshaban/features/customer/interest/categori_model.dart';
 
 class HomeController extends GetxController {
+
+
+  @override
+  void onInit() {
+    super.onInit();
+    getAdditionalService();
+    getDealsAndPromotions();
+    getCommunityEvents();
+    getTrendingNearby();
+  }
+
+  final NetworkCaller _networkCaller = NetworkCaller();
   RxBool isAdditionalServicesClose = false.obs;
   RxInt carouselCurrentIndex = 1.obs;
 
-  List<DealsAndPromotionModel> dealsAndPromotion = [
-    DealsAndPromotionModel(
-      image: "https://lesroches.edu/wp-content/uploads/2022/08/Restaurant_business_plan_main.jpg",
-      shopTitle: 'Marco\'s Kitchen',
-      discount: '15% off',
-      subtitle: 'Dinner for two',
-      validityDate: 'Valid until Feb 20',
-      role: 'restaurant',
-      group: ServicesGroup.businessAndCreativeServices,
-    ),
+  RxBool isAdditionalServiceLoading = false.obs;
+  RxBool isAdditionalServiceError = false.obs;
 
-    DealsAndPromotionModel(
-      image: "https://media.istockphoto.com/id/1497806504/photo/hair-styling-in-beauty-salon-woman-does-her-hair-in-modern-beauty-salon-woman-stylist-dries.jpg?s=612x612&w=0&k=20&c=3dO_HWS8WvSGNbGmxTsqK70vZMGqM2REnbVJG09YnmI=",
-      shopTitle: 'Bella vista Salon',
-      discount: '15% off',
-      subtitle: 'First haircut & styling',
-      validityDate: 'Valid until Feb 20',
-      role: 'salon',
-      group: ServicesGroup.personalCareAndEducation,
-    ),
+  RxBool isDealsAndPromotionLoading = false.obs;
+  RxBool isDealsAndPromotionError = false.obs;
 
-    DealsAndPromotionModel(
-      image: "https://img.freepik.com/free-photo/woman-sportswear-lifting-dumbbell_23-2147688028.jpg?semt=ais_hybrid&w=740&q=80",
-      shopTitle: 'FitLife Gym',
-      discount: '15% off',
-      subtitle: 'Trial membership',
-      validityDate: 'Valid until Feb 20',
-      role: 'gym',
-      group: ServicesGroup.personalCareAndEducation,
-    ),
-  ];
+  RxBool isCommunityEventsLoading = false.obs;
+  RxBool isCommunityEventsError = false.obs;
 
-  List<CommunityEventModel> communityEvents = [
-    CommunityEventModel(
-      image:
-          "https://www.skylakes.org/wp-content/uploads/2023/12/healthfair2023-scaled.jpg",
-      title: "Community Health Fair",
-      date: "15 March,2025",
-      location: "Near you",
-    ),
+  RxBool isTrendingNearbyLoading = false.obs;
+  RxBool isTrendingNearbyError = false.obs;
 
-    CommunityEventModel(
-      image:  "https://bestinteriordesign.com.bd/wp-content/uploads/2022/08/software-company-inteiror-deisgn.png",
-      title: "Local Business Expo",
-      date: "15 March,2025",
-      location: "Near you",
-    ),
-  ];
 
-  List<TrendingNearbyModel> trendingNearby = [
-    TrendingNearbyModel(
-      image:
-      "https://dynamic-media-cdn.tripadvisor.com/media/photo-o/17/7e/c1/88/cafeteria-armenia.jpg?w=500&h=-1&s=1",
-      title: "Artisan Coffee",
-      status: "Popular",
-      group: ServicesGroup.businessAndCreativeServices,
-    ),
+  Rx<CategoriModel?> categorys = Rx<CategoriModel?>(null);
+  Rx<PackagesModel?> packages = Rx<PackagesModel?>(null);
+  Rx<EventModel?> communityEvents = Rx<EventModel?>(null);
+  Rx<TrendingModel?> trending = Rx<TrendingModel?>(null);
 
-    TrendingNearbyModel(
-      image:
-      "https://images.unsplash.com/photo-1585747860715-2ba37e788b70?ixid=M3wyNDE0NjF8MHwxfHNlYXJjaHw2fHxCYXJiZXJ8ZW58MHx8fHwxNjk1MzMwNzk5fDA&ixlib=rb-4.0.3&w=800&h=800",
-      title: "Fresh Cuts Barbershop",
-      status: "Popular",
-      group: ServicesGroup.personalCareAndEducation
-    ),
 
-    TrendingNearbyModel(
-        image:
-        "https://st4.depositphotos.com/21395724/23687/i/450/depositphotos_236876324-stock-photo-repair-home-appliances-service-center.jpg",
-        title: "Appliance Repair Service",
-        status: "Popular",
-        group: ServicesGroup.homeAndMaintenanceServices
-    )
-  ];
+
+
+
 
   void changeIsAdditionalServicesClose({required bool value}) {
     isAdditionalServicesClose.value = value;
@@ -87,53 +56,101 @@ class HomeController extends GetxController {
   void changeCarouselCurrentIndex({required int value}) {
     carouselCurrentIndex.value = value;
   }
+
+
+  // fetch additional service
+  Future<void> getAdditionalService() async {
+    isAdditionalServiceLoading.value = true;
+    final token = StorageService.token;
+
+    final response = await _networkCaller.getRequest(
+      ApiConstants.categories,
+      token: "Bearer $token",
+    );
+
+    if(!response.isSuccess) {
+      SnackBarConstant.error(response.errorMessage);
+      isAdditionalServiceLoading.value = false;
+      isAdditionalServiceError.value = true;
+      return;
+    }
+
+    categorys.value = CategoriModel.fromJson(response.responseData);
+    isAdditionalServiceLoading.value = false;
+    isAdditionalServiceError.value = false;
+    SnackBarConstant.success("Category fetched successfully");
+  }
+
+
+  // fetch deals and promotions
+  Future<void> getDealsAndPromotions() async {
+    isDealsAndPromotionLoading.value = true;
+    final token = StorageService.token;
+
+    final response = await _networkCaller.getRequest(
+      ApiConstants.dealsAndPromotions,
+      token: "Bearer $token",
+    );
+
+    if(!response.isSuccess) {
+      SnackBarConstant.error(response.errorMessage);
+      isDealsAndPromotionLoading.value = false;
+      isDealsAndPromotionError.value = true;
+      return;
+    }
+
+    packages.value = PackagesModel.fromJson(response.responseData);
+    isDealsAndPromotionLoading.value = false;
+    isDealsAndPromotionError.value = false;
+    SnackBarConstant.success("Deals & Promotions fetched successfully");
+  }
+
+
+  // fetch community events
+  Future<void> getCommunityEvents() async {
+    isCommunityEventsLoading.value = true;
+    final token = StorageService.token;
+
+    final response = await _networkCaller.getRequest(
+      ApiConstants.communityEvents,
+      token: "Bearer $token",
+    );
+
+    if(!response.isSuccess) {
+      SnackBarConstant.error(response.errorMessage);
+      isCommunityEventsLoading.value = false;
+      isCommunityEventsError.value = true;
+      return;
+    }
+
+    communityEvents.value = EventModel.fromJson(response.responseData);
+    isCommunityEventsLoading.value = false;
+    isCommunityEventsError.value = false;
+    SnackBarConstant.success("Community events fetched successfully");
+  }
+
+
+  // fetch trending nearby
+  Future<void> getTrendingNearby() async {
+    isTrendingNearbyLoading.value = true;
+    final token = StorageService.token;
+
+    final response = await _networkCaller.getRequest(
+      ApiConstants.trendingNearby,
+      token: "Bearer $token",
+    );
+
+    if(!response.isSuccess) {
+      SnackBarConstant.error(response.errorMessage);
+      isTrendingNearbyLoading.value = false;
+      isTrendingNearbyError.value = true;
+      return;
+    }
+
+    trending.value = TrendingModel.fromJson(response.responseData);
+    isTrendingNearbyLoading.value = false;
+    isTrendingNearbyError.value = false;
+    SnackBarConstant.success("Trending fetched successfully");
+  }
 }
 
-class DealsAndPromotionModel {
-  DealsAndPromotionModel({
-    required this.image,
-    required this.shopTitle,
-    required this.discount,
-    required this.subtitle,
-    required this.validityDate,
-    required this.role,
-    required this.group,
-  });
-
-  final String image;
-  final String shopTitle;
-  final String discount;
-  final String subtitle;
-  final String validityDate;
-  final String role;
-  final ServicesGroup group;
-}
-
-class CommunityEventModel {
-  CommunityEventModel({
-    required this.image,
-    required this.title,
-    required this.date,
-    required this.location,
-  });
-
-  final String image;
-  final String title;
-  final String date;
-  final String location;
-}
-
-class TrendingNearbyModel {
-
-  TrendingNearbyModel({
-    required this.image,
-    required this.title,
-    required this.status,
-    required this.group,
-  });
-
-  final String image;
-  final String title;
-  final String status;
-  final ServicesGroup group;
-}
