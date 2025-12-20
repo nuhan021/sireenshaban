@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
 import 'package:sireenshaban/features/customer/booking/views/screens/booking_screen.dart';
 import 'package:sireenshaban/features/customer/payment_history/views/screens/payment_history_screen.dart';
@@ -247,7 +248,10 @@ class ProfileScreen extends StatelessWidget {
 
             // logout
             GestureDetector(
-              onTap: () => Get.offAllNamed(AppRoute.selectRoleScreen),
+              onTap: () {
+                StorageService.logoutUser();
+                Get.offAllNamed(AppRoute.selectRoleScreen);
+              },
               child: Container(
                 padding: EdgeInsets.all(20.w),
                 decoration: BoxDecoration(

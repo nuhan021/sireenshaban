@@ -75,37 +75,22 @@ class BookingSummary extends StatelessWidget {
               ),
             ),
 
-            subtitle: Text(
-              'Platform fee',
+            // subtitle: Text(
+            //   'Platform fee',
+            //   style: getTextStyle(
+            //       fontSize: 14.sp,
+            //       fontWeight: FontWeight.w400,
+            //       color: AppColors.secondaryInfoMediumGrayNormal
+            //   ),
+            // ),
+
+            trailing: Text(
+              '\$$actualPrice',
               style: getTextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.secondaryInfoMediumGrayNormal
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w500,
+                  color: AppColors.bodyDarkGray
               ),
-            ),
-
-            trailing: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(
-                  '\$$actualPrice',
-                  style: getTextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.bodyDarkGray
-                  ),
-                ),
-
-                Text(
-                  '\$${(actualPrice * 1.02 - actualPrice).toStringAsFixed(2)}',
-                  style: getTextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.bodyDarkGray
-                  ),
-                )
-              ],
             ),
           ),
           Divider(
