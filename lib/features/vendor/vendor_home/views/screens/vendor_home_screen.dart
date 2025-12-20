@@ -17,7 +17,7 @@ class VendorHomeScreen extends StatelessWidget {
 
   HomeController controller = Get.put(HomeController());
 
-  StripeController stripeController = Get.put(StripeController());
+  // StripeController stripeController = Get.put(StripeController());
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +64,7 @@ class VendorHomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 ElevatedButton(onPressed: (){
-                  stripeController.makePayment(amount: 100, currency: 'usd');
+                  // stripeController.makePayment(amount: 100, currency: 'usd');
                 }, child: Text('Pay')),
                 Text(
                   'Photography',
