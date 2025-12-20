@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/features/customer/community_event_booking/views/widgets/event_schedul.dart';
+import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/common/widgets/custom_primary_button.dart';
@@ -12,15 +13,33 @@ import '../../../../../core/utils/helpers/app_helper.dart';
 import '../../../booking_confirmed/views/screens/booking_confirmed_screen.dart';
 import '../../../confirm_booking/views/widgets/booking_summary.dart';
 import '../../../confirm_booking/views/widgets/package_booking_payment_method.dart';
+import '../../../home/model/eventModel.dart';
 import '../../../package_booking/views/widgets/booking_app_bar.dart';
 import '../../../package_booking/views/widgets/location_card.dart';
 import '../../../package_booking/views/widgets/thumbnail_image.dart';
 
-class CommunityEventBookingScreen extends StatelessWidget {
-  const CommunityEventBookingScreen({super.key, required this.image, required this.title});
+class CommunityEventBookingScreen extends StatefulWidget {
+  CommunityEventBookingScreen({super.key, required this.image, required this.title, required this.id});
 
+  final int id;
   final String image;
   final String title;
+
+  final HomeController homeController = Get.find<HomeController>();
+
+  @override
+  State<CommunityEventBookingScreen> createState() => _CommunityEventBookingScreenState();
+}
+
+class _CommunityEventBookingScreenState extends State<CommunityEventBookingScreen> {
+
+  late Datum data;
+
+  @override
+  void initState() {
+    super.initState();
+    data = widget.homeController.communityEvents.value!.data.firstWhere((element) => element.id == widget.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +56,7 @@ class CommunityEventBookingScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // thumbnail image
-            ThumbnailImage(image: image),
+            ThumbnailImage(image: widget.image, rating: 5,reviews: 5,),
 
             30.verticalSpace,
 
@@ -50,7 +69,7 @@ class CommunityEventBookingScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        title,
+                        data.title,
                         overflow: TextOverflow.ellipsis,
                         style: getTextStyle(
                           fontSize: 20.sp,
@@ -72,7 +91,7 @@ class CommunityEventBookingScreen extends StatelessWidget {
                       ),
                       alignment: Alignment.center,
                       child: Text(
-                        "120/per event",
+                        "${data.ticketPrice}/per event",
                         style: getTextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w600,
@@ -99,7 +118,7 @@ class CommunityEventBookingScreen extends StatelessWidget {
 
                 // description
                 Text(
-                  "Lorem ipsum dolor sit amet consectetur. Interdum ac hac nec etiam. Augue etiam ornare eu velit ultrices pharetra. Velit fringilla tellus justo sed et praesent quam praesent in. Scelerisque venenatis leo nunc convallis vel amet faucibus mattis parturient.",
+                  data.description,
                   textAlign: TextAlign.justify,
                   style: getTextStyle(
                     fontSize: 14.sp,
@@ -116,7 +135,7 @@ class CommunityEventBookingScreen extends StatelessWidget {
                 20.verticalSpace,
 
                 // event schedul
-                EventSchedul(),
+                EventSchedul(date: data.eventDate, time: data.eventTime, price: data.ticketPrice,),
 
                 20.verticalSpace,
 

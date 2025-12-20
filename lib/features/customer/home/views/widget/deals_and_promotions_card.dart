@@ -15,6 +15,7 @@ import '../../../../../core/utils/constants/enums.dart';
 class DealsAndPromotionsCard extends StatelessWidget {
   const DealsAndPromotionsCard({
     super.key,
+    required this.id,
     required this.image,
     required this.shopTitle,
     required this.discount,
@@ -26,6 +27,7 @@ class DealsAndPromotionsCard extends StatelessWidget {
     this.isFromVendorScreen = false, required this.rating,
   });
 
+  final int id;
   final String image;
   final String shopTitle;
   final String discount;
@@ -211,6 +213,7 @@ class DealsAndPromotionsCard extends StatelessWidget {
               onPressed: () => AppHelperFunctions.navigateToScreen(
                 context,
                 PackageBookingPage(
+                  id: id,
                   image: image,
                   title: shopTitle,
                   controller: controller,

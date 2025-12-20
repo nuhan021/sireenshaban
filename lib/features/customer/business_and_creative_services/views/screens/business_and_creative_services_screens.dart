@@ -51,15 +51,15 @@ class BusinessAndCreativeServicesScreens extends StatelessWidget {
 
             // select date and time
             // booking slot
-            CustomPrimaryButton(
-              text: "Select Date & Time",
-              textColor: AppColors.bodyDarkGray,
-              color: AppColors.accentNormal,
-              onPressed: () => AppHelperFunctions.navigateToScreen(
-                context,
-                SelectTimeAndDateScreen(),
-              ),
-            ).paddingSymmetric(horizontal: 20.w),
+            // CustomPrimaryButton(
+            //   text: "Select Date & Time",
+            //   textColor: AppColors.bodyDarkGray,
+            //   color: AppColors.accentNormal,
+            //   onPressed: () => AppHelperFunctions.navigateToScreen(
+            //     context,
+            //     SelectTimeAndDateScreen(),
+            //   ),
+            // ).paddingSymmetric(horizontal: 20.w),
 
             20.verticalSpace,
 

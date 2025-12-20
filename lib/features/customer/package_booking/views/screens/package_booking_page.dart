@@ -7,6 +7,7 @@ import 'package:sireenshaban/core/utils/constants/enums.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
 import 'package:sireenshaban/features/customer/confirm_booking/views/screens/confirm_booking_screen.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
+import 'package:sireenshaban/features/customer/home/model/packages_model.dart';
 import 'package:sireenshaban/features/customer/package_booking/views/widgets/booking_app_bar.dart';
 import 'package:sireenshaban/features/customer/package_booking/views/widgets/location_card.dart';
 import 'package:sireenshaban/features/customer/package_booking/views/widgets/reviews.dart';
@@ -17,9 +18,10 @@ import '../../../business_and_creative_services/views/screens/business_and_creat
 import '../../../home_and_maintenance_services/views/screens/home_and_maintenance_services_screens.dart';
 import '../../../personal_care_and_education/views/screens/personal_care_and_education_screens.dart';
 
-class PackageBookingPage extends StatelessWidget {
+class PackageBookingPage extends StatefulWidget {
   const PackageBookingPage({
     super.key,
+    required this.id,
     required this.image,
     required this.title,
     required this.group,
@@ -27,11 +29,30 @@ class PackageBookingPage extends StatelessWidget {
     this.isFromVendorScreen = false,
   });
 
+  final int id;
   final String image;
   final String title;
   final HomeController controller;
   final ServicesGroup group;
   final bool isFromVendorScreen;
+
+  @override
+  State<PackageBookingPage> createState() => _PackageBookingPageState();
+}
+
+class _PackageBookingPageState extends State<PackageBookingPage> {
+
+  final HomeController _homeController = Get.find<HomeController>();
+
+  late Datum data;
+
+  @override
+  void initState() {
+    super.initState();
+    data = _homeController.packages.value!.data.firstWhere((e) {
+      return e.id == widget.id;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +68,7 @@ class PackageBookingPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // thumbnail image
-            ThumbnailImage(image: image),
+            ThumbnailImage(image: data.image ?? '', rating: data.reviewsSumRating, reviews: data.reviews.length),
 
             30.verticalSpace,
 
@@ -61,14 +82,14 @@ class PackageBookingPage extends StatelessWidget {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          switch (group) {
+                          switch (widget.group) {
                             case ServicesGroup.businessAndCreativeServices:
                               AppHelperFunctions.navigateToScreen(
                                 context,
                                 BusinessAndCreativeServicesScreens(
-                                  image: image,
-                                  title: title,
-                                  controller: controller,
+                                  image: widget.image,
+                                  title: widget.title,
+                                  controller: widget.controller,
                                 ),
                               );
                               break;
@@ -76,9 +97,9 @@ class PackageBookingPage extends StatelessWidget {
                               AppHelperFunctions.navigateToScreen(
                                 context,
                                 PersonalCareAndEducationScreens(
-                                  image: image,
-                                  title: title,
-                                  controller: controller,
+                                  image: widget.image,
+                                  title: widget.title,
+                                  controller: widget.controller,
                                 ),
                               );
 
@@ -86,15 +107,15 @@ class PackageBookingPage extends StatelessWidget {
                               AppHelperFunctions.navigateToScreen(
                                 context,
                                 HomeAndMaintenanceServicesScreens(
-                                  image: image,
-                                  title: title,
-                                  controller: controller,
+                                  image: widget.image,
+                                  title: widget.title,
+                                  controller: widget.controller,
                                 ),
                               );
                           }
                         },
                         child: Text(
-                          title,
+                          widget.title,
                           overflow: TextOverflow.ellipsis,
                           style: getTextStyle(
                             fontSize: 20.sp,
@@ -117,7 +138,7 @@ class PackageBookingPage extends StatelessWidget {
                       ),
                       alignment: Alignment.center,
                       child: Text(
-                        "120/per event",
+                        "${data.pricePerEvent}/per event",
                         style: getTextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w600,
@@ -144,7 +165,7 @@ class PackageBookingPage extends StatelessWidget {
 
                 // description
                 Text(
-                  "Lorem ipsum dolor sit amet consectetur. Interdum ac hac nec etiam. Augue etiam ornare eu velit ultrices pharetra. Velit fringilla tellus justo sed et praesent quam praesent in. Scelerisque venenatis leo nunc convallis vel amet faucibus mattis parturient.",
+                  data.description ?? '',
                   textAlign: TextAlign.justify,
                   style: getTextStyle(
                     fontSize: 14.sp,
@@ -161,23 +182,23 @@ class PackageBookingPage extends StatelessWidget {
                 20.verticalSpace,
 
                 // reviews
-                Reviews(),
+                Reviews(review: data.reviews,),
 
                 40.verticalSpace,
 
                 // book now button
-                isFromVendorScreen
+                widget.isFromVendorScreen
                     ? SizedBox()
                     : CustomPrimaryButton(
                         text: 'Book Now',
                         color: AppColors.primaryDeepBlueNormal,
                         onPressed: () => AppHelperFunctions.navigateToScreen(
                           context,
-                          ConfirmBookingScreen(image: image, title: title),
+                          ConfirmBookingScreen(data: data,),
                         ),
                       ),
 
-                isFromVendorScreen ? 0.verticalSpace : 20.verticalSpace,
+                widget.isFromVendorScreen ? 0.verticalSpace : 20.verticalSpace,
               ],
             ).paddingSymmetric(horizontal: 20.w),
           ],

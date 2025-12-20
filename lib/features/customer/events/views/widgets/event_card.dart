@@ -15,10 +15,16 @@ class EventCard extends StatefulWidget {
     super.key,
     required this.bannerImage,
     required this.title,
+    required this.date,
+    required this.location,
+    required this.ticketPrice,
   });
 
   final String bannerImage;
   final String title;
+  final String date;
+  final String location;
+  final String ticketPrice;
 
   @override
   State<EventCard> createState() => _EventCardState();
@@ -95,7 +101,7 @@ class _EventCardState extends State<EventCard> {
               ),
               5.horizontalSpace,
               Text(
-                "15 March, 2025",
+                widget.date,
                 style: getTextStyle(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w400,
@@ -115,7 +121,7 @@ class _EventCardState extends State<EventCard> {
 
               5.horizontalSpace,
               Text(
-                "Community Center",
+                widget.location,
                 style: getTextStyle(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w400,
@@ -135,7 +141,7 @@ class _EventCardState extends State<EventCard> {
 
               5.horizontalSpace,
               Text(
-                "\$ 120/ per ticket",
+                "\$ ${widget.ticketPrice}/ per ticket",
                 style: getTextStyle(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w400,
@@ -148,7 +154,7 @@ class _EventCardState extends State<EventCard> {
           CustomPrimaryButton(
             text: "View details",
             color: dominantColor ?? AppColors.primaryDeepBlueNormal,
-            onPressed: () => AppHelperFunctions.navigateToScreen(context, CommunityEventBookingScreen(image: widget.bannerImage, title: widget.title,)),
+            onPressed: () => AppHelperFunctions.navigateToScreen(context, CommunityEventBookingScreen(id: 1,image: widget.bannerImage, title: widget.title,)),
           )
         ],
       ),

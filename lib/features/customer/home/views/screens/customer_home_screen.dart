@@ -51,21 +51,21 @@ class CustomerHomeScreen extends StatelessWidget {
               Obx(() {
                 if (controller.isAdditionalServiceLoading.value) {
                   return Center(
-                    child: IconButton(
-                      onPressed: () => controller.getAdditionalService(),
-                      icon: Icon(
-                        Icons.refresh,
-                        color: AppColors.primaryDeepBlueNormal,
-                      ),
+                    child: LoadingAnimationWidget.dotsTriangle(
+                      color: AppColors.primaryDeepBlueNormal,
+                      size: 25.h,
                     ),
                   );
                 }
 
                 if (controller.isAdditionalServiceError.value) {
                   return Center(
-                    child: Icon(
-                      Icons.refresh,
-                      color: AppColors.primaryDeepBlueNormal,
+                    child: IconButton(
+                      onPressed: () => controller.getAdditionalService(),
+                      icon: Icon(
+                        Icons.refresh,
+                        color: AppColors.primaryDeepBlueNormal,
+                      ),
                     ),
                   );
                 }
