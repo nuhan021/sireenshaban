@@ -5,16 +5,26 @@ allprojects {
     }
 }
 
-val newBuildDir: Directory =
-    rootProject.layout.buildDirectory
-        .dir("../../build")
-        .get()
+val newBuildDir: Directory = rootProject.layout.buildDirectory.dir("../../build").get()
 rootProject.layout.buildDirectory.value(newBuildDir)
 
 subprojects {
     val newSubprojectBuildDir: Directory = newBuildDir.dir(project.name)
     project.layout.buildDirectory.value(newSubprojectBuildDir)
+
+    // Fix for "It is too late to set compileSdk" and "Unresolved reference"
+    afterEvaluate {
+        if (project.plugins.hasPlugin("com.android.application") ||
+            project.plugins.hasPlugin("com.android.library")) {
+            val android = project.extensions.findByName("android") as? com.android.build.gradle.BaseExtension
+            android?.let {
+                it.compileSdkVersion(36)
+            }
+        }
+    }
 }
+
+// Ensure the app specifically waits for plugins to load
 subprojects {
     project.evaluationDependsOn(":app")
 }
