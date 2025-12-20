@@ -44,6 +44,7 @@ class StorageService {
   static Future<void> logoutUser() async {
     await _preferences?.remove(_tokenKey);
     await _preferences?.remove(_idKey);
+    await _preferences?.remove(_role);
     // Navigate to the login screen
     // Get.offAllNamed('/login');
   }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:sireenshaban/core/common/widgets/custom_loading.dart';
+import 'package:sireenshaban/features/customer/community_event_booking/controller/event_controller.dart';
 import 'package:sireenshaban/features/customer/community_event_booking/views/widgets/event_schedul.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 
@@ -19,26 +21,35 @@ import '../../../package_booking/views/widgets/location_card.dart';
 import '../../../package_booking/views/widgets/thumbnail_image.dart';
 
 class CommunityEventBookingScreen extends StatefulWidget {
-  CommunityEventBookingScreen({super.key, required this.image, required this.title, required this.id});
+  CommunityEventBookingScreen({
+    super.key,
+    required this.image,
+    required this.title,
+    required this.id,
+  });
 
   final int id;
   final String image;
   final String title;
 
   final HomeController homeController = Get.find<HomeController>();
+  final EventController eventController = Get.put(EventController());
 
   @override
-  State<CommunityEventBookingScreen> createState() => _CommunityEventBookingScreenState();
+  State<CommunityEventBookingScreen> createState() =>
+      _CommunityEventBookingScreenState();
 }
 
-class _CommunityEventBookingScreenState extends State<CommunityEventBookingScreen> {
-
+class _CommunityEventBookingScreenState
+    extends State<CommunityEventBookingScreen> {
   late Datum data;
 
   @override
   void initState() {
     super.initState();
-    data = widget.homeController.communityEvents.value!.data.firstWhere((element) => element.id == widget.id);
+    data = widget.homeController.communityEvents.value!.data.firstWhere(
+      (element) => element.id == widget.id,
+    );
   }
 
   @override
@@ -56,7 +67,7 @@ class _CommunityEventBookingScreenState extends State<CommunityEventBookingScree
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // thumbnail image
-            ThumbnailImage(image: widget.image, rating: 5,reviews: 5,),
+            ThumbnailImage(image: widget.image, rating: 5, reviews: 5),
 
             30.verticalSpace,
 
@@ -135,7 +146,11 @@ class _CommunityEventBookingScreenState extends State<CommunityEventBookingScree
                 20.verticalSpace,
 
                 // event schedul
-                EventSchedul(date: data.eventDate, time: data.eventTime, price: data.ticketPrice,),
+                EventSchedul(
+                  date: data.eventDate,
+                  time: data.eventTime,
+                  price: data.ticketPrice,
+                ),
 
                 20.verticalSpace,
 
@@ -175,10 +190,10 @@ class _CommunityEventBookingScreenState extends State<CommunityEventBookingScree
                           onPressed: () {},
                           icon: Image.asset(IconPath.message, height: 24.h),
                         ),
-                        IconButton(
-                          onPressed: () {},
-                          icon: Image.asset(IconPath.call, height: 24.h),
-                        ),
+                        // IconButton(
+                        //   onPressed: () {},
+                        //   icon: Image.asset(IconPath.call, height: 24.h),
+                        // ),
                       ],
                     ),
                   ),
@@ -203,38 +218,50 @@ class _CommunityEventBookingScreenState extends State<CommunityEventBookingScree
                 20.verticalSpace,
 
                 // booking summary
-                BookingSummary(),
+                Obx(() {
+                  return BookingSummary(
+                    price: widget.eventController.stringPrice.value,
+                  );
+                }),
 
                 30.verticalSpace,
 
                 // confirm booking button
-                CustomPrimaryButton(
-                  text: "Confirm Booking & Pay \$120.60",
-                  textColor: AppColors.cardBackgroundSoftGray,
-                  color: AppColors.primaryDeepBlueNormal,
-                  onPressed: () => AppHelperFunctions.navigateToScreen(context, BookingConfirmedScreen()),
-                ),
+                Obx(() {
+                  if(widget.eventController.isEventLoading.value) {
+                    return CustomLoading();
+                  }
+                  return CustomPrimaryButton(
+                    text: "Confirm Booking & Pay \$${widget.eventController.stringPrice.value}",
+                    textColor: AppColors.cardBackgroundSoftGray,
+                    color: AppColors.primaryDeepBlueNormal,
+                    onPressed: () {
+                      widget.eventController.confirmBooking(data);
+                    },
+                  );
+                }),
 
                 20.verticalSpace,
 
                 // cancel button
-
                 Align(
                   alignment: AlignmentGeometry.center,
-                  child: TextButton(onPressed: () => Navigator.pop(context), child: Text(
-                    'Cancel',
-                    style: getTextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.accentNormal,
+                  child: TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(
+                      'Cancel',
+                      style: getTextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.accentNormal,
+                      ),
                     ),
-                  )),
+                  ),
                 ),
 
-                20.verticalSpace
-
+                20.verticalSpace,
               ],
-            ).paddingSymmetric(horizontal: 20.w)
+            ).paddingSymmetric(horizontal: 20.w),
           ],
         ),
       ),
