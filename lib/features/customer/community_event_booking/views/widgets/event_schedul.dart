@@ -4,12 +4,20 @@ import 'package:get/get.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
 import 'package:sireenshaban/core/utils/constants/icon_path.dart';
+import 'package:sireenshaban/features/customer/community_event_booking/controller/event_controller.dart';
 
 class EventSchedul extends StatelessWidget {
-  const EventSchedul({super.key});
+  EventSchedul({super.key, required this.date, required this.time, required this.price});
+
+  final String price;
+  final DateTime date;
+  final String time;
+
+  final EventController controller = Get.put(EventController());
 
   @override
   Widget build(BuildContext context) {
+    controller.stringPrice.value = price;
     return Container(
       height: 500.h,
       width: double.maxFinite,
@@ -55,161 +63,163 @@ class EventSchedul extends StatelessWidget {
           Divider(color: Color(0xFFD1D3D8)).paddingSymmetric(horizontal: 20.w),
 
           // date and time
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // date
-              Expanded(
-                child: ListTile(
-                  leading: Container(
-                    height: 42.h,
-                    width: 42.h,
-                    padding: EdgeInsets.all(7.w),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color(0xFFFEF1E8),
+          SizedBox(
+            height: 120.h,
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                // date
+                Expanded(
+                  child: ListTile(
+                    leading: Container(
+                      height: 42.h,
+                      width: 42.h,
+                      padding: EdgeInsets.all(7.w),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0xFFFEF1E8),
+                      ),
+                      alignment: AlignmentGeometry.center,
+                      child: Image.asset(
+                        IconPath.navCalendar,
+                        color: AppColors.accentNormal,
+                      ),
                     ),
-                    alignment: AlignmentGeometry.center,
-                    child: Image.asset(
-                      IconPath.navCalendar,
-                      color: AppColors.accentNormal,
+                    title: Text(
+                      'Date',
+                      style: getTextStyle(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.primaryDeepBlueNormal,
+                      ),
                     ),
-                  ),
-                  title: Text(
-                    'Date',
-                    style: getTextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.primaryDeepBlueNormal,
-                    ),
-                  ),
-                  subtitle: Text(
-                    "Sunday,Sept 28",
-                    style: getTextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.secondaryInfoMediumGrayNormal,
+                    subtitle: Text(
+                      "${date.day}-${date.month}-${date.year}",
+                      style: getTextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.secondaryInfoMediumGrayNormal,
+                      ),
                     ),
                   ),
                 ),
-              ),
 
-              // time
-              Expanded(
-                child: ListTile(
-                  leading: Container(
-                    height: 42.h,
-                    width: 42.h,
-                    padding: EdgeInsets.all(7.w),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color(0xFFE8F8F6),
+                // time
+                Expanded(
+                  child: ListTile(
+                    leading: Container(
+                      height: 42.h,
+                      width: 42.h,
+                      padding: EdgeInsets.all(7.w),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Color(0xFFE8F8F6),
+                      ),
+                      alignment: AlignmentGeometry.center,
+                      child: Image.asset(
+                        IconPath.clock,
+                        color: AppColors.secondaryTealNormal,
+                      ),
                     ),
-                    alignment: AlignmentGeometry.center,
-                    child: Image.asset(
-                      IconPath.clock,
-                      color: AppColors.secondaryTealNormal,
+                    title: Text(
+                      'Time',
+                      style: getTextStyle(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.primaryDeepBlueNormal,
+                      ),
                     ),
-                  ),
-                  title: Text(
-                    'Time',
-                    style: getTextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.primaryDeepBlueNormal,
-                    ),
-                  ),
-                  subtitle: Text(
-                    "10:00 AM",
-                    style: getTextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.secondaryInfoMediumGrayNormal,
+                    subtitle: Text(
+                      time,
+                      style: getTextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.secondaryInfoMediumGrayNormal,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
 
           // Attendees and payment method
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // attendees
-              Expanded(
-                child: ListTile(
-                  leading: Container(
-                    height: 42.h,
-                    width: 42.h,
-                    padding: EdgeInsets.all(7.w),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color(0xFFF0F1F2),
-                    ),
-                    alignment: AlignmentGeometry.center,
-                    child: Image.asset(
-                      IconPath.people,
-                      color: AppColors.bodyDarkGray,
-                    ),
-                  ),
-                  title: Text(
-                    'Attendees',
-                    style: getTextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.primaryDeepBlueNormal,
-                    ),
-                  ),
-                  subtitle: Text(
-                    "1 Guest",
-                    style: getTextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.secondaryInfoMediumGrayNormal,
-                    ),
-                  ),
-                ),
-              ),
-
-              // time
-              Expanded(
-                child: ListTile(
-                  leading: Container(
-                    height: 42.h,
-                    width: 42.h,
-                    padding: EdgeInsets.all(7.w),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Color(0xFFF0F1F2),
-                    ),
-                    alignment: AlignmentGeometry.center,
-                    child: Image.asset(
-                      IconPath.mobile,
-                      color: AppColors.bodyDarkGray,
-                    ),
-                  ),
-                  title: Text(
-                    'Stripe',
-                    style: getTextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.primaryDeepBlueNormal,
-                    ),
-                  ),
-                  subtitle: Text(
-                    "****4252",
-                    style: getTextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.secondaryInfoMediumGrayNormal,
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     // attendees
+          //     Expanded(
+          //       child: ListTile(
+          //         leading: Container(
+          //           height: 42.h,
+          //           width: 42.h,
+          //           padding: EdgeInsets.all(7.w),
+          //           decoration: BoxDecoration(
+          //             shape: BoxShape.circle,
+          //             color: Color(0xFFF0F1F2),
+          //           ),
+          //           alignment: AlignmentGeometry.center,
+          //           child: Image.asset(
+          //             IconPath.people,
+          //             color: AppColors.bodyDarkGray,
+          //           ),
+          //         ),
+          //         title: Text(
+          //           'Attendees',
+          //           style: getTextStyle(
+          //             fontSize: 12.sp,
+          //             fontWeight: FontWeight.w400,
+          //             color: AppColors.primaryDeepBlueNormal,
+          //           ),
+          //         ),
+          //         subtitle: Text(
+          //           "1 Guest",
+          //           style: getTextStyle(
+          //             fontSize: 16.sp,
+          //             fontWeight: FontWeight.w500,
+          //             color: AppColors.secondaryInfoMediumGrayNormal,
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //
+          //     // time
+          //     Expanded(
+          //       child: ListTile(
+          //         leading: Container(
+          //           height: 42.h,
+          //           width: 42.h,
+          //           padding: EdgeInsets.all(7.w),
+          //           decoration: BoxDecoration(
+          //             shape: BoxShape.circle,
+          //             color: Color(0xFFF0F1F2),
+          //           ),
+          //           alignment: AlignmentGeometry.center,
+          //           child: Image.asset(
+          //             IconPath.mobile,
+          //             color: AppColors.bodyDarkGray,
+          //           ),
+          //         ),
+          //         title: Text(
+          //           'Stripe',
+          //           style: getTextStyle(
+          //             fontSize: 12.sp,
+          //             fontWeight: FontWeight.w400,
+          //             color: AppColors.primaryDeepBlueNormal,
+          //           ),
+          //         ),
+          //         subtitle: Text(
+          //           "****4252",
+          //           style: getTextStyle(
+          //             fontSize: 16.sp,
+          //             fontWeight: FontWeight.w500,
+          //             color: AppColors.secondaryInfoMediumGrayNormal,
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //   ],
+          // ),
           Divider(color: Color(0xFFD1D3D8)).paddingSymmetric(horizontal: 20.w),
 
           Row(
@@ -242,7 +252,9 @@ class EventSchedul extends StatelessWidget {
               children: [
                 // - button
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    controller.decreaseTicketNumber(price);
+                  },
                   icon: Icon(
                     Icons.remove_circle,
                     color: AppColors.primaryDeepBlueNormal,
@@ -250,18 +262,22 @@ class EventSchedul extends StatelessWidget {
                   ),
                 ),
 
-                Text(
-                  "1",
-                  style: getTextStyle(
-                    fontSize: 22.sp,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryDeepBlueNormal,
-                  )
-                ),
+                Obx(() {
+                  return Text(
+                    controller.ticketNumber.value.toString(),
+                    style: getTextStyle(
+                      fontSize: 22.sp,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryDeepBlueNormal,
+                    ),
+                  );
+                }),
 
                 // + button
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    controller.increaseTicketNumber(price);
+                  },
                   icon: Icon(
                     Icons.add_circle,
                     color: AppColors.primaryDeepBlueNormal,
@@ -285,18 +301,20 @@ class EventSchedul extends StatelessWidget {
                 ),
               ),
 
-              Text(
-                '\$120.60',
-                style: getTextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.bodyDarkGray,
-                ),
+              Obx(
+                      () {
+                  return Text(
+                    '\$${controller.stringPrice.value}',
+                    style: getTextStyle(
+                      fontSize: 20.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.bodyDarkGray,
+                    ),
+                  );
+                }
               ),
             ],
           ).paddingSymmetric(horizontal: 20.w),
-
-
         ],
       ),
     );

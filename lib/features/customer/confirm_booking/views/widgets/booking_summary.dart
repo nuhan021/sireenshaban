@@ -6,7 +6,19 @@ import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
 
 class BookingSummary extends StatelessWidget {
-  const BookingSummary({super.key});
+  BookingSummary({super.key, this.price = '0'});
+
+  final String price;
+
+  double get actualPrice {
+    try {
+      return double.parse(price);
+    } catch (e) {
+      return 0.0;
+    }
+  }
+
+  late double totalPrice = actualPrice * 1.02;
 
   @override
   Widget build(BuildContext context) {
@@ -32,36 +44,20 @@ class BookingSummary extends StatelessWidget {
               ),
             ),
 
-            subtitle: Text(
-              'Guests',
-              style: getTextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.secondaryInfoMediumGrayNormal
-              ),
-            ),
+            subtitle: SizedBox(),
 
             trailing: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  '\$120',
+                  '\$$actualPrice',
                   style: getTextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w500,
                       color: AppColors.bodyDarkGray
                   ),
                 ),
-
-                Text(
-                  '1',
-                  style: getTextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.bodyDarkGray
-                  ),
-                )
               ],
             ),
           ),
@@ -80,7 +76,7 @@ class BookingSummary extends StatelessWidget {
             ),
 
             subtitle: Text(
-              'Tax',
+              'Platform fee',
               style: getTextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w400,
@@ -93,7 +89,7 @@ class BookingSummary extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  '\$120.00',
+                  '\$$actualPrice',
                   style: getTextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w500,
@@ -102,7 +98,7 @@ class BookingSummary extends StatelessWidget {
                 ),
 
                 Text(
-                  '\$9.60',
+                  '\$${(actualPrice * 1.02 - actualPrice).toStringAsFixed(2)}',
                   style: getTextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
@@ -129,7 +125,7 @@ class BookingSummary extends StatelessWidget {
               ),
 
               Text(
-                '\$129.60',
+                '\$$totalPrice',
                 style: getTextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.w600,

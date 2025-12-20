@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:sireenshaban/core/common/widgets/custom_loading.dart';
 import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
 import 'package:sireenshaban/features/customer/booking_confirmed/views/screens/booking_confirmed_screen.dart';
+import 'package:sireenshaban/features/customer/confirm_booking/views/controller/confirm_booking_controller.dart';
 import 'package:sireenshaban/features/customer/confirm_booking/views/screens/select_time_and_date_screen.dart';
 import 'package:sireenshaban/features/customer/confirm_booking/views/widgets/booking_summary.dart';
 import 'package:sireenshaban/features/customer/confirm_booking/views/widgets/package_booking_payment_method.dart';
@@ -11,16 +13,19 @@ import 'package:sireenshaban/features/customer/confirm_booking/views/widgets/spe
 
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
+import '../../../../../core/utils/constants/snackbar_constant.dart';
+import '../../../home/model/packages_model.dart';
 import '../../../package_booking/views/widgets/booking_app_bar.dart';
 import '../../../package_booking/views/widgets/thumbnail_image.dart';
 
 class ConfirmBookingScreen extends StatelessWidget {
-  ConfirmBookingScreen({super.key, required this.image, required this.title});
+  ConfirmBookingScreen({super.key, required this.data});
 
-  final String image;
-  final String title;
+  final Datum data;
 
-  TextEditingController specialConcernController = TextEditingController();
+  final ConfirmBookingController confirmBookingController = Get.put(
+    ConfirmBookingController(),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +42,11 @@ class ConfirmBookingScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // thumbnail image
-            ThumbnailImage(image: image),
+            ThumbnailImage(
+              image: data.image ?? '',
+              rating: data.reviewsSumRating,
+              reviews: data.reviews.length,
+            ),
 
             30.verticalSpace,
 
@@ -50,7 +59,7 @@ class ConfirmBookingScreen extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        title,
+                        data.title,
                         overflow: TextOverflow.ellipsis,
                         style: getTextStyle(
                           fontSize: 20.sp,
@@ -72,7 +81,7 @@ class ConfirmBookingScreen extends StatelessWidget {
                       ),
                       alignment: Alignment.center,
                       child: Text(
-                        "120/per event",
+                        "${data.pricePerEvent}/per event",
                         style: getTextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w600,
@@ -92,7 +101,10 @@ class ConfirmBookingScreen extends StatelessWidget {
                   color: AppColors.accentNormal,
                   onPressed: () => AppHelperFunctions.navigateToScreen(
                     context,
-                    SelectTimeAndDateScreen(),
+                    SelectTimeAndDateScreen(
+                      availableDates: data.availableDates,
+                      serviceDuration: data.duration,
+                    ),
                   ),
                 ).paddingSymmetric(horizontal: 10.w),
 
@@ -115,42 +127,58 @@ class ConfirmBookingScreen extends StatelessWidget {
                 30.verticalSpace,
 
                 // special concerns
-                SpecialConcern(
-                  specialConcernController: specialConcernController,
-                ),
+                SpecialConcern(),
 
                 30.verticalSpace,
 
                 // booking summary
-                BookingSummary(),
+                BookingSummary(price: data.pricePerEvent),
 
                 30.verticalSpace,
 
                 // confirm booking button
-                CustomPrimaryButton(
-                  text: "Confirm Booking & Pay \$120.60",
-                  textColor: AppColors.cardBackgroundSoftGray,
-                  color: AppColors.primaryDeepBlueNormal,
-                  onPressed: () => AppHelperFunctions.navigateToScreen(context, BookingConfirmedScreen()),
-                ),
+                Obx(() {
+                  if (confirmBookingController.isConfirmBookingLoading.value) {
+                    return CustomLoading();
+                  }
+                  return CustomPrimaryButton(
+                    text: "Confirm Booking",
+                    textColor: AppColors.cardBackgroundSoftGray,
+                    color: AppColors.primaryDeepBlueNormal,
+                    onPressed: () {
+                      // AppHelperFunctions.navigateToScreen(
+                      //   context,
+                      //   BookingConfirmedScreen(),
+                      // );
+
+                      confirmBookingController.confirmBooking(
+                        context: context,
+                        datum: data,
+                        totalPrice: double.parse(data.pricePerEvent),
+                      );
+                    },
+                  );
+                }),
 
                 20.verticalSpace,
 
                 // cancel button
-
                 Align(
                   alignment: AlignmentGeometry.center,
-                  child: TextButton(onPressed: () => Navigator.pop(context), child: Text(
-                    'Cancel',
-                    style: getTextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.accentNormal,
+                  child: TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(
+                      'Cancel',
+                      style: getTextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.accentNormal,
+                      ),
                     ),
-                  )),
+                  ),
                 ),
 
-                30.verticalSpace
+                30.verticalSpace,
               ],
             ).paddingSymmetric(horizontal: 10.w),
           ],

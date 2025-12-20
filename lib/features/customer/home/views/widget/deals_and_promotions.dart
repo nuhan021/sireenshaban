@@ -95,6 +95,7 @@ class _DealsAndPromotionsState extends State<DealsAndPromotions> {
                         ? ImageFilter.blur(sigmaX: 0, sigmaY: 0)
                         : ImageFilter.blur(sigmaX: 2, sigmaY: 2),
                     child: DealsAndPromotionsCard(
+                      id: item.id,
                       image: item.image ?? '',
                       shopTitle: item.title,
                       discount: "0",

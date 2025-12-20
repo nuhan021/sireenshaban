@@ -12,12 +12,14 @@ import '../../../../../core/common/styles/global_text_style.dart';
 class CommunityEventsCard extends StatelessWidget {
   const CommunityEventsCard({
     super.key,
+    required this.id,
     required this.image,
     required this.title,
     required this.date,
     required this.location,
   });
 
+  final int id;
   final String image;
   final String title;
   final String date;
@@ -26,7 +28,7 @@ class CommunityEventsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => AppHelperFunctions.navigateToScreen(context, CommunityEventBookingScreen(image: image, title: title,)),
+      onTap: () => AppHelperFunctions.navigateToScreen(context, CommunityEventBookingScreen(id: id,image: image, title: title,)),
       child: Card(
         child: Container(
           height: 305.h,

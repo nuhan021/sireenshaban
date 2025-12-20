@@ -7,9 +7,11 @@ import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
 
 class ThumbnailImage extends StatelessWidget {
-  const ThumbnailImage({super.key, required this.image});
+  const ThumbnailImage({super.key, required this.image, required this.rating, required this.reviews});
 
   final String image;
+  final int rating;
+  final int reviews;
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +54,7 @@ class ThumbnailImage extends StatelessWidget {
 
                   // star value
                   Text(
-                    "5.0",
+                    rating.toString(),
                     style: getTextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
@@ -61,7 +63,7 @@ class ThumbnailImage extends StatelessWidget {
                   ),
 
                   Text(
-                    "(345 reviews)",
+                    reviews.toString(),
                     style: getTextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w400,

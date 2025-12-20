@@ -1,91 +1,115 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:intl/intl.dart';
+import 'package:sireenshaban/core/utils/logging/logger.dart';
+import 'package:sireenshaban/features/customer/confirm_booking/views/controller/confirm_booking_controller.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
-import 'package:booking_calendar/booking_calendar.dart';
+import '../../../home/model/packages_model.dart';
 
 class SelectTimeAndDateScreen extends StatefulWidget {
-  const SelectTimeAndDateScreen({super.key});
+  SelectTimeAndDateScreen({
+    super.key,
+    required this.availableDates,
+    required this.serviceDuration,
+  });
+
+  final List<AvailableDate> availableDates;
+  final int serviceDuration;
+
+  final ConfirmBookingController confirmBookingController = Get.put(ConfirmBookingController());
 
   @override
   State<SelectTimeAndDateScreen> createState() => _SelectTimeAndDateScreenState();
 }
 
 class _SelectTimeAndDateScreenState extends State<SelectTimeAndDateScreen> {
-  final now = DateTime.now();
-  late BookingService mockBookingService;
+  DateTime _focusedDay = DateTime.now();
+  DateTime? _selectedDay;
+  TimeSlot? _selectedTimeSlot;
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    // DateTime.now().startOfDay
-    // DateTime.now().endOfDay
-    mockBookingService = BookingService(
-        serviceName: 'Mock Service',
-        serviceDuration: 30,
-        bookingEnd: DateTime(now.year, now.month, now.day, 18, 0),
-        bookingStart: DateTime(now.year, now.month, now.day, 8, 0));
+    // প্রথম available date select করুন
+    if (widget.availableDates.isNotEmpty) {
+      _selectedDay = widget.availableDates.first.date;
+      _focusedDay = widget.availableDates.first.date;
+    }
   }
 
-  Stream<dynamic>? getBookingStreamMock(
-      {required DateTime end, required DateTime start}) {
-    return Stream.value([]);
+  // Check করুন কোন তারিখ available কিনা
+  bool _isDateAvailable(DateTime day) {
+    return widget.availableDates.any((availableDate) =>
+        isSameDay(availableDate.date, day));
   }
 
-  Future<dynamic> uploadBookingMock(
-      {required BookingService newBooking}) async {
-    await Future.delayed(const Duration(seconds: 1));
-    converted.add(DateTimeRange(
-        start: newBooking.bookingStart, end: newBooking.bookingEnd));
-    print('${newBooking.toJson()} has been uploaded');
+  // Selected date এর time slots পান
+  List<TimeSlot> _getTimeSlotsForSelectedDate() {
+    if (_selectedDay == null) return [];
+
+    final dateInfo = widget.availableDates.firstWhere(
+          (d) => isSameDay(d.date, _selectedDay!),
+      orElse: () => AvailableDate(
+        id: 0,
+        packageId: 0,
+        eventId: null,
+        date: DateTime.now(),
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
+        timeSlots: [],
+      ),
+    );
+
+    return dateInfo.timeSlots;
   }
 
-  List<DateTimeRange> converted = [];
+  // Booking confirm করুন
+  Future<void> _confirmBooking() async {
+    if (_selectedDay == null || _selectedTimeSlot == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please select date and time')),
+      );
+      return;
+    }
 
-  List<DateTimeRange> convertStreamResultMock({required dynamic streamResult}) {
-    ///here you can parse the streamresult and convert to [List<DateTimeRange>]
-    ///take care this is only mock, so if you add today as disabledDays it will still be visible on the first load
-    ///disabledDays will properly work with real data
-    DateTime first = now;
-    DateTime tomorrow = now.add(const Duration(days: 1));
-    DateTime second = now.add(const Duration(minutes: 55));
-    DateTime third = now.subtract(const Duration(minutes: 240));
-    DateTime fourth = now.subtract(const Duration(minutes: 500));
-    converted.add(
-        DateTimeRange(start: first, end: now.add(const Duration(minutes: 30))));
-    converted.add(DateTimeRange(
-        start: second, end: second.add(const Duration(minutes: 23))));
-    converted.add(DateTimeRange(
-        start: third, end: third.add(const Duration(minutes: 15))));
-    converted.add(DateTimeRange(
-        start: fourth, end: fourth.add(const Duration(minutes: 50))));
+    setState(() => _isLoading = true);
 
-    //book whole day example
-    converted.add(DateTimeRange(
-        start: DateTime(tomorrow.year, tomorrow.month, tomorrow.day, 5, 0),
-        end: DateTime(tomorrow.year, tomorrow.month, tomorrow.day, 23, 0)));
-    return converted;
+    // এখানে আপনার API call করুন
+    await Future.delayed(Duration(seconds: 1));
+
+    AppLoggerHelper.debug(_selectedTimeSlot!.id.toString());
+
+    widget.confirmBookingController.timeSlotId = _selectedTimeSlot!.id;
+
+    // Success message
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Booking confirmed for ${DateFormat('MMM dd, yyyy').format(_selectedDay!)} at ${_selectedTimeSlot!.time}',
+        ),
+        backgroundColor: Colors.green,
+      ),
+    );
+
+    Navigator.pop(context);
   }
 
-  List<DateTimeRange> generatePauseSlots() {
-    return [
-      DateTimeRange(
-          start: DateTime(now.year, now.month, now.day, 12, 0),
-          end: DateTime(now.year, now.month, now.day, 13, 0))
-    ];
-  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading:  IconButton(
+        leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.arrow_back_outlined, color: Colors.black,),
+          icon: Icon(Icons.arrow_back_outlined, color: Colors.black),
         ),
-
         title: Text(
-          'Booking Slot',
+          'Select Date & Time',
           style: getTextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.w500,
@@ -93,45 +117,210 @@ class _SelectTimeAndDateScreenState extends State<SelectTimeAndDateScreen> {
           ),
         ),
       ),
-
-      body:  SizedBox(
-        height: 1100.h,
-        child: BookingCalendar(
-          bookingService: mockBookingService,
-          convertStreamResultToDateTimeRanges: convertStreamResultMock,
-          getBookingStream: getBookingStreamMock,
-          uploadBooking: uploadBookingMock,
-          pauseSlots: generatePauseSlots(),
-          pauseSlotText: 'LUNCH',
-          hideBreakTime: false,
-          loadingWidget: const Text('Fetching data...'),
-          uploadingWidget: Center(child: const CircularProgressIndicator()),
-          locale: 'hu_HU',
-          startingDayOfWeek: StartingDayOfWeek.tuesday,
-          wholeDayIsBookedWidget:
-          Text('Sorry, for this day everything is booked', style: getTextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w400,
-              color: AppColors.bodyDarkGray
-          ),),
-          availableSlotColor: Color(0xFFD1D3D8),
-          availableSlotTextStyle: getTextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w400,
-              color: AppColors.bodyDarkGray
+      body: Column(
+        children: [
+          // Calendar
+          Container(
+            margin: EdgeInsets.all(16.w),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12.r),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.1),
+                  spreadRadius: 2,
+                  blurRadius: 8,
+                ),
+              ],
+            ),
+            child: TableCalendar(
+              firstDay: widget.availableDates.first.date,
+              lastDay: widget.availableDates.last.date,
+              focusedDay: _focusedDay,
+              selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+              enabledDayPredicate: (day) => _isDateAvailable(day),
+              onDaySelected: (selectedDay, focusedDay) {
+                if (_isDateAvailable(selectedDay)) {
+                  setState(() {
+                    _selectedDay = selectedDay;
+                    _focusedDay = focusedDay;
+                    _selectedTimeSlot = null; // Reset time selection
+                  });
+                }
+              },
+              calendarStyle: CalendarStyle(
+                selectedDecoration: BoxDecoration(
+                  color: AppColors.primaryDeepBlueNormal,
+                  shape: BoxShape.circle,
+                ),
+                todayDecoration: BoxDecoration(
+                  color: AppColors.primaryDeepBlueNormal.withOpacity(0.3),
+                  shape: BoxShape.circle,
+                ),
+                disabledDecoration: BoxDecoration(
+                  color: Colors.grey.withOpacity(0.1),
+                  shape: BoxShape.circle,
+                ),
+                disabledTextStyle: TextStyle(color: Colors.grey),
+              ),
+              headerStyle: HeaderStyle(
+                formatButtonVisible: false,
+                titleCentered: true,
+                titleTextStyle: getTextStyle(
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.bodyDarkGray,
+                ),
+              ),
+            ),
           ),
-          selectedSlotColor: AppColors.primaryDeepBlueNormal,
-          selectedSlotTextStyle: getTextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w400,
-              color: AppColors.cardBackgroundSoftGray
-          ),
-          bookingButtonColor: AppColors.primaryDeepBlueNormal,
 
-          //disabledDates: [DateTime(2023, 1, 20)],
-          //disabledDays: [6, 7],
-        ),
+          // Time Slots Section
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.all(16.w),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Available Time Slots',
+                    style: getTextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.bodyDarkGray,
+                    ),
+                  ),
+                  SizedBox(height: 16.h),
+                  Expanded(
+                    child: _selectedDay == null
+                        ? Center(
+                      child: Text(
+                        'Please select a date',
+                        style: getTextStyle(
+                          fontSize: 14.sp,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    )
+                        : _buildTimeSlotsList(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // Confirm Button
+          Container(
+            padding: EdgeInsets.all(16.w),
+            child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: _isLoading ? null : _confirmBooking,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primaryDeepBlueNormal,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.r),
+                  ),
+                ),
+                child: _isLoading
+                    ? CircularProgressIndicator(color: Colors.white)
+                    : Text(
+                  'Confirm Booking',
+                  style: getTextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
+    );
+  }
+
+  Widget _buildTimeSlotsList() {
+    final timeSlots = _getTimeSlotsForSelectedDate();
+
+    if (timeSlots.isEmpty) {
+      return Center(
+        child: Text(
+          'No time slots available',
+          style: getTextStyle(
+            fontSize: 14.sp,
+            color: Colors.grey,
+          ),
+        ),
+      );
+    }
+
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 3,
+        crossAxisSpacing: 12.w,
+        mainAxisSpacing: 12.h,
+        childAspectRatio: 2.5,
+      ),
+      itemCount: timeSlots.length,
+      itemBuilder: (context, index) {
+        final slot = timeSlots[index];
+        final isSelected = _selectedTimeSlot?.id == slot.id;
+        final isBooked = slot.isBooked == 1;
+
+        return InkWell(
+          onTap: isBooked
+              ? null
+              : () {
+            setState(() {
+              _selectedTimeSlot = slot;
+            });
+          },
+          child: Container(
+            decoration: BoxDecoration(
+              color: isBooked
+                  ? Colors.grey.shade300
+                  : isSelected
+                  ? AppColors.primaryDeepBlueNormal
+                  : Color(0xFFD1D3D8),
+              borderRadius: BorderRadius.circular(8.r),
+              border: Border.all(
+                color: isSelected
+                    ? AppColors.primaryDeepBlueNormal
+                    : Colors.transparent,
+                width: 2,
+              ),
+            ),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    slot.time,
+                    style: getTextStyle(
+                      fontSize: 13.sp,
+                      fontWeight: FontWeight.w500,
+                      color: isBooked
+                          ? Colors.grey.shade600
+                          : isSelected
+                          ? Colors.white
+                          : AppColors.bodyDarkGray,
+                    ),
+                  ),
+                  if (isBooked)
+                    Text(
+                      'Booked',
+                      style: getTextStyle(
+                        fontSize: 10.sp,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

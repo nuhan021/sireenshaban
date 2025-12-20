@@ -52,7 +52,7 @@ class Datum {
   DateTime createdAt;
   DateTime updatedAt;
   dynamic deletedAt;
-  dynamic reviewsSumRating;
+  int reviewsSumRating;
   List<AvailableDate> availableDates;
   Vendor vendor;
   Category category;

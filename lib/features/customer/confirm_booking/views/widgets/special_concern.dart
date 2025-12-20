@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/common/widgets/IField.dart';
+import 'package:sireenshaban/features/customer/confirm_booking/views/controller/confirm_booking_controller.dart';
 
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
 
 class SpecialConcern extends StatelessWidget {
-  const SpecialConcern({super.key, required this.specialConcernController});
+   SpecialConcern({super.key,});
 
-  final TextEditingController specialConcernController;
+  final ConfirmBookingController confirmBookingController = Get.find<ConfirmBookingController>();
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +35,7 @@ class SpecialConcern extends StatelessWidget {
 
           12.verticalSpace,
           IField(
-            controller: specialConcernController,
+            controller: confirmBookingController.specialConcernController,
             maxLine: 5,
             borderColor: Color(0xFFD1D3D8),
             filled: true,
