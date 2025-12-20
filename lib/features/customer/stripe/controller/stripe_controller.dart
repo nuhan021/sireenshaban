@@ -10,9 +10,7 @@ import 'package:sireenshaban/core/utils/logging/logger.dart';
 class StripeController extends GetxController {
   RxBool isLoading = false.obs;
 
-  static const String secretKey =
-      "sk_test_51RTEbLFT92q9uNcDuSgEqR4kSFs5110mErUxeYlG4s5x4e8vce50MemyLTKak2CmH9RdLqohUoREme7VQ18L3vNQ00v0bOF4kF";
-
+  static const String secretKey = '';
   // ✅ Fixed: Proper URL encoding for Stripe API
   Future<Map<String, dynamic>?> createPaymentIntent({
     required String amount,
