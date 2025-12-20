@@ -32,6 +32,7 @@ class NetworkCaller {
     String url, {
     Map<String, dynamic>? body,
     String? token,
+        Map<String, String>? headers,
   }) async {
     log('POST Request: $url');
     log('Request Body: ${jsonEncode(body)}');
@@ -39,7 +40,7 @@ class NetworkCaller {
     try {
       final Response response = await post(
         Uri.parse(url),
-        headers: {
+        headers: headers ?? {
           'Authorization': token.toString(),
           'Content-type': 'application/json',
           'Accept': 'application/json',
