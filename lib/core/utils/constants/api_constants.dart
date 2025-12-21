@@ -19,6 +19,5 @@ class ApiConstants {
   static const String serviceRequest = "$baseUrl/serviceRequest/service-requests";
   static const String serviceRequestDetails = "$baseUrl/serviceRequest";
   static const String bookingsByVendor = "$baseUrl/booking-list-by-vendor";
-  static const String serviceRequest = "$baseUrl/serviceRequest";
   static const String profile = "$baseUrl/profile";
 }
