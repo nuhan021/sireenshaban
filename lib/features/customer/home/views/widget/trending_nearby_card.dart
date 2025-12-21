@@ -18,13 +18,16 @@ class TrendingNearbyCard extends StatelessWidget {
     required this.image,
     required this.title,
     required this.status,
-    required this.group, required this.controller,
+    required this.group,
+    required this.controller,
+    required this.vendorId,
   });
   final String image;
   final String title;
   final String status;
   final ServicesGroup group;
   final HomeController controller;
+  final int vendorId;
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +37,12 @@ class TrendingNearbyCard extends StatelessWidget {
           case ServicesGroup.businessAndCreativeServices:
             AppHelperFunctions.navigateToScreen(
               context,
-              BusinessAndCreativeServicesScreens(image: image, title: title, controller: controller,),
+              BusinessAndCreativeServicesScreens(
+                image: image,
+                title: title,
+                controller: controller,
+                vendorId: vendorId,
+              ),
             );
             break;
           case ServicesGroup.personalCareAndEducation:
