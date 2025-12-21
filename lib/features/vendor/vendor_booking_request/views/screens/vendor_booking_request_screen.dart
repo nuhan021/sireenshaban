@@ -1,7 +1,8 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:sireenshaban/features/vendor/vendor_booking_request/controller/vendor_booking_request_controller.dart';
 import 'package:sireenshaban/features/vendor/vendor_booking_request/views/widgets/booking_request_card.dart';
 import 'package:sireenshaban/features/vendor/vendor_booking_request/views/widgets/request_tabs.dart';
@@ -55,19 +56,53 @@ class VendorBookingRequestScreen extends StatelessWidget {
         children: [
           20.verticalSpace,
           // request tab
-          RequestTabs(controller: controller,),
+          RequestTabs(controller: controller),
 
           20.verticalSpace,
 
-
           // requests
           Expanded(
-            child: ListView.separated(
-              itemCount: 10,
-              separatorBuilder: (context, index) => 10.verticalSpace,
-              itemBuilder: (context, index) => BookingRequestCard(),
-            ),
-          )
+            child: Obx(() {
+              if (controller.isServiceRequestLoading.value) {
+                return const Center(child: CircularProgressIndicator());
+              }
+
+              if (controller.isServiceRequestError.value) {
+                return Center(
+                  child: Text(
+                    "Failed to load requests",
+                    style: getTextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.bodyDarkGray,
+                    ),
+                  ),
+                );
+              }
+
+              final requests = controller.visibleRequests;
+              if (requests.isEmpty) {
+                return Center(
+                  child: Text(
+                    "No requests found",
+                    style: getTextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.bodyDarkGray,
+                    ),
+                  ),
+                );
+              }
+
+              return ListView.separated(
+                itemCount: requests.length,
+                separatorBuilder: (context, index) => 10.verticalSpace,
+                itemBuilder: (context, index) => BookingRequestCard(
+                  request: requests[index],
+                ),
+              );
+            }),
+          ),
         ],
       ).paddingSymmetric(horizontal: 20.w),
     );

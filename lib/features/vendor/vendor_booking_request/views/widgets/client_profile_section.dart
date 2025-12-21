@@ -2,14 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
+import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
+import 'package:sireenshaban/features/vendor/vendor_booking_request/model/service_request_model.dart';
 
 import '../../../../../core/utils/constants/icon_path.dart';
 
 class ClientProfileSection extends StatelessWidget {
-  const ClientProfileSection({super.key});
+  const ClientProfileSection({
+    super.key,
+    required this.request,
+  });
+
+  final ServiceRequestDetail request;
 
   @override
   Widget build(BuildContext context) {
+    final DateTime? requestDate = request.serviceDatetime;
+    final String formattedDate = requestDate == null
+        ? "-"
+        : AppHelperFunctions.getFormattedDate(requestDate, format: "MMM dd, yyyy");
+    final String formattedTime = requestDate == null
+        ? "-"
+        : AppHelperFunctions.getFormattedDate(requestDate, format: "hh:mm a");
+    final String fullName = request.customer.name.trim();
+    final String statusLabel =
+        request.status.isEmpty ? "New Request" : request.status;
+
     return Container(
       width: double.maxFinite,
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20.w),
@@ -39,7 +57,7 @@ class ClientProfileSection extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Sarah's Photography",
+                      fullName.isEmpty ? "Unknown" : fullName,
                       style: getTextStyle(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w600,
@@ -50,7 +68,9 @@ class ClientProfileSection extends StatelessWidget {
                     2.verticalSpace,
 
                     Text(
-                      "Professional Photography",
+                      request.customer.email.isEmpty
+                          ? "No email provided"
+                          : request.customer.email,
                       style: getTextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w400,
@@ -71,7 +91,7 @@ class ClientProfileSection extends StatelessWidget {
 
                       alignment: AlignmentGeometry.center,
                       child: Text(
-                        "New Request",
+                        statusLabel,
                         style: getTextStyle(
                           fontSize: 10.sp,
                           fontWeight: FontWeight.w400,
@@ -134,7 +154,7 @@ class ClientProfileSection extends StatelessWidget {
 
                     alignment: AlignmentGeometry.center,
                     child: Text(
-                      'Oct 15, 2025',
+                      formattedDate,
                       style: getTextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w400,
@@ -171,7 +191,7 @@ class ClientProfileSection extends StatelessWidget {
 
                     alignment: AlignmentGeometry.center,
                     child: Text(
-                      '10:00 AM',
+                      formattedTime,
                       style: getTextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w400,

@@ -1,7 +1,7 @@
 class ApiConstants {
   ApiConstants._();
 
-  static const String baseUrl = "https://arytenoepiglottic-gravely-noriko.ngrok-free.dev/api/v1";
+  static const String baseUrl = "https://overapprehensive-optatively-meri.ngrok-free.dev/api/v1";
   static const String login = "$baseUrl/login";
   static const String register = "$baseUrl/register";
   static const String verifyOtp = "$baseUrl/verify-otp";
@@ -13,6 +13,7 @@ class ApiConstants {
   static const String trendingNearby = "$baseUrl/trending-nearby";
   static const String communityEvents = "$baseUrl/events";
   static const String bookings = "$baseUrl/bookings";
-  static const String serviceRequest = "$baseUrl/serviceRequest";
+  static const String serviceRequest = "$baseUrl/serviceRequest/service-requests";
+  static const String serviceRequestDetails = "$baseUrl/serviceRequest";
   static const String profile = "$baseUrl/profile";
 }

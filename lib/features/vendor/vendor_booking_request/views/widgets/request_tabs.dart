@@ -18,162 +18,53 @@ class RequestTabs extends StatelessWidget {
             () {
         return Row(
           children: [
-            Expanded(child: GestureDetector(
-              onTap: () => controller.changeBookingRequest(BookingRequest.newRequest),
-              child: Container(
-                height: 40.h,
-                width: double.maxFinite,
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.r),
-                  color: controller.bookingRequest.value == BookingRequest.newRequest ? AppColors.primaryDeepBlueNormal : AppColors.cardBackgroundSoftGray,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Center(
-                        child: Text(
-                          'New',
-                          overflow: TextOverflow.ellipsis,
-                          style: getTextStyle(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w400,
-                              color:controller.bookingRequest.value == BookingRequest.newRequest ? AppColors.cardBackgroundSoftGray : AppColors.primaryDeepBlueNormal
+            Expanded(
+              child: GestureDetector(
+                onTap: () => controller.changeBookingRequest(BookingRequest.newRequest),
+                child: Container(
+                  height: 40.h,
+                  width: double.maxFinite,
+                  padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.r),
+                    color: AppColors.primaryDeepBlueNormal,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'New',
+                            overflow: TextOverflow.ellipsis,
+                            style: getTextStyle(
+                                fontSize: 12.sp,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.cardBackgroundSoftGray),
                           ),
                         ),
                       ),
-                    ),
-
-                    5.horizontalSpace,
-
-                    Container(
-                      height: 20.h,
-                      width: 20.w,
-                      decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: controller.bookingRequest.value == BookingRequest.newRequest ? AppColors.cardBackgroundSoftGray : AppColors.primaryDeepBlueNormal
-                      ),
-                      alignment: AlignmentGeometry.center,
-                      child: Text(
-                        '3',
-                        style: getTextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: controller.bookingRequest.value == BookingRequest.newRequest ? AppColors.primaryDeepBlueNormal : AppColors.cardBackgroundSoftGray
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            )),
-
-            10.horizontalSpace,
-
-            Expanded(child: GestureDetector(
-              onTap: () => controller.changeBookingRequest(BookingRequest.quotedRequest),
-              child: Container(
-                height: 40.h,
-                width: double.maxFinite,
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.r),
-                  color: controller.bookingRequest.value == BookingRequest.quotedRequest ? AppColors.primaryDeepBlueNormal : AppColors.cardBackgroundSoftGray,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Center(
+                      5.horizontalSpace,
+                      Container(
+                        height: 20.h,
+                        width: 20.w,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: AppColors.cardBackgroundSoftGray),
+                        alignment: AlignmentGeometry.center,
                         child: Text(
-                          'Quoted',
-                          overflow: TextOverflow.ellipsis,
+                          controller.serviceRequests.length.toString(),
                           style: getTextStyle(
                               fontSize: 12.sp,
                               fontWeight: FontWeight.w400,
-                              color:controller.bookingRequest.value == BookingRequest.quotedRequest ? AppColors.cardBackgroundSoftGray : AppColors.primaryDeepBlueNormal
-                          ),
+                              color: AppColors.primaryDeepBlueNormal),
                         ),
-                      ),
-                    ),
-
-                    5.horizontalSpace,
-
-                    // Container(
-                    //   height: 20.h,
-                    //   width: 20.w,
-                    //   decoration: BoxDecoration(
-                    //       shape: BoxShape.circle,
-                    //       color: controller.bookingRequest.value == BookingRequest.quotedRequest ? AppColors.cardBackgroundSoftGray : AppColors.primaryDeepBlueNormal
-                    //   ),
-                    //   alignment: AlignmentGeometry.center,
-                    //   child: Text(
-                    //     '3',
-                    //     style: getTextStyle(
-                    //         fontSize: 12.sp,
-                    //         fontWeight: FontWeight.w400,
-                    //         color: controller.bookingRequest.value == BookingRequest.quotedRequest ? AppColors.primaryDeepBlueNormal : AppColors.cardBackgroundSoftGray
-                    //     ),
-                    //   ),
-                    // )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
               ),
-            )),
-
-            10.horizontalSpace,
-
-            Expanded(child: GestureDetector(
-              onTap: () => controller.changeBookingRequest(BookingRequest.rejectedRequest),
-              child: Container(
-                height: 40.h,
-                width: double.maxFinite,
-                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12.r),
-                  color: controller.bookingRequest.value == BookingRequest.rejectedRequest ? AppColors.primaryDeepBlueNormal : AppColors.cardBackgroundSoftGray,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Center(
-                        child: Text(
-                          'Rejected',
-                          overflow: TextOverflow.ellipsis,
-                          style: getTextStyle(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w400,
-                              color:controller.bookingRequest.value == BookingRequest.rejectedRequest ? AppColors.cardBackgroundSoftGray : AppColors.primaryDeepBlueNormal
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    5.horizontalSpace,
-
-                    // Container(
-                    //   height: 20.h,
-                    //   width: 20.w,
-                    //   decoration: BoxDecoration(
-                    //       shape: BoxShape.circle,
-                    //       color: controller.bookingRequest.value == BookingRequest.rejectedRequest ? AppColors.cardBackgroundSoftGray : AppColors.primaryDeepBlueNormal
-                    //   ),
-                    //   alignment: AlignmentGeometry.center,
-                    //   child: Text(
-                    //     '3',
-                    //     style: getTextStyle(
-                    //         fontSize: 12.sp,
-                    //         fontWeight: FontWeight.w400,
-                    //         color: controller.bookingRequest.value == BookingRequest.rejectedRequest ? AppColors.primaryDeepBlueNormal : AppColors.cardBackgroundSoftGray
-                    //     ),
-                    //   ),
-                    // )
-                  ],
-                ),
-              ),
-            )),
+            ),
           ],
         );
       }
