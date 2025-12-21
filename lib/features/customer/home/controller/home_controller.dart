@@ -11,15 +11,21 @@ import 'package:sireenshaban/features/customer/home/model/trendingModel.dart';
 import 'package:sireenshaban/features/customer/interest/categori_model.dart';
 
 class HomeController extends GetxController {
+  HomeController({this.isFromVendor = false});
 
+  final bool isFromVendor;
 
   @override
   void onInit() {
     super.onInit();
-    getAdditionalService();
-    getDealsAndPromotions();
-    getCommunityEvents();
-    getTrendingNearby();
+    if(isFromVendor) {
+      getDealsAndPromotions();
+    } else {
+      getAdditionalService();
+      getDealsAndPromotions();
+      getCommunityEvents();
+      getTrendingNearby();
+    }
   }
 
   final NetworkCaller _networkCaller = NetworkCaller();

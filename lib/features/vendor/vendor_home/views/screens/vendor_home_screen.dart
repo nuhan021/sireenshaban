@@ -9,13 +9,14 @@ import 'package:sireenshaban/features/customer/home/controller/home_controller.d
 import 'package:sireenshaban/features/customer/home/views/widget/deals_and_promotions.dart';
 import 'package:sireenshaban/features/customer/stripe/controller/stripe_controller.dart';
 import 'package:sireenshaban/features/vendor/vendor_booking_request/views/widgets/booking_request_card.dart';
+import 'package:sireenshaban/features/vendor/vendor_home/views/controller/vendor_home_controller.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile/views/widgets/vendor_profile_header.dart';
 import 'package:sireenshaban/features/vendor/vendor_schedule/views/widgets/vendor_schedule_card.dart';
 
 class VendorHomeScreen extends StatelessWidget {
   VendorHomeScreen({super.key});
 
-  HomeController controller = Get.put(HomeController());
+  final HomeController controller = Get.put(HomeController(isFromVendor: true));
 
   // StripeController stripeController = Get.put(StripeController());
 
