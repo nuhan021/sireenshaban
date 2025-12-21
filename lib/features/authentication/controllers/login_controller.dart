@@ -55,7 +55,7 @@ class LoginController extends GetxController {
 
     isLogInLoading.value = false;
 
-    StorageService.saveToken(loginModel.value!.data.token, loginModel.value!.data.user.role);
+    StorageService.saveToken(loginModel.value!.data.token, loginModel.value!.data.user.id.toString());
     StorageService.saveRole(loginModel.value!.data.user.role);
 
     AppLoggerHelper.debug(loginModel.value!.data.token);

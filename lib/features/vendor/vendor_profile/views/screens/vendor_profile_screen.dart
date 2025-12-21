@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile/views/screens/vendor_user_profile_screen.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile/views/widgets/vendor_profile_header.dart';
 
@@ -202,7 +203,10 @@ class VendorProfileScreen extends StatelessWidget {
 
             // logout
             GestureDetector(
-              onTap: () => Get.offAllNamed(AppRoute.selectRoleScreen),
+              onTap: () {
+                StorageService.logoutUser();
+                Get.offAllNamed(AppRoute.selectRoleScreen);
+              },
               child: Container(
                 height: 65.h,
                 padding: EdgeInsets.all(20.w),

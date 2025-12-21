@@ -3,8 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
+import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
 import 'package:sireenshaban/core/utils/constants/icon_path.dart';
+import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/deals_and_promotions.dart';
 import 'package:sireenshaban/features/customer/stripe/controller/stripe_controller.dart';
@@ -22,6 +24,7 @@ class VendorHomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLoggerHelper.debug(StorageService.userId.toString());
     return Scaffold(
       backgroundColor: Color(0xFFF4F4F4),
       extendBodyBehindAppBar: true,

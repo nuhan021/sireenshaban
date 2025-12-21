@@ -93,8 +93,19 @@ class HomeController extends GetxController {
     isDealsAndPromotionLoading.value = true;
     final token = StorageService.token;
 
+    String endPoint = ApiConstants.dealsAndPromotions;
+
+    if (isFromVendor) {
+      // 🚨 Debug this line: Ensure StorageService.userId is not null or empty
+      final userId = StorageService.userId;
+      AppLoggerHelper.debug("Debugging Vendor URL: ${ApiConstants.dealsAndPromotions}/?vendor_id=$userId");
+      endPoint = "${ApiConstants.dealsAndPromotions}/?vendor_id=$userId";
+    }
+
+    AppLoggerHelper.debug("End");
+
     final response = await _networkCaller.getRequest(
-      ApiConstants.dealsAndPromotions,
+      endPoint,
       token: "Bearer $token",
     );
 
