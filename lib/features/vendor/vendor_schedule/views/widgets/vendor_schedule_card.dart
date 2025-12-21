@@ -12,7 +12,6 @@ class VendorScheduleCard extends StatelessWidget {
 
   final Datum? data;
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -36,7 +35,8 @@ class VendorScheduleCard extends StatelessWidget {
                     backgroundColor: Colors.white,
                     radius: 25.r,
                     backgroundImage: NetworkImage(
-                      data?.user.image ?? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHZqj-XReJ2R76nji51cZl4ETk6-eHRmZBRw&s",
+                      data?.user.image ??
+                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHZqj-XReJ2R76nji51cZl4ETk6-eHRmZBRw&s",
                     ),
                   ),
 
@@ -71,7 +71,6 @@ class VendorScheduleCard extends StatelessWidget {
                   //     color: AppColors.secondaryInfoMediumGrayDarker,
                   //   ),
                   // ),
-
                   5.verticalSpace,
 
                   Text(
@@ -99,31 +98,35 @@ class VendorScheduleCard extends StatelessWidget {
           ),
 
           // booking id
-          // Row(
-          //   children: [
-          //     Text(
-          //       'Booking ID',
-          //       style: getTextStyle(
-          //         fontSize: 14.sp,
-          //         fontWeight: FontWeight.w600,
-          //         color: AppColors.accentNormal,
-          //       ),
-          //     ),
-          //
-          //     5.horizontalSpace,
-          //
-          //     Text(
-          //       '#BV-2025-0142',
-          //       style: getTextStyle(
-          //         fontSize: 12.sp,
-          //         fontWeight: FontWeight.w400,
-          //         color: AppColors.bodyDarkGray,
-          //       ),
-          //     ),
-          //   ],
-          // ).paddingOnly(left: 10.w),
-          //
-          // 20.verticalSpace,
+          Row(
+            children: [
+              Text(
+                'Status',
+                style: getTextStyle(
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.accentNormal,
+                ),
+              ),
+
+              5.horizontalSpace,
+
+              Text(
+                data!.status,
+                style: getTextStyle(
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w400,
+                  color: data!.status == "Pending"
+                      ? AppColors.primaryDeepBlueNormal
+                      : data!.status == "Confirmed"
+                      ? AppColors.success
+                      : AppColors.bodyDarkGray,
+                ),
+              ),
+            ],
+          ).paddingOnly(left: 10.w),
+
+          20.verticalSpace,
 
           // contact and view details button
           Row(
@@ -157,7 +160,10 @@ class VendorScheduleCard extends StatelessWidget {
 
               Expanded(
                 child: GestureDetector(
-                  onTap: () => AppHelperFunctions.navigateToScreen(context, VendorRequestStatusScreen()),
+                  onTap: () => AppHelperFunctions.navigateToScreen(
+                    context,
+                    VendorRequestStatusScreen(data: data),
+                  ),
                   child: Container(
                     height: 40.h,
                     width: double.maxFinite,
@@ -165,7 +171,7 @@ class VendorScheduleCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12.r),
                       color: AppColors.primaryDeepBlueNormal,
                     ),
-                  
+
                     child: Center(
                       child: Text(
                         'View details',

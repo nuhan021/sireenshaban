@@ -5,10 +5,10 @@ import 'package:sireenshaban/core/utils/constants/api_constants.dart';
 import 'package:sireenshaban/core/utils/constants/enums.dart';
 import 'package:sireenshaban/core/utils/constants/snackbar_constant.dart';
 import 'package:sireenshaban/core/utils/logging/logger.dart';
-import 'package:sireenshaban/features/customer/home/model/eventModel.dart';
-import 'package:sireenshaban/features/customer/home/model/packages_model.dart';
-import 'package:sireenshaban/features/customer/home/model/trendingModel.dart';
-import 'package:sireenshaban/features/customer/interest/categori_model.dart';
+import 'package:sireenshaban/features/customer/home/model/eventModel.dart' hide Datum;
+import 'package:sireenshaban/features/customer/home/model/packages_model.dart' hide Datum;
+import 'package:sireenshaban/features/customer/home/model/trendingModel.dart' hide Datum;
+import 'package:sireenshaban/features/customer/interest/categori_model.dart' hide Datum;
 import 'package:sireenshaban/features/vendor/vendor_home/model/vendor_booking_model.dart';
 
 class HomeController extends GetxController {
@@ -58,7 +58,26 @@ class HomeController extends GetxController {
   Rx<VendorBookingModel?> bookings = Rx<VendorBookingModel?>(null);
 
 
+  Rx<DateTime> selectedDate = DateTime.now().obs;
 
+  List<Datum> get filteredBookings {
+    if (bookings.value == null) return [];
+
+    return bookings.value!.data.where((booking) {
+      bool isSameDate = booking.date.year == selectedDate.value.year &&
+          booking.date.month == selectedDate.value.month &&
+          booking.date.day == selectedDate.value.day;
+
+      bool isNotCompleted = booking.status?.toLowerCase() != 'completed';
+
+      return isSameDate && isNotCompleted;
+    }).toList();
+  }
+
+  // 3. Method to update date from UI
+  void updateSelectedDate(DateTime date) {
+    selectedDate.value = date;
+  }
 
 
 

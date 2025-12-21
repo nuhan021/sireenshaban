@@ -18,7 +18,7 @@ class VendorScheduleScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF4F4F4),
+      backgroundColor: const Color(0xFFF4F4F4),
       appBar: AppBar(
         backgroundColor: Color(0xFFF4F4F4),
         centerTitle: false,
@@ -49,50 +49,91 @@ class VendorScheduleScreen extends StatelessWidget {
           ),
         ],
       ),
+      body: Obx(() {
+        // --- 1. Handle Loading State ---
+        if (controller.isBookingLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-      body: Column(
-        children: [
-          10.verticalSpace,
-
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Today',
-                style: getTextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.primaryDeepBlueNormal,
-                ),
-              ),
-              
-              Container(
-                height: 40.h,
-                width: 40.w,
-                padding: EdgeInsets.all(8.w),
-                decoration: BoxDecoration(
-                  color: Color(0xFFE9EAEC),
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
-
-                child: Image.asset(IconPath.calenderMonth, color: AppColors.secondaryInfoMediumGrayNormal,),
-              )
-            ],
-          ),
-
-
-          20.verticalSpace,
-
-
-          Expanded(
-            child: ListView.separated(
-              itemCount: controller.bookings.value!.data.length,
-              separatorBuilder: (context , index) => 10.verticalSpace,
-              itemBuilder: (context, index) => VendorScheduleCard(data: controller.bookings.value!.data[index],),
+        // --- 2. Handle Error State ---
+        if (controller.isBookingError.value) {
+          return Center(
+            child: IconButton(
+              onPressed: () => controller.getBooking(),
+              icon: const Icon(Icons.refresh),
             ),
-          )
-        ],
-      ).paddingSymmetric(horizontal: 20.w),
+          );
+        }
+
+        final dataList = controller.filteredBookings;
+
+        return Column(
+          children: [
+            10.verticalSpace,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  // Show "Today" if today, otherwise show formatted date
+                  controller.selectedDate.value.day == DateTime.now().day
+                      ? 'Today'
+                      : "${controller.selectedDate.value.day}/${controller.selectedDate.value.month}/${controller.selectedDate.value.year}",
+                  style: getTextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primaryDeepBlueNormal,
+                  ),
+                ),
+
+                // --- 3. Calendar Trigger ---
+                GestureDetector(
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: controller.selectedDate.value,
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime(2101),
+                    );
+                    if (pickedDate != null) {
+                      controller.updateSelectedDate(pickedDate);
+                    }
+                  },
+                  child: Container(
+                    height: 40.h, width: 40.w,
+                    padding: EdgeInsets.all(8.w),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFE9EAEC),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    child: Image.asset(IconPath.calenderMonth, color: AppColors.secondaryInfoMediumGrayNormal,),
+                  ),
+                )
+              ],
+            ),
+            20.verticalSpace,
+
+            // --- 4. Handle Empty State ---
+            Expanded(
+              child: dataList.isEmpty
+                  ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.event_busy, size: 50.sp, color: Colors.grey),
+                    10.verticalSpace,
+                    Text("No schedules for this date", style: TextStyle(color: Colors.grey)),
+                  ],
+                ),
+              )
+                  : ListView.separated(
+                itemCount: dataList.length,
+                separatorBuilder: (context, index) => 10.verticalSpace,
+                itemBuilder: (context, index) => VendorScheduleCard(data: dataList[index]),
+              ),
+            )
+          ],
+        ).paddingSymmetric(horizontal: 20.w);
+      }),
     );
   }
 }
