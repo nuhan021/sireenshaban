@@ -2,12 +2,14 @@ import 'package:get/get.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/features/select_role/controller/select_role_controller.dart';
 import 'package:sireenshaban/core/controllers/user_controller.dart';
+import 'package:sireenshaban/features/vendor/vendor_profile_info/views/controller/vendor_profile_info_map_controller.dart';
 
 class ControllerBinder extends Bindings {
   @override
   void dependencies() {
     // Initialize UserController globally (loads profile from StorageService)
     Get.put<UserController>(UserController(), permanent: true);
+    Get.put<VendorProfileInfoMapController>(VendorProfileInfoMapController(), permanent: true);
 
     Get.lazyPut<SelectRoleController>(
       () => SelectRoleController(),

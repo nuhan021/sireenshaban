@@ -22,6 +22,7 @@ class HomeController extends GetxController {
     if(isFromVendor) {
       getDealsAndPromotions();
       getBooking();
+      getAdditionalService();
     } else {
       getAdditionalService();
       getDealsAndPromotions();

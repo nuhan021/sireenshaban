@@ -7,10 +7,7 @@ import 'package:sireenshaban/features/vendor/vendor_booking_request/model/servic
 import 'package:sireenshaban/features/vendor/vendor_booking_request/views/screens/vendor_booking_request_details_screen.dart';
 
 class BookingRequestCard extends StatelessWidget {
-  const BookingRequestCard({
-    super.key,
-    this.request,
-  });
+  const BookingRequestCard({super.key, this.request});
 
   final ServiceRequestListItem? request;
 
@@ -19,7 +16,10 @@ class BookingRequestCard extends StatelessWidget {
     final DateTime? requestDate = request?.serviceDatetime;
     final String formattedDate = requestDate == null
         ? "-"
-        : AppHelperFunctions.getFormattedDate(requestDate, format: "dd-MM-yyyy");
+        : AppHelperFunctions.getFormattedDate(
+            requestDate,
+            format: "dd-MM-yyyy",
+          );
     final String formattedTime = requestDate == null
         ? "-"
         : AppHelperFunctions.getFormattedDate(requestDate, format: "hh:mm a");
@@ -35,14 +35,13 @@ class BookingRequestCard extends StatelessWidget {
         }
         AppHelperFunctions.navigateToScreen(
           context,
-          VendorBookingRequestDetailsScreen(requestId: request!.serviceRequestId),
+          VendorBookingRequestDetailsScreen(
+            requestId: request!.serviceRequestId,
+          ),
         );
       },
       tileColor: AppColors.cardBackgroundSoftGray,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12.r),
-
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
       leading: CircleAvatar(
         backgroundColor: Colors.grey,
         radius: 25.r,
@@ -54,23 +53,23 @@ class BookingRequestCard extends StatelessWidget {
       ),
 
       title: Text(
-        fullName.isEmpty ? "Unknown" : fullName,
+        request?.customer.firstName ?? "No Name",
         style: getTextStyle(
           fontSize: 16.sp,
           fontWeight: FontWeight.w500,
-          color: AppColors.bodyDarkGray
+          color: AppColors.bodyDarkGray,
         ),
       ),
 
       subtitle: Text(
         "$formattedDate\nAt - $formattedTime",
         style: getTextStyle(
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w400,
-            color: AppColors.bodyDarkGray
+          fontSize: 12.sp,
+          fontWeight: FontWeight.w400,
+          color: AppColors.bodyDarkGray,
         ),
       ),
-      
+
       trailing: Container(
         height: 40.h,
         width: 120.w,
@@ -84,10 +83,10 @@ class BookingRequestCard extends StatelessWidget {
           style: getTextStyle(
             fontSize: 14.sp,
             fontWeight: FontWeight.w400,
-            color: AppColors.cardBackgroundSoftGray
+            color: AppColors.cardBackgroundSoftGray,
           ),
         ),
-      )
+      ),
     );
   }
 }
