@@ -3,15 +3,41 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
+import 'package:sireenshaban/features/vendor/vendor_booking_request/model/service_request_model.dart';
 import 'package:sireenshaban/features/vendor/vendor_booking_request/views/screens/vendor_booking_request_details_screen.dart';
 
 class BookingRequestCard extends StatelessWidget {
-  const BookingRequestCard({super.key});
+  const BookingRequestCard({
+    super.key,
+    this.request,
+  });
+
+  final ServiceRequestListItem? request;
 
   @override
   Widget build(BuildContext context) {
+    final DateTime? requestDate = request?.serviceDatetime;
+    final String formattedDate = requestDate == null
+        ? "-"
+        : AppHelperFunctions.getFormattedDate(requestDate, format: "dd-MM-yyyy");
+    final String formattedTime = requestDate == null
+        ? "-"
+        : AppHelperFunctions.getFormattedDate(requestDate, format: "hh:mm a");
+    final String fullName =
+        "${request?.customer.firstName ?? ""} ${request?.customer.lastName ?? ""}"
+            .trim();
+    final String? avatarUrl = request?.customer.image;
+
     return ListTile(
-      onTap: () => AppHelperFunctions.navigateToScreen(context, VendorBookingRequestDetailsScreen()),
+      onTap: () {
+        if (request == null) {
+          return;
+        }
+        AppHelperFunctions.navigateToScreen(
+          context,
+          VendorBookingRequestDetailsScreen(requestId: request!.serviceRequestId),
+        );
+      },
       tileColor: AppColors.cardBackgroundSoftGray,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12.r),
@@ -20,11 +46,15 @@ class BookingRequestCard extends StatelessWidget {
       leading: CircleAvatar(
         backgroundColor: Colors.grey,
         radius: 25.r,
-        backgroundImage: NetworkImage('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5Bxsx92a-2hFCDdkVGybmsqN3S6MzMvNRc_qhM_ZoHIZN9Zj-msVenZkbFj369ZVYxPU&usqp=CAU'),
+        backgroundImage: NetworkImage(
+          avatarUrl?.isNotEmpty == true
+              ? avatarUrl!
+              : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR5Bxsx92a-2hFCDdkVGybmsqN3S6MzMvNRc_qhM_ZoHIZN9Zj-msVenZkbFj369ZVYxPU&usqp=CAU',
+        ),
       ),
 
       title: Text(
-        "Jain Fozi",
+        fullName.isEmpty ? "Unknown" : fullName,
         style: getTextStyle(
           fontSize: 16.sp,
           fontWeight: FontWeight.w500,
@@ -33,7 +63,7 @@ class BookingRequestCard extends StatelessWidget {
       ),
 
       subtitle: Text(
-        "15-12-2024\nAt - 07.50pm",
+        "$formattedDate\nAt - $formattedTime",
         style: getTextStyle(
             fontSize: 12.sp,
             fontWeight: FontWeight.w400,

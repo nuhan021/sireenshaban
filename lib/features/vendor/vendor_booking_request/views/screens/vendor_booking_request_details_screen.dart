@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:sireenshaban/core/common/widgets/IField.dart';
+import 'package:sireenshaban/features/vendor/vendor_booking_request/controller/vendor_booking_request_controller.dart';
+import 'package:sireenshaban/features/vendor/vendor_booking_request/model/service_request_model.dart';
 import 'package:sireenshaban/features/vendor/vendor_booking_request/views/widgets/client_profile_section.dart';
 
 import '../../../../../core/common/styles/global_text_style.dart';
@@ -11,8 +12,31 @@ import '../../../../../core/utils/constants/colors.dart';
 import '../../../../../core/utils/constants/icon_path.dart';
 import '../../../../../routes/app_routes.dart';
 
-class VendorBookingRequestDetailsScreen extends StatelessWidget {
-  const VendorBookingRequestDetailsScreen({super.key});
+class VendorBookingRequestDetailsScreen extends StatefulWidget {
+  const VendorBookingRequestDetailsScreen({
+    super.key,
+    required this.requestId,
+  });
+
+  final int requestId;
+
+  @override
+  State<VendorBookingRequestDetailsScreen> createState() =>
+      _VendorBookingRequestDetailsScreenState();
+}
+
+class _VendorBookingRequestDetailsScreenState
+    extends State<VendorBookingRequestDetailsScreen> {
+  late final VendorBookingController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = Get.isRegistered<VendorBookingController>()
+        ? Get.find<VendorBookingController>()
+        : Get.put(VendorBookingController());
+    _controller.getServiceRequestDetails(requestId: widget.requestId);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,113 +72,171 @@ class VendorBookingRequestDetailsScreen extends StatelessWidget {
         ],
       ),
 
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            20.verticalSpace,
+      body: Obx(() {
+        if (_controller.isServiceRequestDetailsLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-            // client profile section
-            ClientProfileSection(),
-
-            20.verticalSpace,
-
-            // request details
-            Container(
-              width: double.maxFinite,
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20.h),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(14.r),
-                  color: AppColors.cardBackgroundSoftGray
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Request Details',
-                    style: getTextStyle(
-                      fontSize: 22.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.bodyDarkGray,
-                    ),
-                  ),
-
-                  20.verticalSpace,
-
-                  Text(
-                    'Project Scope',
-                    style: getTextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.bodyDarkGray,
-                    ),
-                  ),
-
-                  12.verticalSpace,
-
-                  Text(
-                    "Wedding photography mth engagement session. full day coverage including ceremony and reception",
-                    textAlign: TextAlign.start,
-                    style: getTextStyle(
-                        fontSize: 13.sp,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.bodyDarkGray
-                    ),
-                  ),
-
-                  20.verticalSpace,
-
-                  Row(
-                    children: [
-                      Text(
-                        'Duration:',
-                        style: getTextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.bodyDarkGray,
-                        ),
-                      ),
-
-                      20.horizontalSpace,
-
-                      Text(
-                        '8 hours',
-                        style: getTextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.bodyDarkGray
-                        ),
-                      )
-                    ],
-                  ),
-
-                  10.verticalSpace,
-
-                  Row(
-                    children: [
-                      Text(
-                        'Event Type:',
-                        style: getTextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.bodyDarkGray,
-                        ),
-                      ),
-
-                      20.horizontalSpace,
-
-                      Text(
-                        'Wedding',
-                        style: getTextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.bodyDarkGray
-                        ),
-                      )
-                    ],
-                  )
-                ],
+        if (_controller.isServiceRequestDetailsError.value ||
+            _controller.serviceRequestDetails.value == null) {
+          return Center(
+            child: Text(
+              "Failed to load request details",
+              style: getTextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w400,
+                color: AppColors.bodyDarkGray,
               ),
             ),
+          );
+        }
+
+        final ServiceRequestDetail request =
+            _controller.serviceRequestDetails.value!;
+
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              20.verticalSpace,
+
+              // client profile section
+              ClientProfileSection(
+                request: request,
+              ),
+
+              20.verticalSpace,
+
+              // request details
+              Container(
+                width: double.maxFinite,
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20.h),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(14.r),
+                    color: AppColors.cardBackgroundSoftGray
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Request Details',
+                      style: getTextStyle(
+                        fontSize: 22.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.bodyDarkGray,
+                      ),
+                    ),
+
+                    20.verticalSpace,
+
+                    Text(
+                      'Project Details',
+                      style: getTextStyle(
+                        fontSize: 16.sp,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.bodyDarkGray,
+                      ),
+                    ),
+
+                    12.verticalSpace,
+
+                    Text(
+                      request.projectDetails.isEmpty
+                          ? "-"
+                          : request.projectDetails,
+                      textAlign: TextAlign.start,
+                      style: getTextStyle(
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.bodyDarkGray
+                      ),
+                    ),
+
+                    20.verticalSpace,
+
+                    Row(
+                      children: [
+                        Text(
+                          'Service Type:',
+                          style: getTextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.bodyDarkGray,
+                          ),
+                        ),
+
+                        20.horizontalSpace,
+
+                        Expanded(
+                          child: Text(
+                            request.serviceType.isEmpty
+                                ? "-"
+                                : request.serviceType.join(", "),
+                            style: getTextStyle(
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w400,
+                                color: AppColors.bodyDarkGray
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+
+                    10.verticalSpace,
+
+                    Row(
+                      children: [
+                        Text(
+                          'Payment Method:',
+                          style: getTextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.bodyDarkGray,
+                          ),
+                        ),
+
+                        20.horizontalSpace,
+
+                        Text(
+                          request.paymentMethod.isEmpty
+                              ? "-"
+                              : request.paymentMethod,
+                          style: getTextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.bodyDarkGray
+                          ),
+                        )
+                      ],
+                    ),
+
+                    10.verticalSpace,
+
+                    Row(
+                      children: [
+                        Text(
+                          'Status:',
+                          style: getTextStyle(
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.bodyDarkGray,
+                          ),
+                        ),
+
+                        20.horizontalSpace,
+
+                        Text(
+                          request.status.isEmpty ? "-" : request.status,
+                          style: getTextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.bodyDarkGray
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
 
             20.verticalSpace,
 
@@ -375,7 +457,9 @@ class VendorBookingRequestDetailsScreen extends StatelessWidget {
                         Image.asset(IconPath.mobile),
                         13.horizontalSpace,
                         Text(
-                          'Stripe',
+                          request.paymentMethod.isEmpty
+                              ? "Payment method"
+                              : request.paymentMethod,
                           style: getTextStyle(
                               fontSize: 16.sp,
                               fontWeight: FontWeight.w500,
@@ -396,7 +480,7 @@ class VendorBookingRequestDetailsScreen extends StatelessWidget {
             20.verticalSpace,
           ],
         ).paddingSymmetric(horizontal: 15.w),
-      ),
-    );
+      );
+  }));
   }
 }

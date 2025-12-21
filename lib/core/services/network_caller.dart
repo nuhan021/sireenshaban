@@ -18,6 +18,7 @@ class NetworkCaller {
         headers: {
           'Authorization': token.toString(),
           'Content-type': 'application/json',
+          'Accept': 'application/json',
         },
       ).timeout(Duration(seconds: timeoutDuration));
 

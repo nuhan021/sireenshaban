@@ -68,12 +68,9 @@ class VendorHomeScreen extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ElevatedButton(
-                  onPressed: () {
-                    // stripeController.makePayment(amount: 100, currency: 'usd');
-                  },
-                  child: Text('Pay'),
-                ),
+                // ElevatedButton(onPressed: (){
+                //   // stripeController.makePayment(amount: 100, currency: 'usd');
+                // }, child: Text('Pay')),
                 Text(
                   'Photography',
                   style: getTextStyle(
