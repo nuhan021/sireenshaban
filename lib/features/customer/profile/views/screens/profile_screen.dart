@@ -20,8 +20,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({super.key});
 
-  final ProfileController _profileController =
-      Get.put(ProfileController());
+  final ProfileController _profileController = Get.put(ProfileController());
 
   String _buildLocationText(UserModel user) {
     final parts = <String>[
@@ -35,8 +34,9 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF4F4F4),
+      backgroundColor: const Color(0xFFF4F4F4),
       appBar: AppBar(
+        backgroundColor: const Color(0xFFF4F4F4), // ব্যাকগ্রাউন্ড কালার অ্যাড করা হয়েছে
         centerTitle: false,
         title: Text(
           'Profile',
@@ -46,7 +46,6 @@ class ProfileScreen extends StatelessWidget {
             color: AppColors.bodyDarkGray,
           ),
         ),
-
         actions: [
           IconButton(
             onPressed: () {
@@ -56,16 +55,15 @@ class ProfileScreen extends StatelessWidget {
               height: 40.h,
               width: 40.w,
               decoration: BoxDecoration(
-                color: Color(0xFF3333331A),
+                color: const Color(0xFF3333331A),
                 shape: BoxShape.circle,
               ),
-              alignment: AlignmentGeometry.center,
+              alignment: Alignment.center,
               child: Image.asset(IconPath.notification, height: 24.h),
             ),
           ),
         ],
       ),
-
       body: Obx(() {
         if (_profileController.isProfileLoading.value) {
           return Center(
@@ -80,7 +78,7 @@ class ProfileScreen extends StatelessWidget {
           return Center(
             child: IconButton(
               onPressed: _profileController.getProfile,
-              icon: Icon(
+              icon: const Icon(
                 Icons.refresh,
                 color: AppColors.primaryDeepBlueNormal,
               ),
@@ -93,17 +91,13 @@ class ProfileScreen extends StatelessWidget {
             ? 'User'
             : '${user.firstName} ${user.lastName}'.trim();
         final locationText =
-            user == null ? 'Location not set' : _buildLocationText(user);
-        final imageUrl = (user?.image ?? '').isNotEmpty
-            ? user!.image!
-            : "https://cdn-images.dzcdn.net/images/cover/2489db20eecbc62b9a6e03ac76471f91/0x1900-000000-80-0-0.jpg";
+        user == null ? 'Location not set' : _buildLocationText(user);
 
+        // ফিক্সড: একটি SingleChildScrollView বা Column রিটার্ন করা হয়েছে
         return SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              40.verticalSpace,
-
+              20.verticalSpace,
               // avatar, name, location
               Center(
                 child: Column(
@@ -111,9 +105,9 @@ class ProfileScreen extends StatelessWidget {
                   children: [
                     // avatar
                     ClipRRect(
-                      borderRadius: BorderRadiusGeometry.circular(100.r),
+                      borderRadius: BorderRadius.circular(100.r),
                       child: CachedNetworkImage(
-                        imageUrl: imageUrl,
+                        imageUrl: user?.image ?? "https://cdn-images.dzcdn.net/images/cover/2489db20eecbc62b9a6e03ac76471f91/0x1900-000000-80-0-0.jpg",
                         fit: BoxFit.cover,
                         height: 125.h,
                         width: 125.w,
@@ -123,13 +117,10 @@ class ProfileScreen extends StatelessWidget {
                             size: 25.h,
                           ),
                         ),
-                        errorWidget: (context, url, error) =>
-                            const Icon(Icons.error),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
                       ),
                     ),
-
                     10.verticalSpace,
-
                     // name
                     Text(
                       fullName.isEmpty ? 'User' : fullName,
@@ -139,13 +130,11 @@ class ProfileScreen extends StatelessWidget {
                         color: AppColors.primaryDeepBlueNormal,
                       ),
                     ),
-
                     // location
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // location icon
-                        Icon(
+                        const Icon(
                           Icons.location_on_outlined,
                           color: Color(0xFF5C5C5C),
                         ),
@@ -155,7 +144,7 @@ class ProfileScreen extends StatelessWidget {
                           style: getTextStyle(
                             fontSize: 12.sp,
                             fontWeight: FontWeight.w400,
-                            color: Color(0xFF5C5C5C),
+                            color: const Color(0xFF5C5C5C),
                           ),
                         ),
                       ],
@@ -163,169 +152,86 @@ class ProfileScreen extends StatelessWidget {
                   ],
                 ),
               ),
-
               20.verticalSpace,
 
-              // profile
-              GestureDetector(
-                onTap: () => AppHelperFunctions.navigateToScreen(
-                  context,
-                  UserProfileScreen(),
-                ),
-                child: Container(
-                  padding: EdgeInsets.all(20.w),
-                  decoration: BoxDecoration(
-                    border:
-                        Border(bottom: BorderSide(color: Color(0xFFEBEBEB))),
-                  ),
-                  child: Row(
-                    children: [
-                      Image.asset(
-                        IconPath.navProfile,
-                        height: 20.h,
-                        color: AppColors.bodyDarkGray,
-                      ),
-                      10.horizontalSpace,
-                      Text(
-                        'Profile',
-                        style: getTextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.bodyDarkGray,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+              // Profile Item
+              _buildProfileMenu(
+                icon: IconPath.navProfile,
+                title: 'Profile',
+                onTap: () => AppHelperFunctions.navigateToScreen(context, UserProfileScreen()),
               ),
 
-            // notification
-            GestureDetector(
-              onTap: () {
-                Get.toNamed(AppRoute.getNotificationScreen());
-              },
-              child: Container(
-                padding: EdgeInsets.all(20.w),
-                decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Color(0xFFEBEBEB))),
-                ),
-                child: Row(
-                  children: [
-                    Image.asset(
-                      IconPath.notificationOutline,
-                      height: 20.h,
-                      color: AppColors.bodyDarkGray,
-                    ),
-                    10.horizontalSpace,
-                    Text(
-                      'Notification',
-                      style: getTextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.bodyDarkGray,
-                      ),
-                    ),
-                  ],
-                ),
+              // Notification Item
+              _buildProfileMenu(
+                icon: IconPath.notificationOutline,
+                title: 'Notification',
+                onTap: () => Get.toNamed(AppRoute.getNotificationScreen()),
               ),
+
+              // Payment History Item
+              _buildProfileMenu(
+                icon: IconPath.wallet,
+                title: 'Payment History',
+                onTap: () => AppHelperFunctions.navigateToScreen(context, PaymentHistoryScreen()),
+              ),
+
+              // My Booking Item
+              _buildProfileMenu(
+                icon: IconPath.ticket,
+                title: 'My Booking',
+                onTap: () => AppHelperFunctions.navigateToScreen(context, BookingScreen()),
+              ),
+
+              // Logout Item
+              _buildProfileMenu(
+                icon: IconPath.logout,
+                title: 'Log Out',
+                isLogout: true,
+                onTap: () {
+                  StorageService.logoutUser();
+                  Get.offAllNamed(AppRoute.selectRoleScreen);
+                },
+              ),
+            ],
+          ).paddingSymmetric(horizontal: 20.w),
+        );
+      }),
+    );
+  }
+
+  // কোড ক্লিন রাখার জন্য হেল্পার উইজেট
+  Widget _buildProfileMenu({
+    required String icon,
+    required String title,
+    required VoidCallback onTap,
+    bool isLogout = false,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 20.h),
+        decoration: const BoxDecoration(
+          border: Border(bottom: BorderSide(color: Color(0xFFEBEBEB))),
+        ),
+        child: Row(
+          children: [
+            Image.asset(
+              icon,
+              height: 20.h,
+              color: isLogout ? AppColors.primaryDeepBlueNormal : AppColors.bodyDarkGray,
             ),
-
-            // payment history
-            GestureDetector(
-              onTap: () => AppHelperFunctions.navigateToScreen(
-                context,
-                PaymentHistoryScreen(),
-              ),
-              child: Container(
-                padding: EdgeInsets.all(20.w),
-                decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Color(0xFFEBEBEB))),
-                ),
-                child: Row(
-                  children: [
-                    Image.asset(
-                      IconPath.wallet,
-                      height: 20.h,
-                      color: AppColors.bodyDarkGray,
-                    ),
-                    10.horizontalSpace,
-                    Text(
-                      'Payment History',
-                      style: getTextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.bodyDarkGray,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            // my booking
-            GestureDetector(
-              onTap: () =>
-                  AppHelperFunctions.navigateToScreen(context, BookingScreen()),
-              child: Container(
-                padding: EdgeInsets.all(20.w),
-                decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Color(0xFFEBEBEB))),
-                ),
-                child: Row(
-                  children: [
-                    Image.asset(
-                      IconPath.ticket,
-                      height: 20.h,
-                      color: AppColors.bodyDarkGray,
-                    ),
-                    10.horizontalSpace,
-                    Text(
-                      'My Booking',
-                      style: getTextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.bodyDarkGray,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            // logout
-            GestureDetector(
-              onTap: () {
-                StorageService.logoutUser();
-                Get.offAllNamed(AppRoute.selectRoleScreen);
-              },
-              child: Container(
-                padding: EdgeInsets.all(20.w),
-                decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Color(0xFFEBEBEB))),
-                ),
-                child: Row(
-                  children: [
-                    Image.asset(
-                      IconPath.logout,
-                      height: 20.h,
-                      color: AppColors.bodyDarkGray,
-                    ),
-                    10.horizontalSpace,
-                    Text(
-                      'Log Out',
-                      style: getTextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.primaryDeepBlueNormal,
-                      ),
-                    ),
-                  ],
-                ),
+            10.horizontalSpace,
+            Text(
+              title,
+              style: getTextStyle(
+                fontSize: 14.sp,
+                fontWeight: isLogout ? FontWeight.w600 : FontWeight.w400,
+                color: isLogout ? AppColors.primaryDeepBlueNormal : AppColors.bodyDarkGray,
               ),
             ),
           ],
+        ),
       ),
-      );
-  }));
+    );
   }
 }

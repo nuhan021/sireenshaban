@@ -13,6 +13,7 @@ import 'package:sireenshaban/features/customer/stripe/controller/stripe_controll
 import 'package:sireenshaban/features/vendor/vendor_booking_request/views/widgets/booking_request_card.dart';
 import 'package:sireenshaban/features/vendor/vendor_home/views/controller/vendor_home_controller.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile/views/widgets/vendor_profile_header.dart';
+
 import 'package:sireenshaban/features/vendor/vendor_schedule/views/widgets/vendor_schedule_card.dart';
 
 class VendorHomeScreen extends StatelessWidget {
@@ -110,7 +111,9 @@ class VendorHomeScreen extends StatelessWidget {
             40.verticalSpace,
 
             // deals and promotions
+            // deals and promotions
             Obx(() {
+              // 1. Check Loading State
               if (controller.isDealsAndPromotionLoading.value) {
                 return Center(
                   child: LoadingAnimationWidget.dotsTriangle(
@@ -119,12 +122,36 @@ class VendorHomeScreen extends StatelessWidget {
                   ),
                 );
               }
-              
-              if(controller.isDealsAndPromotionError.value) {
+
+              if (controller.isDealsAndPromotionError.value) {
                 return Center(
-                  child: IconButton(onPressed: () => controller.getDealsAndPromotions(), icon: Icon(Icons.refresh)),
+                  child: IconButton(
+                    onPressed: () => controller.getDealsAndPromotions(),
+                    icon: Icon(Icons.refresh),
+                  ),
                 );
               }
+
+              // 3. Check for Empty List (New Condition)
+              // We check if data is null OR if the data list inside is empty
+              final dataList = controller.packages.value?.data;
+              if (dataList == null || dataList.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.inventory_2_outlined, color: Colors.grey, size: 40.h),
+                      SizedBox(height: 8.h),
+                      Text(
+                        "No deals or promotions found",
+                        style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                      ),
+                    ],
+                  ),
+                );
+              }
+
+              // 4. Return Data Widget if everything is fine
               return DealsAndPromotions(
                 controller: controller,
                 isFromVendorScreen: true,
@@ -134,55 +161,100 @@ class VendorHomeScreen extends StatelessWidget {
             40.verticalSpace,
 
             // Schedule
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // schedule
-                Text(
-                  "Schedule",
-                  style: getTextStyle(
-                    fontSize: 22.sp,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.bodyDarkGray,
+            Obx(() {
+              // 1. Check Loading State
+              if (controller.isBookingLoading.value) {
+                return Center(
+                  child: LoadingAnimationWidget.dotsTriangle(
+                      color: AppColors.primaryDeepBlueNormal,
+                      size: 25.h
                   ),
-                ),
-                10.verticalSpace,
+                );
+              }
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Today',
-                      style: getTextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.primaryDeepBlueNormal,
+              // 2. Check Error State
+              if (controller.isBookingError.value) {
+                return Center(
+                  child: IconButton(
+                      onPressed: () => controller.getBooking(),
+                      icon: Icon(Icons.refresh)
+                  ),
+                );
+              }
+
+              // 3. Prepare Filtered Data (Today Only)
+              final now = DateTime.now();
+              final todayBookings = controller.bookings.value?.data.where((booking) {
+                return booking.date.year == now.year &&
+                    booking.date.month == now.month &&
+                    booking.date.day == now.day;
+              }).toList() ?? [];
+
+              // 4. Check for Empty State
+              if (todayBookings.isEmpty) {
+                return Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.calendar_today_outlined, color: Colors.grey, size: 40.h),
+                      SizedBox(height: 8.h),
+                      Text(
+                        "No Today Schedule Found",
+                        style: TextStyle(color: Colors.grey, fontSize: 14.sp),
                       ),
+                    ],
+                  ),
+                );
+              }
+
+              // 5. Success State: Return the Schedule UI
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Schedule",
+                    style: getTextStyle(
+                      fontSize: 22.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.bodyDarkGray,
                     ),
-
-                    Container(
-                      height: 40.h,
-                      width: 40.w,
-                      padding: EdgeInsets.all(8.w),
-                      decoration: BoxDecoration(
-                        color: Color(0xFFE9EAEC),
-                        borderRadius: BorderRadius.circular(8.r),
+                  ),
+                  10.verticalSpace,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Today',
+                        style: getTextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.primaryDeepBlueNormal,
+                        ),
                       ),
-
-                      child: Image.asset(
-                        IconPath.calenderMonth,
-                        color: AppColors.secondaryInfoMediumGrayNormal,
+                      Container(
+                        height: 40.h, width: 40.w,
+                        padding: EdgeInsets.all(8.w),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFE9EAEC),
+                          borderRadius: BorderRadius.circular(8.r),
+                        ),
+                        child: Image.asset(
+                          IconPath.calenderMonth,
+                          color: AppColors.secondaryInfoMediumGrayNormal,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-
-                20.verticalSpace,
-
-                for (int i = 0; i < 5; i++)
-                  VendorScheduleCard().paddingOnly(bottom: 10.h),
-              ],
-            ).paddingSymmetric(horizontal: 20.w),
+                    ],
+                  ),
+                  20.verticalSpace,
+                  // Map the filtered list here
+                  Column(
+                    children: todayBookings.map((e) {
+                      return VendorScheduleCard(data: e).paddingOnly(bottom: 10.h);
+                    }).toList(),
+                  )
+                ],
+              ).paddingSymmetric(horizontal: 20.w);
+            }),
 
             40.verticalSpace,
 

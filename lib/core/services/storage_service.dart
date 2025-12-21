@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageService {
@@ -6,6 +7,7 @@ class StorageService {
   static const String _idKey = 'userId';
   static const String onboardingStatus = "onboarding";
   static const String _role = "role";
+  static const String _profileKey = 'user_profile';
 
   // Singleton instance for SharedPreferences
   static SharedPreferences? _preferences;
@@ -15,7 +17,6 @@ class StorageService {
     _preferences = await SharedPreferences.getInstance();
   }
 
-
   static bool getOnboardingStatus({required String tokenName}) {
     return _preferences?.getBool(onboardingStatus) ?? false;
   }
@@ -24,7 +25,7 @@ class StorageService {
     await _preferences?.setBool(onboardingStatus, value);
   }
 
-  static Future<void> saveRole(String role,) async {
+  static Future<void> saveRole(String role) async {
     await _preferences?.setString(_role, role);
   }
 
@@ -57,6 +58,30 @@ class StorageService {
 
   // Getter for role
   static String? get role => _preferences?.getString(_role);
+
+  // Save serialized user profile JSON (as returned by /profile API)
+  static Future<void> saveUserProfile(Map<String, dynamic> profile) async {
+    final json = jsonEncode(profile);
+    await _preferences?.setString(_profileKey, json);
+  }
+
+  // Get user profile map (or null)
+  static Map<String, dynamic>? get userProfile {
+    final s = _preferences?.getString(_profileKey);
+    if (s == null || s.isEmpty) return null;
+    try {
+      return jsonDecode(s) as Map<String, dynamic>;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  // Convenience getters for common profile fields
+  static String? get profileImage => userProfile?['image'] as String?;
+  static String? get coverImage => userProfile?['background_image'] as String?;
+  static String? get firstName => userProfile?['first_name'] as String?;
+  static String? get lastName => userProfile?['last_name'] as String?;
+  static String? get email => userProfile?['email'] as String?;
+  static String? get city => userProfile?['city'] as String?;
+  static String? get address => userProfile?['address'] as String?;
 }
-
-

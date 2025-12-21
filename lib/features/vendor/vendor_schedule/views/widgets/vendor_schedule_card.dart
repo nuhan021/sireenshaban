@@ -4,10 +4,13 @@ import 'package:get/get.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
+import 'package:sireenshaban/features/vendor/vendor_home/model/vendor_booking_model.dart';
 import 'package:sireenshaban/features/vendor/vendor_schedule/views/screens/vendor_request_status_screen.dart';
 
 class VendorScheduleCard extends StatelessWidget {
-  const VendorScheduleCard({super.key});
+  const VendorScheduleCard({super.key, this.data});
+
+  final Datum? data;
 
   @override
   Widget build(BuildContext context) {
@@ -32,12 +35,13 @@ class VendorScheduleCard extends StatelessWidget {
                     backgroundColor: Colors.white,
                     radius: 25.r,
                     backgroundImage: NetworkImage(
-                      "https://cdn.pixabay.com/photo/2022/04/24/14/16/sexy-girl-7153683_640.jpg",
+                      data?.user.image ??
+                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHZqj-XReJ2R76nji51cZl4ETk6-eHRmZBRw&s",
                     ),
                   ),
 
                   title: Text(
-                    'Jhon’s Birthday',
+                    data?.package?.title ?? '',
                     style: getTextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w500,
@@ -46,7 +50,7 @@ class VendorScheduleCard extends StatelessWidget {
                   ),
 
                   subtitle: Text(
-                    'Total Cost: 5000\$',
+                    'Total Cost: ${data?.vendorTotal}\$',
                     style: getTextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
@@ -59,19 +63,18 @@ class VendorScheduleCard extends StatelessWidget {
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Thursday',
-                    style: getTextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.secondaryInfoMediumGrayDarker,
-                    ),
-                  ),
-
+                  // Text(
+                  //   'Thursday',
+                  //   style: getTextStyle(
+                  //     fontSize: 14.sp,
+                  //     fontWeight: FontWeight.w600,
+                  //     color: AppColors.secondaryInfoMediumGrayDarker,
+                  //   ),
+                  // ),
                   5.verticalSpace,
 
                   Text(
-                    '15-12-2024',
+                    "${data!.date.day}-${data!.date.month}-${data!.date.year}",
                     style: getTextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
@@ -82,7 +85,7 @@ class VendorScheduleCard extends StatelessWidget {
                   5.verticalSpace,
 
                   Text(
-                    'At - 07.50pm',
+                    data!.time.toString(),
                     style: getTextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
@@ -98,7 +101,7 @@ class VendorScheduleCard extends StatelessWidget {
           Row(
             children: [
               Text(
-                'Booking ID',
+                'Status',
                 style: getTextStyle(
                   fontSize: 14.sp,
                   fontWeight: FontWeight.w600,
@@ -109,11 +112,15 @@ class VendorScheduleCard extends StatelessWidget {
               5.horizontalSpace,
 
               Text(
-                '#BV-2025-0142',
+                data!.status,
                 style: getTextStyle(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w400,
-                  color: AppColors.bodyDarkGray,
+                  color: data!.status == "Pending"
+                      ? AppColors.primaryDeepBlueNormal
+                      : data!.status == "Confirmed"
+                      ? AppColors.success
+                      : AppColors.bodyDarkGray,
                 ),
               ),
             ],
@@ -153,7 +160,10 @@ class VendorScheduleCard extends StatelessWidget {
 
               Expanded(
                 child: GestureDetector(
-                  onTap: () => AppHelperFunctions.navigateToScreen(context, VendorRequestStatusScreen()),
+                  onTap: () => AppHelperFunctions.navigateToScreen(
+                    context,
+                    VendorRequestStatusScreen(data: data),
+                  ),
                   child: Container(
                     height: 40.h,
                     width: double.maxFinite,
@@ -161,7 +171,7 @@ class VendorScheduleCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(12.r),
                       color: AppColors.primaryDeepBlueNormal,
                     ),
-                  
+
                     child: Center(
                       child: Text(
                         'View details',
