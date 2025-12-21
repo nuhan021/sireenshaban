@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/vendor/vendor_schedule/views/widgets/vendor_schedule_card.dart';
 
 import '../../../../../core/common/styles/global_text_style.dart';
@@ -10,7 +11,9 @@ import '../../../../../core/utils/constants/icon_path.dart';
 import '../../../../../routes/app_routes.dart';
 
 class VendorScheduleScreen extends StatelessWidget {
-  const VendorScheduleScreen({super.key});
+  VendorScheduleScreen({super.key});
+
+  final HomeController controller = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -83,9 +86,9 @@ class VendorScheduleScreen extends StatelessWidget {
 
           Expanded(
             child: ListView.separated(
-              itemCount: 15,
+              itemCount: controller.bookings.value!.data.length,
               separatorBuilder: (context , index) => 10.verticalSpace,
-              itemBuilder: (context, index) => VendorScheduleCard(),
+              itemBuilder: (context, index) => VendorScheduleCard(data: controller.bookings.value!.data[index],),
             ),
           )
         ],

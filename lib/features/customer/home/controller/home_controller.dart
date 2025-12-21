@@ -9,6 +9,7 @@ import 'package:sireenshaban/features/customer/home/model/eventModel.dart';
 import 'package:sireenshaban/features/customer/home/model/packages_model.dart';
 import 'package:sireenshaban/features/customer/home/model/trendingModel.dart';
 import 'package:sireenshaban/features/customer/interest/categori_model.dart';
+import 'package:sireenshaban/features/vendor/vendor_home/model/vendor_booking_model.dart';
 
 class HomeController extends GetxController {
   HomeController({this.isFromVendor = false});
@@ -20,6 +21,7 @@ class HomeController extends GetxController {
     super.onInit();
     if(isFromVendor) {
       getDealsAndPromotions();
+      getBooking();
     } else {
       getAdditionalService();
       getDealsAndPromotions();
@@ -44,11 +46,16 @@ class HomeController extends GetxController {
   RxBool isTrendingNearbyLoading = false.obs;
   RxBool isTrendingNearbyError = false.obs;
 
+  RxBool isBookingLoading = false.obs;
+  RxBool isBookingError = false.obs;
+
+
 
   Rx<CategoriModel?> categorys = Rx<CategoriModel?>(null);
   Rx<PackagesModel?> packages = Rx<PackagesModel?>(null);
   Rx<EventModel?> communityEvents = Rx<EventModel?>(null);
   Rx<TrendingModel?> trending = Rx<TrendingModel?>(null);
+  Rx<VendorBookingModel?> bookings = Rx<VendorBookingModel?>(null);
 
 
 
@@ -144,6 +151,30 @@ class HomeController extends GetxController {
     isCommunityEventsLoading.value = false;
     isCommunityEventsError.value = false;
     SnackBarConstant.success("Community events fetched successfully");
+  }
+
+  Future<void> getBooking() async {
+    isBookingLoading.value = true;
+
+    final token = StorageService.token;
+
+    final response = await _networkCaller.getRequest(
+      // "${ApiConstants.bookingsByVendor}/${StorageService.userId}",
+      "${ApiConstants.bookingsByVendor}/1",
+      token: "Bearer $token",
+    );
+
+    if(!response.isSuccess) {
+      SnackBarConstant.error(response.errorMessage);
+      isBookingLoading.value = false;
+      isBookingError.value = true;
+      return;
+    }
+
+    bookings.value = VendorBookingModel.fromJson(response.responseData);
+    isBookingLoading.value = false;
+    isBookingError.value = false;
+    SnackBarConstant.success("Bookings fetched successfully");
   }
 
 

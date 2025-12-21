@@ -31,7 +31,14 @@ class _DealsAndPromotionsState extends State<DealsAndPromotions> {
     return  Obx(
             () {
               if(widget.controller.packages.value!.data.isEmpty) {
-                return Text('No data found');
+                return  Text(
+                  'No Deals & Promotions',
+                  style: getTextStyle(
+                    fontSize: 18.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.secondaryInfoMediumGrayDarker,
+                  ),
+                ).paddingOnly(left: 20.w);
               }
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
