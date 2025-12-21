@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
+import 'package:sireenshaban/features/vendor/vendor_home/model/vendor_booking_model.dart';
 
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
@@ -10,7 +11,35 @@ import '../../../../../core/utils/constants/icon_path.dart';
 import '../../../../../routes/app_routes.dart';
 
 class VendorRequestStatusScreen extends StatelessWidget {
-  const VendorRequestStatusScreen({super.key});
+  const VendorRequestStatusScreen({super.key, this.data});
+
+  final Datum? data;
+
+
+  String formatMyDate(DateTime? date) {
+    if (date == null) return "N/A";
+
+    List<String> months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+    return "${date.day} ${months[date.month - 1]}, ${date.year}";
+  }
+
+  String calculateRemainingTime(DateTime targetDate) {
+    DateTime now = DateTime.now(); // বর্তমান সময়
+
+    // দুই সময়ের ব্যবধান বের করা
+    Duration difference = targetDate.difference(now);
+
+    if (difference.isNegative) {
+      return "Time left";
+    } else {
+      int days = difference.inDays;
+      int hours = difference.inHours % 24;
+      int minutes = difference.inMinutes % 60;
+
+      return"$days days and $hours hour left";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +106,7 @@ class VendorRequestStatusScreen extends StatelessWidget {
                       5.horizontalSpace,
 
                       Text(
-                        '#BV-2025-0142',
+                        '#${data!.id}',
                         style: getTextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w400,
@@ -95,7 +124,7 @@ class VendorRequestStatusScreen extends StatelessWidget {
                       Image.asset(IconPath.navCalendar, height: 25.h, color: AppColors.bodyDarkGray,),
                       5.horizontalSpace,
                       Text(
-                        'Date & Time',
+                          formatMyDate(data!.date),
                         style: getTextStyle(
                           fontSize: 22.sp,
                           fontWeight: FontWeight.w600,
@@ -132,7 +161,7 @@ class VendorRequestStatusScreen extends StatelessWidget {
 
                             alignment: AlignmentGeometry.center,
                             child: Text(
-                              'Oct 15, 2025',
+                                formatMyDate(data!.date),
                               style: getTextStyle(
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.w400,
@@ -169,7 +198,7 @@ class VendorRequestStatusScreen extends StatelessWidget {
 
                             alignment: AlignmentGeometry.center,
                             child: Text(
-                              '10:00 AM',
+                              data!.time,
                               style: getTextStyle(
                                   fontSize: 12.sp,
                                   fontWeight: FontWeight.w400,
@@ -221,7 +250,7 @@ class VendorRequestStatusScreen extends StatelessWidget {
                   12.verticalSpace,
 
                   Text(
-                    "Wedding photography mth engagement session. full day coverage including ceremony and reception",
+                    data?.specialConcerns ?? '',
                     textAlign: TextAlign.start,
                     style: getTextStyle(
                       fontSize: 13.sp,
@@ -245,12 +274,14 @@ class VendorRequestStatusScreen extends StatelessWidget {
 
                       20.horizontalSpace,
 
-                      Text(
-                        '8 hours',
-                        style: getTextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.bodyDarkGray
+                      Expanded(
+                        child: Text(
+                          calculateRemainingTime(data!.date),
+                          style: getTextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.bodyDarkGray
+                          ),
                         ),
                       )
                     ],
@@ -271,12 +302,14 @@ class VendorRequestStatusScreen extends StatelessWidget {
 
                       20.horizontalSpace,
 
-                      Text(
-                        'Wedding',
-                        style: getTextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.bodyDarkGray
+                      Expanded(
+                        child: Text(
+                          data?.package?.title ?? '',
+                          style: getTextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.bodyDarkGray
+                          ),
                         ),
                       )
                     ],
@@ -318,7 +351,7 @@ class VendorRequestStatusScreen extends StatelessWidget {
                       ),
 
                       Text(
-                        '\$850.00',
+                        '\$${data!.total}',
                         style: getTextStyle(
                             fontSize: 20.sp,
                             fontWeight: FontWeight.w500,
@@ -423,7 +456,7 @@ class VendorRequestStatusScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Services fee',
+                        'Vendor Total',
                         style: getTextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w400,
@@ -432,7 +465,7 @@ class VendorRequestStatusScreen extends StatelessWidget {
                       ),
 
                       Text(
-                        '60.00',
+                        data!.vendorTotal,
                         style: getTextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w400,
@@ -456,7 +489,7 @@ class VendorRequestStatusScreen extends StatelessWidget {
                       ),
 
                       Text(
-                        '205.00',
+                        data!.platformFee,
                         style: getTextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w400,
@@ -486,7 +519,7 @@ class VendorRequestStatusScreen extends StatelessWidget {
                       ),
 
                       Text(
-                        '274.60',
+                        data!.total,
                         style: getTextStyle(
                           fontSize: 20.sp,
                           fontWeight: FontWeight.w600,
@@ -502,7 +535,7 @@ class VendorRequestStatusScreen extends StatelessWidget {
 
             20.verticalSpace,
 
-            CustomPrimaryButton(text: 'Completed', color: AppColors.primaryDeepBlueNormal, onPressed: (){}),
+            CustomPrimaryButton(text: data!.status == "Pending"? "Send Quote" : data!.status == "Confirmed" ? "Make Complete" : "Cancel", color: AppColors.primaryDeepBlueNormal, onPressed: (){}),
 
             20.verticalSpace,
 
