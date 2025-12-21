@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -7,6 +9,7 @@ import 'package:sireenshaban/core/utils/constants/api_constants.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
 import 'package:sireenshaban/core/utils/constants/snackbar_constant.dart';
 import 'package:sireenshaban/core/utils/logging/logger.dart';
+import 'package:sireenshaban/features/authentication/services/user_info_services.dart';
 import 'package:sireenshaban/features/authentication/models/loginModel.dart';
 
 import '../../../routes/app_routes.dart';
@@ -45,6 +48,10 @@ class LoginController extends GetxController {
       },
     );
 
+    // Debug: print login API response
+    // This shows full decoded response map from NetworkCaller
+    print('Login response: ${response.responseData}');
+
     if (!response.isSuccess) {
       SnackBarConstant.error(response.errorMessage);
       isLogInLoading.value = false;
@@ -55,8 +62,21 @@ class LoginController extends GetxController {
 
     isLogInLoading.value = false;
 
-    StorageService.saveToken(loginModel.value!.data.token, loginModel.value!.data.user.id.toString());
-    StorageService.saveRole(loginModel.value!.data.user.role);
+    // Save token and role
+    await StorageService.saveToken(
+      loginModel.value!.data.token,
+      loginModel.value!.data.user.id,
+    );
+    await StorageService.saveRole(loginModel.value!.data.user.role);
+
+    // Fetch user profile immediately and store it for app-wide access
+    try {
+      final profileFetched = await UserInfoService.fetchAndStoreProfile();
+      print('Profile fetch result: $profileFetched');
+      AppLoggerHelper.info('Profile fetch result: $profileFetched');
+    } catch (e) {
+      AppLoggerHelper.error('Profile fetch exception: $e');
+    }
 
     AppLoggerHelper.debug(loginModel.value!.data.token);
 
@@ -77,4 +97,3 @@ class LoginController extends GetxController {
     }
   }
 }
-

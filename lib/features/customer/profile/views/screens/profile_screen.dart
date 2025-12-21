@@ -98,30 +98,25 @@ class ProfileScreen extends StatelessWidget {
             ? user!.image!
             : "https://cdn-images.dzcdn.net/images/cover/2489db20eecbc62b9a6e03ac76471f91/0x1900-000000-80-0-0.jpg";
 
-        return SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              40.verticalSpace,
-
-              // avatar, name, location
-              Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // avatar
-                    ClipRRect(
-                      borderRadius: BorderRadiusGeometry.circular(100.r),
-                      child: CachedNetworkImage(
-                        imageUrl: imageUrl,
-                        fit: BoxFit.cover,
-                        height: 125.h,
-                        width: 125.w,
-                        placeholder: (context, url) => Center(
-                          child: LoadingAnimationWidget.staggeredDotsWave(
-                            color: AppColors.primaryDeepBlueLight,
-                            size: 25.h,
-                          ),
+            // avatar, name, location
+            Center(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // avatar
+                  ClipRRect(
+                    borderRadius: BorderRadiusGeometry.circular(100.r),
+                    child: CachedNetworkImage(
+                      imageUrl:
+                          StorageService.profileImage ??
+                          "https://cdn-images.dzcdn.net/images/cover/2489db20eecbc62b9a6e03ac76471f91/0x1900-000000-80-0-0.jpg",
+                      fit: BoxFit.cover,
+                      height: 125.h,
+                      width: 125.w,
+                      placeholder: (context, url) => Center(
+                        child: LoadingAnimationWidget.staggeredDotsWave(
+                          color: AppColors.primaryDeepBlueLight,
+                          size: 25.h,
                         ),
                         errorWidget: (context, url, error) =>
                             const Icon(Icons.error),

@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:sireenshaban/core/services/storage_service.dart';
+import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
+import 'package:sireenshaban/features/vendor/vendor_profile/views/screens/vendor_edit_profile_screen.dart';
+import 'package:sireenshaban/features/vendor/vendor_profile/views/widgets/vendor_profile_header.dart';
 
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
@@ -48,22 +52,35 @@ class UserProfileScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            80.verticalSpace,
-
-            // edit icon
-            Align(
-              alignment: AlignmentGeometry.topRight,
-              child: Image.asset(IconPath.edit, height: 20.h),
+            // profile header (cover + avatar)
+            VendorProfileHeader(
+              coverPhoto:
+                  StorageService.coverImage ??
+                  "https://cdn.shopify.com/s/files/1/0681/6976/1043/files/connor-ellsworth-y4QxywTWZj8-unsplash_1024x1024.jpg?v=1679340043",
+              profilePhoto:
+                  StorageService.profileImage ??
+                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEGUodmPqUNG8wJWNkNCvqiNkr1T9tsft5oQ&s",
             ),
 
             12.verticalSpace,
 
+            // edit icon
+            Align(
+              alignment: AlignmentGeometry.topRight,
+              child: GestureDetector(
+                onTap: () => AppHelperFunctions.navigateToScreen(
+                  context,
+                  VendorEditProfileScreen(),
+                ),
+                child: Image.asset(IconPath.edit, height: 20.h),
+              ),
+            ),
 
             // first name
             ListTile(
               tileColor: Colors.white,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.r)
+                borderRadius: BorderRadius.circular(12.r),
               ),
               title: Text(
                 'First Name',
@@ -75,11 +92,11 @@ class UserProfileScreen extends StatelessWidget {
               ),
 
               subtitle: Text(
-                'Sara',
+                StorageService.firstName ?? '',
                 style: getTextStyle(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w400,
-                  color: Color(0xFF333333)
+                  color: Color(0xFF333333),
                 ),
               ),
             ),
@@ -90,10 +107,10 @@ class UserProfileScreen extends StatelessWidget {
             ListTile(
               tileColor: Colors.white,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r)
+                borderRadius: BorderRadius.circular(12.r),
               ),
               title: Text(
-                'First Name',
+                'Last Name',
                 style: getTextStyle(
                   fontSize: 12.sp,
                   fontWeight: FontWeight.w500,
@@ -102,11 +119,11 @@ class UserProfileScreen extends StatelessWidget {
               ),
 
               subtitle: Text(
-                'Nim',
+                StorageService.lastName ?? '',
                 style: getTextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF333333)
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF333333),
                 ),
               ),
             ),
@@ -117,7 +134,7 @@ class UserProfileScreen extends StatelessWidget {
             ListTile(
               tileColor: Colors.white,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r)
+                borderRadius: BorderRadius.circular(12.r),
               ),
               title: Text(
                 'Email',
@@ -129,11 +146,11 @@ class UserProfileScreen extends StatelessWidget {
               ),
 
               subtitle: Text(
-                'abc@gmail.com',
+                StorageService.email ?? '',
                 style: getTextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF333333)
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF333333),
                 ),
               ),
             ),
@@ -143,7 +160,7 @@ class UserProfileScreen extends StatelessWidget {
             ListTile(
               tileColor: Colors.white,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r)
+                borderRadius: BorderRadius.circular(12.r),
               ),
               title: Text(
                 'City',
@@ -155,11 +172,11 @@ class UserProfileScreen extends StatelessWidget {
               ),
 
               subtitle: Text(
-                'New York',
+                StorageService.city ?? '',
                 style: getTextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF333333)
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF333333),
                 ),
               ),
             ),
@@ -170,7 +187,7 @@ class UserProfileScreen extends StatelessWidget {
             ListTile(
               tileColor: Colors.white,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r)
+                borderRadius: BorderRadius.circular(12.r),
               ),
               title: Text(
                 'Address',
@@ -182,17 +199,41 @@ class UserProfileScreen extends StatelessWidget {
               ),
 
               subtitle: Text(
-                '456 Market Street',
+                StorageService.address ?? '',
                 style: getTextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF333333)
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xFF333333),
                 ),
               ),
             ),
 
             8.verticalSpace,
 
+            // service/ business category
+            // ListTile(
+            //   tileColor: Colors.white,
+            //   shape: RoundedRectangleBorder(
+            //     borderRadius: BorderRadius.circular(12.r),
+            //   ),
+            //   title: Text(
+            //     'Services/Business Category',
+            //     style: getTextStyle(
+            //       fontSize: 12.sp,
+            //       fontWeight: FontWeight.w500,
+            //       color: AppColors.primaryDeepBlueNormal,
+            //     ),
+            //   ),
+
+            //   subtitle: Text(
+            //     'Photographer',
+            //     style: getTextStyle(
+            //       fontSize: 12.sp,
+            //       fontWeight: FontWeight.w400,
+            //       color: Color(0xFF333333),
+            //     ),
+            //   ),
+            // ),
           ],
         ).paddingSymmetric(horizontal: 20.w),
       ),

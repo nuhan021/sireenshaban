@@ -14,7 +14,6 @@ import '../../../../../routes/app_routes.dart';
 import '../../../../customer/booking/views/screens/booking_screen.dart';
 import '../../../../customer/payment_history/views/screens/payment_history_screen.dart';
 
-
 class VendorProfileScreen extends StatelessWidget {
   const VendorProfileScreen({super.key});
 
@@ -29,81 +28,91 @@ class VendorProfileScreen extends StatelessWidget {
           children: [
             VendorProfileHeader(
               coverPhoto:
+                  StorageService.coverImage ??
                   "https://cdn.shopify.com/s/files/1/0681/6976/1043/files/connor-ellsworth-y4QxywTWZj8-unsplash_1024x1024.jpg?v=1679340043",
               profilePhoto:
+                  StorageService.profileImage ??
                   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEGUodmPqUNG8wJWNkNCvqiNkr1T9tsft5oQ&s",
             ),
 
-
-
             // name
-            Text(
-              'Sara Nim',
-              style: getTextStyle(
+            Obx(() {
+              final userCtrl = Get.find<UserController>();
+              return Text(
+                userCtrl.fullName,
+                style: getTextStyle(
                   fontSize: 20.sp,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.bodyDarkGray
-              ),
-            ),
+                  color: AppColors.bodyDarkGray,
+                ),
+              );
+            }),
 
             Text(
               'Professional Photographer',
               style: getTextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.bodyDarkGray
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w400,
+                color: AppColors.bodyDarkGray,
               ),
             ),
 
             10.verticalSpace,
 
             // location
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // location icon
-                Icon(Icons.location_on_outlined, color: AppColors.secondaryAquaNormal),
-                5.horizontalSpace,
-                Text(
-                  'Radio Colony, Savar',
-                  style: getTextStyle(
+            Obx(() {
+              final userCtrl = Get.find<UserController>();
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // location icon
+                  Icon(
+                    Icons.location_on_outlined,
+                    color: AppColors.secondaryAquaNormal,
+                  ),
+                  5.horizontalSpace,
+                  Text(
+                    '${userCtrl.address.value}, ${userCtrl.city.value}',
+                    style: getTextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.secondaryAquaNormal
+                      color: AppColors.secondaryAquaNormal,
+                    ),
                   ),
-                )
-              ],
-            ),
-
-
+                ],
+              );
+            }),
 
             20.verticalSpace,
 
             // profile
             GestureDetector(
-              onTap: () => AppHelperFunctions.navigateToScreen(context, VendorUserProfileScreen()),
+              onTap: () => AppHelperFunctions.navigateToScreen(
+                context,
+                VendorUserProfileScreen(),
+              ),
               child: Container(
                 height: 65.h,
                 padding: EdgeInsets.all(20.w),
                 decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
-                            color: Color(0xFFEBEBEB)
-                        )
-                    )
+                  border: Border(bottom: BorderSide(color: Color(0xFFEBEBEB))),
                 ),
                 child: Row(
                   children: [
-                    Image.asset(IconPath.navProfile, height: 20.h, color: AppColors.bodyDarkGray,),
+                    Image.asset(
+                      IconPath.navProfile,
+                      height: 20.h,
+                      color: AppColors.bodyDarkGray,
+                    ),
                     10.horizontalSpace,
                     Text(
                       'Profile',
                       style: getTextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.bodyDarkGray
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.bodyDarkGray,
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -118,24 +127,24 @@ class VendorProfileScreen extends StatelessWidget {
                 height: 65.h,
                 padding: EdgeInsets.all(20.w),
                 decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
-                            color: Color(0xFFEBEBEB)
-                        )
-                    )
+                  border: Border(bottom: BorderSide(color: Color(0xFFEBEBEB))),
                 ),
                 child: Row(
                   children: [
-                    Image.asset(IconPath.notificationOutline, height: 20.h, color: AppColors.bodyDarkGray,),
+                    Image.asset(
+                      IconPath.notificationOutline,
+                      height: 20.h,
+                      color: AppColors.bodyDarkGray,
+                    ),
                     10.horizontalSpace,
                     Text(
                       'Notification',
                       style: getTextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.bodyDarkGray
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.bodyDarkGray,
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -143,29 +152,32 @@ class VendorProfileScreen extends StatelessWidget {
 
             // payment history
             GestureDetector(
-              onTap: () => AppHelperFunctions.navigateToScreen(context, PaymentHistoryScreen()),
+              onTap: () => AppHelperFunctions.navigateToScreen(
+                context,
+                PaymentHistoryScreen(),
+              ),
               child: Container(
                 height: 65.h,
                 padding: EdgeInsets.all(20.w),
                 decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
-                            color: Color(0xFFEBEBEB)
-                        )
-                    )
+                  border: Border(bottom: BorderSide(color: Color(0xFFEBEBEB))),
                 ),
                 child: Row(
                   children: [
-                    Image.asset(IconPath.wallet, height: 20.h, color: AppColors.bodyDarkGray,),
+                    Image.asset(
+                      IconPath.wallet,
+                      height: 20.h,
+                      color: AppColors.bodyDarkGray,
+                    ),
                     10.horizontalSpace,
                     Text(
                       'Payment History',
                       style: getTextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.bodyDarkGray
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.bodyDarkGray,
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -173,29 +185,30 @@ class VendorProfileScreen extends StatelessWidget {
 
             // Completed booking
             GestureDetector(
-              onTap: () => AppHelperFunctions.navigateToScreen(context, BookingScreen()),
+              onTap: () =>
+                  AppHelperFunctions.navigateToScreen(context, BookingScreen()),
               child: Container(
                 height: 65.h,
                 padding: EdgeInsets.all(20.w),
                 decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
-                            color: Color(0xFFEBEBEB)
-                        )
-                    )
+                  border: Border(bottom: BorderSide(color: Color(0xFFEBEBEB))),
                 ),
                 child: Row(
                   children: [
-                    Image.asset(IconPath.ticket, height: 20.h, color: AppColors.bodyDarkGray,),
+                    Image.asset(
+                      IconPath.ticket,
+                      height: 20.h,
+                      color: AppColors.bodyDarkGray,
+                    ),
                     10.horizontalSpace,
                     Text(
                       'Completed Booking',
                       style: getTextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.bodyDarkGray
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.bodyDarkGray,
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -211,24 +224,24 @@ class VendorProfileScreen extends StatelessWidget {
                 height: 65.h,
                 padding: EdgeInsets.all(20.w),
                 decoration: BoxDecoration(
-                    border: Border(
-                        bottom: BorderSide(
-                            color: Color(0xFFEBEBEB)
-                        )
-                    )
+                  border: Border(bottom: BorderSide(color: Color(0xFFEBEBEB))),
                 ),
                 child: Row(
                   children: [
-                    Image.asset(IconPath.logout, height: 20.h, color: AppColors.bodyDarkGray,),
+                    Image.asset(
+                      IconPath.logout,
+                      height: 20.h,
+                      color: AppColors.bodyDarkGray,
+                    ),
                     10.horizontalSpace,
                     Text(
                       'Log Out',
                       style: getTextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.primaryDeepBlueNormal
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.primaryDeepBlueNormal,
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

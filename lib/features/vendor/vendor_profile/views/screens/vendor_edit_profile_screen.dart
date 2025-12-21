@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
+import 'package:sireenshaban/core/services/storage_service.dart';
+import 'dart:io';
+import '../../controller/vendor_edit_profile_controller.dart';
 import 'package:sireenshaban/core/common/widgets/IField.dart';
 import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
 
@@ -13,31 +15,36 @@ import '../../../../../routes/app_routes.dart';
 class VendorEditProfileScreen extends StatefulWidget {
   const VendorEditProfileScreen({super.key});
 
-
   @override
-  State<VendorEditProfileScreen> createState() => _VendorEditProfileScreenState();
+  State<VendorEditProfileScreen> createState() =>
+      _VendorEditProfileScreenState();
 }
 
 class _VendorEditProfileScreenState extends State<VendorEditProfileScreen> {
-
-  TextEditingController firstNameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController countryController = TextEditingController();
-  TextEditingController cityController = TextEditingController();
-  TextEditingController addressController = TextEditingController();
-  TextEditingController serviceController = TextEditingController();
+  final VendorEditProfileController controller = Get.put(
+    VendorEditProfileController(),
+  );
 
   @override
   void initState() {
     super.initState();
-    firstNameController.text = 'Sara';
-    lastNameController.text = 'Nim';
-    emailController.text = 'abc@gmail.com';
-    countryController.text = 'USA';
-    cityController.text = 'New York';
-    addressController.text = '456 Market Street';
-    serviceController.text = 'Photographer';
+
+    // Prefill controllers from stored profile (if available)
+    final profile = StorageService.userProfile;
+    controller.firstNameController.text =
+        StorageService.firstName ?? controller.firstNameController.text;
+    controller.lastNameController.text =
+        StorageService.lastName ?? controller.lastNameController.text;
+    controller.countryController.text =
+        profile?['country'] ?? controller.countryController.text;
+    controller.cityController.text =
+        StorageService.city ?? controller.cityController.text;
+    controller.addressController.text =
+        StorageService.address ?? controller.addressController.text;
+    controller.serviceController.text =
+        profile?['service'] ??
+        profile?['business_name'] ??
+        controller.serviceController.text;
   }
 
   @override
@@ -74,13 +81,118 @@ class _VendorEditProfileScreenState extends State<VendorEditProfileScreen> {
         ],
       ),
 
-
-
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            30.verticalSpace,
+            /// 🔹 Cover Image
+            Container(
+              height: 180.h,
+              width: double.infinity,
+              color: Colors.transparent,
+              child: Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  /// 🔹 COVER BACKGROUND (SAME COLOR)
+                  Obx(() {
+                    final img = controller.coverImage.value;
+                    return Container(
+                      height: 180.h,
+                      width: double.infinity,
+                      decoration: img != null
+                          ? BoxDecoration(
+                              image: DecorationImage(
+                                image: FileImage(File(img.path)),
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : BoxDecoration(color: Color(0xFFF3F6FB)),
+                    );
+                  }),
+
+                  /// 🔹 COVER CAMERA ICON (TOP CENTER)
+                  Positioned.fill(
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: Padding(
+                        padding: EdgeInsets.only(top: 32.h),
+                        child: GestureDetector(
+                          onTap: controller.pickCoverImageFromGallery,
+                          child: Container(
+                            height: 44.h,
+                            width: 44.w,
+                            alignment: Alignment.center, // 👈 direct center
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.circle,
+                              boxShadow: [
+                                BoxShadow(color: Colors.black12, blurRadius: 6),
+                              ],
+                            ),
+                            child: Icon(
+                              Icons.camera_alt,
+                              size: 20.sp,
+                              color: AppColors.primaryDeepBlueNormal,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  /// 🔹 PROFILE AVATAR (SAME BACKGROUND, CIRCLE)
+                  Positioned(
+                    bottom: -50.h,
+                    left: 16.w,
+                    child: GestureDetector(
+                      onTap: controller.pickProfileImageFromGallery,
+                      child: Obx(() {
+                        final img = controller.profileImage.value;
+                        return Container(
+                          height: 120.h,
+                          width: 120.w,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(0xFFF3F6FB), // 👈 SAME AS COVER
+                            border: Border.all(color: Colors.white, width: 6),
+                            image: img != null
+                                ? DecorationImage(
+                                    image: FileImage(File(img.path)),
+                                    fit: BoxFit.cover,
+                                  )
+                                : null,
+                          ),
+                          child: img == null
+                              ? Container(
+                                  height: 36.h,
+                                  width: 36.w,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.circle,
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black12,
+                                        blurRadius: 4,
+                                      ),
+                                    ],
+                                  ),
+                                  child: Icon(
+                                    Icons.camera_alt,
+                                    size: 20.sp,
+                                    color: AppColors.primaryDeepBlueNormal,
+                                  ),
+                                )
+                              : null,
+                        );
+                      }),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            64.verticalSpace,
             // first name
             Text(
               'First Name',
@@ -95,8 +207,8 @@ class _VendorEditProfileScreenState extends State<VendorEditProfileScreen> {
 
             // first name text field
             IField(
-              controller: firstNameController,
-              hintText: 'First Name',
+              controller: controller.firstNameController,
+              hintText: StorageService.firstName ?? 'First Name',
               filled: true,
               fillColour: Colors.white,
               borderColor: Color(0xFFEBEBEB),
@@ -118,38 +230,37 @@ class _VendorEditProfileScreenState extends State<VendorEditProfileScreen> {
 
             // first name text field
             IField(
-              controller: lastNameController,
-              hintText: 'Last Name',
+              controller: controller.lastNameController,
+              hintText: StorageService.lastName ?? 'Last Name',
               filled: true,
               fillColour: Colors.white,
               borderColor: Color(0xFFEBEBEB),
             ),
 
             15.verticalSpace,
-
 
             // first name
-            Text(
-              'Email',
-              style: getTextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w500,
-                color: AppColors.primaryDeepBlueNormal,
-              ),
-            ),
+            // Text(
+            //   'Email',
+            //   style: getTextStyle(
+            //     fontSize: 12.sp,
+            //     fontWeight: FontWeight.w500,
+            //     color: AppColors.primaryDeepBlueNormal,
+            //   ),
+            // ),
 
-            5.verticalSpace,
+            // 5.verticalSpace,
 
-            // first name text field
-            IField(
-              controller: emailController,
-              hintText: 'Email',
-              filled: true,
-              fillColour: Colors.white,
-              borderColor: Color(0xFFEBEBEB),
-            ),
+            // // first name text field
+            // IField(
+            //   controller: emailController,
+            //   hintText: 'Email',
+            //   filled: true,
+            //   fillColour: Colors.white,
+            //   borderColor: Color(0xFFEBEBEB),
+            // ),
 
-            15.verticalSpace,
+            // 15.verticalSpace,
 
             // first name
             Text(
@@ -165,8 +276,8 @@ class _VendorEditProfileScreenState extends State<VendorEditProfileScreen> {
 
             // first name text field
             IField(
-              controller: countryController,
-              hintText: 'Country',
+              controller: controller.countryController,
+              hintText: StorageService.userProfile?['country'] ?? 'Country',
               filled: true,
               fillColour: Colors.white,
               borderColor: Color(0xFFEBEBEB),
@@ -188,8 +299,8 @@ class _VendorEditProfileScreenState extends State<VendorEditProfileScreen> {
 
             // first name text field
             IField(
-              controller: cityController,
-              hintText: 'City',
+              controller: controller.cityController,
+              hintText: StorageService.city ?? 'City',
               filled: true,
               fillColour: Colors.white,
               borderColor: Color(0xFFEBEBEB),
@@ -211,43 +322,47 @@ class _VendorEditProfileScreenState extends State<VendorEditProfileScreen> {
 
             // first name text field
             IField(
-              controller: addressController,
-              hintText: 'Address',
+              controller: controller.addressController,
+              hintText: StorageService.address ?? 'Address',
               filled: true,
               fillColour: Colors.white,
               borderColor: Color(0xFFEBEBEB),
             ),
 
             15.verticalSpace,
-
 
             // first name
-            Text(
-              'Service/Business Category',
-              style: getTextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w500,
-                color: AppColors.primaryDeepBlueNormal,
-              ),
-            ),
+            // Text(
+            //   'Service/Business Category',
+            //   style: getTextStyle(
+            //     fontSize: 12.sp,
+            //     fontWeight: FontWeight.w500,
+            //     color: AppColors.primaryDeepBlueNormal,
+            //   ),
+            // ),
 
-            5.verticalSpace,
+            // 5.verticalSpace,
 
-            // first name text field
-            IField(
-              controller: serviceController,
-              hintText: 'Service/Business Category',
-              filled: true,
-              fillColour: Colors.white,
-              borderColor: Color(0xFFEBEBEB),
-            ),
+            // // first name text field
+            // IField(
+            //   controller: serviceController,
+            //   hintText: 'Service/Business Category',
+            //   filled: true,
+            //   fillColour: Colors.white,
+            //   borderColor: Color(0xFFEBEBEB),
+            // ),
 
-            15.verticalSpace,
-
-
+            // 15.verticalSpace,
             20.verticalSpace,
 
-            CustomPrimaryButton(text: "Save Change", color: AppColors.primaryDeepBlueNormal, onPressed: (){}),
+            Obx(() {
+              final loading = controller.isUpdating.value;
+              return CustomPrimaryButton(
+                text: loading ? 'Saving...' : 'Save Change',
+                color: AppColors.primaryDeepBlueNormal,
+                onPressed: loading ? () {} : controller.updateProfile,
+              );
+            }),
 
             30.verticalSpace,
           ],

@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:sireenshaban/core/services/storage_service.dart';
+import 'package:sireenshaban/core/controllers/user_controller.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile/views/screens/vendor_edit_profile_screen.dart';
+import 'package:sireenshaban/features/vendor/vendor_profile/views/widgets/vendor_profile_header.dart';
 
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
@@ -50,178 +53,196 @@ class VendorUserProfileScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            30.verticalSpace,
+            // profile header (cover + avatar)
+            VendorProfileHeader(
+              coverPhoto:
+                  "https://cdn.shopify.com/s/files/1/0681/6976/1043/files/connor-ellsworth-y4QxywTWZj8-unsplash_1024x1024.jpg?v=1679340043",
+              profilePhoto:
+                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEGUodmPqUNG8wJWNkNCvqiNkr1T9tsft5oQ&s",
+            ),
+
+            12.verticalSpace,
 
             // edit icon
             Align(
               alignment: AlignmentGeometry.topRight,
               child: GestureDetector(
-                  onTap: () => AppHelperFunctions.navigateToScreen(context, VendorEditProfileScreen()),
-                  child: Image.asset(IconPath.edit, height: 20.h)),
+                onTap: () => AppHelperFunctions.navigateToScreen(
+                  context,
+                  VendorEditProfileScreen(),
+                ),
+                child: Image.asset(IconPath.edit, height: 20.h),
+              ),
             ),
-
-            12.verticalSpace,
-
 
             // first name
-            ListTile(
-              tileColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r)
-              ),
-              title: Text(
-                'First Name',
-                style: getTextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.primaryDeepBlueNormal,
+            Obx(() {
+              final userCtrl = Get.find<UserController>();
+              return ListTile(
+                tileColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
-              ),
-
-              subtitle: Text(
-                'Sara',
-                style: getTextStyle(
+                title: Text(
+                  'First Name',
+                  style: getTextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.primaryDeepBlueNormal,
+                  ),
+                ),
+                subtitle: Text(
+                  userCtrl.firstName.value,
+                  style: getTextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xFF333333)
+                    color: Color(0xFF333333),
+                  ),
                 ),
-              ),
-            ),
+              );
+            }),
 
             8.verticalSpace,
 
             // last name
-            ListTile(
-              tileColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r)
-              ),
-              title: Text(
-                'First Name',
-                style: getTextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.primaryDeepBlueNormal,
+            Obx(() {
+              final userCtrl = Get.find<UserController>();
+              return ListTile(
+                tileColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
-              ),
-
-              subtitle: Text(
-                'Nim',
-                style: getTextStyle(
+                title: Text(
+                  'Last Name',
+                  style: getTextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.primaryDeepBlueNormal,
+                  ),
+                ),
+                subtitle: Text(
+                  userCtrl.lastName.value,
+                  style: getTextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xFF333333)
+                    color: Color(0xFF333333),
+                  ),
                 ),
-              ),
-            ),
+              );
+            }),
 
             8.verticalSpace,
 
             // email
-            ListTile(
-              tileColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r)
-              ),
-              title: Text(
-                'Email',
-                style: getTextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.primaryDeepBlueNormal,
+            Obx(() {
+              final userCtrl = Get.find<UserController>();
+              return ListTile(
+                tileColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
-              ),
-
-              subtitle: Text(
-                'abc@gmail.com',
-                style: getTextStyle(
+                title: Text(
+                  'Email',
+                  style: getTextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.primaryDeepBlueNormal,
+                  ),
+                ),
+                subtitle: Text(
+                  userCtrl.email.value,
+                  style: getTextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xFF333333)
+                    color: Color(0xFF333333),
+                  ),
                 ),
-              ),
-            ),
+              );
+            }),
 
             8.verticalSpace,
             // city
-            ListTile(
-              tileColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r)
-              ),
-              title: Text(
-                'City',
-                style: getTextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.primaryDeepBlueNormal,
+            Obx(() {
+              final userCtrl = Get.find<UserController>();
+              return ListTile(
+                tileColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
-              ),
-
-              subtitle: Text(
-                'New York',
-                style: getTextStyle(
+                title: Text(
+                  'City',
+                  style: getTextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.primaryDeepBlueNormal,
+                  ),
+                ),
+                subtitle: Text(
+                  userCtrl.city.value,
+                  style: getTextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xFF333333)
+                    color: Color(0xFF333333),
+                  ),
                 ),
-              ),
-            ),
+              );
+            }),
 
             8.verticalSpace,
 
             // Address
-            ListTile(
-              tileColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r)
-              ),
-              title: Text(
-                'Address',
-                style: getTextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.primaryDeepBlueNormal,
+            Obx(() {
+              final userCtrl = Get.find<UserController>();
+              return ListTile(
+                tileColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12.r),
                 ),
-              ),
-
-              subtitle: Text(
-                '456 Market Street',
-                style: getTextStyle(
+                title: Text(
+                  'Address',
+                  style: getTextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.primaryDeepBlueNormal,
+                  ),
+                ),
+                subtitle: Text(
+                  userCtrl.address.value,
+                  style: getTextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
-                    color: Color(0xFF333333)
+                    color: Color(0xFF333333),
+                  ),
                 ),
-              ),
-            ),
+              );
+            }),
 
             8.verticalSpace,
 
             // service/ business category
-            ListTile(
-              tileColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12.r)
-              ),
-              title: Text(
-                'Services/Business Category',
-                style: getTextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.primaryDeepBlueNormal,
-                ),
-              ),
+            // ListTile(
+            //   tileColor: Colors.white,
+            //   shape: RoundedRectangleBorder(
+            //     borderRadius: BorderRadius.circular(12.r),
+            //   ),
+            //   title: Text(
+            //     'Services/Business Category',
+            //     style: getTextStyle(
+            //       fontSize: 12.sp,
+            //       fontWeight: FontWeight.w500,
+            //       color: AppColors.primaryDeepBlueNormal,
+            //     ),
+            //   ),
 
-              subtitle: Text(
-                'Photographer',
-                style: getTextStyle(
-                    fontSize: 12.sp,
-                    fontWeight: FontWeight.w400,
-                    color: Color(0xFF333333)
-                ),
-              ),
-            ),
-
+            //   subtitle: Text(
+            //     'Photographer',
+            //     style: getTextStyle(
+            //       fontSize: 12.sp,
+            //       fontWeight: FontWeight.w400,
+            //       color: Color(0xFF333333),
+            //     ),
+            //   ),
+            // ),
           ],
         ).paddingSymmetric(horizontal: 20.w),
       ),
