@@ -10,33 +10,44 @@ class CustomPrimaryButton extends StatelessWidget {
     required this.color,
     this.textColor = AppColors.primaryDeepBlueLight,
     required this.onPressed,
+    this.isLoading = false,
   });
 
   final String text;
   final Color color;
   final Color textColor;
   final VoidCallback onPressed;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onPressed,
+      onTap: isLoading ? null : onPressed,
       child: Container(
         height: 48.h,
         width: double.maxFinite,
         decoration: BoxDecoration(
-          color: color,
+          color: isLoading ? color.withOpacity(0.7) : color,
           borderRadius: BorderRadius.circular(12.r)
         ),
         child: Center(
-          child: Text(
-            text,
-            style: getTextStyle(
-              fontSize: 16.sp,
-              fontWeight: FontWeight.w500,
-              color: textColor
-            ),
-          )
+          child: isLoading
+              ? SizedBox(
+                  height: 20.h,
+                  width: 20.h,
+                  child: CircularProgressIndicator(
+                    strokeWidth: 2,
+                    valueColor: AlwaysStoppedAnimation<Color>(textColor),
+                  ),
+                )
+              : Text(
+                  text,
+                  style: getTextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                    color: textColor,
+                  ),
+                ),
         ),
       ),
     );
