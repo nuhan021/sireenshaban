@@ -68,6 +68,7 @@ class ProfileScreen extends StatelessWidget {
                     borderRadius: BorderRadiusGeometry.circular(100.r),
                     child: CachedNetworkImage(
                       imageUrl:
+                          StorageService.profileImage ??
                           "https://cdn-images.dzcdn.net/images/cover/2489db20eecbc62b9a6e03ac76471f91/0x1900-000000-80-0-0.jpg",
                       fit: BoxFit.cover,
                       height: 125.h,
@@ -87,7 +88,7 @@ class ProfileScreen extends StatelessWidget {
 
                   // name
                   Text(
-                    'Sara Nim',
+                    StorageService.firstName ?? '',
                     style: getTextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w600,
@@ -106,7 +107,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       5.horizontalSpace,
                       Text(
-                        'Radio Colony, Savar',
+                        StorageService.city ?? '',
                         style: getTextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w400,

@@ -11,6 +11,7 @@ import 'package:sireenshaban/features/customer/stripe/controller/stripe_controll
 import 'package:sireenshaban/features/vendor/vendor_booking_request/views/widgets/booking_request_card.dart';
 import 'package:sireenshaban/features/vendor/vendor_home/views/controller/vendor_home_controller.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile/views/widgets/vendor_profile_header.dart';
+
 import 'package:sireenshaban/features/vendor/vendor_schedule/views/widgets/vendor_schedule_card.dart';
 
 class VendorHomeScreen extends StatelessWidget {
@@ -64,9 +65,12 @@ class VendorHomeScreen extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                ElevatedButton(onPressed: (){
-                  // stripeController.makePayment(amount: 100, currency: 'usd');
-                }, child: Text('Pay')),
+                ElevatedButton(
+                  onPressed: () {
+                    // stripeController.makePayment(amount: 100, currency: 'usd');
+                  },
+                  child: Text('Pay'),
+                ),
                 Text(
                   'Photography',
                   style: getTextStyle(
@@ -116,10 +120,13 @@ class VendorHomeScreen extends StatelessWidget {
                   ),
                 );
               }
-              
-              if(controller.isDealsAndPromotionError.value) {
+
+              if (controller.isDealsAndPromotionError.value) {
                 return Center(
-                  child: IconButton(onPressed: () => controller.getDealsAndPromotions(), icon: Icon(Icons.refresh)),
+                  child: IconButton(
+                    onPressed: () => controller.getDealsAndPromotions(),
+                    icon: Icon(Icons.refresh),
+                  ),
                 );
               }
               return DealsAndPromotions(
