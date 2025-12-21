@@ -7,6 +7,8 @@ import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
 import 'package:sireenshaban/features/customer/booking/views/screens/booking_screen.dart';
 import 'package:sireenshaban/features/customer/payment_history/views/screens/payment_history_screen.dart';
+import 'package:sireenshaban/features/customer/profile/controllers/profile_controller.dart';
+import 'package:sireenshaban/features/customer/profile/models/user_model.dart';
 import 'package:sireenshaban/features/customer/user_profile/views/screens/user_profile_screen.dart';
 
 import '../../../../../core/common/styles/global_text_style.dart';
@@ -16,7 +18,19 @@ import '../../../../../routes/app_routes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
+  ProfileScreen({super.key});
+
+  final ProfileController _profileController =
+      Get.put(ProfileController());
+
+  String _buildLocationText(UserModel user) {
+    final parts = <String>[
+      if ((user.address ?? '').isNotEmpty) user.address!,
+      if ((user.city ?? '').isNotEmpty) user.city!,
+      if ((user.country ?? '').isNotEmpty) user.country!,
+    ];
+    return parts.isNotEmpty ? parts.join(', ') : 'Location not set';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,106 +66,138 @@ class ProfileScreen extends StatelessWidget {
         ],
       ),
 
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            40.verticalSpace,
+      body: Obx(() {
+        if (_profileController.isProfileLoading.value) {
+          return Center(
+            child: LoadingAnimationWidget.staggeredDotsWave(
+              color: AppColors.primaryDeepBlueLight,
+              size: 25.h,
+            ),
+          );
+        }
 
-            // avatar, name, location
-            Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // avatar
-                  ClipRRect(
-                    borderRadius: BorderRadiusGeometry.circular(100.r),
-                    child: CachedNetworkImage(
-                      imageUrl:
-                          "https://cdn-images.dzcdn.net/images/cover/2489db20eecbc62b9a6e03ac76471f91/0x1900-000000-80-0-0.jpg",
-                      fit: BoxFit.cover,
-                      height: 125.h,
-                      width: 125.w,
-                      placeholder: (context, url) => Center(
-                        child: LoadingAnimationWidget.staggeredDotsWave(
-                          color: AppColors.primaryDeepBlueLight,
-                          size: 25.h,
-                        ),
-                      ),
-                      errorWidget: (context, url, error) =>
-                          const Icon(Icons.error),
-                    ),
-                  ),
-
-                  10.verticalSpace,
-
-                  // name
-                  Text(
-                    'Sara Nim',
-                    style: getTextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.primaryDeepBlueNormal,
-                    ),
-                  ),
-
-                  // location
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      // location icon
-                      Icon(
-                        Icons.location_on_outlined,
-                        color: Color(0xFF5C5C5C),
-                      ),
-                      5.horizontalSpace,
-                      Text(
-                        'Radio Colony, Savar',
-                        style: getTextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF5C5C5C),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+        if (_profileController.isProfileError.value) {
+          return Center(
+            child: IconButton(
+              onPressed: _profileController.getProfile,
+              icon: Icon(
+                Icons.refresh,
+                color: AppColors.primaryDeepBlueNormal,
               ),
             ),
+          );
+        }
 
-            20.verticalSpace,
+        final user = _profileController.user.value;
+        final fullName = user == null
+            ? 'User'
+            : '${user.firstName} ${user.lastName}'.trim();
+        final locationText =
+            user == null ? 'Location not set' : _buildLocationText(user);
+        final imageUrl = (user?.image ?? '').isNotEmpty
+            ? user!.image!
+            : "https://cdn-images.dzcdn.net/images/cover/2489db20eecbc62b9a6e03ac76471f91/0x1900-000000-80-0-0.jpg";
 
-            // profile
-            GestureDetector(
-              onTap: () => AppHelperFunctions.navigateToScreen(
-                context,
-                UserProfileScreen(),
-              ),
-              child: Container(
-                padding: EdgeInsets.all(20.w),
-                decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Color(0xFFEBEBEB))),
-                ),
-                child: Row(
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              40.verticalSpace,
+
+              // avatar, name, location
+              Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Image.asset(
-                      IconPath.navProfile,
-                      height: 20.h,
-                      color: AppColors.bodyDarkGray,
-                    ),
-                    10.horizontalSpace,
-                    Text(
-                      'Profile',
-                      style: getTextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.bodyDarkGray,
+                    // avatar
+                    ClipRRect(
+                      borderRadius: BorderRadiusGeometry.circular(100.r),
+                      child: CachedNetworkImage(
+                        imageUrl: imageUrl,
+                        fit: BoxFit.cover,
+                        height: 125.h,
+                        width: 125.w,
+                        placeholder: (context, url) => Center(
+                          child: LoadingAnimationWidget.staggeredDotsWave(
+                            color: AppColors.primaryDeepBlueLight,
+                            size: 25.h,
+                          ),
+                        ),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
                       ),
+                    ),
+
+                    10.verticalSpace,
+
+                    // name
+                    Text(
+                      fullName.isEmpty ? 'User' : fullName,
+                      style: getTextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.primaryDeepBlueNormal,
+                      ),
+                    ),
+
+                    // location
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // location icon
+                        Icon(
+                          Icons.location_on_outlined,
+                          color: Color(0xFF5C5C5C),
+                        ),
+                        5.horizontalSpace,
+                        Text(
+                          locationText,
+                          style: getTextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: Color(0xFF5C5C5C),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
-            ),
+
+              20.verticalSpace,
+
+              // profile
+              GestureDetector(
+                onTap: () => AppHelperFunctions.navigateToScreen(
+                  context,
+                  UserProfileScreen(),
+                ),
+                child: Container(
+                  padding: EdgeInsets.all(20.w),
+                  decoration: BoxDecoration(
+                    border:
+                        Border(bottom: BorderSide(color: Color(0xFFEBEBEB))),
+                  ),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        IconPath.navProfile,
+                        height: 20.h,
+                        color: AppColors.bodyDarkGray,
+                      ),
+                      10.horizontalSpace,
+                      Text(
+                        'Profile',
+                        style: getTextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.bodyDarkGray,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
 
             // notification
             GestureDetector(
@@ -278,8 +324,8 @@ class ProfileScreen extends StatelessWidget {
               ),
             ),
           ],
-        ),
       ),
-    );
+      );
+  }));
   }
 }

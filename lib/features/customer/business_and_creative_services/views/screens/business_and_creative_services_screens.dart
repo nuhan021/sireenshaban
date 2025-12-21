@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/constants/icon_path.dart';
+import 'package:sireenshaban/features/customer/business_and_creative_services/controllers/business_and_service_controller.dart';
 import 'package:sireenshaban/features/customer/confirm_booking/views/widgets/package_booking_payment_method.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/customer/personal_care_and_education/views/widgets/header.dart';
@@ -16,13 +17,25 @@ import '../../../confirm_booking/views/widgets/booking_summary.dart';
 import '../../../home/views/widget/deals_and_promotions.dart';
 
 class BusinessAndCreativeServicesScreens extends StatelessWidget {
-  BusinessAndCreativeServicesScreens({super.key, required this.image, required this.title, required this.controller});
+  BusinessAndCreativeServicesScreens({
+    super.key,
+    required this.image,
+    required this.title,
+    required this.controller,
+    required this.vendorId,
+    this.latitude,
+    this.longitude,
+  });
 
   final String image;
   final String title;
   final HomeController controller;
+  final int vendorId;
+  final double? latitude;
+  final double? longitude;
 
-  final TextEditingController projectScopeController = TextEditingController();
+  final BusinessAndServiceController serviceController =
+      Get.put(BusinessAndServiceController());
 
   @override
   Widget build(BuildContext context) {
@@ -31,21 +44,23 @@ class BusinessAndCreativeServicesScreens extends StatelessWidget {
       backgroundColor: Color(0xFFF9FAFB),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_outlined, color: Colors.white,)),
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: Icon(Icons.arrow_back_outlined, color: Colors.white),
+        ),
       ),
 
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             // header
             Header(image: image, title: title),
 
             40.verticalSpace,
 
             // deals and promotions
-            DealsAndPromotions(controller: controller,),
+            DealsAndPromotions(controller: controller),
 
             40.verticalSpace,
 
@@ -60,24 +75,22 @@ class BusinessAndCreativeServicesScreens extends StatelessWidget {
             //     SelectTimeAndDateScreen(),
             //   ),
             // ).paddingSymmetric(horizontal: 20.w),
-
             20.verticalSpace,
-
 
             // project details
             Container(
-              height: 385.h,
+              // height: 385.h,
               width: double.maxFinite,
               padding: EdgeInsets.all(12.w),
               decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Color(0xFFE5E5E5)),
-                  borderRadius: BorderRadius.circular(14.r)
+                color: Colors.white,
+                border: Border.all(color: Color(0xFFE5E5E5)),
+                borderRadius: BorderRadius.circular(14.r),
               ),
 
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
                 children: [
                   // title
                   Center(
@@ -90,95 +103,99 @@ class BusinessAndCreativeServicesScreens extends StatelessWidget {
                       ),
                     ),
                   ),
-
+                  20.verticalSpace,
                   // project scope
-                  Text(
-                    'Project Scope',
-                    style: getTextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.bodyDarkGray,
-                    ),
-                  ),
-
-                  IField(
-                    controller: projectScopeController,
-                    maxLine: 5,
-                    borderColor: Color(0xFFD1D3D8),
-                    filled: true,
-                    fillColour: AppColors.primaryDeepBlueLight,
-                    hintText: 'project scope...',
-                  ),
-
-                  // duration (hour)
-                  Text(
-                    'Duration (Hours)',
-                    style: getTextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.bodyDarkGray,
-                    ),
-                  ),
-
-                  IField(
-                    controller: projectScopeController,
-                    borderColor: Color(0xFFD1D3D8),
-                    filled: true,
-                    fillColour: AppColors.primaryDeepBlueLight,
-                    hintText: 'e.g,, 4',
-                  ),
-
-                  //Service Type
-                  Text(
-                    'Service Type',
-                    style: getTextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.bodyDarkGray,
-                    ),
-                  ),
-
-                  Container(
-                    height: 47.h,
-                    width: double.maxFinite,
-                    padding: EdgeInsets.all(8.w),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryDeepBlueLight,
-                      borderRadius: BorderRadius.circular(8.r),
-                      border: Border.all(color: Color(0xFFD1D3D8)),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Select service type',
-                          style: getTextStyle(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.secondaryInfoMediumGrayNormal
-                          ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Project Scope',
+                        style: getTextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.bodyDarkGray,
                         ),
+                      ),
+                      20.verticalSpace,
+                      IField(
+                        controller: serviceController.projectDetailsController,
+                        maxLine: 5,
+                        borderColor: Color(0xFFD1D3D8),
+                        filled: true,
+                        fillColour: AppColors.primaryDeepBlueLight,
+                        hintText: 'project scope...',
+                      ),
+                    ],
+                  ),
 
-                        Icon(Icons.keyboard_arrow_down_sharp, color: Color(0xFFB9C2DB),)
-                      ],
-                    ),
-                  )
+                  // // duration (hour)
+                  // Text(
+                  //   'Duration (Hours)',
+                  //   style: getTextStyle(
+                  //     fontSize: 16.sp,
+                  //     fontWeight: FontWeight.w500,
+                  //     color: AppColors.bodyDarkGray,
+                  //   ),
+                  // ),
+
+                  // IField(
+                  //   controller: projectScopeController,
+                  //   borderColor: Color(0xFFD1D3D8),
+                  //   filled: true,
+                  //   fillColour: AppColors.primaryDeepBlueLight,
+                  //   hintText: 'e.g,, 4',
+                  // ),
+
+                  // //Service Type
+                  // Text(
+                  //   'Service Type',
+                  //   style: getTextStyle(
+                  //     fontSize: 16.sp,
+                  //     fontWeight: FontWeight.w500,
+                  //     color: AppColors.bodyDarkGray,
+                  //   ),
+                  // ),
+
+                  // Container(
+                  //   height: 47.h,
+                  //   width: double.maxFinite,
+                  //   padding: EdgeInsets.all(8.w),
+                  //   decoration: BoxDecoration(
+                  //     color: AppColors.primaryDeepBlueLight,
+                  //     borderRadius: BorderRadius.circular(8.r),
+                  //     border: Border.all(color: Color(0xFFD1D3D8)),
+                  //   ),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       Text(
+                  //         'Select service type',
+                  //         style: getTextStyle(
+                  //             fontSize: 12.sp,
+                  //             fontWeight: FontWeight.w400,
+                  //             color: AppColors.secondaryInfoMediumGrayNormal
+                  //         ),
+                  //       ),
+
+                  //       Icon(Icons.keyboard_arrow_down_sharp, color: Color(0xFFB9C2DB),)
+                  //     ],
+                  //   ),
+                  // )
                 ],
               ),
             ).paddingSymmetric(horizontal: 20.w),
 
             20.verticalSpace,
 
-
             // contact details
             Container(
-              height: 350.h,
+              height: 420.h,
               width: double.maxFinite,
               padding: EdgeInsets.all(12.w),
               decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Color(0xFFE5E5E5)),
-                  borderRadius: BorderRadius.circular(14.r)
+                color: Colors.white,
+                border: Border.all(color: Color(0xFFE5E5E5)),
+                borderRadius: BorderRadius.circular(14.r),
               ),
 
               child: Column(
@@ -188,7 +205,7 @@ class BusinessAndCreativeServicesScreens extends StatelessWidget {
                   // title
                   Row(
                     children: [
-                      Image.asset(IconPath.userSquare, height: 24.h,),
+                      Image.asset(IconPath.userSquare, height: 24.h),
                       8.horizontalSpace,
                       Text(
                         'Contact Details',
@@ -200,10 +217,10 @@ class BusinessAndCreativeServicesScreens extends StatelessWidget {
                       ),
                     ],
                   ),
-
+                  20.verticalSpace,
                   // Full Name
                   Text(
-                    'Full Name',
+                    'First Name',
                     style: getTextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w500,
@@ -212,11 +229,28 @@ class BusinessAndCreativeServicesScreens extends StatelessWidget {
                   ),
 
                   IField(
-                    controller: projectScopeController,
+                    controller: serviceController.firstNameController,
                     borderColor: Color(0xFFD1D3D8),
                     filled: true,
                     fillColour: AppColors.primaryDeepBlueLight,
                     hintText: 'Full Name',
+                  ),
+                  // Full Name
+                  Text(
+                    'Last Name',
+                    style: getTextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.bodyDarkGray,
+                    ),
+                  ),
+
+                  IField(
+                    controller: serviceController.lastNameController,
+                    borderColor: Color(0xFFD1D3D8),
+                    filled: true,
+                    fillColour: AppColors.primaryDeepBlueLight,
+                    hintText: 'Last Name',
                   ),
 
                   // Phone Number
@@ -230,14 +264,14 @@ class BusinessAndCreativeServicesScreens extends StatelessWidget {
                   ),
 
                   IField(
-                    controller: projectScopeController,
+                    controller: serviceController.phoneController,
                     borderColor: Color(0xFFD1D3D8),
                     filled: true,
                     fillColour: AppColors.primaryDeepBlueLight,
                     hintText: 'Phone Number',
                   ),
 
-                  //Service Type
+                  // Email
                   Text(
                     'Email',
                     style: getTextStyle(
@@ -248,11 +282,12 @@ class BusinessAndCreativeServicesScreens extends StatelessWidget {
                   ),
 
                   IField(
-                    controller: projectScopeController,
+                    controller: serviceController.emailController,
                     borderColor: Color(0xFFD1D3D8),
                     filled: true,
                     fillColour: AppColors.primaryDeepBlueLight,
-                    hintText: 'email',
+                    hintText: 'Email',
+                    readOnly: true,
                   ),
                 ],
               ),
@@ -261,13 +296,12 @@ class BusinessAndCreativeServicesScreens extends StatelessWidget {
             40.verticalSpace,
 
             // package booking
-
             Text(
               'Payment Method',
               style: getTextStyle(
-                  fontSize: 22.sp,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.bodyDarkGray
+                fontSize: 22.sp,
+                fontWeight: FontWeight.w600,
+                color: AppColors.bodyDarkGray,
               ),
             ).paddingSymmetric(horizontal: 20.w),
 
@@ -275,42 +309,51 @@ class BusinessAndCreativeServicesScreens extends StatelessWidget {
 
             PackageBookingPaymentMethod().paddingSymmetric(horizontal: 20.w),
 
-            40.verticalSpace,
+            // 40.verticalSpace,
 
-            // booking summary
-            Text(
-              'Booking Summary',
-              style: getTextStyle(
-                  fontSize: 22.sp,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.bodyDarkGray
-              ),
-            ).paddingSymmetric(horizontal: 20.w),
+            // // booking summary
+            // Text(
+            //   'Booking Summary',
+            //   style: getTextStyle(
+            //       fontSize: 22.sp,
+            //       fontWeight: FontWeight.w600,
+            //       color: AppColors.bodyDarkGray
+            //   ),
+            // ).paddingSymmetric(horizontal: 20.w),
 
+            // 20.verticalSpace,
+
+            // BookingSummary(),
             20.verticalSpace,
-
-            BookingSummary(),
-
-
-            40.verticalSpace,
 
             // submit butto
-            CustomPrimaryButton(text: 'Send Request for Quote', color: AppColors.primaryDeepBlueNormal, onPressed: (){}).paddingSymmetric(horizontal: 20.w),
-
-            20.verticalSpace,
-
-            Center(
-              child: TextButton(onPressed: (){}, child: Text(
-                'Cancel',
-                style: getTextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.accentNormal
+            Obx(
+              () => CustomPrimaryButton(
+                text: 'Send Request for Quote',
+                color: AppColors.primaryDeepBlueNormal,
+                isLoading: serviceController.isSubmitting.value,
+                onPressed: () => serviceController.sendServiceRequest(
+                  vendorId: vendorId,
+                  latitude: latitude,
+                  longitude: longitude,
                 ),
-              )),
+              ).paddingSymmetric(horizontal: 20.w),
             ),
 
             20.verticalSpace,
+
+            // Center(
+            //   child: TextButton(onPressed: (){}, child: Text(
+            //     'Cancel',
+            //     style: getTextStyle(
+            //         fontSize: 14.sp,
+            //         fontWeight: FontWeight.w400,
+            //         color: AppColors.accentNormal
+            //     ),
+            //   )),
+            // ),
+
+            // 20.verticalSpace,
           ],
         ),
       ),

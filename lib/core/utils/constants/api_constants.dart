@@ -13,4 +13,6 @@ class ApiConstants {
   static const String trendingNearby = "$baseUrl/trending-nearby";
   static const String communityEvents = "$baseUrl/events";
   static const String bookings = "$baseUrl/bookings";
+  static const String serviceRequest = "$baseUrl/serviceRequest";
+  static const String profile = "$baseUrl/profile";
 }

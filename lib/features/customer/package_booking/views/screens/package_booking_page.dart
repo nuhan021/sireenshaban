@@ -90,6 +90,14 @@ class _PackageBookingPageState extends State<PackageBookingPage> {
                                   image: widget.image,
                                   title: widget.title,
                                   controller: widget.controller,
+                                  vendorId: data.vendorId,
+                                  latitude: data.vendor.latitude is num
+                                      ? (data.vendor.latitude as num).toDouble()
+                                      : null,
+                                  longitude: data.vendor.longitude is num
+                                      ? (data.vendor.longitude as num)
+                                          .toDouble()
+                                      : null,
                                 ),
                               );
                               break;
