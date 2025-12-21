@@ -44,6 +44,7 @@ class TrendingNearby extends StatelessWidget {
                 status: 'popular',
                 group: ServicesGroup.businessAndCreativeServices,
                 controller: controller,
+                vendorId: item.id,
               );
             },
           ),

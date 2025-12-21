@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:sireenshaban/features/vendor/vendor_home/model/vendor_booking_model.dart';
 
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/common/widgets/IField.dart';
@@ -11,7 +12,9 @@ import '../../../../../core/utils/constants/image_path.dart';
 import '../../../../../routes/app_routes.dart';
 
 class UserBookingDetailsScreen extends StatelessWidget {
-  const UserBookingDetailsScreen({super.key});
+  const UserBookingDetailsScreen({super.key, required this.data});
+
+  final Datum data;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +85,7 @@ class UserBookingDetailsScreen extends StatelessWidget {
                   ListTile(
                     leading: Image.asset(ImagePath.logo),
                     title: Text(
-                      'Marco’s Kitchen',
+                      data.vendor.businessName,
                       style: getTextStyle(
                         fontSize: 22.sp,
                         fontWeight: FontWeight.w600,
@@ -90,7 +93,7 @@ class UserBookingDetailsScreen extends StatelessWidget {
                       ),
                     ),
                     subtitle: Text(
-                      'Private Dinner Booking',
+                      data.package!.title,
                       style: getTextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w400,
@@ -119,7 +122,7 @@ class UserBookingDetailsScreen extends StatelessWidget {
                             ),
 
                             Text(
-                              '#BV-2025-0142',
+                              '#${data.id}',
                               style: getTextStyle(
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.w400,
@@ -136,7 +139,7 @@ class UserBookingDetailsScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Date & Time',
+                              'Date',
                               style: getTextStyle(
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.w600,
@@ -145,7 +148,7 @@ class UserBookingDetailsScreen extends StatelessWidget {
                             ),
 
                             Text(
-                              'March 15, 2025',
+                              "${data.date.day}-${data.date.month}-${data.date.year}",
                               style: getTextStyle(
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.w400,
@@ -171,7 +174,7 @@ class UserBookingDetailsScreen extends StatelessWidget {
                             ),
 
                             Text(
-                              'Cash',
+                              'Stripe',
                               style: getTextStyle(
                                 fontSize: 12.sp,
                                 fontWeight: FontWeight.w400,
@@ -197,7 +200,7 @@ class UserBookingDetailsScreen extends StatelessWidget {
                             ),
 
                             Text(
-                              '\$120.60',
+                              '\$${data.total}',
                               style: getTextStyle(
                                 fontSize: 20.sp,
                                 fontWeight: FontWeight.w600,
@@ -223,7 +226,7 @@ class UserBookingDetailsScreen extends StatelessWidget {
               ),
               leading: Image.asset(ImagePath.personImg, height: 40.h),
               title: Text(
-                "Contact Host",
+                "Contact Customer",
                 overflow: TextOverflow.ellipsis,
                 style: getTextStyle(
                   fontSize: 14.sp,
@@ -233,7 +236,7 @@ class UserBookingDetailsScreen extends StatelessWidget {
               ),
 
               subtitle: Text(
-                "Restaurant Manager",
+                data.user.phoneNumber ?? '',
                 overflow: TextOverflow.ellipsis,
                 style: getTextStyle(
                   fontSize: 12.sp,
@@ -261,82 +264,82 @@ class UserBookingDetailsScreen extends StatelessWidget {
             40.verticalSpace,
 
             // rating
-            Text(
-              'Give Rating',
-              style: getTextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-                color: AppColors.primaryDeepBlueNormal,
-              ),
-            ),
-
-            10.verticalSpace,
-
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                for (int i = 0; i < 5; i++)
-                  Icon(
-                    Icons.star_outline_rounded,
-                    color: Color(0xFFF0C020),
-                    size: 20.h,
-                  ).paddingSymmetric(horizontal: 3.w),
-              ],
-            ),
-
-            10.verticalSpace,
-
-            Text(
-              '0.00',
-              style: getTextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w400,
-                color: AppColors.secondaryInfoMediumGrayNormal
-              ),
-            ),
-
-            20.verticalSpace,
-
-            // feedback
-            Text(
-              'Give feedback',
-              style: getTextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.w600,
-                color: AppColors.primaryDeepBlueNormal,
-              ),
-            ),
-
-            10.verticalSpace,
-
-            IField(
-              controller: TextEditingController(),
-              borderColor: Color(0xFFD1D3D8),
-              maxLine: 5,
-              filled: true,
-              fillColour: Colors.white,
-              hintText: 'Your Feedback',
-            ),
-
-            30.verticalSpace,
-
-            Container(
-              height: 50.h,
-              width: double.maxFinite,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12.r),
-                border: Border.all(color: AppColors.primaryDeepBlueNormal,width: 2)
-              ),
-              alignment: AlignmentGeometry.center,
-              child: Text(
-                'Submit',
-                style: getTextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.primaryDeepBlueNormal
-                ),
-              ),
-            ),
+            // Text(
+            //   'Give Rating',
+            //   style: getTextStyle(
+            //     fontSize: 16.sp,
+            //     fontWeight: FontWeight.w600,
+            //     color: AppColors.primaryDeepBlueNormal,
+            //   ),
+            // ),
+            //
+            // 10.verticalSpace,
+            //
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     for (int i = 0; i < 5; i++)
+            //       Icon(
+            //         Icons.star_outline_rounded,
+            //         color: Color(0xFFF0C020),
+            //         size: 20.h,
+            //       ).paddingSymmetric(horizontal: 3.w),
+            //   ],
+            // ),
+            //
+            // 10.verticalSpace,
+            //
+            // Text(
+            //   '0.00',
+            //   style: getTextStyle(
+            //     fontSize: 12.sp,
+            //     fontWeight: FontWeight.w400,
+            //     color: AppColors.secondaryInfoMediumGrayNormal
+            //   ),
+            // ),
+            //
+            // 20.verticalSpace,
+            //
+            // // feedback
+            // Text(
+            //   'Give feedback',
+            //   style: getTextStyle(
+            //     fontSize: 16.sp,
+            //     fontWeight: FontWeight.w600,
+            //     color: AppColors.primaryDeepBlueNormal,
+            //   ),
+            // ),
+            //
+            // 10.verticalSpace,
+            //
+            // IField(
+            //   controller: TextEditingController(),
+            //   borderColor: Color(0xFFD1D3D8),
+            //   maxLine: 5,
+            //   filled: true,
+            //   fillColour: Colors.white,
+            //   hintText: 'Your Feedback',
+            // ),
+            //
+            // 30.verticalSpace,
+            //
+            // Container(
+            //   height: 50.h,
+            //   width: double.maxFinite,
+            //   decoration: BoxDecoration(
+            //     borderRadius: BorderRadius.circular(12.r),
+            //     border: Border.all(color: AppColors.primaryDeepBlueNormal,width: 2)
+            //   ),
+            //   alignment: AlignmentGeometry.center,
+            //   child: Text(
+            //     'Submit',
+            //     style: getTextStyle(
+            //       fontSize: 16.sp,
+            //       fontWeight: FontWeight.w600,
+            //       color: AppColors.primaryDeepBlueNormal
+            //     ),
+            //   ),
+            // ),
 
             30.verticalSpace,
           ],

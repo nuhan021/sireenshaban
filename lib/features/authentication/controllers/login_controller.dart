@@ -65,7 +65,7 @@ class LoginController extends GetxController {
     // Save token and role
     await StorageService.saveToken(
       loginModel.value!.data.token,
-      loginModel.value!.data.user.role,
+      loginModel.value!.data.user.id,
     );
     await StorageService.saveRole(loginModel.value!.data.user.role);
 
