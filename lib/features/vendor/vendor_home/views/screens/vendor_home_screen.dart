@@ -6,10 +6,12 @@ import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
 import 'package:sireenshaban/core/utils/constants/icon_path.dart';
+import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
 import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/deals_and_promotions.dart';
 import 'package:sireenshaban/features/customer/stripe/controller/stripe_controller.dart';
+import 'package:sireenshaban/features/vendor/create_package/view/screens/create_package.dart';
 import 'package:sireenshaban/features/vendor/vendor_booking_request/views/widgets/booking_request_card.dart';
 import 'package:sireenshaban/features/vendor/vendor_home/views/controller/vendor_home_controller.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile/views/widgets/vendor_profile_header.dart';
@@ -146,6 +148,17 @@ class VendorHomeScreen extends StatelessWidget {
                         "No deals or promotions found",
                         style: TextStyle(color: Colors.grey, fontSize: 14.sp),
                       ),
+
+                      TextButton(onPressed: (){
+                        AppHelperFunctions.navigateToScreen(context, CreatePackage());
+                      }, child: Text(
+                        'Add Promotions',
+                        style: getTextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.primaryDeepBlueNormal,
+                        ),
+                      ))
                     ],
                   ),
                 );
