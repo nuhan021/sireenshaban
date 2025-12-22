@@ -94,11 +94,5 @@ class StorageService {
   
   // Getter for vendor ID (from vendor profile data)
   // The vendor object is nested inside the user profile for vendors
-  static int? get vendorId {
-    final vendor = userProfile?['vendor'];
-    if (vendor != null && vendor is Map<String, dynamic>) {
-      return vendor['id'] as int?;
-    }
-    return null;
-  }
+
 }
