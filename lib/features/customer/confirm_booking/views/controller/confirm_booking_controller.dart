@@ -45,7 +45,7 @@ class ConfirmBookingController extends GetxController {
 //   "platform_fee": 10,
 //   "total": 130.00,
 
-      "status": "Pending",
+      "status": "Confirmed",
       "confirmed_at": null,
       "cancelled_at": null,
       "completed_at": null

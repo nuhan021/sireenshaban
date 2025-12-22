@@ -61,7 +61,7 @@ class User {
   String email;
   String role;
   bool isFirstTime;
-  String? subscriptionType; // made nullable to safely handle `null` from API
+  dynamic subscriptionType;
 
   User({
     required this.id,

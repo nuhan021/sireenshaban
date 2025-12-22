@@ -84,7 +84,8 @@ class LoginController extends GetxController {
 
     if (loginModel.value!.data.user.role == 'Vendor') {
       if (loginModel.value!.data.user.isFirstTime) {
-        Get.offAllNamed(AppRoute.vendorSetupScreen);
+        // Get.offAllNamed(AppRoute.vendorSetupScreen);
+        Get.offAllNamed(AppRoute.subscriptionScreen);
       } else {
         Get.offAllNamed(AppRoute.vendorBottomNavBar);
       }

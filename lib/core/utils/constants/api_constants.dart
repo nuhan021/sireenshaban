@@ -3,6 +3,7 @@ class ApiConstants {
 
   static const String baseUrl =
       "https://api.thecommunitylist.com/api/v1";
+  // "https://api.thecommunitylist.com/api/v1";
   static const String login = "$baseUrl/login";
   static const String editProfile = "$baseUrl/profile";
   static const String register = "$baseUrl/register";
@@ -21,6 +22,7 @@ class ApiConstants {
   static const String bookingsByVendor = "$baseUrl/booking-list-by-vendor";
   static const String bookingsByUser = "$baseUrl/booking-list-by-user";
   static const String profile = "$baseUrl/profile";
+  static const String vendorProfile = "$baseUrl/vendors";
 
   // Chat endpoints
   static const String chatHistory = "$baseUrl/chat";

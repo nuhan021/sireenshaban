@@ -68,7 +68,7 @@ class EventController extends GetxController {
 //   "platform_fee": 10,
 //   "total": 130.00,
 
-      "status": "Pending",
+      "status": "Confirmed",
       "confirmed_at": "2025-12-11 10:00:00",
       "cancelled_at": null,
       "completed_at": null

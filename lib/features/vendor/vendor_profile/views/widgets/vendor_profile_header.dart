@@ -20,57 +20,50 @@ class VendorProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      final userCtrl = Get.find<UserController>();
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // thumbnail image and profile
-          SizedBox(
-            height: 260.h,
-            width: double.maxFinite,
-            child: Stack(
-              children: [
-                // thumbnail
-                ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(10.r),
-                    bottomRight: Radius.circular(10.r),
-                  ),
-                  child: CachedNetworkImage(
-                    imageUrl: userCtrl.coverImage.value.isNotEmpty
-                        ? userCtrl.coverImage.value
-                        : coverPhoto,
-                    fit: BoxFit.cover,
-                    height: 225.h,
-                    width: double.maxFinite,
-                    placeholder: (context, url) => Center(
-                      child: LoadingAnimationWidget.staggeredDotsWave(
-                        color: AppColors.primaryDeepBlueLight,
-                        size: 25.h,
-                      ),
-                    ),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
-                  ),
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // thumbnail image and profile
+        SizedBox(
+          height: 260.h,
+          width: double.maxFinite,
+          child: Stack(
+            children: [
+              // thumbnail
+              ClipRRect(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(10.r),
+                  bottomRight: Radius.circular(10.r),
                 ),
-                Positioned(
-                  bottom: 0,
-                  left: 20.w,
-                  child: CircleAvatar(
-                    radius: 60.r,
-                    backgroundImage: NetworkImage(
-                      userCtrl.profileImage.value.isNotEmpty
-                          ? userCtrl.profileImage.value
-                          : profilePhoto,
+                child: CachedNetworkImage(
+                  imageUrl: coverPhoto,
+                  fit: BoxFit.cover,
+                  height: 225.h,
+                  width: double.maxFinite,
+                  placeholder: (context, url) => Center(
+                    child: LoadingAnimationWidget.staggeredDotsWave(
+                      color: AppColors.primaryDeepBlueLight,
+                      size: 25.h,
                     ),
                   ),
+                  errorWidget: (context, url, error) =>
+                  const Icon(Icons.error),
                 ),
-              ],
-            ),
+              ),
+              Positioned(
+                bottom: 0,
+                left: 20.w,
+                child: CircleAvatar(
+                  radius: 60.r,
+                  backgroundImage: NetworkImage(
+                    profilePhoto,
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
-      );
-    });
+        ),
+      ],
+    );
   }
 }

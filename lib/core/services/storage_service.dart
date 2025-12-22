@@ -5,6 +5,7 @@ class StorageService {
   // Constants for preference keys
   static const String _tokenKey = 'token';
   static const String _idKey = 'userId';
+  static const String _vendorOdKey = 'vendorId';
   static const String onboardingStatus = "onboarding";
   static const String _role = "role";
   static const String _profileKey = 'user_profile';
@@ -35,6 +36,10 @@ class StorageService {
     return token != null;
   }
 
+  static Future<void> savaVendorId(int id) async {
+    await _preferences?.setString(_vendorOdKey, id.toString());
+  }
+
   // Save the token and user ID to local storage
   static Future<void> saveToken(String token, String id) async {
     await _preferences?.setString(_tokenKey, token);
@@ -58,6 +63,8 @@ class StorageService {
 
   // Getter for role
   static String? get role => _preferences?.getString(_role);
+
+  static String? get vendorId => _preferences?.getString(_vendorOdKey);
 
   // Save serialized user profile JSON (as returned by /profile API)
   static Future<void> saveUserProfile(Map<String, dynamic> profile) async {

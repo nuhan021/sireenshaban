@@ -9,6 +9,7 @@ import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/constants/api_constants.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
 import 'package:sireenshaban/core/utils/logging/logger.dart';
+import 'package:sireenshaban/routes/app_routes.dart';
 
 import '../../../../core/utils/constants/snackbar_constant.dart';
 
@@ -206,28 +207,20 @@ class VendorSetupScreenController extends GetxController {
 
   Future<void> submit() async {
     if (isSubmitLoading.value) return;
-
     isSubmitLoading.value = true;
 
     try {
       final dio = Dio();
 
-      // Configure Dio to handle redirects properly
-      dio.options.followRedirects = true;
-      dio.options.maxRedirects = 5;
-      dio.options.validateStatus = (status) {
-        return status! < 400; // Accept any status code less than 400 (including 302)
-      };
-
       dio.options.headers = {
         'Authorization': 'Bearer ${StorageService.token}',
+        'Accept': 'application/json',
         'ngrok-skip-browser-warning': '69420',
-        'User-Agent': 'MyApp/1.0',
       };
 
       FormData formData = FormData();
 
-      // Add all text fields
+      // --- Basic Information ---
       formData.fields.addAll([
         MapEntry('first_name', firstNameController.text.trim()),
         MapEntry('last_name', lastNameController.text.trim()),
@@ -236,87 +229,93 @@ class VendorSetupScreenController extends GetxController {
         MapEntry('city', cityController.text.trim()),
         MapEntry('address', roadController.text.trim()),
         MapEntry('business_name', businessNameController.text.trim()),
-        MapEntry('category_id', businessCategoryList.indexWhere((e) => e == businessCategory.value).toString()),
+        MapEntry('category_id', (businessCategoryList.indexOf(businessCategory.value) + 1).toString()),
         MapEntry('latitude', shopLocation.latitude.toString()),
         MapEntry('longitude', shopLocation.longitude.toString()),
-        MapEntry('settings[offers_virtual]', offerVirtualMeeting.value.toString()),
-        MapEntry('settings[team_size]', teamSize.value),
-        MapEntry('settings[max_travel_distance]', travelDistance.value),
-        MapEntry('settings[travel_policy]', travelFeePolicyController.text.trim()),
-        MapEntry('settings[payment_method]', "Stripe"),
         MapEntry('status', '1'),
       ]);
 
-      // Service types
+      // --- Settings (Array format maintenance) ---
+      formData.fields.addAll([
+        MapEntry('settings[offers_virtual]', offerVirtualMeeting.value ? "1" : "0"),
+        MapEntry('settings[team_size][]', teamSize.value.toString()),
+        MapEntry('settings[max_travel_distance]', travelDistance.value.toString()),
+        MapEntry('settings[travel_policy]', travelFeePolicyController.text.trim()),
+        MapEntry('settings[payment_method]', "Stripe"),
+      ]);
+
       if (atMyBusinessAddress.value) {
-        formData.fields.add(MapEntry('settings[service_type][]', "At my business address"));
+        formData.fields.add(const MapEntry('settings[service_type][]', "At my business address"));
       }
       if (iTravelToTheClient.value) {
-        formData.fields.add(MapEntry('settings[service_type][]', "I travel to the client"));
+        formData.fields.add(const MapEntry('settings[service_type][]', "I travel to the client"));
       }
 
-      // Business hours
+      // --- Business Hours (Fixed: Format as Decimal Number) ---
       for (int i = 0; i < daysOrder.length; i++) {
         final day = daysOrder[i];
         final startTime = startTimes[day]!.value;
         final endTime = endTimes[day]!.value;
+        final isClosed = !weekDays[day]!.value;
+
+        // লজিক: 10:30 AM কে "10.30" স্ট্রিং হিসেবে পাঠানো যা সার্ভারে Number হিসেবে গণ্য হবে
+        // padLeft নিশ্চিত করে যে 9:05 হবে 09.05
+        String openTimeDecimal = '${startTime.hour.toString().padLeft(2, '0')}.${startTime.minute.toString().padLeft(2, '0')}';
+        String closeTimeDecimal = '${endTime.hour.toString().padLeft(2, '0')}.${endTime.minute.toString().padLeft(2, '0')}';
 
         formData.fields.addAll([
           MapEntry('business_hours[$i][day]', day),
-          MapEntry('business_hours[$i][is_closed]', (!weekDays[day]!.value).toString()),
-          MapEntry('business_hours[$i][open_time]', '${startTime.hour.toString().padLeft(2, '0')}:${startTime.minute.toString().padLeft(2, '0')}'),
-          MapEntry('business_hours[$i][close_time]', '${endTime.hour.toString().padLeft(2, '0')}:${endTime.minute.toString().padLeft(2, '0')}'),
+          MapEntry('business_hours[$i][is_closed]', isClosed ? "1" : "0"),
+          MapEntry('business_hours[$i][open_time]', openTimeDecimal), // "10.30"
+          MapEntry('business_hours[$i][close_time]', closeTimeDecimal), // "18.00"
         ]);
       }
 
-      // Add images
+      // --- Image Handling ---
       if (profileImage.value != null) {
-        formData.files.add(
-          MapEntry(
-            'image',
-            await MultipartFile.fromFile(
-              profileImage.value!.path,
-              filename: profileImage.value!.name,
-            ),
-          ),
-        );
+        formData.files.add(MapEntry(
+          'image',
+          await MultipartFile.fromFile(profileImage.value!.path),
+        ));
       }
 
       if (coverImage.value != null) {
-        formData.files.add(
-          MapEntry(
-            'background_image',
-            await MultipartFile.fromFile(
-              coverImage.value!.path,
-              filename: coverImage.value!.name,
-            ),
-          ),
-        );
+        formData.files.add(MapEntry(
+          'background_image',
+          await MultipartFile.fromFile(coverImage.value!.path),
+        ));
       }
 
-      AppLoggerHelper.debug('Sending to: ${ApiConstants.updateVendor}');
-
-      final response = await dio.post(
-        "http://overapprehensive-optatively-meri.ngrok-free.dev/api/v1/vendors",
-        data: formData,
-      );
-
-      AppLoggerHelper.debug('Response: ${response.data}');
+      AppLoggerHelper.debug('Submitting to: ${ApiConstants.updateVendor}');
+      final response = await dio.post(ApiConstants.updateVendor, data: formData);
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        SnackBarConstant.success('Vendor setup completed successfully');
+        bool isSuccess = response.data['success'] == true || response.data['status'] == 'success';
+
+        if (isSuccess) {
+          AppLoggerHelper.info('✅ SUCCESS: Succesfully updated vendor profile');
+          SnackBarConstant.success('Setup successful!');
+
+          final vendorId = response.data['vendor']['id'];
+
+          StorageService.savaVendorId(vendorId);
+
+          AppLoggerHelper.info('The toal id is: $vendorId');
+
+          // নেভিগেশনের আগে সামান্য ডিলে (Delay) দিলে লগটি দেখার সুযোগ থাকে
+          await Future.delayed(const Duration(milliseconds: 500));
+          Get.offAllNamed(AppRoute.vendorBottomNavBar);
+        } else {
+          AppLoggerHelper.error('❌ FAILED: Server returned success false', response.data.toString());
+          SnackBarConstant.error(response.data['message'] ?? 'Failed to update');
+        }
       } else {
-        SnackBarConstant.error('Failed: ${response.statusCode}');
+        SnackBarConstant.error('Server error: ${response.statusCode}');
       }
+
     } on DioException catch (e) {
-      AppLoggerHelper.error('Dio error', e.toString());
-      if (e.response != null) {
-        AppLoggerHelper.error('Response data', e.response?.data.toString() ?? '');
-      }
-      SnackBarConstant.error('Network error: ${e.message}');
-    } catch (e) {
-      AppLoggerHelper.error('Setup error', e.toString());
-      SnackBarConstant.error('An error occurred: $e');
+      AppLoggerHelper.error('Submission Error', e.response?.data.toString() ?? e.message!);
+      SnackBarConstant.error('Check all fields and try again.');
     } finally {
       isSubmitLoading.value = false;
     }

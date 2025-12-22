@@ -170,6 +170,78 @@ class _CreatePackageState extends State<CreatePackage> {
         }),
         16.verticalSpace,
 
+        // --- Service Group Dropdown ---
+        _buildInputLabel("Service Group"),
+        Obx(() => _buildDropdownContainer(
+          child: DropdownButton<ServicesGroup>(
+            isExpanded: true,
+            hint: const Text("Select Group"),
+            value: controller.selectedServiceGroup.value,
+            items: ServicesGroup.values.map((group) {
+
+              // 1. Convert camelCase to spaces: "business And Creative Services"
+              String text = group.name.replaceAllMapped(
+                  RegExp(r'([A-Z])'),
+                      (match) => ' ${match.group(0)}'
+              );
+
+              // 2. Capitalize first letter and lowercase the rest: "Business and creative services"
+              String formattedText = text[0].toUpperCase() + text.substring(1).toLowerCase();
+
+              return DropdownMenuItem(
+                value: group,
+                child: Text(formattedText),
+              );
+            }).toList(),
+            onChanged: (val) => controller.selectedServiceGroup.value = val,
+          ),
+        )),
+        16.verticalSpace,
+
+        // --- Venue Type & Shift Selection ---
+        Row(
+          children: [
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildInputLabel("Venue Type"),
+                  Obx(() => _buildDropdownContainer(
+                    child: DropdownButton<String>(
+                      isExpanded: true,
+                      value: controller.venueType.value,
+                      items: ["Indoor", "Outdoor"].map((type) {
+                        return DropdownMenuItem(value: type, child: Text(type));
+                      }).toList(),
+                      onChanged: (val) => controller.venueType.value = val!,
+                    ),
+                  )),
+                ],
+              ),
+            ),
+            12.horizontalSpace,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildInputLabel("Shift"),
+                  Obx(() => _buildDropdownContainer(
+                    child: DropdownButton<String>(
+                      isExpanded: true,
+                      value: controller.shift.value,
+                      items: ["Morning", "Evening", "Night"].map((s) {
+                        return DropdownMenuItem(value: s, child: Text(s));
+                      }).toList(),
+                      onChanged: (val) => controller.shift.value = val!,
+                    ),
+                  )),
+                ],
+              ),
+            ),
+          ],
+        ),
+        16.verticalSpace,
+
         _buildInputLabel("Package Title"),
         IField(
           controller: controller.titleController,
@@ -179,6 +251,7 @@ class _CreatePackageState extends State<CreatePackage> {
           borderColor: const Color(0xFFEBEBEB),
         ),
         16.verticalSpace,
+
 
         Row(
           children: [
@@ -475,4 +548,17 @@ class _CreatePackageState extends State<CreatePackage> {
       },
     );
   }
+}
+
+// Helper for consistent dropdown styling
+Widget _buildDropdownContainer({required Widget child}) {
+  return Container(
+    padding: EdgeInsets.symmetric(horizontal: 12.w),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(8.r),
+      border: Border.all(color: const Color(0xFFEBEBEB)),
+    ),
+    child: DropdownButtonHideUnderline(child: child),
+  );
 }
