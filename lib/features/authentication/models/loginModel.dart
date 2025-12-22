@@ -61,22 +61,24 @@ class User {
   String email;
   String role;
   bool isFirstTime;
-  String subscriptionType;
+  String? subscriptionType; // made nullable to safely handle `null` from API
 
   User({
     required this.id,
     required this.email,
     required this.role,
     required this.isFirstTime,
-    required this.subscriptionType,
+    this.subscriptionType,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json["id"],
-    email: json["email"],
-    role: json["role"],
-    isFirstTime: json["is_first_time"],
-    subscriptionType: json["subscription_type"],
+    email: json["email"] ?? "",
+    role: json["role"] ?? "",
+    isFirstTime: json["is_first_time"] ?? false,
+    subscriptionType: json.containsKey("subscription_type") && json["subscription_type"] != null
+        ? json["subscription_type"] as String
+        : null,
   );
 
   Map<String, dynamic> toJson() => {

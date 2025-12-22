@@ -66,6 +66,7 @@ dependencies:
   iconly: ^1.0.1
   dio: ^5.9.0
   flutter_stripe: ^12.1.1
+  record: ^6.1.2
 
 dev_dependencies:
   flutter_test:
