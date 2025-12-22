@@ -11,8 +11,6 @@ import 'package:sireenshaban/features/customer/personal_care_and_education/views
 import '../../../../../core/common/widgets/IField.dart';
 import '../../../../../core/common/widgets/custom_primary_button.dart';
 import '../../../../../core/utils/constants/colors.dart';
-import '../../../../../core/utils/helpers/app_helper.dart';
-import '../../../confirm_booking/views/screens/select_time_and_date_screen.dart';
 import '../../../home/views/widget/deals_and_promotions.dart';
 
 class PersonalCareAndEducationScreens extends StatelessWidget {
@@ -40,7 +38,13 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
           children: [
 
             // header
-            Header(image: image, title: title),
+            Header(
+              image: image,
+              title: title,
+              vendorId: 0,
+              vendorName: title,
+              vendorAvatar: null,
+            ),
 
             40.verticalSpace,
 

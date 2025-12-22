@@ -1,7 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:intl/date_symbol_data_file.dart';
 import 'package:sireenshaban/app.dart';
 import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/authentication/services/user_info_services.dart';

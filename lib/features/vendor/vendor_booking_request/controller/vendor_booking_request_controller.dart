@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/constants/enums.dart';
@@ -17,8 +18,10 @@ class VendorBookingController extends GetxController {
       <ServiceRequestListItem>[].obs;
   RxBool isServiceRequestDetailsLoading = false.obs;
   RxBool isServiceRequestDetailsError = false.obs;
-  Rx<ServiceRequestDetail?> serviceRequestDetails =
-      Rx<ServiceRequestDetail?>(null);
+  Rx<ServiceRequestDetail?> serviceRequestDetails = Rx<ServiceRequestDetail?>(
+    null,
+  );
+  RxBool isSubmittingQuote = false.obs;
 
   @override
   void onInit() {
@@ -41,8 +44,9 @@ class VendorBookingController extends GetxController {
 
     final token = StorageService.token;
     AppLoggerHelper.debug("token is : ${token}");
-    final authToken =
-        token == null ? null : (token.startsWith("Bearer ") ? token : "Bearer $token");
+    final authToken = token == null
+        ? null
+        : (token.startsWith("Bearer ") ? token : "Bearer $token");
     if (token == null) {
       isServiceRequestLoading.value = false;
       isServiceRequestError.value = true;
@@ -50,9 +54,7 @@ class VendorBookingController extends GetxController {
       return;
     }
 
-    final response = await _services.getServiceRequests(
-      token: authToken!,
-    );
+    final response = await _services.getServiceRequests(token: authToken!);
 
     if (response.statusCode == 401) {
       isServiceRequestLoading.value = false;
@@ -91,8 +93,9 @@ class VendorBookingController extends GetxController {
     serviceRequestDetails.value = null;
 
     final token = StorageService.token;
-    final authToken =
-        token == null ? null : (token.startsWith("Bearer ") ? token : "Bearer $token");
+    final authToken = token == null
+        ? null
+        : (token.startsWith("Bearer ") ? token : "Bearer $token");
     if (token == null) {
       isServiceRequestDetailsLoading.value = false;
       isServiceRequestDetailsError.value = true;
@@ -133,5 +136,63 @@ class VendorBookingController extends GetxController {
     serviceRequestDetails.value = data.serviceRequest;
     isServiceRequestDetailsLoading.value = false;
     isServiceRequestDetailsError.value = false;
+  }
+
+  Future<bool> submitQuote({
+    required int serviceRequestId,
+    required double serviceFee,
+    required double travelFee,
+    required String message,
+  }) async {
+    isSubmittingQuote.value = true;
+
+    final token = StorageService.token;
+    final authToken = token == null
+        ? null
+        : (token.startsWith("Bearer ") ? token : "Bearer $token");
+
+    if (token == null) {
+      isSubmittingQuote.value = false;
+      SnackBarConstant.error("Unauthorized");
+      return false;
+    }
+
+    debugPrint("📋 [VendorBookingController] Submitting quote...");
+    debugPrint("   - Service Request ID: $serviceRequestId");
+    debugPrint("   - Service Fee: $serviceFee");
+    debugPrint("   - Travel Fee: $travelFee");
+    debugPrint("   - Message: $message");
+
+    final response = await _services.submitQuote(
+      token: authToken!,
+      serviceRequestId: serviceRequestId,
+      serviceFee: serviceFee,
+      travelFee: travelFee,
+      message: message,
+    );
+
+    debugPrint(
+      "📋 [VendorBookingController] Quote response: ${response.isSuccess}",
+    );
+    debugPrint(
+      "📋 [VendorBookingController] Response data: ${response.responseData}",
+    );
+
+    isSubmittingQuote.value = false;
+
+    if (response.statusCode == 401) {
+      SnackBarConstant.error("Unauthorized");
+      return false;
+    }
+
+    if (!response.isSuccess &&
+        response.statusCode != 200 &&
+        response.statusCode != 201) {
+      SnackBarConstant.error(response.errorMessage);
+      return false;
+    }
+
+    SnackBarConstant.success("Quote submitted successfully");
+    return true;
   }
 }

@@ -20,6 +20,17 @@ class ApiConstants {
   static const String serviceRequest = "$baseUrl/serviceRequest/service-requests";
   static const String serviceRequestDetails = "$baseUrl/serviceRequest";
   static const String bookingsByVendor = "$baseUrl/booking-list-by-vendor";
+  static const String bookingsByUser = "$baseUrl/booking-list-by-user";
   static const String profile = "$baseUrl/profile";
   static const String vendorProfile = "$baseUrl/vendors";
+
+  // Chat endpoints
+  static const String chatHistory = "$baseUrl/chat";
+  static const String sendMessage = "$baseUrl/chat/send";
+  static const String markRead = "$baseUrl/chat/mark-read";
+  static const String userStatus = "$baseUrl/user";
+  static const String chatList = "$baseUrl/chat/history";
+  static const String saveFcmToken = "$baseUrl/save-fcm-token";
+  static const String pusherAuth = "$baseUrl/pusher/auth";
+  static const String quotes = "$baseUrl/quotes";
 }

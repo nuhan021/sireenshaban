@@ -11,13 +11,13 @@ import '../features/authentication/views/screens/verification_code_send_success_
 import '../features/authentication/views/screens/login_screen.dart';
 import '../features/authentication/views/screens/sign_up_screen.dart';
 import '../features/customer/chat/views/screens/chat_screen.dart';
+import '../features/customer/chat/views/screens/chat_list_screen.dart';
 import '../features/customer/customer_bottom_nav_bar/views/screens/customer_bottom_nav_bar.dart';
 import '../features/customer/interest/views/screens/customer_interest_screen.dart';
 import '../features/customer/vendors/views/screens/vendors_screen.dart';
 import '../features/onboarding/views/screens/onboarding_screen_1.dart';
 import '../features/select_role/views/screens/select_role_screen.dart';
 import '../features/vendor/vendor_profile_info/views/screens/vendor_profile_info_map.dart';
-import '../features/vendor/vendor_setup/views/screens/vendor_setup_screen.dart';
 
 class AppRoute {
   static String loginScreen = "/loginScreen";
@@ -30,6 +30,7 @@ class AppRoute {
   static String forgetPasswordScreen = "/forgetPasswordScreen";
   static String changePasswordScreen = "/changePasswordScreen";
   static String vendorsScreen = "/vendorsScreen";
+  static String chatListScreen = "/chatListScreen";
   static String chatScreen = "/chatScreen";
   static String notificationScreen = "/notificationScreen";
   static String vendorSetupScreen = "/vendorProfileInfo";
@@ -57,6 +58,7 @@ class AppRoute {
   static String getForgetPasswordScreen() => forgetPasswordScreen;
   static String getChangePasswordScreen() => changePasswordScreen;
   static String getVendorsScreen() => vendorsScreen;
+  static String getChatListScreen() => chatListScreen;
   static String getChatScreen() => chatScreen;
   static String getNotificationScreen() => notificationScreen;
   static String getVendorProfileInfo() => vendorSetupScreen;
@@ -87,7 +89,20 @@ class AppRoute {
     GetPage(name: forgetPasswordScreen, page: () => ForgetPasswordScreen()),
     GetPage(name: changePasswordScreen, page: () => ChangePasswordScreen()),
     GetPage(name: vendorsScreen, page: () => VendorsScreen()),
-    GetPage(name: chatScreen, page: () => ChatScreen(avatar: '', name: '',)),
+    GetPage(name: chatListScreen, page: () => ChatListScreen()),
+    GetPage(
+      name: chatScreen,
+      page: () {
+        final receiverId = Get.arguments?['receiverId'] as int? ?? 0;
+        final receiverName = Get.arguments?['receiverName'] as String? ?? 'User';
+        final receiverAvatar = Get.arguments?['receiverAvatar'] as String?;
+        return ChatScreen(
+          receiverId: receiverId,
+          receiverName: receiverName,
+          receiverAvatar: receiverAvatar,
+        );
+      },
+    ),
     GetPage(name: notificationScreen, page: () => NotificationScreen()),
     GetPage(name: vendorSetupScreen, page: () => VendorSetupScreen()),
     GetPage(name: vendorProfileInfoMap, page: () => VendorProfileInfoMap()),
