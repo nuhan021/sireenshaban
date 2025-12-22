@@ -30,4 +30,5 @@ class ApiConstants {
   static const String chatList = "$baseUrl/chat/history";
   static const String saveFcmToken = "$baseUrl/save-fcm-token";
   static const String pusherAuth = "$baseUrl/pusher/auth";
+  static const String quotes = "$baseUrl/quotes";
 }

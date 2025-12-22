@@ -17,10 +17,28 @@ class VendorBookingRequestServices {
     required int requestId,
   }) {
     return _networkCaller.getRequest(
-      
       "${ApiConstants.serviceRequestDetails}/$requestId",
       token: token,
-      
+    );
+  }
+
+  Future<ResponseData> submitQuote({
+    required String token,
+    required int serviceRequestId,
+    required double serviceFee,
+    required double travelFee,
+    required String message,
+  }) {
+    return _networkCaller.postRequest(
+      ApiConstants.quotes,
+      token: token,
+      body: {
+        "service_request_id": serviceRequestId,
+        "service_fee": serviceFee,
+        "travel_fee": travelFee,
+        "message": message,
+        "status": "new_request",
+      },
     );
   }
 }

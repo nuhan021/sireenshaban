@@ -272,55 +272,55 @@ class VendorHomeScreen extends StatelessWidget {
             40.verticalSpace,
 
             // booking request
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // schedule
-                Text(
-                  "Booking Request",
-                  style: getTextStyle(
-                    fontSize: 22.sp,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.bodyDarkGray,
-                  ),
-                ),
-                10.verticalSpace,
+            // Column(
+            //   crossAxisAlignment: CrossAxisAlignment.start,
+            //   children: [
+            //     // schedule
+            //     Text(
+            //       "Booking Request",
+            //       style: getTextStyle(
+            //         fontSize: 22.sp,
+            //         fontWeight: FontWeight.w600,
+            //         color: AppColors.bodyDarkGray,
+            //       ),
+            //     ),
+            //     10.verticalSpace,
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'New',
-                      style: getTextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.primaryDeepBlueNormal,
-                      ),
-                    ),
+            //     Row(
+            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //       children: [
+            //         Text(
+            //           'New',
+            //           style: getTextStyle(
+            //             fontSize: 14.sp,
+            //             fontWeight: FontWeight.w600,
+            //             color: AppColors.primaryDeepBlueNormal,
+            //           ),
+            //         ),
 
-                    Container(
-                      height: 40.h,
-                      width: 40.w,
-                      padding: EdgeInsets.all(8.w),
-                      decoration: BoxDecoration(
-                        color: Color(0xFFE9EAEC),
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
+            //         Container(
+            //           height: 40.h,
+            //           width: 40.w,
+            //           padding: EdgeInsets.all(8.w),
+            //           decoration: BoxDecoration(
+            //             color: Color(0xFFE9EAEC),
+            //             borderRadius: BorderRadius.circular(8.r),
+            //           ),
 
-                      child: Image.asset(
-                        IconPath.calenderMonth,
-                        color: AppColors.secondaryInfoMediumGrayNormal,
-                      ),
-                    ),
-                  ],
-                ),
+            //           child: Image.asset(
+            //             IconPath.calenderMonth,
+            //             color: AppColors.secondaryInfoMediumGrayNormal,
+            //           ),
+            //         ),
+            //       ],
+            //     ),
 
-                20.verticalSpace,
+            //     20.verticalSpace,
 
-                for (int i = 0; i < 5; i++)
-                  BookingRequestCard().paddingOnly(bottom: 10.h),
-              ],
-            ).paddingSymmetric(horizontal: 20.w),
+            //     for (int i = 0; i < 5; i++)
+            //       BookingRequestCard().paddingOnly(bottom: 10.h),
+            //   ],
+            // ).paddingSymmetric(horizontal: 20.w),
           ],
         ),
       ),

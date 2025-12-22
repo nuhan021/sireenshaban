@@ -13,10 +13,7 @@ import '../../../../../core/utils/constants/icon_path.dart';
 import '../../../../../routes/app_routes.dart';
 
 class VendorBookingRequestDetailsScreen extends StatefulWidget {
-  const VendorBookingRequestDetailsScreen({
-    super.key,
-    required this.requestId,
-  });
+  const VendorBookingRequestDetailsScreen({super.key, required this.requestId});
 
   final int requestId;
 
@@ -28,6 +25,8 @@ class VendorBookingRequestDetailsScreen extends StatefulWidget {
 class _VendorBookingRequestDetailsScreenState
     extends State<VendorBookingRequestDetailsScreen> {
   late final VendorBookingController _controller;
+  final TextEditingController _quotePriceController = TextEditingController();
+  final TextEditingController _termsController = TextEditingController();
 
   @override
   void initState() {
@@ -36,6 +35,42 @@ class _VendorBookingRequestDetailsScreenState
         ? Get.find<VendorBookingController>()
         : Get.put(VendorBookingController());
     _controller.getServiceRequestDetails(requestId: widget.requestId);
+  }
+
+  @override
+  void dispose() {
+    _quotePriceController.dispose();
+    _termsController.dispose();
+    super.dispose();
+  }
+
+  void _submitQuote() async {
+    final priceText = _quotePriceController.text
+        .replaceAll('\$', '')
+        .replaceAll(',', '')
+        .trim();
+    final serviceFee = double.tryParse(priceText);
+
+    if (serviceFee == null || serviceFee <= 0) {
+      Get.snackbar('Error', 'Please enter a valid quote price');
+      return;
+    }
+
+    final message = _termsController.text.trim();
+
+    // Calculate travel fee (you can customize this logic)
+    final travelFee = 0.0; // Default to 0, can be calculated based on distance
+
+    final success = await _controller.submitQuote(
+      serviceRequestId: widget.requestId,
+      serviceFee: serviceFee,
+      travelFee: travelFee,
+      message: message,
+    );
+
+    if (success) {
+      Get.back();
+    }
   }
 
   @override
@@ -100,9 +135,7 @@ class _VendorBookingRequestDetailsScreenState
               20.verticalSpace,
 
               // client profile section
-              ClientProfileSection(
-                request: request,
-              ),
+              ClientProfileSection(request: request),
 
               20.verticalSpace,
 
@@ -111,8 +144,8 @@ class _VendorBookingRequestDetailsScreenState
                 width: double.maxFinite,
                 padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20.h),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(14.r),
-                    color: AppColors.cardBackgroundSoftGray
+                  borderRadius: BorderRadius.circular(14.r),
+                  color: AppColors.cardBackgroundSoftGray,
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -145,9 +178,9 @@ class _VendorBookingRequestDetailsScreenState
                           : request.projectDetails,
                       textAlign: TextAlign.start,
                       style: getTextStyle(
-                          fontSize: 13.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.bodyDarkGray
+                        fontSize: 13.sp,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.bodyDarkGray,
                       ),
                     ),
 
@@ -172,12 +205,12 @@ class _VendorBookingRequestDetailsScreenState
                                 ? "-"
                                 : request.serviceType.join(", "),
                             style: getTextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.bodyDarkGray
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.bodyDarkGray,
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
 
@@ -201,11 +234,11 @@ class _VendorBookingRequestDetailsScreenState
                               ? "-"
                               : request.paymentMethod,
                           style: getTextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.bodyDarkGray
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.bodyDarkGray,
                           ),
-                        )
+                        ),
                       ],
                     ),
 
@@ -227,260 +260,276 @@ class _VendorBookingRequestDetailsScreenState
                         Text(
                           request.status.isEmpty ? "-" : request.status,
                           style: getTextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.bodyDarkGray
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.bodyDarkGray,
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ],
                 ),
               ),
 
-            20.verticalSpace,
+              20.verticalSpace,
 
-            // quote
-            Container(
-              width: double.maxFinite,
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20.h),
-              decoration: BoxDecoration(
+              // quote
+              Container(
+                width: double.maxFinite,
+                padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20.h),
+                decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(14.r),
-                  color: AppColors.cardBackgroundSoftGray
-              ),
+                  color: AppColors.cardBackgroundSoftGray,
+                ),
 
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Provide Your Quote',
-                    style: getTextStyle(
-                      fontSize: 20.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.bodyDarkGray
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Provide Your Quote',
+                      style: getTextStyle(
+                        fontSize: 20.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.bodyDarkGray,
+                      ),
                     ),
-                  ),
 
-                  20.verticalSpace,
+                    20.verticalSpace,
 
-                  Text(
-                    'Final Quote Price',
-                    style: getTextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.secondaryAquaNormal
-                    ),
-                  ),
-
-                  10.verticalSpace,
-
-                  // // final quote price
-                  IField(
-                    controller: TextEditingController(),
-                    filled: true,
-                    fillColour: Color(0xFFE8F8F6),
-                    borderColor: Color(0xFFB6E9E3),
-                    hintText: "\$600.00",
-                    hintTextStyle: getTextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.secondaryAquaNormal,
-                    ),
-                  ),
-
-                  20.verticalSpace,
-
-                  Text(
-                    'Final Terms/Notes',
-                    style: getTextStyle(
+                    Text(
+                      'Final Quote Price',
+                      style: getTextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w400,
-                        color: AppColors.secondaryAquaNormal
-                    ),
-                  ),
-
-                  10.verticalSpace,
-
-                  // final Terms
-                  IField(
-                    controller: TextEditingController(),
-                    filled: true,
-                    fillColour: Color(0xFFE8F8F6),
-                    borderColor: Color(0xFFB6E9E3),
-                    maxLine: 5,
-                  )
-                ],
-              ),
-            ),
-
-            20.verticalSpace,
-
-            // payment summary
-            Container(
-              width: double.maxFinite,
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20.h),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(14.r),
-                  color: AppColors.cardBackgroundSoftGray
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Payment Summary',
-                    style: getTextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.bodyDarkGray
-                    ),
-                  ),
-
-                  30.verticalSpace,
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Services fee',
-                        style: getTextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.primaryDeepBlueNormal,
-                        ),
+                        color: AppColors.secondaryAquaNormal,
                       ),
-
-                      Text(
-                        '60.00',
-                        style: getTextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.bodyDarkGray,
-                        ),
-                      ),
-
-                    ],
-                  ),
-                  10.verticalSpace,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Platform fee',
-                        style: getTextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.primaryDeepBlueNormal,
-                        ),
-                      ),
-
-                      Text(
-                        '205.00',
-                        style: getTextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.bodyDarkGray,
-                        ),
-                      ),
-
-                    ],
-                  ),
-
-                  12.verticalSpace,
-
-                  Divider(color: Color(0xFFB9C2DB),),
-
-                  12.verticalSpace,
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Total',
-                        style: getTextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.primaryDeepBlueNormal,
-                        ),
-                      ),
-
-                      Text(
-                        '274.60',
-                        style: getTextStyle(
-                          fontSize: 20.sp,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.bodyDarkGray,
-                        ),
-                      ),
-
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            20.verticalSpace,
-
-            // payment method
-            Container(
-              width: double.maxFinite,
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20.h),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(14.r),
-                  color: AppColors.cardBackgroundSoftGray
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Payment Method',
-                    style: getTextStyle(
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.bodyDarkGray
-                    ),
-                  ),
-
-                  10.verticalSpace,
-
-                  // stripe
-                  Container(
-                    height: 50.h,
-                    width: double.maxFinite,
-                    padding: EdgeInsets.all(12.w),
-                    decoration: BoxDecoration(
-                        color: AppColors.primaryDeepBlueLight,
-                        borderRadius: BorderRadius.circular(8.r)
                     ),
 
-                    child: Row(
-                      children: [
-                        Image.asset(IconPath.mobile),
-                        13.horizontalSpace,
-                        Text(
-                          request.paymentMethod.isEmpty
-                              ? "Payment method"
-                              : request.paymentMethod,
-                          style: getTextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.bodyDarkGray
-                          ),
-                        )
-                      ],
+                    10.verticalSpace,
+
+                    // // final quote price
+                    IField(
+                      controller: _quotePriceController,
+                      filled: true,
+                      fillColour: Color(0xFFE8F8F6),
+                      borderColor: Color(0xFFB6E9E3),
+                      hintText: "\$600.00",
+                      keyboardType: TextInputType.number,
+                      hintTextStyle: getTextStyle(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.secondaryAquaNormal,
+                      ),
                     ),
-                  ),
-                ],
+
+                    20.verticalSpace,
+
+                    Text(
+                      'Final Terms/Notes',
+                      style: getTextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.secondaryAquaNormal,
+                      ),
+                    ),
+
+                    10.verticalSpace,
+
+                    // final Terms
+                    IField(
+                      controller: _termsController,
+                      filled: true,
+                      fillColour: Color(0xFFE8F8F6),
+                      borderColor: Color(0xFFB6E9E3),
+                      hintText: "Enter your terms and notes...",
+                      maxLine: 5,
+                    ),
+                  ],
+                ),
               ),
-            ),
 
-            20.verticalSpace,
+              20.verticalSpace,
 
-            CustomPrimaryButton(text: 'Quote & Accept', color: AppColors.primaryDeepBlueNormal, onPressed: (){}),
+              // payment summary
+              // Container(
+              //   width: double.maxFinite,
+              //   padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20.h),
+              //   decoration: BoxDecoration(
+              //       borderRadius: BorderRadius.circular(14.r),
+              //       color: AppColors.cardBackgroundSoftGray
+              //   ),
+              //   child: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       Text(
+              //         'Payment Summary',
+              //         style: getTextStyle(
+              //             fontSize: 20.sp,
+              //             fontWeight: FontWeight.w600,
+              //             color: AppColors.bodyDarkGray
+              //         ),
+              //       ),
 
-            20.verticalSpace,
-          ],
-        ).paddingSymmetric(horizontal: 15.w),
-      );
-  }));
+              //       30.verticalSpace,
+
+              //       Row(
+              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         children: [
+              //           Text(
+              //             'Services fee',
+              //             style: getTextStyle(
+              //               fontSize: 14.sp,
+              //               fontWeight: FontWeight.w400,
+              //               color: AppColors.primaryDeepBlueNormal,
+              //             ),
+              //           ),
+
+              //           Text(
+              //             '60.00',
+              //             style: getTextStyle(
+              //               fontSize: 14.sp,
+              //               fontWeight: FontWeight.w400,
+              //               color: AppColors.bodyDarkGray,
+              //             ),
+              //           ),
+
+              //         ],
+              //       ),
+              //       10.verticalSpace,
+              //       // Row(
+              //       //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //       //   children: [
+              //       //     Text(
+              //       //       'Platform fee',
+              //       //       style: getTextStyle(
+              //       //         fontSize: 14.sp,
+              //       //         fontWeight: FontWeight.w400,
+              //       //         color: AppColors.primaryDeepBlueNormal,
+              //       //       ),
+              //       //     ),
+
+              //       //     Text(
+              //       //       '205.00',
+              //       //       style: getTextStyle(
+              //       //         fontSize: 14.sp,
+              //       //         fontWeight: FontWeight.w400,
+              //       //         color: AppColors.bodyDarkGray,
+              //       //       ),
+              //       //     ),
+
+              //       //   ],
+              //       // ),
+
+              //       // 12.verticalSpace,
+
+              //       Divider(color: Color(0xFFB9C2DB),),
+
+              //       12.verticalSpace,
+
+              //       Row(
+              //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //         children: [
+              //           Text(
+              //             'Total',
+              //             style: getTextStyle(
+              //               fontSize: 16.sp,
+              //               fontWeight: FontWeight.w500,
+              //               color: AppColors.primaryDeepBlueNormal,
+              //             ),
+              //           ),
+
+              //           Text(
+              //             '274.60',
+              //             style: getTextStyle(
+              //               fontSize: 20.sp,
+              //               fontWeight: FontWeight.w600,
+              //               color: AppColors.bodyDarkGray,
+              //             ),
+              //           ),
+
+              //         ],
+              //       ),
+              //     ],
+              //   ),
+              // ),
+
+              // 20.verticalSpace,
+
+              // payment method
+              // Container(
+              //   width: double.maxFinite,
+              //   padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20.h),
+              //   decoration: BoxDecoration(
+              //       borderRadius: BorderRadius.circular(14.r),
+              //       color: AppColors.cardBackgroundSoftGray
+              //   ),
+              //   child: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.start,
+              //     children: [
+              //       Text(
+              //         'Payment Method',
+              //         style: getTextStyle(
+              //             fontSize: 20.sp,
+              //             fontWeight: FontWeight.w600,
+              //             color: AppColors.bodyDarkGray
+              //         ),
+              //       ),
+
+              //       10.verticalSpace,
+
+              //       // stripe
+              //       Container(
+              //         height: 50.h,
+              //         width: double.maxFinite,
+              //         padding: EdgeInsets.all(12.w),
+              //         decoration: BoxDecoration(
+              //             color: AppColors.primaryDeepBlueLight,
+              //             borderRadius: BorderRadius.circular(8.r)
+              //         ),
+
+              //         child: Row(
+              //           children: [
+              //             Image.asset(IconPath.mobile),
+              //             13.horizontalSpace,
+              //             Text(
+              //               request.paymentMethod.isEmpty
+              //                   ? "Payment method"
+              //                   : request.paymentMethod,
+              //               style: getTextStyle(
+              //                   fontSize: 16.sp,
+              //                   fontWeight: FontWeight.w500,
+              //                   color: AppColors.bodyDarkGray
+              //               ),
+              //             )
+              //           ],
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
+              20.verticalSpace,
+
+              Obx(
+                () => CustomPrimaryButton(
+                  text: _controller.isSubmittingQuote.value
+                      ? 'Submitting...'
+                      : 'Quote & Accept',
+                  color: _controller.isSubmittingQuote.value
+                      ? Colors.grey
+                      : AppColors.primaryDeepBlueNormal,
+                  onPressed: () {
+                    if (!_controller.isSubmittingQuote.value) {
+                      _submitQuote();
+                    }
+                  },
+                ),
+              ),
+
+              20.verticalSpace,
+            ],
+          ).paddingSymmetric(horizontal: 15.w),
+        );
+      }),
+    );
   }
 }
