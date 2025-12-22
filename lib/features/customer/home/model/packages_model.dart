@@ -128,7 +128,7 @@ class Datum {
     "slug": slug,
     "description": description,
     "service_group": serviceGroup,
-    "valid_until": "${validUntil!.year.toString().padLeft(4, '0')}-${validUntil!.month.toString().padLeft(2, '0')}-${validUntil!.day.toString().padLeft(2, '0')}",
+    "valid_until": validUntil != null ? "${validUntil!.year.toString().padLeft(4, '0')}-${validUntil!.month.toString().padLeft(2, '0')}-${validUntil!.day.toString().padLeft(2, '0')}" : null,
     "subtitle": subtitle,
     "price_per_event": pricePerEvent,
     "capacity": capacity,

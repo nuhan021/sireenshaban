@@ -30,7 +30,7 @@ class _DealsAndPromotionsState extends State<DealsAndPromotions> {
   Widget build(BuildContext context) {
     return  Obx(
             () {
-              if(widget.controller.packages.value!.data.isEmpty) {
+              if(widget.controller.packages.value == null || widget.controller.packages.value!.data.isEmpty) {
                 return  Text(
                   'No Deals & Promotions',
                   style: getTextStyle(
@@ -112,7 +112,7 @@ class _DealsAndPromotionsState extends State<DealsAndPromotions> {
                           shopTitle: item.title,
                           discount: "0",
                           subtitle: item.subtitle ?? '',
-                          validityDate: "${item.validUntil?.day}-${item.validUntil?.month}-${item.validUntil?.year}",
+                          validityDate: item.validUntil != null ? "${item.validUntil!.day}-${item.validUntil!.month}-${item.validUntil!.year}" : "N/A",
                           role: item.category.name,
                           group: group,
                           controller: widget.controller,
