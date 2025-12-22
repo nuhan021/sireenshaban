@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:sireenshaban/core/services/network_caller.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/constants/api_constants.dart';
-import 'package:sireenshaban/core/utils/constants/enums.dart';
 import 'package:sireenshaban/core/utils/constants/snackbar_constant.dart';
 import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/customer/home/model/eventModel.dart' hide Datum;
@@ -28,6 +27,7 @@ class HomeController extends GetxController {
       getDealsAndPromotions();
       getCommunityEvents();
       getTrendingNearby();
+      getBooking(); // Also fetch bookings for regular users
     }
   }
 
@@ -69,7 +69,7 @@ class HomeController extends GetxController {
           booking.date.month == selectedDate.value.month &&
           booking.date.day == selectedDate.value.day;
 
-      bool isNotCompleted = booking.status?.toLowerCase() != 'completed';
+      bool isNotCompleted = booking.status.toLowerCase() != 'completed';
 
       return isSameDate && isNotCompleted;
     }).toList();
@@ -177,14 +177,43 @@ class HomeController extends GetxController {
     isBookingLoading.value = true;
 
     final token = StorageService.token;
+    final userId = StorageService.userId;
+    final vendorId = StorageService.vendorId;
+    final userRole = StorageService.role?.toLowerCase();
+    
+    // Log all relevant parameters
+    AppLoggerHelper.debug("📋 [Booking] ========== BOOKING FETCH START ==========");
+    AppLoggerHelper.debug("📋 [Booking] Token exists: ${token != null && token.isNotEmpty}");
+    AppLoggerHelper.debug("📋 [Booking] User ID: $userId");
+    AppLoggerHelper.debug("📋 [Booking] Vendor ID: $vendorId");
+    AppLoggerHelper.debug("📋 [Booking] User Role: $userRole");
+    AppLoggerHelper.debug("📋 [Booking] isFromVendor flag: $isFromVendor");
+    AppLoggerHelper.debug("📋 [Booking] Full user profile: ${StorageService.userProfile}");
+    
+    // Determine the correct endpoint based on user role
+    String endpoint;
+    if (isFromVendor || userRole == 'vendor') {
+      // For vendors, use vendorId if available, otherwise fallback to userId
+      final idToUse = vendorId ?? userId;
+      endpoint = "${ApiConstants.bookingsByVendor}/$idToUse";
+      AppLoggerHelper.debug("📋 [Booking] Using VENDOR endpoint: $endpoint");
+      AppLoggerHelper.debug("📋 [Booking] Using ID: $idToUse (vendorId: $vendorId, userId: $userId)");
+    } else {
+      endpoint = "${ApiConstants.bookingsByUser}/$userId";
+      AppLoggerHelper.debug("📋 [Booking] Using USER endpoint: $endpoint");
+    }
 
     final response = await _networkCaller.getRequest(
-      // "${ApiConstants.bookingsByVendor}/${StorageService.userId}",
-      "${ApiConstants.bookingsByVendor}/1",
+      endpoint,
       token: "Bearer $token",
     );
 
+    AppLoggerHelper.debug("📋 [Booking] Response success: ${response.isSuccess}");
+    AppLoggerHelper.debug("📋 [Booking] Response status code: ${response.statusCode}");
+    AppLoggerHelper.debug("📋 [Booking] Response data: ${response.responseData}");
+
     if(!response.isSuccess) {
+      AppLoggerHelper.debug("❌ [Booking] Error: ${response.errorMessage}");
       SnackBarConstant.error(response.errorMessage);
       isBookingLoading.value = false;
       isBookingError.value = true;
@@ -192,6 +221,17 @@ class HomeController extends GetxController {
     }
 
     bookings.value = VendorBookingModel.fromJson(response.responseData);
+    AppLoggerHelper.debug("✅ [Booking] Parsed ${bookings.value?.data.length ?? 0} bookings");
+    
+    // Log each booking status
+    if (bookings.value != null) {
+      for (var booking in bookings.value!.data) {
+        AppLoggerHelper.debug("   📌 Booking ID: ${booking.id}, Status: ${booking.status}, Date: ${booking.date}");
+      }
+    }
+    
+    AppLoggerHelper.debug("📋 [Booking] ========== BOOKING FETCH END ==========");
+    
     isBookingLoading.value = false;
     isBookingError.value = false;
     SnackBarConstant.success("Bookings fetched successfully");

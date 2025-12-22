@@ -238,25 +238,25 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 8.w),
-                  GestureDetector(
-                    onTap: controller.toggleVoiceRecording,
-                    child: Obx(() {
-                      return CircleAvatar(
-                        backgroundColor: controller.isRecording.value
-                            ? Colors.red
-                            : AppColors.primaryDeepBlueNormal,
-                        radius: 22.r,
-                        child: Icon(
-                          controller.isRecording.value
-                              ? Icons.stop_circle
-                              : Icons.mic,
-                          color: Colors.white,
-                          size: 20.sp,
-                        ),
-                      );
-                    }),
-                  ),
+                  // SizedBox(width: 8.w),
+                  // GestureDetector(
+                  //   onTap: controller.toggleVoiceRecording,
+                  //   child: Obx(() {
+                  //     return CircleAvatar(
+                  //       backgroundColor: controller.isRecording.value
+                  //           ? Colors.red
+                  //           : AppColors.primaryDeepBlueNormal,
+                  //       radius: 22.r,
+                  //       child: Icon(
+                  //         controller.isRecording.value
+                  //             ? Icons.stop_circle
+                  //             : Icons.mic,
+                  //         color: Colors.white,
+                  //         size: 20.sp,
+                  //       ),
+                  //     );
+                  //   }),
+                  // ),
                 ],
               ),
             ),

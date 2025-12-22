@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -17,10 +18,41 @@ class BookingScreen extends StatelessWidget {
 
   final HomeController controller = Get.find<HomeController>();
 
+  // Get all bookings (not just completed)
+  List<Datum> get allBookings {
+    if (controller.bookings.value == null) {
+      debugPrint('📋 [BookingScreen] bookings.value is NULL');
+      return [];
+    }
+    debugPrint('📋 [BookingScreen] Total bookings: ${controller.bookings.value!.data.length}');
+    for (var booking in controller.bookings.value!.data) {
+      debugPrint('   📌 ID: ${booking.id}, Status: "${booking.status}", Date: ${booking.date}');
+    }
+    return controller.bookings.value!.data;
+  }
+
+  // Filter for in-progress bookings (not completed)
+  List<Datum> get inProgressBookings {
+    if (controller.bookings.value == null) {
+      return [];
+    }
+    final filtered = controller.bookings.value!.data
+        .where((booking) => booking.status.toLowerCase() != 'completed')
+        .toList();
+    debugPrint('📋 [BookingScreen] In-progress bookings: ${filtered.length}');
+    return filtered;
+  }
+
+  // Filter for completed bookings only
   List<Datum> get completedBookings {
-    return controller.bookings.value?.data.where((booking) =>
-    booking.status.toLowerCase() == 'completed'
-    ).toList() ?? [];
+    if (controller.bookings.value == null) {
+      return [];
+    }
+    final filtered = controller.bookings.value!.data
+        .where((booking) => booking.status.toLowerCase() == 'completed')
+        .toList();
+    debugPrint('📋 [BookingScreen] Completed bookings: ${filtered.length}');
+    return filtered;
   }
 
   @override
@@ -58,21 +90,57 @@ class BookingScreen extends StatelessWidget {
       ),
 
       body: Obx(() {
+        debugPrint('📋 [BookingScreen] ========== BUILD ==========');
+        debugPrint('📋 [BookingScreen] isBookingLoading: ${controller.isBookingLoading.value}');
+        debugPrint('📋 [BookingScreen] isBookingError: ${controller.isBookingError.value}');
+        debugPrint('📋 [BookingScreen] bookings.value is null: ${controller.bookings.value == null}');
+        if (controller.bookings.value != null) {
+          debugPrint('📋 [BookingScreen] bookings.data.length: ${controller.bookings.value!.data.length}');
+        }
+        
         if (controller.isBookingLoading.value) {
+          debugPrint('📋 [BookingScreen] Showing LOADING state');
           return const Center(child: CircularProgressIndicator());
         }
 
-        // --- 2. Handle Error State ---
-        if (controller.isBookingError.value) {
+        // Handle null bookings data
+        if (controller.bookings.value == null) {
+          debugPrint('📋 [BookingScreen] Showing NULL DATA state (refresh button)');
           return Center(
-            child: IconButton(
-              onPressed: () => controller.getBooking(),
-              icon: const Icon(Icons.refresh),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: () => controller.getBooking(),
+                  icon: const Icon(Icons.refresh, size: 40),
+                ),
+                10.verticalSpace,
+                Text('Tap to load bookings'),
+              ],
+            ),
+          );
+        }
+
+        // Handle Error State
+        if (controller.isBookingError.value) {
+          debugPrint('📋 [BookingScreen] Showing ERROR state');
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: () => controller.getBooking(),
+                  icon: const Icon(Icons.refresh, size: 40),
+                ),
+                10.verticalSpace,
+                Text('Error loading bookings. Tap to retry.'),
+              ],
             ),
           );
         }
 
         if (controller.bookings.value!.data.isEmpty) {
+          debugPrint('📋 [BookingScreen] Showing EMPTY state');
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -80,13 +148,15 @@ class BookingScreen extends StatelessWidget {
                 Icon(Icons.event_busy, size: 50.sp, color: Colors.grey),
                 10.verticalSpace,
                 Text(
-                  "No schedules for this date",
+                  "No bookings found",
                   style: TextStyle(color: Colors.grey),
                 ),
               ],
             ),
           );
         }
+        
+        debugPrint('📋 [BookingScreen] Showing DATA state with ${allBookings.length} bookings');
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -103,37 +173,37 @@ class BookingScreen extends StatelessWidget {
                   ),
                 ),
 
-                Container(
-                  height: 35.h,
-                  padding: EdgeInsets.symmetric(horizontal: 7.w),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadiusGeometry.circular(4.r),
-                    border: Border.all(color: AppColors.primaryDeepBlueNormal),
-                  ),
+                // Container(
+                //   height: 35.h,
+                //   padding: EdgeInsets.symmetric(horizontal: 7.w),
+                //   decoration: BoxDecoration(
+                //     borderRadius: BorderRadiusGeometry.circular(4.r),
+                //     border: Border.all(color: AppColors.primaryDeepBlueNormal),
+                //   ),
 
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Short by',
-                        style: getTextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.primaryDeepBlueNormal,
-                        ),
-                      ),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.center,
+                //     children: [
+                //       Text(
+                //         'Short by',
+                //         style: getTextStyle(
+                //           fontSize: 12.sp,
+                //           fontWeight: FontWeight.w400,
+                //           color: AppColors.primaryDeepBlueNormal,
+                //         ),
+                //       ),
 
-                      Icon(Icons.keyboard_arrow_down_rounded),
-                    ],
-                  ),
-                ),
+                //       Icon(Icons.keyboard_arrow_down_rounded),
+                //     ],
+                //   ),
+                // ),
               ],
             ),
 
             10.verticalSpace,
 
             Text(
-              'In Progress',
+              'All Bookings',
               style: getTextStyle(
                 fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
@@ -143,13 +213,13 @@ class BookingScreen extends StatelessWidget {
 
             12.verticalSpace,
 
-            // actual data
+            // actual data - show ALL bookings for now
             Expanded(
               child: ListView.separated(
-                itemCount: completedBookings.length,
+                itemCount: allBookings.length,
                 separatorBuilder: (context, index) => 10.verticalSpace,
                 itemBuilder: (context, index) {
-                  final item = completedBookings[index];
+                  final item = allBookings[index];
                   return Container(
                     height: 140.h,
                     width: double.maxFinite,
@@ -256,7 +326,7 @@ class BookingScreen extends StatelessWidget {
                                   5.horizontalSpace,
 
                                   Text(
-                                    item.status ?? 'pending',
+                                    item.status,
                                     style: getTextStyle(
                                       fontSize: 11.sp,
                                       fontWeight: FontWeight.w500,
