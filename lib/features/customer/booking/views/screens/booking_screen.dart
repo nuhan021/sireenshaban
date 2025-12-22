@@ -340,7 +340,7 @@ class BookingScreen extends StatelessWidget {
                             GestureDetector(
                               onTap: () => AppHelperFunctions.navigateToScreen(
                                 context,
-                                UserBookingDetailsScreen(data: item,),
+                                UserBookingDetailsScreen(bookingId: item.id,),
                               ),
                               child: Row(
                                 children: [
