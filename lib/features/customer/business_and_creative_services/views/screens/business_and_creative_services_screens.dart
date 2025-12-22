@@ -293,21 +293,21 @@ class BusinessAndCreativeServicesScreens extends StatelessWidget {
               ),
             ).paddingSymmetric(horizontal: 20.w),
 
-            40.verticalSpace,
+            // 40.verticalSpace,
 
-            // package booking
-            Text(
-              'Payment Method',
-              style: getTextStyle(
-                fontSize: 22.sp,
-                fontWeight: FontWeight.w600,
-                color: AppColors.bodyDarkGray,
-              ),
-            ).paddingSymmetric(horizontal: 20.w),
+            // // package booking
+            // Text(
+            //   'Payment Method',
+            //   style: getTextStyle(
+            //     fontSize: 22.sp,
+            //     fontWeight: FontWeight.w600,
+            //     color: AppColors.bodyDarkGray,
+            //   ),
+            // ).paddingSymmetric(horizontal: 20.w),
+            //
+            // 15.verticalSpace,
 
-            15.verticalSpace,
-
-            PackageBookingPaymentMethod().paddingSymmetric(horizontal: 20.w),
+            // PackageBookingPaymentMethod().paddingSymmetric(horizontal: 20.w),
 
             // 40.verticalSpace,
 
