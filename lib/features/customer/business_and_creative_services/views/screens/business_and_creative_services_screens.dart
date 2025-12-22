@@ -55,7 +55,13 @@ class BusinessAndCreativeServicesScreens extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // header
-            Header(image: image, title: title),
+            Header(
+              image: image,
+              title: title,
+              vendorId: vendorId,
+              vendorName: title,
+              vendorAvatar: null,
+            ),
 
             40.verticalSpace,
 

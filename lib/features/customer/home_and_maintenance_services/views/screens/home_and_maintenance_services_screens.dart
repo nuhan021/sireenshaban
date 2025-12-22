@@ -9,8 +9,6 @@ import 'package:sireenshaban/features/customer/personal_care_and_education/views
 import '../../../../../core/common/widgets/IField.dart';
 import '../../../../../core/common/widgets/custom_primary_button.dart';
 import '../../../../../core/utils/constants/colors.dart';
-import '../../../../../core/utils/helpers/app_helper.dart';
-import '../../../confirm_booking/views/screens/select_time_and_date_screen.dart';
 import '../../../confirm_booking/views/widgets/booking_summary.dart';
 
 class HomeAndMaintenanceServicesScreens extends StatelessWidget {
@@ -45,7 +43,13 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // header
-            Header(image: image, title: title),
+            Header(
+              image: image,
+              title: title,
+              vendorId: 0,
+              vendorName: title,
+              vendorAvatar: null,
+            ),
 
             40.verticalSpace,
 

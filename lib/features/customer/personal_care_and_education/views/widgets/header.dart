@@ -5,26 +5,36 @@ import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/constants/icon_path.dart';
+import 'package:sireenshaban/routes/app_routes.dart';
 
 import '../../../../../core/utils/constants/colors.dart';
 
 class Header extends StatelessWidget {
-  const Header({super.key, required this.image, required this.title});
+  const Header({
+    super.key,
+    required this.image,
+    required this.title,
+    required this.vendorId,
+    required this.vendorName,
+    this.vendorAvatar,
+  });
+
   final String image;
   final String title;
+  final int vendorId;
+  final String vendorName;
+  final String? vendorAvatar;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // thumbnail image and profile
         SizedBox(
           height: 240.h,
           width: double.maxFinite,
           child: Stack(
             children: [
-              // thumbnail
               ClipRRect(
                 borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.r), bottomRight: Radius.circular(10.r)),
                 child: CachedNetworkImage(
@@ -43,7 +53,9 @@ class Header extends StatelessWidget {
                 left: 15.w,
                 child: CircleAvatar(
                   radius: 50.r,
-                  backgroundImage: NetworkImage("https://cdn.wallpapersafari.com/72/25/n02Ke8F.jpg", ),
+                  backgroundImage: vendorAvatar != null ? NetworkImage(vendorAvatar!) : null,
+                  backgroundColor: Colors.grey[300],
+                  child: vendorAvatar == null ? Icon(Icons.person) : null,
                 ),
               )
             ],
@@ -52,7 +64,6 @@ class Header extends StatelessWidget {
 
         20.verticalSpace,
 
-        // title
         Text(
           title,
           style: getTextStyle(
@@ -63,14 +74,13 @@ class Header extends StatelessWidget {
         ).paddingSymmetric(horizontal: 20.w),
 
         Text(
-          'professional  service',
+          'professional service',
           style: getTextStyle(
             fontSize: 16.sp,
             fontWeight: FontWeight.w400,
             color: AppColors.bodyDarkGray
           ),
         ).paddingSymmetric(horizontal: 20.w),
-        
         
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -90,12 +100,18 @@ class Header extends StatelessWidget {
               ],
             ),
 
-            Row(
-              children: [
-                Image.asset(IconPath.message, height: 25.h,),
-                8.horizontalSpace,
-                Image.asset(IconPath.call, height: 25.h,)
-              ],
+            GestureDetector(
+              onTap: () {
+                Get.toNamed(
+                  AppRoute.chatScreen,
+                  arguments: {
+                    'receiverId': vendorId,
+                    'receiverName': vendorName,
+                    'receiverAvatar': vendorAvatar,
+                  },
+                );
+              },
+              child: Image.asset(IconPath.message, height: 25.h),
             )
           ],
         ).paddingSymmetric(horizontal: 20.w),
@@ -104,3 +120,5 @@ class Header extends StatelessWidget {
     );
   }
 }
+
+

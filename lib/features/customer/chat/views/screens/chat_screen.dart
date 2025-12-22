@@ -1,60 +1,54 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_core/flutter_chat_core.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
-
-import '../../../../../core/utils/constants/icon_path.dart';
+import 'package:sireenshaban/core/utils/constants/icon_path.dart';
+import 'package:sireenshaban/features/customer/chat/controllers/chat_controller.dart';
+import 'package:sireenshaban/features/customer/chat/widgets/audio_player_widget.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key, required this.avatar, required this.name});
+  const ChatScreen({
+    super.key,
+    required this.receiverId,
+    required this.receiverName,
+    this.receiverAvatar,
+  });
 
-  final String avatar;
-  final String name;
+  final int receiverId;
+  final String receiverName;
+  final String? receiverAvatar;
 
   @override
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-
-  final _chatController = InMemoryChatController();
+  late ChatController controller;
+  late TextEditingController _messageController;
 
   @override
   void initState() {
     super.initState();
-    _chatController.insertMessage(
-      AudioMessage(
-        id: '${Random().nextInt(1000) + 1}',
-        authorId: 'user1',
-        createdAt: DateTime.now().toUtc(),
-        source: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
-        duration: Duration(seconds: 10),
-      ),
+    _messageController = TextEditingController();
+    controller = Get.put(ChatController());
+    // Initialize chat with receiver data
+    controller.initializeChat(
+      widget.receiverId,
+      widget.receiverName,
+      widget.receiverAvatar,
     );
-  }
-
-  @override
-  void dispose() {
-    _chatController.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFE9EBF3),
+      backgroundColor: Color(0xFFF9FAFB),
       appBar: AppBar(
         centerTitle: false,
         leading: IconButton(
-          onPressed: () {
-            Get.back();
-          },
+          onPressed: () => Get.back(),
           icon: Container(
             height: 40.h,
             width: 40.w,
@@ -68,88 +62,229 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         titleSpacing: 0,
         title: ListTile(
+          contentPadding: EdgeInsets.zero,
           leading: CircleAvatar(
-            backgroundImage: NetworkImage(widget.avatar),
-            backgroundColor: Colors.white,
+            backgroundImage: widget.receiverAvatar != null && widget.receiverAvatar!.isNotEmpty
+                ? NetworkImage(widget.receiverAvatar!)
+                : null,
+            backgroundColor: Colors.grey[300],
+            child: (widget.receiverAvatar == null || widget.receiverAvatar!.isEmpty) ? Icon(Icons.person) : null,
           ),
-
-          title: Text(
-            widget.name,
-            style: getTextStyle(
-              fontSize: 14.sp,
-              fontWeight: FontWeight.w600,
-              color: AppColors.bodyDarkGray,
-            ),
-          ),
-
-          subtitle: Text(
-            'Active',
-            style: getTextStyle(
-              fontSize: 12.sp,
-              fontWeight: FontWeight.w400,
-              color: AppColors.success,
-            ),
-          ),
-        ),
-        actions: [
-          IconButton(onPressed: (){}, icon: Icon(Icons.more_vert_outlined))
-        ],
-      ),
-      body: Chat(
-        backgroundColor: Color(0xFFE9EBF3),
-        chatController: _chatController,
-        currentUserId: 'user1',
-        builders: Builders(
-          audioMessageBuilder: (
-              BuildContext context,
-              AudioMessage message,
-              int index, {
-                MessageGroupStatus? groupStatus,
-                required bool isSentByMe,
-              }) {
-            return Container(
-              padding: EdgeInsets.all(8),
-              margin: EdgeInsets.symmetric(vertical: 4),
-              decoration: BoxDecoration(
-                color: isSentByMe ? Colors.blue[100] : Colors.grey[200],
-                borderRadius: BorderRadius.circular(12),
+          title: Obx(() {
+            return Text(
+              controller.receiverName.value,
+              style: getTextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w600,
+                color: AppColors.bodyDarkGray,
               ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.play_arrow),
-                    onPressed: () {
-                    },
-                  ),
-                  Expanded(
-                    child: Text(
-                      'Audio Message',
-                      style: TextStyle(fontSize: 14),
+            );
+          }),
+          subtitle: Obx(() {
+            return Text(
+              controller.lastSeenText.value,
+              style: getTextStyle(
+                fontSize: 12.sp,
+                fontWeight: FontWeight.w400,
+                color: controller.isOnline.value ? AppColors.success : AppColors.secondaryInfoMediumGray,
+              ),
+            );
+          }),
+        ),
+      ),
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: AppColors.primaryDeepBlueNormal,
+            ),
+          );
+        }
+
+        return Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                reverse: true,
+                itemCount: controller.messages.length,
+                itemBuilder: (context, index) {
+                  final message = controller.messages[index];
+                  final isCurrentUser = message.author.id == controller.currentUser.value?.id;
+
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                    child: Row(
+                      mainAxisAlignment:
+                          isCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+                      children: [
+                        if (!isCurrentUser)
+                          CircleAvatar(
+                            backgroundImage: message.author.imageUrl != null && message.author.imageUrl!.isNotEmpty
+                                ? NetworkImage(message.author.imageUrl!)
+                                : null,
+                            backgroundColor: Colors.grey[300],
+                            radius: 20.r,
+                            child: (message.author.imageUrl == null || message.author.imageUrl!.isEmpty)
+                                ? Icon(Icons.person)
+                                : null,
+                          ),
+                        SizedBox(width: 8.w),
+                        Flexible(
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 12.w,
+                              vertical: 8.h,
+                            ),
+                            decoration: BoxDecoration(
+                              color: isCurrentUser
+                                  ? AppColors.primaryDeepBlueNormal
+                                  : Colors.grey[300],
+                              borderRadius: BorderRadius.circular(12.r),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: isCurrentUser
+                                  ? CrossAxisAlignment.end
+                                  : CrossAxisAlignment.start,
+                              children: [
+                                if (message is types.TextMessage)
+                                  Text(
+                                    message.text,
+                                    style: getTextStyle(
+                                      fontSize: 14.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: isCurrentUser ? Colors.white : Colors.black87,
+                                    ),
+                                  ),
+                                if (message is types.AudioMessage)
+                                  AudioPlayerWidget(
+                                    audioUrl: message.uri,
+                                    isCurrentUser: isCurrentUser,
+                                  ),
+                                SizedBox(height: 4.h),
+                                Text(
+                                  _formatTime(
+                                      DateTime.fromMillisecondsSinceEpoch(
+                                          message.createdAt ?? DateTime.now().millisecondsSinceEpoch)),
+                                  style: getTextStyle(
+                                    fontSize: 11.sp,
+                                    fontWeight: FontWeight.w400,
+                                    color: isCurrentUser
+                                        ? Colors.white70
+                                        : Colors.black54,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        if (isCurrentUser) SizedBox(width: 8.w),
+                        if (isCurrentUser)
+                          CircleAvatar(
+                            backgroundImage: message.author.imageUrl != null && message.author.imageUrl!.isNotEmpty
+                                ? NetworkImage(message.author.imageUrl!)
+                                : null,
+                            backgroundColor: Colors.grey[300],
+                            radius: 20.r,
+                            child: (message.author.imageUrl == null || message.author.imageUrl!.isEmpty)
+                                ? Icon(Icons.person)
+                                : null,
+                          ),
+                      ],
                     ),
+                  );
+                },
+              ),
+            ),
+            Container(
+              color: Colors.white,
+              padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _messageController,
+                      decoration: InputDecoration(
+                        hintText: 'Type a message...',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(24.r),
+                          borderSide: BorderSide.none,
+                        ),
+                        filled: true,
+                        fillColor: Colors.grey[100],
+                        contentPadding: EdgeInsets.symmetric(
+                          horizontal: 16.w,
+                          vertical: 12.h,
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 8.w),
+                  GestureDetector(
+                    onTap: () {
+                      if (_messageController.text.isNotEmpty) {
+                        controller.handleSendTextMessage(
+                          types.PartialText(text: _messageController.text),
+                        );
+                        _messageController.clear();
+                      }
+                    },
+                    child: CircleAvatar(
+                      backgroundColor: AppColors.primaryDeepBlueNormal,
+                      radius: 22.r,
+                      child: Icon(
+                        Icons.send,
+                        color: Colors.white,
+                        size: 20.sp,
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 8.w),
+                  GestureDetector(
+                    onTap: controller.toggleVoiceRecording,
+                    child: Obx(() {
+                      return CircleAvatar(
+                        backgroundColor: controller.isRecording.value
+                            ? Colors.red
+                            : AppColors.primaryDeepBlueNormal,
+                        radius: 22.r,
+                        child: Icon(
+                          controller.isRecording.value
+                              ? Icons.stop_circle
+                              : Icons.mic,
+                          color: Colors.white,
+                          size: 20.sp,
+                        ),
+                      );
+                    }),
                   ),
                 ],
               ),
-            );
-          },
-
-        ),
-
-        onMessageSend: (text) {
-          _chatController.insertMessage(
-            TextMessage(
-              // Better to use UUID or similar for the ID - IDs must be unique
-              id: '${Random().nextInt(1000) + 1}',
-              authorId: 'user1',
-              createdAt: DateTime.now().toUtc(),
-              text: text,
             ),
-          );
-        },
-        resolveUser: (UserID id) async {
-          return User(id: id, name: 'John Doe');
-        },
-      ),
+          ],
+        );
+      }),
     );
+  }
+
+  String _formatTime(DateTime dateTime) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final yesterday = today.subtract(const Duration(days: 1));
+    final messageDate = DateTime(dateTime.year, dateTime.month, dateTime.day);
+
+    if (messageDate == today) {
+      return '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+    } else if (messageDate == yesterday) {
+      return 'Yesterday';
+    } else {
+      return '${dateTime.day}/${dateTime.month}/${dateTime.year}';
+    }
+  }
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+    Get.delete<ChatController>();
+    super.dispose();
   }
 }
