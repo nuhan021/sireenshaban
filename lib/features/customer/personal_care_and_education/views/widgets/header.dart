@@ -19,7 +19,7 @@ class Header extends StatelessWidget {
     this.vendorAvatar,
   });
 
-  final String image;
+  final String? image;
   final String title;
   final int vendorId;
   final String vendorName;
@@ -37,25 +37,38 @@ class Header extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.r), bottomRight: Radius.circular(10.r)),
-                child: CachedNetworkImage(
-                  imageUrl: image,
-                  fit: BoxFit.cover,
-                  height: 225.h,
-                  width: double.maxFinite,
-                  placeholder: (context, url) => Center(
-                    child: LoadingAnimationWidget.staggeredDotsWave(color: AppColors.primaryDeepBlueLight, size: 25.h),
-                  ),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                ),
+                child: image != null && image!.isNotEmpty
+                    ? CachedNetworkImage(
+                        imageUrl: image!,
+                        fit: BoxFit.cover,
+                        height: 225.h,
+                        width: double.maxFinite,
+                        placeholder: (context, url) => Center(
+                          child: LoadingAnimationWidget.staggeredDotsWave(color: AppColors.primaryDeepBlueLight, size: 25.h),
+                        ),
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                      )
+                    : Container(
+                        height: 225.h,
+                        width: double.maxFinite,
+                        color: Colors.grey[300],
+                        child: Center(
+                          child: Icon(Icons.image, size: 50.h),
+                        ),
+                      ),
               ),
               Positioned(
                 bottom: 0,
                 left: 15.w,
                 child: CircleAvatar(
                   radius: 50.r,
-                  backgroundImage: vendorAvatar != null ? NetworkImage(vendorAvatar!) : null,
+                  backgroundImage: (vendorAvatar != null && vendorAvatar!.isNotEmpty)
+                      ? NetworkImage(vendorAvatar!)
+                      : null,
                   backgroundColor: Colors.grey[300],
-                  child: vendorAvatar == null ? Icon(Icons.person) : null,
+                  child: (vendorAvatar == null || vendorAvatar!.isEmpty)
+                      ? Icon(Icons.person)
+                      : null,
                 ),
               )
             ],
