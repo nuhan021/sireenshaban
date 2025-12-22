@@ -321,59 +321,59 @@ class VendorRequestStatusScreen extends StatelessWidget {
             20.verticalSpace,
 
             // vendor final quote
-            Container(
-              width: double.maxFinite,
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20.h),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(14.r),
-                  color: AppColors.secondaryTealLight,
-                border: Border.all(
-                  color: AppColors.secondaryAquaNormal,
-                )
-              ),
-
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Vendor Final Quote',
-                          overflow: TextOverflow.ellipsis,
-                          style: getTextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.secondaryAquaNormal
-                          ),
-                        ),
-                      ),
-
-                      Text(
-                        '\$${data!.total}',
-                        style: getTextStyle(
-                            fontSize: 20.sp,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.secondaryAquaNormal
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  12.verticalSpace,
-
-                  Text(
-                    'Based on your request details',
-                    style: getTextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.secondaryAquaNormal
-                    ),
-                  )
-                ],
-              ),
-            ),
+            // Container(
+            //   width: double.maxFinite,
+            //   padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20.h),
+            //   decoration: BoxDecoration(
+            //       borderRadius: BorderRadius.circular(14.r),
+            //       color: AppColors.secondaryTealLight,
+            //     border: Border.all(
+            //       color: AppColors.secondaryAquaNormal,
+            //     )
+            //   ),
+            //
+            //   child: Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: [
+            //       Row(
+            //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //         children: [
+            //           Expanded(
+            //             child: Text(
+            //               'Vendor Final Quote',
+            //               overflow: TextOverflow.ellipsis,
+            //               style: getTextStyle(
+            //                 fontSize: 16.sp,
+            //                 fontWeight: FontWeight.w500,
+            //                 color: AppColors.secondaryAquaNormal
+            //               ),
+            //             ),
+            //           ),
+            //
+            //           Text(
+            //             '\$${data!.total}',
+            //             style: getTextStyle(
+            //                 fontSize: 20.sp,
+            //                 fontWeight: FontWeight.w500,
+            //                 color: AppColors.secondaryAquaNormal
+            //             ),
+            //           ),
+            //         ],
+            //       ),
+            //
+            //       12.verticalSpace,
+            //
+            //       Text(
+            //         'Based on your request details',
+            //         style: getTextStyle(
+            //           fontSize: 12.sp,
+            //           fontWeight: FontWeight.w400,
+            //           color: AppColors.secondaryAquaNormal
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // ),
 
             20.verticalSpace,
 

@@ -61,7 +61,7 @@ class User {
   String email;
   String role;
   bool isFirstTime;
-  String subscriptionType;
+  dynamic subscriptionType;
 
   User({
     required this.id,

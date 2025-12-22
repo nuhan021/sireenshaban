@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
+import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile/views/screens/vendor_user_profile_screen.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile/views/widgets/vendor_profile_header.dart';
 
@@ -16,7 +17,9 @@ import '../../../../customer/booking/views/screens/booking_screen.dart';
 import '../../../../customer/payment_history/views/screens/payment_history_screen.dart';
 
 class VendorProfileScreen extends StatelessWidget {
-  const VendorProfileScreen({super.key});
+  VendorProfileScreen({super.key});
+
+  final HomeController homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,19 +31,15 @@ class VendorProfileScreen extends StatelessWidget {
         child: Column(
           children: [
             VendorProfileHeader(
-              coverPhoto:
-                  StorageService.coverImage ??
-                  "https://cdn.shopify.com/s/files/1/0681/6976/1043/files/connor-ellsworth-y4QxywTWZj8-unsplash_1024x1024.jpg?v=1679340043",
-              profilePhoto:
-                  StorageService.profileImage ??
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEGUodmPqUNG8wJWNkNCvqiNkr1T9tsft5oQ&s",
+              coverPhoto: homeController.vendorUser.value!.vendor.user.backgroundImage,
+              profilePhoto: homeController.vendorUser.value!.vendor.user.image,
             ),
 
             // name
             Obx(() {
               final userCtrl = Get.find<UserController>();
               return Text(
-                userCtrl.fullName,
+                '${userCtrl.firstName.value} ${userCtrl.lastName.value}',
                 style: getTextStyle(
                   fontSize: 20.sp,
                   fontWeight: FontWeight.w600,
@@ -50,7 +49,7 @@ class VendorProfileScreen extends StatelessWidget {
             }),
 
             Text(
-              'Professional Photographer',
+              homeController.vendorUser.value!.vendor.categoryName,
               style: getTextStyle(
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w400,
@@ -73,7 +72,7 @@ class VendorProfileScreen extends StatelessWidget {
                   ),
                   5.horizontalSpace,
                   Text(
-                    '${userCtrl.address.value}, ${userCtrl.city.value}',
+                    '${userCtrl.country.value}, ${userCtrl.city.value}',
                     style: getTextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w400,

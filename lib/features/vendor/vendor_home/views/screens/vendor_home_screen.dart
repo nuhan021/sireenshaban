@@ -10,7 +10,8 @@ import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
 import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/deals_and_promotions.dart';
-import 'package:sireenshaban/features/customer/stripe/controller/stripe_controller.dart';
+import 'package:sireenshaban/features/controller/stripe_controller.dart';
+import 'package:sireenshaban/features/vendor/create_event/views/screens/create_event_screen.dart';
 import 'package:sireenshaban/features/vendor/create_package/view/screens/create_package.dart';
 import 'package:sireenshaban/features/vendor/vendor_booking_request/views/widgets/booking_request_card.dart';
 import 'package:sireenshaban/features/vendor/vendor_home/views/controller/vendor_home_controller.dart';
@@ -28,6 +29,8 @@ class VendorHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AppLoggerHelper.debug(StorageService.userId.toString());
+
+    AppLoggerHelper.info("The id is: ${StorageService.userId}");
     return Scaffold(
       backgroundColor: Color(0xFFF4F4F4),
       extendBodyBehindAppBar: true,
@@ -54,276 +57,369 @@ class VendorHomeScreen extends StatelessWidget {
         ],
       ),
 
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // header
-            VendorProfileHeader(
-              coverPhoto:
-                  "https://cdn.shopify.com/s/files/1/0681/6976/1043/files/connor-ellsworth-y4QxywTWZj8-unsplash_1024x1024.jpg?v=1679340043",
-              profilePhoto:
-                  "https://images.unsplash.com/photo-1623039497026-00af61471107?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8Z2lybCUyMGJvZHl8ZW58MHx8MHx8fDA%3D&fm=jpg&q=60&w=3000",
-            ),
+      body: Obx(() {
+        // ১. লোডিং স্টেট চেক
+        if (controller.isVendorProfileLoading.value) {
+          return Center(child: LoadingAnimationWidget.dotsTriangle(
+            color: AppColors.primaryDeepBlueNormal,
+            size: 25.h,
+          ));
+        }
 
-            // title , work, location
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // ElevatedButton(onPressed: (){
-                //   // stripeController.makePayment(amount: 100, currency: 'usd');
-                // }, child: Text('Pay')),
-                Text(
-                  'Photography',
-                  style: getTextStyle(
-                    fontSize: 22.sp,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.bodyDarkGray,
-                  ),
-                ),
+        // ২. এরর স্টেট চেক
+        if (controller.isVendorProfileError.value) {
+          return Center(child: IconButton(
+            onPressed: () => controller.getVendorProfile(),
+            icon: Icon(Icons.refresh),
+          ));
+        }
 
-                Text(
-                  'professional  service',
-                  style: getTextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.bodyDarkGray,
-                  ),
-                ),
+        // ৩. ডাটা নাল কি না চেক (এটি যুক্ত করুন)
+        if (controller.vendorUser.value == null) {
+          return const Center(child: Text("No Vendor Data Found"));
+        }
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // header
+              VendorProfileHeader(
+                coverPhoto:
+                    controller.vendorUser.value!.vendor.user.backgroundImage,
+                profilePhoto: controller.vendorUser.value!.vendor.user.image,
+              ),
 
-                Row(
-                  children: [
-                    Icon(
-                      Icons.location_on_outlined,
-                      color: AppColors.secondaryTealNormal,
-                    ),
-                    Text(
-                      'New York',
-                      style: getTextStyle(
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.secondaryTealNormal,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ).paddingSymmetric(horizontal: 20.w),
-
-            40.verticalSpace,
-
-            // deals and promotions
-            // deals and promotions
-            Obx(() {
-              // 1. Check Loading State
-              if (controller.isDealsAndPromotionLoading.value) {
-                return Center(
-                  child: LoadingAnimationWidget.dotsTriangle(
-                    color: AppColors.primaryDeepBlueNormal,
-                    size: 25.h,
-                  ),
-                );
-              }
-
-              if (controller.isDealsAndPromotionError.value) {
-                return Center(
-                  child: IconButton(
-                    onPressed: () => controller.getDealsAndPromotions(),
-                    icon: Icon(Icons.refresh),
-                  ),
-                );
-              }
-
-              // 3. Check for Empty List (New Condition)
-              // We check if data is null OR if the data list inside is empty
-              final dataList = controller.packages.value?.data;
-              if (dataList == null || dataList.isEmpty) {
-                return Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.inventory_2_outlined, color: Colors.grey, size: 40.h),
-                      SizedBox(height: 8.h),
-                      Text(
-                        "No deals or promotions found",
-                        style: TextStyle(color: Colors.grey, fontSize: 14.sp),
-                      ),
-
-                      TextButton(onPressed: (){
-                        AppHelperFunctions.navigateToScreen(context, CreatePackage());
-                      }, child: Text(
-                        'Add Promotions',
-                        style: getTextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.primaryDeepBlueNormal,
-                        ),
-                      ))
-                    ],
-                  ),
-                );
-              }
-
-              // 4. Return Data Widget if everything is fine
-              return DealsAndPromotions(
-                controller: controller,
-                isFromVendorScreen: true,
-              );
-            }),
-
-            40.verticalSpace,
-
-            // Schedule
-            Obx(() {
-              // 1. Check Loading State
-              if (controller.isBookingLoading.value) {
-                return Center(
-                  child: LoadingAnimationWidget.dotsTriangle(
-                      color: AppColors.primaryDeepBlueNormal,
-                      size: 25.h
-                  ),
-                );
-              }
-
-              // 2. Check Error State
-              if (controller.isBookingError.value) {
-                return Center(
-                  child: IconButton(
-                      onPressed: () => controller.getBooking(),
-                      icon: Icon(Icons.refresh)
-                  ),
-                );
-              }
-
-              // 3. Prepare Filtered Data (Today Only)
-              final now = DateTime.now();
-              final todayBookings = controller.bookings.value?.data.where((booking) {
-                return booking.date.year == now.year &&
-                    booking.date.month == now.month &&
-                    booking.date.day == now.day;
-              }).toList() ?? [];
-
-              // 4. Check for Empty State
-              if (todayBookings.isEmpty) {
-                return Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.calendar_today_outlined, color: Colors.grey, size: 40.h),
-                      SizedBox(height: 8.h),
-                      Text(
-                        "No Today Schedule Found",
-                        style: TextStyle(color: Colors.grey, fontSize: 14.sp),
-                      ),
-                    ],
-                  ),
-                );
-              }
-
-              // 5. Success State: Return the Schedule UI
-              return Column(
+              // title , work, location
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // ElevatedButton(onPressed: (){
+                  //   // stripeController.makePayment(amount: 100, currency: 'usd');
+                  // }, child: Text('Pay')),
                   Text(
-                    "Schedule",
+                    controller.vendorUser.value!.vendor.businessName,
                     style: getTextStyle(
                       fontSize: 22.sp,
                       fontWeight: FontWeight.w600,
                       color: AppColors.bodyDarkGray,
                     ),
                   ),
-                  10.verticalSpace,
+
+                  Text(
+                    controller.vendorUser.value!.vendor.categoryName,
+                    style: getTextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w400,
+                      color: AppColors.bodyDarkGray,
+                    ),
+                  ),
+
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        'Today',
-                        style: getTextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600,
-                          color: AppColors.primaryDeepBlueNormal,
-                        ),
+                      Icon(
+                        Icons.location_on_outlined,
+                        color: AppColors.secondaryTealNormal,
                       ),
-                      Container(
-                        height: 40.h, width: 40.w,
-                        padding: EdgeInsets.all(8.w),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFE9EAEC),
-                          borderRadius: BorderRadius.circular(8.r),
-                        ),
-                        child: Image.asset(
-                          IconPath.calenderMonth,
-                          color: AppColors.secondaryInfoMediumGrayNormal,
+                      Text(
+                        controller.vendorUser.value!.vendor.user.country,
+                        style: getTextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.secondaryTealNormal,
                         ),
                       ),
                     ],
                   ),
-                  20.verticalSpace,
-                  // Map the filtered list here
-                  Column(
-                    children: todayBookings.map((e) {
-                      return VendorScheduleCard(data: e).paddingOnly(bottom: 10.h);
-                    }).toList(),
-                  )
                 ],
-              ).paddingSymmetric(horizontal: 20.w);
-            }),
+              ).paddingSymmetric(horizontal: 20.w),
 
-            40.verticalSpace,
+              40.verticalSpace,
 
-            // booking request
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // schedule
-                Text(
-                  "Booking Request",
-                  style: getTextStyle(
-                    fontSize: 22.sp,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.bodyDarkGray,
-                  ),
-                ),
-                10.verticalSpace,
-
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'New',
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      AppHelperFunctions.navigateToScreen(
+                        context,
+                        CreatePackage(),
+                      );
+                    },
+                    child: Text(
+                      '+ Add Promotions',
                       style: getTextStyle(
                         fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w500,
                         color: AppColors.primaryDeepBlueNormal,
                       ),
                     ),
+                  ),
 
-                    Container(
-                      height: 40.h,
-                      width: 40.w,
-                      padding: EdgeInsets.all(8.w),
-                      decoration: BoxDecoration(
-                        color: Color(0xFFE9EAEC),
-                        borderRadius: BorderRadius.circular(8.r),
-                      ),
-
-                      child: Image.asset(
-                        IconPath.calenderMonth,
-                        color: AppColors.secondaryInfoMediumGrayNormal,
+                  TextButton(
+                    onPressed: () {
+                      AppHelperFunctions.navigateToScreen(
+                        context,
+                        CreateEventScreen(),
+                      );
+                    },
+                    child: Text(
+                      '+ Add Event',
+                      style: getTextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.primaryDeepBlueNormal,
                       ),
                     ),
+                  ),
+                ],
+              ),
+
+              40.verticalSpace,
+
+              // deals and promotions
+              // deals and promotions
+              Obx(() {
+                // 1. Check Loading State
+                if (controller.isDealsAndPromotionLoading.value) {
+                  return Center(
+                    child: LoadingAnimationWidget.dotsTriangle(
+                      color: AppColors.primaryDeepBlueNormal,
+                      size: 25.h,
+                    ),
+                  );
+                }
+
+                if (controller.isDealsAndPromotionError.value) {
+                  return Center(
+                    child: IconButton(
+                      onPressed: () => controller.getDealsAndPromotions(),
+                      icon: Icon(Icons.refresh),
+                    ),
+                  );
+                }
+
+                // 3. Check for Empty List (New Condition)
+                // We check if data is null OR if the data list inside is empty
+                final dataList = controller.packages.value?.data;
+                if (dataList == null || dataList.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Deals & Promotions",
+                              style: getTextStyle(
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.w700,
+                                color: AppColors.secondaryInfoMediumGrayDarker,
+                              ),
+                            ).paddingOnly(left: 20.w),
+                          ],
+                        ),
+                        Icon(
+                          Icons.inventory_2_outlined,
+                          color: Colors.grey,
+                          size: 40.h,
+                        ),
+                        SizedBox(height: 8.h),
+                        Text(
+                          "No deals or promotions found",
+                          style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                // 4. Return Data Widget if everything is fine
+                return DealsAndPromotions(
+                  controller: controller,
+                  isFromVendorScreen: true,
+                );
+              }),
+
+              40.verticalSpace,
+
+              // Schedule
+              Obx(() {
+                // 1. Check Loading State
+                if (controller.isBookingLoading.value) {
+                  return Center(
+                    child: LoadingAnimationWidget.dotsTriangle(
+                      color: AppColors.primaryDeepBlueNormal,
+                      size: 25.h,
+                    ),
+                  );
+                }
+
+                // 2. Check Error State
+                if (controller.isBookingError.value) {
+                  return Center(
+                    child: IconButton(
+                      onPressed: () => controller.getBooking(),
+                      icon: Icon(Icons.refresh),
+                    ),
+                  );
+                }
+
+                // 3. Prepare Filtered Data (Today Only)
+                final now = DateTime.now();
+                final todayBookings =
+                    controller.bookings.value?.data.where((booking) {
+                      return booking.date.year == now.year &&
+                          booking.date.month == now.month &&
+                          booking.date.day == now.day;
+                    }).toList() ??
+                    [];
+
+                // 4. Check for Empty State
+                if (todayBookings.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          Icons.calendar_today_outlined,
+                          color: Colors.grey,
+                          size: 40.h,
+                        ),
+                        SizedBox(height: 8.h),
+                        Text(
+                          "No Today Schedule Found",
+                          style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            AppHelperFunctions.navigateToScreen(
+                              context,
+                              CreateEventScreen(),
+                            );
+                          },
+                          child: Text(
+                            'Add Event',
+                            style: getTextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.primaryDeepBlueNormal,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                // 5. Success State: Return the Schedule UI
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Schedule",
+                      style: getTextStyle(
+                        fontSize: 22.sp,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.bodyDarkGray,
+                      ),
+                    ),
+                    10.verticalSpace,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Today',
+                          style: getTextStyle(
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primaryDeepBlueNormal,
+                          ),
+                        ),
+                        Container(
+                          height: 40.h,
+                          width: 40.w,
+                          padding: EdgeInsets.all(8.w),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFE9EAEC),
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          child: Image.asset(
+                            IconPath.calenderMonth,
+                            color: AppColors.secondaryInfoMediumGrayNormal,
+                          ),
+                        ),
+                      ],
+                    ),
+                    20.verticalSpace,
+                    // Map the filtered list here
+                    Column(
+                      children: todayBookings.map((e) {
+                        return VendorScheduleCard(
+                          data: e,
+                        ).paddingOnly(bottom: 10.h);
+                      }).toList(),
+                    ),
                   ],
-                ),
+                ).paddingSymmetric(horizontal: 20.w);
+              }),
 
-                20.verticalSpace,
+              40.verticalSpace,
 
-                for (int i = 0; i < 5; i++)
-                  BookingRequestCard().paddingOnly(bottom: 10.h),
-              ],
-            ).paddingSymmetric(horizontal: 20.w),
-          ],
-        ),
-      ),
+              // booking request
+              // Column(
+              //   crossAxisAlignment: CrossAxisAlignment.start,
+              //   children: [
+              //     // schedule
+              //     Text(
+              //       "Booking Request",
+              //       style: getTextStyle(
+              //         fontSize: 22.sp,
+              //         fontWeight: FontWeight.w600,
+              //         color: AppColors.bodyDarkGray,
+              //       ),
+              //     ),
+              //     10.verticalSpace,
+              //
+              //     Row(
+              //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //       children: [
+              //         Text(
+              //           'New',
+              //           style: getTextStyle(
+              //             fontSize: 14.sp,
+              //             fontWeight: FontWeight.w600,
+              //             color: AppColors.primaryDeepBlueNormal,
+              //           ),
+              //         ),
+              //
+              //         Container(
+              //           height: 40.h,
+              //           width: 40.w,
+              //           padding: EdgeInsets.all(8.w),
+              //           decoration: BoxDecoration(
+              //             color: Color(0xFFE9EAEC),
+              //             borderRadius: BorderRadius.circular(8.r),
+              //           ),
+              //
+              //           child: Image.asset(
+              //             IconPath.calenderMonth,
+              //             color: AppColors.secondaryInfoMediumGrayNormal,
+              //           ),
+              //         ),
+              //       ],
+              //     ),
+              //
+              //     20.verticalSpace,
+              //
+              //     for (int i = 0; i < 5; i++)
+              //       BookingRequestCard().paddingOnly(bottom: 10.h),
+              //   ],
+              // ).paddingSymmetric(horizontal: 20.w),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

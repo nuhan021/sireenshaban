@@ -10,6 +10,7 @@ import 'package:sireenshaban/features/customer/home/model/packages_model.dart' h
 import 'package:sireenshaban/features/customer/home/model/trendingModel.dart' hide Datum;
 import 'package:sireenshaban/features/customer/interest/categori_model.dart' hide Datum;
 import 'package:sireenshaban/features/vendor/vendor_home/model/vendor_booking_model.dart';
+import 'package:sireenshaban/features/vendor/vendor_profile/model/vendor_user_model.dart';
 
 class HomeController extends GetxController {
   HomeController({this.isFromVendor = false});
@@ -20,6 +21,7 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     if(isFromVendor) {
+      getVendorProfile();
       getDealsAndPromotions();
       getBooking();
       getAdditionalService();
@@ -50,6 +52,10 @@ class HomeController extends GetxController {
   RxBool isBookingLoading = false.obs;
   RxBool isBookingError = false.obs;
 
+  RxBool isVendorProfileLoading = false.obs;
+  RxBool isVendorProfileError = false.obs;
+
+
 
 
   Rx<CategoriModel?> categorys = Rx<CategoriModel?>(null);
@@ -57,6 +63,7 @@ class HomeController extends GetxController {
   Rx<EventModel?> communityEvents = Rx<EventModel?>(null);
   Rx<TrendingModel?> trending = Rx<TrendingModel?>(null);
   Rx<VendorBookingModel?> bookings = Rx<VendorBookingModel?>(null);
+  Rx<VendorUserModel?> vendorUser = Rx<VendorUserModel?>(null);
 
 
   Rx<DateTime> selectedDate = DateTime.now().obs;
@@ -69,9 +76,10 @@ class HomeController extends GetxController {
           booking.date.month == selectedDate.value.month &&
           booking.date.day == selectedDate.value.day;
 
-      bool isNotCompleted = booking.status?.toLowerCase() != 'completed';
+      String status = booking.status?.toLowerCase() ?? '';
+      bool isValidStatus = status != 'completed' && status != 'pending';
 
-      return isSameDate && isNotCompleted;
+      return isSameDate && isValidStatus;
     }).toList();
   }
 
@@ -195,6 +203,30 @@ class HomeController extends GetxController {
     isBookingLoading.value = false;
     isBookingError.value = false;
     SnackBarConstant.success("Bookings fetched successfully");
+  }
+
+
+  Future<void> getVendorProfile() async {
+    isVendorProfileLoading.value = false;
+
+    final token = StorageService.token;
+
+    final result = await _networkCaller.getRequest(
+      "${ApiConstants.vendorProfile}/1",
+      token: "Bearer $token",
+    );
+
+    if(!result.isSuccess) {
+      SnackBarConstant.error(result.errorMessage);
+      isVendorProfileLoading.value = false;
+      isVendorProfileError.value = true;
+      return;
+    }
+
+    vendorUser.value = VendorUserModel.fromJson(result.responseData);
+    isVendorProfileLoading.value = false;
+    isVendorProfileError.value = false;
+    SnackBarConstant.success("Vendor profile fetched successfully");
   }
 
 

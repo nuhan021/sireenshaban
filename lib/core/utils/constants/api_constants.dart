@@ -2,7 +2,8 @@ class ApiConstants {
   ApiConstants._();
 
   static const String baseUrl =
-      "https://arytenoepiglottic-gravely-noriko.ngrok-free.dev/api/v1";
+      "https://api.thecommunitylist.com/api/v1";
+  // "https://api.thecommunitylist.com/api/v1";
   static const String login = "$baseUrl/login";
   static const String editProfile = "$baseUrl/profile";
   static const String register = "$baseUrl/register";
@@ -20,4 +21,5 @@ class ApiConstants {
   static const String serviceRequestDetails = "$baseUrl/serviceRequest";
   static const String bookingsByVendor = "$baseUrl/booking-list-by-vendor";
   static const String profile = "$baseUrl/profile";
+  static const String vendorProfile = "$baseUrl/vendors";
 }

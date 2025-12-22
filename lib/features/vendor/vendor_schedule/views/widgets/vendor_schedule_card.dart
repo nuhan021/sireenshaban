@@ -50,7 +50,7 @@ class VendorScheduleCard extends StatelessWidget {
                   ),
 
                   subtitle: Text(
-                    'Total Cost: ${data?.vendorTotal}\$',
+                    'Total Cost: ${data?.total}\$',
                     style: getTextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
