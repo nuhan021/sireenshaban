@@ -10,7 +10,7 @@ class BusinessAndService {
     required String token,
   }) {
     return _networkCaller.postRequest(
-      ApiConstants.serviceRequest,
+      ApiConstants.serviceRequestDetails,
       body: body,
       token: token,
     );
