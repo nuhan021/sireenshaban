@@ -91,7 +91,18 @@ class StorageService {
   static String? get email => userProfile?['email'] as String?;
   static String? get city => userProfile?['city'] as String?;
   static String? get address => userProfile?['address'] as String?;
-  
+  static String? get country => userProfile?['country'] as String?;
+  static String? get service => userProfile?['service'] as String?;
+  static String? get businessName => userProfile?['business_name'] as String?;
+
+  static Future<void> saveUserProfileMerged(
+    Map<String, dynamic> updates,
+  ) async {
+    final existing = userProfile ?? <String, dynamic>{};
+    final merged = <String, dynamic>{...existing, ...updates};
+    await saveUserProfile(merged);
+  }
+
   // Getter for vendor ID (from vendor profile data)
   // The vendor object is nested inside the user profile for vendors
 
