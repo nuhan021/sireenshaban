@@ -68,6 +68,12 @@ class LoginController extends GetxController {
       loginModel.value!.data.user.id.toString(),
     );
     await StorageService.saveRole(loginModel.value!.data.user.role);
+    if (loginModel.value!.data.vendor != null) {
+      await StorageService.savaVendorId(loginModel.value!.data.vendor!.id);
+    }
+AppLoggerHelper.debug("vendor ID : ${StorageService.vendorId}");
+
+    
 
     // Fetch user profile immediately and store it for app-wide access
     try {

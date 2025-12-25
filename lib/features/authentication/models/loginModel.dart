@@ -34,25 +34,45 @@ class LoginModel {
 
 class Data {
   User user;
+  Vendor? vendor;
   String token;
   String tokenType;
 
   Data({
     required this.user,
+    this.vendor,
     required this.token,
     required this.tokenType,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     user: User.fromJson(json["user"]),
+    vendor: json["vendor"] != null ? Vendor.fromJson(json["vendor"]) : null,
     token: json["token"],
     tokenType: json["token_type"],
   );
 
   Map<String, dynamic> toJson() => {
     "user": user.toJson(),
+    "vendor": vendor?.toJson(),
     "token": token,
     "token_type": tokenType,
+  };
+}
+
+class Vendor {
+  int id;
+
+  Vendor({
+    required this.id,
+  });
+
+  factory Vendor.fromJson(Map<String, dynamic> json) => Vendor(
+    id: json["id"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
   };
 }
 

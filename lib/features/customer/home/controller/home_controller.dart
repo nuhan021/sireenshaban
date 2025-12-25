@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:sireenshaban/core/controllers/user_controller.dart';
 import 'package:sireenshaban/core/services/network_caller.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/constants/api_constants.dart';
@@ -19,6 +20,13 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    // if(isFromVendor==true){
+
+
+    // }
+    // if (Get.isRegistered<UserController>()) {
+    //   Get.find<UserController>().loadFromStorage();
+    // }
     if(isFromVendor) {
       getVendorProfile();
       getDealsAndPromotions();
@@ -250,6 +258,7 @@ class HomeController extends GetxController {
     isVendorProfileLoading.value = false;
 
     final token = StorageService.token;
+    final vendorid = StorageService.vendorId;
 
     final result = await _networkCaller.getRequest(
       "${ApiConstants.vendorProfile}/1",
@@ -293,4 +302,3 @@ class HomeController extends GetxController {
     SnackBarConstant.success("Trending fetched successfully");
   }
 }
-
