@@ -69,7 +69,7 @@ class _VendorBookingRequestDetailsScreenState
     );
 
     if (success) {
-      Get.back();
+      // Get.back();
     }
   }
 
