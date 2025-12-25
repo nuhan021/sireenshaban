@@ -132,9 +132,9 @@ class HomeController extends GetxController {
 
     if (isFromVendor) {
       // 🚨 Debug this line: Ensure StorageService.userId is not null or empty
-      final userId = StorageService.userId;
-      AppLoggerHelper.debug("Debugging Vendor URL: ${ApiConstants.dealsAndPromotions}/?vendor_id=$userId");
-      endPoint = "${ApiConstants.dealsAndPromotions}/?vendor_id=$userId";
+      final vendorId = StorageService.vendorId;
+      AppLoggerHelper.debug("Debugging Vendor URL: ${ApiConstants.dealsAndPromotions}/?vendor_id=$vendorId");
+      endPoint = "${ApiConstants.dealsAndPromotions}/?vendor_id=$vendorId";
     }
 
     AppLoggerHelper.debug("End");
@@ -250,9 +250,10 @@ class HomeController extends GetxController {
     isVendorProfileLoading.value = false;
 
     final token = StorageService.token;
+    final vendorId = StorageService.vendorId;
 
     final result = await _networkCaller.getRequest(
-      "${ApiConstants.vendorProfile}/1",
+      "${ApiConstants.vendorProfile}/$vendorId",
       token: "Bearer $token",
     );
 

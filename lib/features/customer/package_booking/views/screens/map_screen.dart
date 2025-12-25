@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class MapScreen extends StatefulWidget {
-  const MapScreen({super.key});
+  const MapScreen({super.key, required this.position});
+
+  final LatLng position;
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -10,7 +12,7 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   late GoogleMapController _mapController;
-  final LatLng _shopLocation = const LatLng(40.74003379333115,-73.99088234777156);
+  late final LatLng _shopLocation = widget.position;
 
   void _onMapCreated(GoogleMapController controller) {
     _mapController = controller;

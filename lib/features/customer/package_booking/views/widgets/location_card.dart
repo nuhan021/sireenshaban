@@ -1,28 +1,41 @@
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
+import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
+import 'package:sireenshaban/features/customer/home/model/packages_model.dart';
 import 'package:sireenshaban/features/customer/package_booking/views/screens/map_screen.dart';
 import '../../../../../core/utils/constants/colors.dart';
 
 class LocationCard extends StatefulWidget {
-  const LocationCard({super.key});
+  const LocationCard({super.key, this.data});
+
+  final Datum? data;
 
   @override
   State<LocationCard> createState() => _LocationCardState();
 }
 
 class _LocationCardState extends State<LocationCard> {
+  final HomeController homeController = Get.find<HomeController>();
   late GoogleMapController _mapController;
-  final LatLng _shopLocation = const LatLng(40.74003379333115,-73.99088234777156);
+  late LatLng _shopLocation = const LatLng(
+    40.74003379333115,
+    -73.99088234777156,
+  );
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   _getCurrentLocation();
-  // }
-  //
+  @override
+  void initState() {
+    super.initState();
+    _shopLocation = LatLng(
+      double.parse(widget.data?.latitude.toString() ?? ''),
+      double.parse(widget.data?.longitude.toString() ?? ''),
+    );
+  }
+
   // Future<void> _getCurrentLocation() async {
   //   bool serviceEnabled;
   //   LocationPermission permission;
@@ -83,8 +96,11 @@ class _LocationCardState extends State<LocationCard> {
 
         Row(
           children: [
-            Icon(Icons.location_on_outlined,
-                color: AppColors.secondaryTealNormal, size: 21.h),
+            Icon(
+              Icons.location_on_outlined,
+              color: AppColors.secondaryTealNormal,
+              size: 21.h,
+            ),
             8.horizontalSpace,
             Text(
               'Current Location',
@@ -109,7 +125,10 @@ class _LocationCardState extends State<LocationCard> {
             borderRadius: BorderRadius.circular(12.r),
             child: GoogleMap(
               onMapCreated: _onMapCreated,
-              initialCameraPosition: CameraPosition(target: _shopLocation, zoom: 12.0),
+              initialCameraPosition: CameraPosition(
+                target: _shopLocation,
+                zoom: 12.0,
+              ),
               myLocationEnabled: false,
               myLocationButtonEnabled: false,
               zoomControlsEnabled: false, // remove + / - buttons
@@ -136,14 +155,18 @@ class _LocationCardState extends State<LocationCard> {
           ),
         ),
 
-        TextButton(onPressed: () => AppHelperFunctions.navigateToScreen(context, MapScreen()), child: Text(
-          'View Map',
-          style: getTextStyle(
-            fontSize: 12.sp,
-            fontWeight: FontWeight.w400,
-            color: AppColors.accentNormal,
+        TextButton(
+          onPressed: () =>
+              AppHelperFunctions.navigateToScreen(context, MapScreen(position: _shopLocation,)),
+          child: Text(
+            'View Map',
+            style: getTextStyle(
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w400,
+              color: AppColors.accentNormal,
+            ),
           ),
-        ))
+        ),
       ],
     );
   }

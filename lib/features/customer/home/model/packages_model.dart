@@ -49,6 +49,8 @@ class Datum {
   dynamic tags;
   int duration;
   int isFeatured;
+  String latitude;
+  String longitude;
   DateTime createdAt;
   DateTime updatedAt;
   dynamic deletedAt;
@@ -78,6 +80,8 @@ class Datum {
     required this.categorySubtype,
     required this.tags,
     required this.duration,
+    required this.latitude,
+    required this.longitude,
     required this.isFeatured,
     required this.createdAt,
     required this.updatedAt,
@@ -99,16 +103,19 @@ class Datum {
     serviceGroup: json["service_group"],
     validUntil: json["valid_until"] == null ? null : DateTime.parse(json["valid_until"]),
     subtitle: json["subtitle"],
+
     pricePerEvent: json["price_per_event"],
     capacity: json["capacity"],
     venueType: json["venue_type"],
-    location: json["location"],
+    location: json["location"] ?? '',
     availableSlots: json["available_slots"],
     image: json["image"],
     isActive: json["is_active"],
+    latitude: json["latitude"] ?? '',
+    longitude: json["longitude"] ?? '',
     categorySubtype: json["category_subtype"],
     tags: json["tags"],
-    duration: json["duration"],
+    duration: json["duration"] ?? 0,
     isFeatured: json["is_featured"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),

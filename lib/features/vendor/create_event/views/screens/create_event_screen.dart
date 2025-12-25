@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:sireenshaban/core/common/widgets/custom_loading.dart';
 import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
@@ -96,10 +97,17 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                     ),
                   ),
                   30.verticalSpace,
-                  CustomPrimaryButton(
-                    text: 'Publish Event',
-                    color: AppColors.primaryDeepBlueNormal,
-                    onPressed: () => controller.submitEvent(),
+                  Obx(
+                          () {
+                            if(controller.isLoading.value) {
+                              return Center(child: CustomLoading(),);
+                            }
+                      return CustomPrimaryButton(
+                        text: 'Publish Event',
+                        color: AppColors.primaryDeepBlueNormal,
+                        onPressed: () => controller.submitEvent(),
+                      );
+                    }
                   ),
                 ],
               ),

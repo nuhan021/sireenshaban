@@ -99,6 +99,10 @@ class CreatePackageController extends GetxController {
 
     isLoading.value = true;
     final latLng = _mapController.selectedPosition;
+    final vendorId = StorageService.vendorId;
+
+    AppLoggerHelper.info('The latitude: ${latLng?.latitude.toString()}');
+    AppLoggerHelper.info('The latitude: ${latLng?.longitude.toString()}');
 
     try {
 
@@ -107,13 +111,13 @@ class CreatePackageController extends GetxController {
       var request = http.MultipartRequest('POST', uri);
 
       request.headers.addAll({
-        'Authorization': 'Bearer ${StorageService.token}', // নিশ্চিত করুন টোকেনটি এখানে আছে
+        'Authorization': 'Bearer ${StorageService.token}',
         'Accept': 'application/json',
         'ngrok-skip-browser-warning': '69420',
       });
 
       // 1. Basic Form Data
-      request.fields['vendor_id'] = "1";
+      request.fields['vendor_id'] = vendorId!;
       request.fields['category_id'] = selectedCategoryId.value.toString();
       request.fields['title'] = titleController.text.trim();
       request.fields['price_per_event'] = priceController.text.trim();
@@ -124,8 +128,8 @@ class CreatePackageController extends GetxController {
 
       // Additional metadata from your Postman Screenshot
       // request.fields['location'] = "New York";
-      request.fields['lat'] = latLng?.latitude.toString() ?? "";
-      request.fields['lng'] = latLng?.longitude.toString() ?? "";
+      request.fields['latitude'] = latLng?.latitude.toString() ?? "";
+      request.fields['longitude'] = latLng?.longitude.toString() ?? "";
       // request.fields['duration'] = "120";
       request.fields['valid_until'] = "2025-12-25";
       // request.fields['subtitle'] = "Special Package Creation";
@@ -159,6 +163,7 @@ class CreatePackageController extends GetxController {
       if (response.statusCode == 200 || response.statusCode == 201) {
         Get.back();
         AppLoggerHelper.info('Created');
+        AppLoggerHelper.info(responseData);
         Get.snackbar("Success", "Package Published Successfully", backgroundColor: Colors.green, colorText: Colors.white);
       } else {
         AppLoggerHelper.error("Server Error", responseData);
