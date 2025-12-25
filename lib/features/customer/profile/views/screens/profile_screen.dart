@@ -1,7 +1,8 @@
+// ignore_for_file: use_full_hex_values_for_flutter_colors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
@@ -36,7 +37,9 @@ class ProfileScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF4F4F4),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF4F4F4), // ব্যাকগ্রাউন্ড কালার অ্যাড করা হয়েছে
+        backgroundColor: const Color(
+          0xFFF4F4F4,
+        ), // ব্যাকগ্রাউন্ড কালার অ্যাড করা হয়েছে
         centerTitle: false,
         title: Text(
           'Profile',
@@ -87,11 +90,13 @@ class ProfileScreen extends StatelessWidget {
         }
 
         final user = _profileController.user.value;
+        final imageUrl = user?.image ?? '';
         final fullName = user == null
             ? 'User'
             : '${user.firstName} ${user.lastName}'.trim();
-        final locationText =
-        user == null ? 'Location not set' : _buildLocationText(user);
+        final locationText = user == null
+            ? 'Location not set'
+            : _buildLocationText(user);
 
         // ফিক্সড: একটি SingleChildScrollView বা Column রিটার্ন করা হয়েছে
         return SingleChildScrollView(
@@ -106,19 +111,30 @@ class ProfileScreen extends StatelessWidget {
                     // avatar
                     ClipRRect(
                       borderRadius: BorderRadius.circular(100.r),
-                      child: CachedNetworkImage(
-                        imageUrl: user?.image ?? "https://cdn-images.dzcdn.net/images/cover/2489db20eecbc62b9a6e03ac76471f91/0x1900-000000-80-0-0.jpg",
-                        fit: BoxFit.cover,
-                        height: 125.h,
-                        width: 125.w,
-                        placeholder: (context, url) => Center(
-                          child: LoadingAnimationWidget.staggeredDotsWave(
-                            color: AppColors.primaryDeepBlueLight,
-                            size: 25.h,
-                          ),
-                        ),
-                        errorWidget: (context, url, error) => const Icon(Icons.error),
-                      ),
+                      child: imageUrl.isEmpty
+                          ? Image.asset(
+                              'assets/images/blank_user.jpg',
+                              fit: BoxFit.cover,
+                              height: 125.h,
+                              width: 125.w,
+                            )
+                          : CachedNetworkImage(
+                              imageUrl: imageUrl,
+                              fit: BoxFit.cover,
+                              height: 125.h,
+                              width: 125.w,
+                              placeholder: (context, url) => Center(
+                                child:
+                                    LoadingAnimationWidget.staggeredDotsWave(
+                                  color: AppColors.primaryDeepBlueLight,
+                                  size: 25.h,
+                                ),
+                              ),
+                              errorWidget: (context, url, error) => Image.asset(
+                                'assets/images/blank_user.jpg',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
                     ),
                     10.verticalSpace,
                     // name
@@ -158,7 +174,10 @@ class ProfileScreen extends StatelessWidget {
               _buildProfileMenu(
                 icon: IconPath.navProfile,
                 title: 'Profile',
-                onTap: () => AppHelperFunctions.navigateToScreen(context, UserProfileScreen()),
+                onTap: () => AppHelperFunctions.navigateToScreen(
+                  context,
+                  UserProfileScreen(),
+                ),
               ),
 
               // Notification Item
@@ -172,14 +191,20 @@ class ProfileScreen extends StatelessWidget {
               _buildProfileMenu(
                 icon: IconPath.wallet,
                 title: 'Payment History',
-                onTap: () => AppHelperFunctions.navigateToScreen(context, PaymentHistoryScreen()),
+                onTap: () => AppHelperFunctions.navigateToScreen(
+                  context,
+                  PaymentHistoryScreen(),
+                ),
               ),
 
               // My Booking Item
               _buildProfileMenu(
                 icon: IconPath.ticket,
                 title: 'My Booking',
-                onTap: () => AppHelperFunctions.navigateToScreen(context, BookingScreen()),
+                onTap: () => AppHelperFunctions.navigateToScreen(
+                  context,
+                  BookingScreen(),
+                ),
               ),
 
               // Logout Item
@@ -218,7 +243,9 @@ class ProfileScreen extends StatelessWidget {
             Image.asset(
               icon,
               height: 20.h,
-              color: isLogout ? AppColors.primaryDeepBlueNormal : AppColors.bodyDarkGray,
+              color: isLogout
+                  ? AppColors.primaryDeepBlueNormal
+                  : AppColors.bodyDarkGray,
             ),
             10.horizontalSpace,
             Text(
@@ -226,7 +253,9 @@ class ProfileScreen extends StatelessWidget {
               style: getTextStyle(
                 fontSize: 14.sp,
                 fontWeight: isLogout ? FontWeight.w600 : FontWeight.w400,
-                color: isLogout ? AppColors.primaryDeepBlueNormal : AppColors.bodyDarkGray,
+                color: isLogout
+                    ? AppColors.primaryDeepBlueNormal
+                    : AppColors.bodyDarkGray,
               ),
             ),
           ],

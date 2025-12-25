@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile/views/screens/vendor_edit_profile_screen.dart';
@@ -54,12 +53,8 @@ class UserProfileScreen extends StatelessWidget {
           children: [
             // profile header (cover + avatar)
             VendorProfileHeader(
-              coverPhoto:
-                  StorageService.coverImage ??
-                  "https://cdn.shopify.com/s/files/1/0681/6976/1043/files/connor-ellsworth-y4QxywTWZj8-unsplash_1024x1024.jpg?v=1679340043",
-              profilePhoto:
-                  StorageService.profileImage ??
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEGUodmPqUNG8wJWNkNCvqiNkr1T9tsft5oQ&s",
+              coverPhoto: StorageService.coverImage ?? '',
+              profilePhoto: StorageService.profileImage ?? '',
             ),
 
             12.verticalSpace,
