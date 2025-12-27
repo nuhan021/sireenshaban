@@ -69,6 +69,8 @@ class LoginController extends GetxController {
     );
     await StorageService.saveRole(loginModel.value!.data.user.role);
 
+    StorageService.savaVendorId(loginModel.value!.data.vendor.id);
+
     // Fetch user profile immediately and store it for app-wide access
     try {
       final profileFetched = await UserInfoService.fetchAndStoreProfile();

@@ -252,6 +252,8 @@ class HomeController extends GetxController {
     final token = StorageService.token;
     final vendorId = StorageService.vendorId;
 
+    AppLoggerHelper.info("The actual vendor is: ${vendorId}");
+
     final result = await _networkCaller.getRequest(
       "${ApiConstants.vendorProfile}/$vendorId",
       token: "Bearer $token",
