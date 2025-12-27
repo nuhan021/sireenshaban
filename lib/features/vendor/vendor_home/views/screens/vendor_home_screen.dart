@@ -9,6 +9,7 @@ import 'package:sireenshaban/core/utils/constants/icon_path.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
 import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
+import 'package:sireenshaban/features/customer/home/views/widget/community_events.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/deals_and_promotions.dart';
 import 'package:sireenshaban/features/controller/stripe_controller.dart';
 import 'package:sireenshaban/features/vendor/create_event/views/screens/create_event_screen.dart';
@@ -240,6 +241,72 @@ class VendorHomeScreen extends StatelessWidget {
                   return DealsAndPromotions(
                     controller: controller,
                     isFromVendorScreen: true,
+                  );
+                }),
+
+                40.verticalSpace,
+
+
+                // events
+                Obx(() {
+                  // 1. Check Loading State
+                  if (controller.isCommunityEventsLoading.value) {
+                    return Center(
+                      child: LoadingAnimationWidget.dotsTriangle(
+                        color: AppColors.primaryDeepBlueNormal,
+                        size: 25.h,
+                      ),
+                    );
+                  }
+
+                  if (controller.isCommunityEventsError.value) {
+                    return Center(
+                      child: IconButton(
+                        onPressed: () => controller.getDealsAndPromotions(),
+                        icon: Icon(Icons.refresh),
+                      ),
+                    );
+                  }
+
+                  // 3. Check for Empty List (New Condition)
+                  // We check if data is null OR if the data list inside is empty
+                  final dataList = controller.communityEvents.value?.data;
+                  if (dataList == null || dataList.isEmpty) {
+                    return Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Events",
+                                style: getTextStyle(
+                                  fontSize: 20.sp,
+                                  fontWeight: FontWeight.w700,
+                                  color: AppColors.secondaryInfoMediumGrayDarker,
+                                ),
+                              ).paddingOnly(left: 20.w),
+                            ],
+                          ),
+                          Icon(
+                            Icons.inventory_2_outlined,
+                            color: Colors.grey,
+                            size: 40.h,
+                          ),
+                          SizedBox(height: 8.h),
+                          Text(
+                            "No event found",
+                            style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+
+                  // 4. Return Data Widget if everything is fine
+                  return CommunityEvents(
+                    controller: controller,
                   );
                 }),
 
