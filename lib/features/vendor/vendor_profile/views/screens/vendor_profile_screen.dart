@@ -32,6 +32,10 @@ class VendorProfileScreen extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         }
 
+        if(homeController.vendorUser.value == null) {
+          return Center(child: Text('Vendor null'),);
+        }
+
         final userCtrl = homeController.vendorUser.value!.vendor.user;
         return SingleChildScrollView(
           child: Column(
