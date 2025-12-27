@@ -24,6 +24,7 @@ class HomeController extends GetxController {
       getDealsAndPromotions();
       getBooking();
       getAdditionalService();
+      getCommunityEvents();
     } else {
       getAdditionalService();
       getDealsAndPromotions();
@@ -162,13 +163,19 @@ class HomeController extends GetxController {
   Future<void> getCommunityEvents() async {
     isCommunityEventsLoading.value = true;
     final token = StorageService.token;
+    final vendorId = StorageService.vendorId;
+
+    String url = ApiConstants.communityEvents;
+    if (isFromVendor && vendorId != null) {
+      url = "$url?vendor_id=$vendorId";
+    }
 
     final response = await _networkCaller.getRequest(
-      ApiConstants.communityEvents,
+      url,
       token: "Bearer $token",
     );
 
-    if(!response.isSuccess) {
+    if (!response.isSuccess) {
       SnackBarConstant.error(response.errorMessage);
       isCommunityEventsLoading.value = false;
       isCommunityEventsError.value = true;
