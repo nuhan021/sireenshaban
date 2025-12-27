@@ -6,20 +6,20 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
-import 'package:sireenshaban/features/customer/home/model/packages_model.dart';
 import 'package:sireenshaban/features/customer/package_booking/views/screens/map_screen.dart';
 import '../../../../../core/utils/constants/colors.dart';
+import '../../../home/model/eventModel.dart';
 
-class LocationCard extends StatefulWidget {
-  const LocationCard({super.key, this.data});
+class LocationCard2 extends StatefulWidget {
+  const LocationCard2({super.key, this.data});
 
   final Datum? data;
 
   @override
-  State<LocationCard> createState() => _LocationCardState();
+  State<LocationCard2> createState() => _LocationCardState();
 }
 
-class _LocationCardState extends State<LocationCard> {
+class _LocationCardState extends State<LocationCard2> {
   final HomeController homeController = Get.find<HomeController>();
   late GoogleMapController _mapController;
   late LatLng _shopLocation = const LatLng(
@@ -27,12 +27,11 @@ class _LocationCardState extends State<LocationCard> {
     -73.99088234777156,
   );
 
-
   @override
   void initState() {
     super.initState();
-    final double lat = double.tryParse(widget.data?.latitude?.toString() ?? '') ?? 40.74003379333115;
-    final double lng = double.tryParse(widget.data?.longitude?.toString() ?? '') ?? -73.99088234777156;
+    final double lat = double.tryParse(widget.data?.vendor.latitude?.toString() ?? '') ?? 40.74003379333115;
+    final double lng = double.tryParse(widget.data?.vendor.longitude?.toString() ?? '') ?? -73.99088234777156;
 
     _shopLocation = LatLng(lat, lng);
   }

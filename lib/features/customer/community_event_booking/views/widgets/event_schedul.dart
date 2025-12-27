@@ -7,11 +7,12 @@ import 'package:sireenshaban/core/utils/constants/icon_path.dart';
 import 'package:sireenshaban/features/customer/community_event_booking/controller/event_controller.dart';
 
 class EventSchedul extends StatelessWidget {
-  EventSchedul({super.key, required this.date, required this.time, required this.price});
+  EventSchedul({super.key, required this.date, required this.time, required this.price, this.isFromVendor = false});
 
   final String price;
   final DateTime date;
   final String time;
+  final bool? isFromVendor;
 
   final EventController controller = Get.put(EventController());
 
@@ -19,7 +20,7 @@ class EventSchedul extends StatelessWidget {
   Widget build(BuildContext context) {
     controller.stringPrice.value = price;
     return Container(
-      height: 500.h,
+      height: isFromVendor ?? false ? 300.h : 500.h,
       width: double.maxFinite,
       padding: EdgeInsets.symmetric(vertical: 20.h),
       decoration: BoxDecoration(
@@ -143,85 +144,10 @@ class EventSchedul extends StatelessWidget {
             ),
           ),
 
-          // Attendees and payment method
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          //     // attendees
-          //     Expanded(
-          //       child: ListTile(
-          //         leading: Container(
-          //           height: 42.h,
-          //           width: 42.h,
-          //           padding: EdgeInsets.all(7.w),
-          //           decoration: BoxDecoration(
-          //             shape: BoxShape.circle,
-          //             color: Color(0xFFF0F1F2),
-          //           ),
-          //           alignment: AlignmentGeometry.center,
-          //           child: Image.asset(
-          //             IconPath.people,
-          //             color: AppColors.bodyDarkGray,
-          //           ),
-          //         ),
-          //         title: Text(
-          //           'Attendees',
-          //           style: getTextStyle(
-          //             fontSize: 12.sp,
-          //             fontWeight: FontWeight.w400,
-          //             color: AppColors.primaryDeepBlueNormal,
-          //           ),
-          //         ),
-          //         subtitle: Text(
-          //           "1 Guest",
-          //           style: getTextStyle(
-          //             fontSize: 16.sp,
-          //             fontWeight: FontWeight.w500,
-          //             color: AppColors.secondaryInfoMediumGrayNormal,
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //
-          //     // time
-          //     Expanded(
-          //       child: ListTile(
-          //         leading: Container(
-          //           height: 42.h,
-          //           width: 42.h,
-          //           padding: EdgeInsets.all(7.w),
-          //           decoration: BoxDecoration(
-          //             shape: BoxShape.circle,
-          //             color: Color(0xFFF0F1F2),
-          //           ),
-          //           alignment: AlignmentGeometry.center,
-          //           child: Image.asset(
-          //             IconPath.mobile,
-          //             color: AppColors.bodyDarkGray,
-          //           ),
-          //         ),
-          //         title: Text(
-          //           'Stripe',
-          //           style: getTextStyle(
-          //             fontSize: 12.sp,
-          //             fontWeight: FontWeight.w400,
-          //             color: AppColors.primaryDeepBlueNormal,
-          //           ),
-          //         ),
-          //         subtitle: Text(
-          //           "****4252",
-          //           style: getTextStyle(
-          //             fontSize: 16.sp,
-          //             fontWeight: FontWeight.w500,
-          //             color: AppColors.secondaryInfoMediumGrayNormal,
-          //           ),
-          //         ),
-          //       ),
-          //     ),
-          //   ],
-          // ),
+
           Divider(color: Color(0xFFD1D3D8)).paddingSymmetric(horizontal: 20.w),
 
+          if(isFromVendor == false)
           Row(
             children: [
               Image.asset(IconPath.people, height: 24.h),
@@ -238,6 +164,7 @@ class EventSchedul extends StatelessWidget {
           ).paddingSymmetric(horizontal: 20.w),
 
           // add ticket number
+          if(isFromVendor == false)
           Container(
             height: 85,
             width: double.maxFinite,
@@ -289,6 +216,7 @@ class EventSchedul extends StatelessWidget {
           ).paddingSymmetric(horizontal: 20.w),
 
           // total price
+          if(isFromVendor == false)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

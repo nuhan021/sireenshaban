@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:sireenshaban/core/services/network_caller.dart';
 import 'package:sireenshaban/core/utils/logging/logger.dart';
 
-import '../../routes/app_routes.dart';
+import '../../../routes/app_routes.dart';
 
 class StripeController extends GetxController {
   RxBool isLoading = false.obs;

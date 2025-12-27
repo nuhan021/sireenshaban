@@ -16,7 +16,7 @@ class CommunityEventsCard extends StatelessWidget {
     required this.image,
     required this.title,
     required this.date,
-    required this.location,
+    required this.location, this.isFromVendor = false,
   });
 
   final int id;
@@ -24,11 +24,12 @@ class CommunityEventsCard extends StatelessWidget {
   final String title;
   final String date;
   final String location;
+  final bool? isFromVendor;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => AppHelperFunctions.navigateToScreen(context, CommunityEventBookingScreen(id: id,image: image, title: title,)),
+      onTap: () => AppHelperFunctions.navigateToScreen(context, CommunityEventBookingScreen(id: id,image: image, title: title, isFromVendor: isFromVendor,)),
       child: Card(
         child: Container(
           height: 305.h,

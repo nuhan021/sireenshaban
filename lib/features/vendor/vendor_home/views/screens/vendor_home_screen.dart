@@ -11,7 +11,7 @@ import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/community_events.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/deals_and_promotions.dart';
-import 'package:sireenshaban/features/controller/stripe_controller.dart';
+import 'package:sireenshaban/features/stripe/controller/stripe_controller.dart';
 import 'package:sireenshaban/features/vendor/create_event/views/screens/create_event_screen.dart';
 import 'package:sireenshaban/features/vendor/create_package/view/screens/create_package.dart';
 import 'package:sireenshaban/features/vendor/vendor_booking_request/views/widgets/booking_request_card.dart';
@@ -307,6 +307,7 @@ class VendorHomeScreen extends StatelessWidget {
                   // 4. Return Data Widget if everything is fine
                   return CommunityEvents(
                     controller: controller,
+                    isFromVendor: true,
                   );
                 }),
 
@@ -359,22 +360,6 @@ class VendorHomeScreen extends StatelessWidget {
                           Text(
                             "No Today Schedule Found",
                             style: TextStyle(color: Colors.grey, fontSize: 14.sp),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              AppHelperFunctions.navigateToScreen(
-                                context,
-                                CreateEventScreen(),
-                              );
-                            },
-                            child: Text(
-                              'Add Event',
-                              style: getTextStyle(
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.primaryDeepBlueNormal,
-                              ),
-                            ),
                           ),
                         ],
                       ),
