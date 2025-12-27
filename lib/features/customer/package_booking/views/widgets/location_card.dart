@@ -30,10 +30,10 @@ class _LocationCardState extends State<LocationCard> {
   @override
   void initState() {
     super.initState();
-    _shopLocation = LatLng(
-      double.parse(widget.data?.latitude.toString() ?? ''),
-      double.parse(widget.data?.longitude.toString() ?? ''),
-    );
+    final double lat = double.tryParse(widget.data?.latitude?.toString() ?? '') ?? 40.74003379333115;
+    final double lng = double.tryParse(widget.data?.longitude?.toString() ?? '') ?? -73.99088234777156;
+
+    _shopLocation = LatLng(lat, lng);
   }
 
   // Future<void> _getCurrentLocation() async {
