@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -86,31 +88,31 @@ class AdditionalService extends StatelessWidget {
                 // search bar
                 controller.isAdditionalServicesClose.value
                     ? IField(
-                        controller: additionalSearchController,
-                        borderColor: AppColors.primaryDeepBlueLight,
-                        filled: true,
-                        fillColour: AppColors.softGray,
-                        hintText: 'Search services provider',
-                        hintTextStyle: getTextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
+                  controller: additionalSearchController,
+                  borderColor: AppColors.primaryDeepBlueLight,
+                  filled: true,
+                  fillColour: AppColors.softGray,
+                  hintText: 'Search services provider',
+                  hintTextStyle: getTextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
 
-                        suffixIcon: IconButton(
-                          onPressed: () {},
-                          icon: Image.asset(
-                            IconPath.navSearch,
-                            height: 24.h,
-                            color: Colors.grey.shade800,
-                          ),
-                        ),
-                      )
+                  suffixIcon: IconButton(
+                    onPressed: () {},
+                    icon: Image.asset(
+                      IconPath.navSearch,
+                      height: 24.h,
+                      color: Colors.grey.shade800,
+                    ),
+                  ),
+                )
                     : SizedBox(),
 
                 8.verticalSpace,
 
                 if (controller.isAdditionalServicesClose.value)
-                  // providers list view
+                // providers list view
                   Expanded(
                     child: ListView.builder(
                       itemCount: controller.categorys.value!.data.length,
@@ -119,7 +121,7 @@ class AdditionalService extends StatelessWidget {
                         return GestureDetector(
                           onTap: () => AppHelperFunctions.navigateToScreen(
                             context,
-                            VendorsScreen(),
+                            VendorsScreen(categorySlug: item.slug),
                           ),
                           child: Container(
                             width: double.maxFinite,
@@ -135,7 +137,7 @@ class AdditionalService extends StatelessWidget {
                               isHorizontal: true,
                               onPressed: () => AppHelperFunctions.navigateToScreen(
                                 context,
-                                VendorsScreen(),
+                                VendorsScreen(categorySlug: item.slug),
                               ),// not used since GestureDetector handles tap
                             ),
                           ),
@@ -154,7 +156,9 @@ class AdditionalService extends StatelessWidget {
                             title: e.name,
                             onPressed: () => AppHelperFunctions.navigateToScreen(
                               context,
-                              VendorsScreen(),
+                              VendorsScreen(
+                                categorySlug: e.slug,
+                              ),
                             ),
                           ).paddingOnly(right: 15.r);
                         }).toList(),

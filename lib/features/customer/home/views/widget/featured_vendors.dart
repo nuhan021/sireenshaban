@@ -28,7 +28,10 @@ class FeaturedVendors extends StatelessWidget {
             ),
 
             GestureDetector(
-              onTap: () => AppHelperFunctions.navigateToScreen(context, VendorsScreen()),
+              onTap: () => AppHelperFunctions.navigateToScreen(
+                context,
+                VendorsScreen(),
+              ),
               child: Text(
                 'Explore All',
                 style: getTextStyle(
@@ -43,33 +46,33 @@ class FeaturedVendors extends StatelessWidget {
 
         20.verticalSpace,
 
-        Column(
-          children: [
-            FeaturedVendorsCard(
-              image:
-                  "https://img.freepik.com/premium-photo/sexy-girl-doing-yoga-home-kitchen_321831-2764.jpg",
-              title: "Serenity Spa & Well",
-              subtitle: "Beauty & Wellness",
-              service: "Deep Tissue Massage",
-              date: "15 March,2025",
-              location: "Near you",
-              price: "\$150",
-            ),
+        // Column(
+        //   children: [
+        //     FeaturedVendorsCard(
+        //       image:
+        //           "https://img.freepik.com/premium-photo/sexy-girl-doing-yoga-home-kitchen_321831-2764.jpg",
+        //       title: "Serenity Spa & Well",
+        //       subtitle: "Beauty & Wellness",
+        //       service: "Deep Tissue Massage",
+        //       date: "15 March,2025",
+        //       location: "Near you",
+        //       price: "\$150",
+        //     ),
 
-            10.verticalSpace,
+        //     10.verticalSpace,
 
-            FeaturedVendorsCard(
-              image:
-                  "https://img.freepik.com/free-photo/female-doctor-hospital_23-2148827760.jpg",
-              title: "Dr. Sarah Johnson",
-              subtitle: "Healthcare",
-              service: "Consultation",
-              date: "27 April,2025",
-              location: "Near you",
-              price: "\$100",
-            ),
-          ],
-        ),
+        //     FeaturedVendorsCard(
+        //       image:
+        //           "https://img.freepik.com/free-photo/female-doctor-hospital_23-2148827760.jpg",
+        //       title: "Dr. Sarah Johnson",
+        //       subtitle: "Healthcare",
+        //       service: "Consultation",
+        //       date: "27 April,2025",
+        //       location: "Near you",
+        //       price: "\$100",
+        //     ),
+        //   ],
+        // ),
       ],
     );
   }
