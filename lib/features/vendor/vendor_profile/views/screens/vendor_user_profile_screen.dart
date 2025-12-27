@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/controllers/user_controller.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile/views/screens/vendor_edit_profile_screen.dart';
@@ -48,35 +50,35 @@ class VendorUserProfileScreen extends StatelessWidget {
         ],
       ),
 
-      body: Obx(() {
-        final userCtrl = Get.find<UserController>();
-        return SingleChildScrollView(
-          child: Column(
-            children: [
-              // profile header (cover + avatar)
-              VendorProfileHeader(
-                coverPhoto:
-                    userCtrl.profileImage.value ,
-                profilePhoto:
-                    userCtrl.profileImage.value,
-              ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // profile header (cover + avatar)
+            VendorProfileHeader(
+              coverPhoto:
+                  "https://cdn.shopify.com/s/files/1/0681/6976/1043/files/connor-ellsworth-y4QxywTWZj8-unsplash_1024x1024.jpg?v=1679340043",
+              profilePhoto:
+                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEGUodmPqUNG8wJWNkNCvqiNkr1T9tsft5oQ&s",
+            ),
 
-              12.verticalSpace,
+            12.verticalSpace,
 
-              // edit icon
-              Align(
-                alignment: AlignmentGeometry.topRight,
-                child: GestureDetector(
-                  onTap: () => AppHelperFunctions.navigateToScreen(
-                    context,
-                    VendorEditProfileScreen(),
-                  ),
-                  child: Image.asset(IconPath.edit, height: 20.h),
+            // edit icon
+            Align(
+              alignment: AlignmentGeometry.topRight,
+              child: GestureDetector(
+                onTap: () => AppHelperFunctions.navigateToScreen(
+                  context,
+                  VendorEditProfileScreen(),
                 ),
+                child: Image.asset(IconPath.edit, height: 20.h),
               ),
+            ),
 
-              // first name
-              ListTile(
+            // first name
+            Obx(() {
+              final userCtrl = Get.find<UserController>();
+              return ListTile(
                 tileColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.r),
@@ -97,12 +99,15 @@ class VendorUserProfileScreen extends StatelessWidget {
                     color: Color(0xFF333333),
                   ),
                 ),
-              ),
+              );
+            }),
 
-              8.verticalSpace,
+            8.verticalSpace,
 
-              // last name
-              ListTile(
+            // last name
+            Obx(() {
+              final userCtrl = Get.find<UserController>();
+              return ListTile(
                 tileColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.r),
@@ -123,12 +128,15 @@ class VendorUserProfileScreen extends StatelessWidget {
                     color: Color(0xFF333333),
                   ),
                 ),
-              ),
+              );
+            }),
 
-              8.verticalSpace,
+            8.verticalSpace,
 
-              // email
-              ListTile(
+            // email
+            Obx(() {
+              final userCtrl = Get.find<UserController>();
+              return ListTile(
                 tileColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.r),
@@ -149,11 +157,14 @@ class VendorUserProfileScreen extends StatelessWidget {
                     color: Color(0xFF333333),
                   ),
                 ),
-              ),
+              );
+            }),
 
-              8.verticalSpace,
-              // city
-              ListTile(
+            8.verticalSpace,
+            // city
+            Obx(() {
+              final userCtrl = Get.find<UserController>();
+              return ListTile(
                 tileColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.r),
@@ -174,12 +185,15 @@ class VendorUserProfileScreen extends StatelessWidget {
                     color: Color(0xFF333333),
                   ),
                 ),
-              ),
+              );
+            }),
 
-              8.verticalSpace,
+            8.verticalSpace,
 
-              // Address
-              ListTile(
+            // Address
+            Obx(() {
+              final userCtrl = Get.find<UserController>();
+              return ListTile(
                 tileColor: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12.r),
@@ -200,38 +214,38 @@ class VendorUserProfileScreen extends StatelessWidget {
                     color: Color(0xFF333333),
                   ),
                 ),
-              ),
+              );
+            }),
 
-              8.verticalSpace,
+            8.verticalSpace,
 
-              // service/ business category
-              // ListTile(
-              //   tileColor: Colors.white,
-              //   shape: RoundedRectangleBorder(
-              //     borderRadius: BorderRadius.circular(12.r),
-              //   ),
-              //   title: Text(
-              //     'Services/Business Category',
-              //     style: getTextStyle(
-              //       fontSize: 12.sp,
-              //       fontWeight: FontWeight.w500,
-              //       color: AppColors.primaryDeepBlueNormal,
-              //     ),
-              //   ),
+            // service/ business category
+            // ListTile(
+            //   tileColor: Colors.white,
+            //   shape: RoundedRectangleBorder(
+            //     borderRadius: BorderRadius.circular(12.r),
+            //   ),
+            //   title: Text(
+            //     'Services/Business Category',
+            //     style: getTextStyle(
+            //       fontSize: 12.sp,
+            //       fontWeight: FontWeight.w500,
+            //       color: AppColors.primaryDeepBlueNormal,
+            //     ),
+            //   ),
 
-              //   subtitle: Text(
-              //     'Photographer',
-              //     style: getTextStyle(
-              //       fontSize: 12.sp,
-              //       fontWeight: FontWeight.w400,
-              //       color: Color(0xFF333333),
-              //     ),
-              //   ),
-              // ),
-            ],
-          ).paddingSymmetric(horizontal: 20.w),
-        );
-      }),
+            //   subtitle: Text(
+            //     'Photographer',
+            //     style: getTextStyle(
+            //       fontSize: 12.sp,
+            //       fontWeight: FontWeight.w400,
+            //       color: Color(0xFF333333),
+            //     ),
+            //   ),
+            // ),
+          ],
+        ).paddingSymmetric(horizontal: 20.w),
+      ),
     );
   }
 }

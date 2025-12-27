@@ -88,7 +88,7 @@ class AppRoute {
     GetPage(name: verificationCodeSendSuccessScreen, page: () => VerificationCodeSendSuccessScreen()),
     GetPage(name: forgetPasswordScreen, page: () => ForgetPasswordScreen()),
     GetPage(name: changePasswordScreen, page: () => ChangePasswordScreen()),
-    GetPage(name: vendorsScreen, page: () => VendorsScreen()),
+    GetPage(name: vendorsScreen, page: () => const VendorsScreen()),
     GetPage(name: chatListScreen, page: () => ChatListScreen()),
     GetPage(
       name: chatScreen,

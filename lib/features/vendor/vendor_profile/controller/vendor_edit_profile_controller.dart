@@ -29,16 +29,13 @@ class VendorEditProfileController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    final profile = StorageService.userProfile;
-    if (profile == null) return;
-
-    firstNameController.text = StorageService.firstName ?? '';
-    lastNameController.text = StorageService.lastName ?? '';
-    countryController.text = StorageService.country ?? '';
-    cityController.text = StorageService.city ?? '';
-    addressController.text = StorageService.address ?? '';
-    serviceController.text =
-        StorageService.service ?? StorageService.businessName ?? '';
+    // Default/example values (kept from previous screen initState)
+    firstNameController.text = 'Sara';
+    lastNameController.text = 'Nim';
+    countryController.text = 'USA';
+    cityController.text = 'New York';
+    addressController.text = '456 Market Street';
+    serviceController.text = 'Photographer';
   }
 
   @override
@@ -80,33 +77,21 @@ class VendorEditProfileController extends GetxController {
         try {
           final decoded = jsonDecode(resp.body);
           final data = decoded['data'];
-          final fieldUpdates = <String, dynamic>{
-            'first_name': fields['first_name'] ?? '',
-            'last_name': fields['last_name'] ?? '',
-            'country': fields['country'] ?? '',
-            'city': fields['city'] ?? '',
-            'address': fields['address'] ?? '',
-            'service': fields['service'] ?? '',
-          };
           if (data != null && data is Map<String, dynamic>) {
-            await StorageService.saveUserProfileMerged(
-              <String, dynamic>{...fieldUpdates, ...data},
-            );
-          } else {
-            await StorageService.saveUserProfileMerged(fieldUpdates);
+            await StorageService.saveUserProfile(data);
+            // Optionally update local text controllers with saved values
+            firstNameController.text =
+                data['first_name'] ?? firstNameController.text;
+            lastNameController.text =
+                data['last_name'] ?? lastNameController.text;
+            countryController.text = data['country'] ?? countryController.text;
+            cityController.text = data['city'] ?? cityController.text;
+            addressController.text = data['address'] ?? addressController.text;
+
+            // Refresh UserController so all screens update reactively
+            final userCtrl = Get.find<UserController>();
+            userCtrl.refreshFromStorage();
           }
-
-          firstNameController.text = StorageService.firstName ?? '';
-          lastNameController.text = StorageService.lastName ?? '';
-          countryController.text = StorageService.country ?? '';
-          cityController.text = StorageService.city ?? '';
-          addressController.text = StorageService.address ?? '';
-          serviceController.text =
-              StorageService.service ?? StorageService.businessName ?? '';
-
-          // Refresh UserController so all screens update reactively
-          final userCtrl = Get.find<UserController>();
-          userCtrl.refreshFromStorage();
         } catch (_) {
           // ignore parse errors
         }
