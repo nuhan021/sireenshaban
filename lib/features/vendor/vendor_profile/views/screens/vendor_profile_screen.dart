@@ -44,20 +44,20 @@ class VendorProfileScreen extends StatelessWidget {
                     .user
                     .backgroundImage,
                 profilePhoto:
-                    homeController.vendorUser.value!.vendor.user.image,
+                homeController.vendorUser.value!.vendor.user.image,
               ),
 
               // name
-             
-                Text(
-                  '${userCtrl.firstName} ${userCtrl.lastName}',
-                  style: getTextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.bodyDarkGray,
-                  ),
+
+              Text(
+                '${userCtrl.firstName} ${userCtrl.lastName}',
+                style: getTextStyle(
+                  fontSize: 20.sp,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.bodyDarkGray,
                 ),
-             
+              ),
+
 
               Text(
                 homeController.vendorUser.value!.vendor.categoryName,
@@ -72,25 +72,25 @@ class VendorProfileScreen extends StatelessWidget {
 
               // location
               Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // location icon
-                    Icon(
-                      Icons.location_on_outlined,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // location icon
+                  Icon(
+                    Icons.location_on_outlined,
+                    color: AppColors.secondaryAquaNormal,
+                  ),
+                  5.horizontalSpace,
+                  Text(
+                    '${userCtrl.country}, ${userCtrl.city}',
+                    style: getTextStyle(
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400,
                       color: AppColors.secondaryAquaNormal,
                     ),
-                    5.horizontalSpace,
-                    Text(
-                      '${userCtrl.country}, ${userCtrl.city}',
-                      style: getTextStyle(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.secondaryAquaNormal,
-                      ),
-                    ),
-                  ],
-                ),
-       
+                  ),
+                ],
+              ),
+
 
               20.verticalSpace,
 
