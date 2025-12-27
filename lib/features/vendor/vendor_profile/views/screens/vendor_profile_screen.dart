@@ -16,21 +16,10 @@ import '../../../../../routes/app_routes.dart';
 import '../../../../customer/booking/views/screens/booking_screen.dart';
 import '../../../../customer/payment_history/views/screens/payment_history_screen.dart';
 
-class VendorProfileScreen extends StatefulWidget {
+class VendorProfileScreen extends StatelessWidget {
   VendorProfileScreen({super.key});
 
-  @override
-  State<VendorProfileScreen> createState() => _VendorProfileScreenState();
-}
-
-class _VendorProfileScreenState extends State<VendorProfileScreen> {
   final HomeController homeController = Get.find<HomeController>();
-
-  @override
-  void initState() {
-    super.initState();
-    homeController.getVendorProfile();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,9 +28,11 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       backgroundColor: Color(0xFFF9FAFB),
 
       body: Obx(() {
-        if (!homeController.isVendorProfileLoading.value) {
+        if (homeController.isFromVendor == false) {
           return Center(child: CircularProgressIndicator());
         }
+
+        final userCtrl = homeController.vendorUser.value!.vendor.user;
         return SingleChildScrollView(
           child: Column(
             children: [
@@ -57,17 +48,16 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
               ),
 
               // name
-              Obx(() {
-                final userCtrl = Get.find<UserController>();
-                return Text(
-                  '${userCtrl.firstName.value} ${userCtrl.lastName.value}',
+             
+                Text(
+                  '${userCtrl.firstName} ${userCtrl.lastName}',
                   style: getTextStyle(
                     fontSize: 20.sp,
                     fontWeight: FontWeight.w600,
                     color: AppColors.bodyDarkGray,
                   ),
-                );
-              }),
+                ),
+             
 
               Text(
                 homeController.vendorUser.value!.vendor.categoryName,
@@ -81,9 +71,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
               10.verticalSpace,
 
               // location
-              Obx(() {
-                final userCtrl = Get.find<UserController>();
-                return Row(
+              Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     // location icon
@@ -93,7 +81,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                     ),
                     5.horizontalSpace,
                     Text(
-                      '${userCtrl.country.value}, ${userCtrl.city.value}',
+                      '${userCtrl.country}, ${userCtrl.city}',
                       style: getTextStyle(
                         fontSize: 12.sp,
                         fontWeight: FontWeight.w400,
@@ -101,8 +89,8 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                       ),
                     ),
                   ],
-                );
-              }),
+                ),
+       
 
               20.verticalSpace,
 
