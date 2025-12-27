@@ -34,23 +34,27 @@ class LoginModel {
 
 class Data {
   User user;
+  Vendor vendor;
   String token;
   String tokenType;
 
   Data({
     required this.user,
+    required this.vendor,
     required this.token,
     required this.tokenType,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     user: User.fromJson(json["user"]),
+    vendor: Vendor.fromJson(json["vendor"]),
     token: json["token"],
     tokenType: json["token_type"],
   );
 
   Map<String, dynamic> toJson() => {
     "user": user.toJson(),
+    "vendor": vendor.toJson(),
     "token": token,
     "token_type": tokenType,
   };
@@ -68,17 +72,15 @@ class User {
     required this.email,
     required this.role,
     required this.isFirstTime,
-    this.subscriptionType,
+    required this.subscriptionType,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json["id"],
-    email: json["email"] ?? "",
-    role: json["role"] ?? "",
-    isFirstTime: json["is_first_time"] ?? false,
-    subscriptionType: json.containsKey("subscription_type") && json["subscription_type"] != null
-        ? json["subscription_type"] as String
-        : null,
+    email: json["email"],
+    role: json["role"],
+    isFirstTime: json["is_first_time"],
+    subscriptionType: json["subscription_type"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -87,5 +89,21 @@ class User {
     "role": role,
     "is_first_time": isFirstTime,
     "subscription_type": subscriptionType,
+  };
+}
+
+class Vendor {
+  int id;
+
+  Vendor({
+    required this.id,
+  });
+
+  factory Vendor.fromJson(Map<String, dynamic> json) => Vendor(
+    id: json["id"] ?? 0,
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
   };
 }

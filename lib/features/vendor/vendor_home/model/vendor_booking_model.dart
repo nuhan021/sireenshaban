@@ -92,7 +92,7 @@ class Datum {
     packageId: json["package_id"],
     eventId: json["event_id"],
     quoteId: json["quote_id"],
-    timeSlotId: json["time_slot_id"],
+    timeSlotId: json["time_slot_id"] ?? 0,
     guests: json["guests"],
     specialConcerns: json["special_concerns"],
     productType: json["product_type"],
@@ -211,7 +211,7 @@ class Package {
     slug: json["slug"],
     pricePerEvent: json["price_per_event"],
     venueType: json["venue_type"],
-    location: json["location"],
+    location: json["location"] ?? '',
   );
 
   Map<String, dynamic> toJson() => {
