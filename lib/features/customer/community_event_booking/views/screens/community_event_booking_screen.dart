@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/common/widgets/custom_loading.dart';
+import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/customer/community_event_booking/controller/event_controller.dart';
 import 'package:sireenshaban/features/customer/community_event_booking/views/widgets/event_schedul.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
+import 'package:sireenshaban/features/customer/package_booking/views/widgets/location_card_2.dart';
 
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/common/widgets/custom_primary_button.dart';
@@ -26,11 +28,13 @@ class CommunityEventBookingScreen extends StatefulWidget {
     required this.image,
     required this.title,
     required this.id,
+    this.isFromVendor = false,
   });
 
   final int id;
   final String image;
   final String title;
+  final bool? isFromVendor;
 
   final HomeController homeController = Get.find<HomeController>();
   final EventController eventController = Get.put(EventController());
@@ -54,6 +58,7 @@ class _CommunityEventBookingScreenState
 
   @override
   Widget build(BuildContext context) {
+    AppLoggerHelper.info("The is from vendor: ${widget.isFromVendor}");
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Color(0xFFF4F4F4),
@@ -141,7 +146,7 @@ class _CommunityEventBookingScreenState
                 20.verticalSpace,
 
                 // location
-                LocationCard(),
+                LocationCard2(data: data,),
 
                 20.verticalSpace,
 
@@ -150,54 +155,56 @@ class _CommunityEventBookingScreenState
                   date: data.eventDate,
                   time: data.eventTime,
                   price: data.ticketPrice,
+                  isFromVendor: true,
                 ),
 
                 20.verticalSpace,
 
                 // contact info
-                Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.cardBackgroundSoftGray,
-                    borderRadius: BorderRadius.circular(12.r),
-                  ),
-                  child: ListTile(
-                    leading: Image.asset(ImagePath.personImg, height: 40.h),
-                    title: Text(
-                      "Contact Host",
-                      overflow: TextOverflow.ellipsis,
-                      style: getTextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.bodyDarkGray,
-                      ),
+                if (widget.isFromVendor == false)
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppColors.cardBackgroundSoftGray,
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
-
-                    subtitle: Text(
-                      "Restaurant Manager",
-                      overflow: TextOverflow.ellipsis,
-                      style: getTextStyle(
-                        fontSize: 12.sp,
-                        fontWeight: FontWeight.w400,
-                        color: AppColors.bodyDarkGray,
-                      ),
-                    ),
-
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconButton(
-                          onPressed: () {},
-                          icon: Image.asset(IconPath.message, height: 24.h),
+                    child: ListTile(
+                      leading: Image.asset(ImagePath.personImg, height: 40.h),
+                      title: Text(
+                        "Contact Host",
+                        overflow: TextOverflow.ellipsis,
+                        style: getTextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.bodyDarkGray,
                         ),
-                        // IconButton(
-                        //   onPressed: () {},
-                        //   icon: Image.asset(IconPath.call, height: 24.h),
-                        // ),
-                      ],
+                      ),
+
+                      subtitle: Text(
+                        "Restaurant Manager",
+                        overflow: TextOverflow.ellipsis,
+                        style: getTextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.bodyDarkGray,
+                        ),
+                      ),
+
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            onPressed: () {},
+                            icon: Image.asset(IconPath.message, height: 24.h),
+                          ),
+                          // IconButton(
+                          //   onPressed: () {},
+                          //   icon: Image.asset(IconPath.call, height: 24.h),
+                          // ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
 
                 30.verticalSpace,
 
@@ -227,37 +234,40 @@ class _CommunityEventBookingScreenState
                 30.verticalSpace,
 
                 // confirm booking button
-                Obx(() {
-                  if(widget.eventController.isEventLoading.value) {
-                    return CustomLoading();
-                  }
-                  return CustomPrimaryButton(
-                    text: "Confirm Booking & Pay \$${widget.eventController.stringPrice.value}",
-                    textColor: AppColors.cardBackgroundSoftGray,
-                    color: AppColors.primaryDeepBlueNormal,
-                    onPressed: () {
-                      widget.eventController.confirmBooking(data);
-                    },
-                  );
-                }),
+                if (widget.isFromVendor == false)
+                  Obx(() {
+                    if (widget.eventController.isEventLoading.value) {
+                      return CustomLoading();
+                    }
+                    return CustomPrimaryButton(
+                      text:
+                          "Confirm Booking & Pay \$${widget.eventController.stringPrice.value}",
+                      textColor: AppColors.cardBackgroundSoftGray,
+                      color: AppColors.primaryDeepBlueNormal,
+                      onPressed: () {
+                        widget.eventController.confirmBooking(data);
+                      },
+                    );
+                  }),
 
                 20.verticalSpace,
 
-                // cancel button
-                Align(
-                  alignment: AlignmentGeometry.center,
-                  child: TextButton(
-                    onPressed: () => Navigator.pop(context),
-                    child: Text(
-                      'Cancel',
-                      style: getTextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.accentNormal,
+                if (widget.isFromVendor == false)
+                  // cancel button
+                  Align(
+                    alignment: AlignmentGeometry.center,
+                    child: TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: Text(
+                        'Cancel',
+                        style: getTextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.accentNormal,
+                        ),
                       ),
                     ),
                   ),
-                ),
 
                 20.verticalSpace,
               ],

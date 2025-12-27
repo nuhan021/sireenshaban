@@ -7,7 +7,7 @@ import 'package:sireenshaban/core/common/widgets/custom_loading.dart';
 import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
 
-import '../../../controller/stripe_controller.dart';
+import '../../../stripe/controller/stripe_controller.dart';
 import '../../controller/subscription_controller.dart';
 
 class SubscriptionCard extends StatelessWidget {

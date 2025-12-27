@@ -8,9 +8,10 @@ import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
 
 class CommunityEvents extends StatelessWidget {
-  CommunityEvents({super.key, required this.controller});
+  const CommunityEvents({super.key, required this.controller, this.isFromVendor = false});
 
   final HomeController controller;
+  final bool? isFromVendor;
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +44,7 @@ class CommunityEvents extends StatelessWidget {
                 title: item.title ?? '',
                 date: "${item.eventDate.day}-${item.eventDate.month}-${item.eventDate.year}",
                 location: item.location ?? '',
+                isFromVendor: isFromVendor,
               );
             },
           ),

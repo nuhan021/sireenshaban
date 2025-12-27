@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
-import 'package:sireenshaban/features/controller/stripe_controller.dart';
+import 'package:sireenshaban/features/stripe/controller/stripe_controller.dart';
 import 'package:sireenshaban/features/subscription/views/widget/subscription_card.dart';
 
 import '../../controller/subscription_controller.dart';

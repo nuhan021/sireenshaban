@@ -55,26 +55,35 @@ class VendorProfileHeader extends StatelessWidget {
               Positioned(
                 bottom: 0,
                 left: 20.w,
-                child: CachedNetworkImage(
-                  imageUrl: profilePhoto,
-                  imageBuilder: (context, imageProvider) => CircleAvatar(
-                    radius: 60.r,
-                    backgroundImage: imageProvider,
-                  ),
-                  placeholder: (context, url) => CircleAvatar(
-                    radius: 60.r,
-                    backgroundColor: Colors.white,
-                    child: LoadingAnimationWidget.staggeredDotsWave(
-                      color: AppColors.primaryDeepBlueLight,
-                      size: 25.h,
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.white,
+                      width: 2.w,
                     ),
                   ),
-                  errorWidget: (context, url, error) => CircleAvatar(
-                    radius: 60.r,
-                    backgroundImage: const AssetImage(_fallbackProfile),
+                  child: CachedNetworkImage(
+                    imageUrl: profilePhoto,
+                    imageBuilder: (context, imageProvider) => CircleAvatar(
+                      radius: 60.r,
+                      backgroundImage: imageProvider,
+                    ),
+                    placeholder: (context, url) => CircleAvatar(
+                      radius: 60.r,
+                      backgroundColor: Colors.white,
+                      child: LoadingAnimationWidget.staggeredDotsWave(
+                        color: AppColors.primaryDeepBlueLight,
+                        size: 25.h,
+                      ),
+                    ),
+                    errorWidget: (context, url, error) => CircleAvatar(
+                      radius: 60.r,
+                      backgroundImage: const AssetImage(_fallbackProfile),
+                    ),
                   ),
                 ),
-              ),
+              )
             ],
           ),
         ),

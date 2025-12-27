@@ -120,7 +120,7 @@ class HomeController extends GetxController {
     categorys.value = CategoriModel.fromJson(response.responseData);
     isAdditionalServiceLoading.value = false;
     isAdditionalServiceError.value = false;
-    SnackBarConstant.success("Category fetched successfully");
+    // SnackBarConstant.success("Category fetched successfully");
   }
 
 
@@ -155,7 +155,7 @@ class HomeController extends GetxController {
     packages.value = PackagesModel.fromJson(response.responseData);
     isDealsAndPromotionLoading.value = false;
     isDealsAndPromotionError.value = false;
-    SnackBarConstant.success("Deals & Promotions fetched successfully");
+    // SnackBarConstant.success("Deals & Promotions fetched successfully");
   }
 
 
@@ -185,7 +185,7 @@ class HomeController extends GetxController {
     communityEvents.value = EventModel.fromJson(response.responseData);
     isCommunityEventsLoading.value = false;
     isCommunityEventsError.value = false;
-    SnackBarConstant.success("Community events fetched successfully");
+    // SnackBarConstant.success("Community events fetched successfully");
   }
 
   Future<void> getBooking() async {
@@ -249,12 +249,12 @@ class HomeController extends GetxController {
     
     isBookingLoading.value = false;
     isBookingError.value = false;
-    SnackBarConstant.success("Bookings fetched successfully");
+    // SnackBarConstant.success("Bookings fetched successfully");
   }
 
 
   Future<void> getVendorProfile() async {
-    isVendorProfileLoading.value = false;
+    isVendorProfileLoading.value = true;
 
     final token = StorageService.token;
     final vendorId = StorageService.vendorId;
@@ -276,7 +276,7 @@ class HomeController extends GetxController {
     vendorUser.value = VendorUserModel.fromJson(result.responseData);
     isVendorProfileLoading.value = false;
     isVendorProfileError.value = false;
-    SnackBarConstant.success("Vendor profile fetched successfully");
+    // SnackBarConstant.success("Vendor profile fetched successfully");
   }
 
 
@@ -300,7 +300,7 @@ class HomeController extends GetxController {
     trending.value = TrendingModel.fromJson(response.responseData);
     isTrendingNearbyLoading.value = false;
     isTrendingNearbyError.value = false;
-    SnackBarConstant.success("Trending fetched successfully");
+    // SnackBarConstant.success("Trending fetched successfully");
   }
 }
 
