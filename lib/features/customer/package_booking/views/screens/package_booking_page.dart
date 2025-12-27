@@ -5,6 +5,7 @@ import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
 import 'package:sireenshaban/core/utils/constants/enums.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
+import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/customer/confirm_booking/views/screens/confirm_booking_screen.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/customer/home/model/packages_model.dart';
@@ -185,7 +186,7 @@ class _PackageBookingPageState extends State<PackageBookingPage> {
                 20.verticalSpace,
 
                 // location
-                LocationCard(),
+                LocationCard(data: data,),
 
                 20.verticalSpace,
 

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:sireenshaban/core/common/widgets/custom_loading.dart';
 import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
@@ -76,7 +77,12 @@ class _CreatePackageState extends State<CreatePackage> {
                   ),
 
                   20.verticalSpace,
-                  _buildSubmitButton(),
+                  Obx(() {
+                    if (controller.isLoading.value) {
+                      return Center(child: CustomLoading());
+                    }
+                    return _buildSubmitButton();
+                  }),
                 ],
               ),
             ),
@@ -172,30 +178,32 @@ class _CreatePackageState extends State<CreatePackage> {
 
         // --- Service Group Dropdown ---
         _buildInputLabel("Service Group"),
-        Obx(() => _buildDropdownContainer(
-          child: DropdownButton<ServicesGroup>(
-            isExpanded: true,
-            hint: const Text("Select Group"),
-            value: controller.selectedServiceGroup.value,
-            items: ServicesGroup.values.map((group) {
-
-              // 1. Convert camelCase to spaces: "business And Creative Services"
-              String text = group.name.replaceAllMapped(
+        Obx(
+          () => _buildDropdownContainer(
+            child: DropdownButton<ServicesGroup>(
+              isExpanded: true,
+              hint: const Text("Select Group"),
+              value: controller.selectedServiceGroup.value,
+              items: ServicesGroup.values.map((group) {
+                // 1. Convert camelCase to spaces: "business And Creative Services"
+                String text = group.name.replaceAllMapped(
                   RegExp(r'([A-Z])'),
-                      (match) => ' ${match.group(0)}'
-              );
+                  (match) => ' ${match.group(0)}',
+                );
 
-              // 2. Capitalize first letter and lowercase the rest: "Business and creative services"
-              String formattedText = text[0].toUpperCase() + text.substring(1).toLowerCase();
+                // 2. Capitalize first letter and lowercase the rest: "Business and creative services"
+                String formattedText =
+                    text[0].toUpperCase() + text.substring(1).toLowerCase();
 
-              return DropdownMenuItem(
-                value: group,
-                child: Text(formattedText),
-              );
-            }).toList(),
-            onChanged: (val) => controller.selectedServiceGroup.value = val,
+                return DropdownMenuItem(
+                  value: group,
+                  child: Text(formattedText),
+                );
+              }).toList(),
+              onChanged: (val) => controller.selectedServiceGroup.value = val,
+            ),
           ),
-        )),
+        ),
         16.verticalSpace,
 
         // --- Venue Type & Shift Selection ---
@@ -206,16 +214,21 @@ class _CreatePackageState extends State<CreatePackage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildInputLabel("Venue Type"),
-                  Obx(() => _buildDropdownContainer(
-                    child: DropdownButton<String>(
-                      isExpanded: true,
-                      value: controller.venueType.value,
-                      items: ["Indoor", "Outdoor"].map((type) {
-                        return DropdownMenuItem(value: type, child: Text(type));
-                      }).toList(),
-                      onChanged: (val) => controller.venueType.value = val!,
+                  Obx(
+                    () => _buildDropdownContainer(
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        value: controller.venueType.value,
+                        items: ["Indoor", "Outdoor"].map((type) {
+                          return DropdownMenuItem(
+                            value: type,
+                            child: Text(type),
+                          );
+                        }).toList(),
+                        onChanged: (val) => controller.venueType.value = val!,
+                      ),
                     ),
-                  )),
+                  ),
                 ],
               ),
             ),
@@ -225,16 +238,18 @@ class _CreatePackageState extends State<CreatePackage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildInputLabel("Shift"),
-                  Obx(() => _buildDropdownContainer(
-                    child: DropdownButton<String>(
-                      isExpanded: true,
-                      value: controller.shift.value,
-                      items: ["Morning", "Evening", "Night"].map((s) {
-                        return DropdownMenuItem(value: s, child: Text(s));
-                      }).toList(),
-                      onChanged: (val) => controller.shift.value = val!,
+                  Obx(
+                    () => _buildDropdownContainer(
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        value: controller.shift.value,
+                        items: ["Morning", "Evening", "Night"].map((s) {
+                          return DropdownMenuItem(value: s, child: Text(s));
+                        }).toList(),
+                        onChanged: (val) => controller.shift.value = val!,
+                      ),
                     ),
-                  )),
+                  ),
                 ],
               ),
             ),
@@ -251,7 +266,6 @@ class _CreatePackageState extends State<CreatePackage> {
           borderColor: const Color(0xFFEBEBEB),
         ),
         16.verticalSpace,
-
 
         Row(
           children: [

@@ -78,6 +78,8 @@ AppLoggerHelper.debug("vendor ID : ${StorageService.vendorId}");
     AppLoggerHelper.debug('Saved Vendor ID: ${loginModel.value!.data.vendor!.id}');
 
 
+    StorageService.savaVendorId(loginModel.value!.data.vendor.id);
+
     // Fetch user profile immediately and store it for app-wide access
     try {
       final profileFetched = await UserInfoService.fetchAndStoreProfile();
