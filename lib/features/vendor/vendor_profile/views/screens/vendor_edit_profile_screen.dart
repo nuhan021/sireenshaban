@@ -1,5 +1,3 @@
-// ignore_for_file: use_full_hex_values_for_flutter_colors
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -30,6 +28,7 @@ class _VendorEditProfileScreenState extends State<VendorEditProfileScreen> {
   @override
   void initState() {
     super.initState();
+
     // Prefill controllers from stored profile (if available)
     final profile = StorageService.userProfile;
     controller.firstNameController.text =
@@ -47,7 +46,7 @@ class _VendorEditProfileScreenState extends State<VendorEditProfileScreen> {
         profile?['business_name'] ??
         controller.serviceController.text;
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

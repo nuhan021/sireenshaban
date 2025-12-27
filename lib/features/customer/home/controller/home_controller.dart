@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:sireenshaban/core/controllers/user_controller.dart';
 import 'package:sireenshaban/core/services/network_caller.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/constants/api_constants.dart';
@@ -19,6 +20,13 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    // if(isFromVendor==true){
+
+
+    // }
+    // if (Get.isRegistered<UserController>()) {
+    //   Get.find<UserController>().loadFromStorage();
+    // }
     if(isFromVendor) {
       getVendorProfile();
       getDealsAndPromotions();
@@ -56,11 +64,14 @@ class HomeController extends GetxController {
   RxBool isVendorProfileLoading = false.obs;
   RxBool isVendorProfileError = false.obs;
 
+  RxBool isCategoryPackagesLoading = false.obs;
+  RxBool isCategoryPackagesError = false.obs;
 
 
 
   Rx<CategoriModel?> categorys = Rx<CategoriModel?>(null);
   Rx<PackagesModel?> packages = Rx<PackagesModel?>(null);
+  Rx<PackagesModel?> categoryPackages = Rx<PackagesModel?>(null);
   Rx<EventModel?> communityEvents = Rx<EventModel?>(null);
   Rx<TrendingModel?> trending = Rx<TrendingModel?>(null);
   Rx<VendorBookingModel?> bookings = Rx<VendorBookingModel?>(null);
@@ -158,6 +169,32 @@ class HomeController extends GetxController {
     // SnackBarConstant.success("Deals & Promotions fetched successfully");
   }
 
+  // fetch packages by category slug
+  Future<void> getPackagesByCategory({required String categorySlug}) async {
+    isCategoryPackagesLoading.value = true;
+    final token = StorageService.token;
+
+    final url = Uri.parse(ApiConstants.dealsAndPromotions).replace(
+      queryParameters: {'category_slug': categorySlug},
+    );
+
+    final response = await _networkCaller.getRequest(
+      url.toString(),
+      token: "Bearer $token",
+    );
+
+    if (!response.isSuccess) {
+      SnackBarConstant.error(response.errorMessage);
+      isCategoryPackagesLoading.value = false;
+      isCategoryPackagesError.value = true;
+      return;
+    }
+
+    categoryPackages.value = PackagesModel.fromJson(response.responseData);
+    isCategoryPackagesLoading.value = false;
+    isCategoryPackagesError.value = false;
+    SnackBarConstant.success("Packages fetched successfully");
+  }
 
   // fetch community events
   Future<void> getCommunityEvents() async {
@@ -257,9 +294,12 @@ class HomeController extends GetxController {
     isVendorProfileLoading.value = true;
 
     final token = StorageService.token;
-    final vendorId = StorageService.vendorId;
+
+    final vendorid = StorageService.vendorId;
+
 
     AppLoggerHelper.info("The actual vendor is: ${vendorId}");
+
 
     final result = await _networkCaller.getRequest(
       "${ApiConstants.vendorProfile}/$vendorId",
@@ -303,4 +343,3 @@ class HomeController extends GetxController {
     // SnackBarConstant.success("Trending fetched successfully");
   }
 }
-
