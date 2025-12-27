@@ -63,11 +63,14 @@ class HomeController extends GetxController {
   RxBool isVendorProfileLoading = false.obs;
   RxBool isVendorProfileError = false.obs;
 
+  RxBool isCategoryPackagesLoading = false.obs;
+  RxBool isCategoryPackagesError = false.obs;
 
 
 
   Rx<CategoriModel?> categorys = Rx<CategoriModel?>(null);
   Rx<PackagesModel?> packages = Rx<PackagesModel?>(null);
+  Rx<PackagesModel?> categoryPackages = Rx<PackagesModel?>(null);
   Rx<EventModel?> communityEvents = Rx<EventModel?>(null);
   Rx<TrendingModel?> trending = Rx<TrendingModel?>(null);
   Rx<VendorBookingModel?> bookings = Rx<VendorBookingModel?>(null);
@@ -165,6 +168,32 @@ class HomeController extends GetxController {
     SnackBarConstant.success("Deals & Promotions fetched successfully");
   }
 
+  // fetch packages by category slug
+  Future<void> getPackagesByCategory({required String categorySlug}) async {
+    isCategoryPackagesLoading.value = true;
+    final token = StorageService.token;
+
+    final url = Uri.parse(ApiConstants.dealsAndPromotions).replace(
+      queryParameters: {'category_slug': categorySlug},
+    );
+
+    final response = await _networkCaller.getRequest(
+      url.toString(),
+      token: "Bearer $token",
+    );
+
+    if (!response.isSuccess) {
+      SnackBarConstant.error(response.errorMessage);
+      isCategoryPackagesLoading.value = false;
+      isCategoryPackagesError.value = true;
+      return;
+    }
+
+    categoryPackages.value = PackagesModel.fromJson(response.responseData);
+    isCategoryPackagesLoading.value = false;
+    isCategoryPackagesError.value = false;
+    SnackBarConstant.success("Packages fetched successfully");
+  }
 
   // fetch community events
   Future<void> getCommunityEvents() async {
