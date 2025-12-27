@@ -29,7 +29,6 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
   @override
   void initState() {
     super.initState();
-    homeController.getVendorProfile();
   }
 
   @override
@@ -39,7 +38,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
       backgroundColor: Color(0xFFF9FAFB),
 
       body: Obx(() {
-        if (!homeController.isVendorProfileLoading.value) {
+        if (homeController.vendorUser.value == null) {
           return Center(child: CircularProgressIndicator());
         }
         return SingleChildScrollView(
