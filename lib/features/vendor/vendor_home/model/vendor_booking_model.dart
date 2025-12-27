@@ -1,11 +1,6 @@
-// To parse this JSON data, do
-//
-//     final vendorBookingModel = vendorBookingModelFromJson(jsonString);
-
 import 'dart:convert';
 
 VendorBookingModel vendorBookingModelFromJson(String str) => VendorBookingModel.fromJson(json.decode(str));
-
 String vendorBookingModelToJson(VendorBookingModel data) => json.encode(data.toJson());
 
 class VendorBookingModel {
@@ -18,8 +13,10 @@ class VendorBookingModel {
   });
 
   factory VendorBookingModel.fromJson(Map<String, dynamic> json) => VendorBookingModel(
-    success: json["success"],
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    success: json["success"] ?? false,
+    data: json["data"] == null
+        ? []
+        : List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -86,32 +83,32 @@ class Datum {
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
-    id: json["id"],
-    userId: json["user_id"],
-    vendorId: json["vendor_id"],
+    id: json["id"] ?? 0,
+    userId: json["user_id"] ?? 0,
+    vendorId: json["vendor_id"] ?? 0,
     packageId: json["package_id"],
     eventId: json["event_id"],
     quoteId: json["quote_id"],
     timeSlotId: json["time_slot_id"] ?? 0,
-    guests: json["guests"],
+    guests: json["guests"] ?? 0,
     specialConcerns: json["special_concerns"],
-    productType: json["product_type"],
-    subtotal: json["subtotal"],
-    tax: json["tax"],
-    platformFee: json["platform_fee"],
-    vendorTotal: json["vendor_total"],
-    total: json["total"],
-    status: json["status"],
-    reviewed: json["reviewed"],
-    date: DateTime.parse(json["date"]),
-    time: json["time"],
-    user: DatumUser.fromJson(json["user"]),
-    vendor: Vendor.fromJson(json["vendor"]),
+    productType: json["product_type"] ?? "",
+    subtotal: json["subtotal"]?.toString() ?? "0",
+    tax: json["tax"]?.toString() ?? "0",
+    platformFee: json["platform_fee"]?.toString() ?? "0",
+    vendorTotal: json["vendor_total"]?.toString() ?? "0",
+    total: json["total"]?.toString() ?? "0",
+    status: json["status"] ?? "",
+    reviewed: json["reviewed"] ?? 0,
+    date: json["date"] == null ? DateTime.now() : DateTime.parse(json["date"]),
+    time: json["time"] ?? "",
+    user: DatumUser.fromJson(json["user"] ?? {}),
+    vendor: Vendor.fromJson(json["vendor"] ?? {}),
     package: json["package"] == null ? null : Package.fromJson(json["package"]),
     event: json["event"] == null ? null : Event.fromJson(json["event"]),
     quote: json["quote"],
-    timeSlot: TimeSlot.fromJson(json["time_slot"]),
-    payment: Payment.fromJson(json["payment"]),
+    timeSlot: TimeSlot.fromJson(json["time_slot"] ?? {}),
+    payment: Payment.fromJson(json["payment"] ?? {}),
   );
 
   Map<String, dynamic> toJson() => {
@@ -166,14 +163,14 @@ class Event {
   });
 
   factory Event.fromJson(Map<String, dynamic> json) => Event(
-    id: json["id"],
-    title: json["title"],
-    slug: json["slug"],
-    eventDate: DateTime.parse(json["event_date"]),
-    eventTime: json["event_time"],
-    venueType: json["venue_type"],
-    location: json["location"],
-    ticketPrice: json["ticket_price"],
+    id: json["id"] ?? 0,
+    title: json["title"] ?? "",
+    slug: json["slug"] ?? "",
+    eventDate: json["event_date"] == null ? DateTime.now() : DateTime.parse(json["event_date"]),
+    eventTime: json["event_time"] ?? "",
+    venueType: json["venue_type"] ?? "",
+    location: json["location"] ?? "",
+    ticketPrice: json["ticket_price"]?.toString() ?? "0",
   );
 
   Map<String, dynamic> toJson() => {
@@ -206,12 +203,12 @@ class Package {
   });
 
   factory Package.fromJson(Map<String, dynamic> json) => Package(
-    id: json["id"],
-    title: json["title"],
-    slug: json["slug"],
-    pricePerEvent: json["price_per_event"],
-    venueType: json["venue_type"],
-    location: json["location"] ?? '',
+    id: json["id"] ?? 0,
+    title: json["title"] ?? "",
+    slug: json["slug"] ?? "",
+    pricePerEvent: json["price_per_event"]?.toString() ?? "0",
+    venueType: json["venue_type"] ?? "",
+    location: json["location"] ?? "",
   );
 
   Map<String, dynamic> toJson() => {
@@ -246,14 +243,14 @@ class Payment {
   });
 
   factory Payment.fromJson(Map<String, dynamic> json) => Payment(
-    id: json["id"],
-    bookingId: json["booking_id"],
-    amount: json["amount"],
-    paymentMethod: json["payment_method"],
-    transactionId: json["transaction_id"],
-    currency: json["currency"],
-    status: json["status"],
-    createdAt: DateTime.parse(json["created_at"]),
+    id: json["id"] ?? 0,
+    bookingId: json["booking_id"] ?? 0,
+    amount: json["amount"]?.toString() ?? "0",
+    paymentMethod: json["payment_method"] ?? "",
+    transactionId: json["transaction_id"] ?? "",
+    currency: json["currency"] ?? "",
+    status: json["status"] ?? "",
+    createdAt: json["created_at"] == null ? DateTime.now() : DateTime.parse(json["created_at"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -273,7 +270,7 @@ class TimeSlot {
   int dateId;
   String time;
   String period;
-  AvailableDate availableDate;
+  AvailableDate? availableDate;
 
   TimeSlot({
     required this.id,
@@ -284,11 +281,11 @@ class TimeSlot {
   });
 
   factory TimeSlot.fromJson(Map<String, dynamic> json) => TimeSlot(
-    id: json["id"],
-    dateId: json["date_id"],
-    time: json["time"],
-    period: json["period"],
-    availableDate: AvailableDate.fromJson(json["available_date"]),
+    id: json["id"] ?? 0,
+    dateId: json["date_id"] ?? 0,
+    time: json["time"] ?? "",
+    period: json["period"] ?? "",
+    availableDate: json["available_date"] == null ? null : AvailableDate.fromJson(json["available_date"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -296,7 +293,7 @@ class TimeSlot {
     "date_id": dateId,
     "time": time,
     "period": period,
-    "available_date": availableDate.toJson(),
+    "available_date": availableDate?.toJson(),
   };
 }
 
@@ -310,8 +307,8 @@ class AvailableDate {
   });
 
   factory AvailableDate.fromJson(Map<String, dynamic> json) => AvailableDate(
-    id: json["id"],
-    date: DateTime.parse(json["date"]),
+    id: json["id"] ?? 0,
+    date: json["date"] == null ? DateTime.now() : DateTime.parse(json["date"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -340,11 +337,11 @@ class DatumUser {
   });
 
   factory DatumUser.fromJson(Map<String, dynamic> json) => DatumUser(
-    id: json["id"],
+    id: json["id"] ?? 0,
     firstName: json["first_name"],
     lastName: json["last_name"],
     phoneNumber: json["phone_number"],
-    email: json["email"],
+    email: json["email"] ?? "",
     image: json["image"],
     backgroundImage: json["background_image"],
   );
@@ -364,7 +361,7 @@ class Vendor {
   int id;
   int userId;
   String businessName;
-  VendorUser user;
+  VendorUser? user;
 
   Vendor({
     required this.id,
@@ -374,17 +371,17 @@ class Vendor {
   });
 
   factory Vendor.fromJson(Map<String, dynamic> json) => Vendor(
-    id: json["id"],
-    userId: json["user_id"],
-    businessName: json["business_name"],
-    user: VendorUser.fromJson(json["user"]),
+    id: json["id"] ?? 0,
+    userId: json["user_id"] ?? 0,
+    businessName: json["business_name"] ?? "",
+    user: json["user"] == null ? null : VendorUser.fromJson(json["user"]),
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "user_id": userId,
     "business_name": businessName,
-    "user": user.toJson(),
+    "user": user?.toJson(),
   };
 }
 
@@ -404,11 +401,11 @@ class VendorUser {
   });
 
   factory VendorUser.fromJson(Map<String, dynamic> json) => VendorUser(
-    id: json["id"],
-    firstName: json["first_name"],
-    lastName: json["last_name"],
-    phoneNumber: json["phone_number"],
-    email: json["email"],
+    id: json["id"] ?? 0,
+    firstName: json["first_name"] ?? "",
+    lastName: json["last_name"] ?? "",
+    phoneNumber: json["phone_number"] ?? "",
+    email: json["email"] ?? "",
   );
 
   Map<String, dynamic> toJson() => {
