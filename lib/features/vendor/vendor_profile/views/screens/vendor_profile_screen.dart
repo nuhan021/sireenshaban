@@ -16,10 +16,21 @@ import '../../../../../routes/app_routes.dart';
 import '../../../../customer/booking/views/screens/booking_screen.dart';
 import '../../../../customer/payment_history/views/screens/payment_history_screen.dart';
 
-class VendorProfileScreen extends StatelessWidget {
+class VendorProfileScreen extends StatefulWidget {
   VendorProfileScreen({super.key});
 
+  @override
+  State<VendorProfileScreen> createState() => _VendorProfileScreenState();
+}
+
+class _VendorProfileScreenState extends State<VendorProfileScreen> {
   final HomeController homeController = Get.find<HomeController>();
+
+  @override
+  void initState() {
+    super.initState();
+    homeController.getVendorProfile();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,228 +38,251 @@ class VendorProfileScreen extends StatelessWidget {
       extendBodyBehindAppBar: true,
       backgroundColor: Color(0xFFF9FAFB),
 
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            VendorProfileHeader(
-              coverPhoto: homeController.vendorUser.value!.vendor.user.backgroundImage,
-              profilePhoto: homeController.vendorUser.value!.vendor.user.image,
-            ),
+      body: Obx(() {
+        if (!homeController.isVendorProfileLoading.value) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              VendorProfileHeader(
+                coverPhoto: homeController
+                    .vendorUser
+                    .value!
+                    .vendor
+                    .user
+                    .backgroundImage,
+                profilePhoto:
+                    homeController.vendorUser.value!.vendor.user.image,
+              ),
 
-            // name
-            Obx(() {
-              final userCtrl = Get.find<UserController>();
-              return Text(
-                '${userCtrl.firstName.value} ${userCtrl.lastName.value}',
+              // name
+              Obx(() {
+                final userCtrl = Get.find<UserController>();
+                return Text(
+                  '${userCtrl.firstName.value} ${userCtrl.lastName.value}',
+                  style: getTextStyle(
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.bodyDarkGray,
+                  ),
+                );
+              }),
+
+              Text(
+                homeController.vendorUser.value!.vendor.categoryName,
                 style: getTextStyle(
-                  fontSize: 20.sp,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 12.sp,
+                  fontWeight: FontWeight.w400,
                   color: AppColors.bodyDarkGray,
                 ),
-              );
-            }),
-
-            Text(
-              homeController.vendorUser.value!.vendor.categoryName,
-              style: getTextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w400,
-                color: AppColors.bodyDarkGray,
               ),
-            ),
 
-            10.verticalSpace,
+              10.verticalSpace,
 
-            // location
-            Obx(() {
-              final userCtrl = Get.find<UserController>();
-              return Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // location icon
-                  Icon(
-                    Icons.location_on_outlined,
-                    color: AppColors.secondaryAquaNormal,
-                  ),
-                  5.horizontalSpace,
-                  Text(
-                    '${userCtrl.country.value}, ${userCtrl.city.value}',
-                    style: getTextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
+              // location
+              Obx(() {
+                final userCtrl = Get.find<UserController>();
+                return Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    // location icon
+                    Icon(
+                      Icons.location_on_outlined,
                       color: AppColors.secondaryAquaNormal,
                     ),
+                    5.horizontalSpace,
+                    Text(
+                      '${userCtrl.country.value}, ${userCtrl.city.value}',
+                      style: getTextStyle(
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.secondaryAquaNormal,
+                      ),
+                    ),
+                  ],
+                );
+              }),
+
+              20.verticalSpace,
+
+              // profile
+              GestureDetector(
+                onTap: () => AppHelperFunctions.navigateToScreen(
+                  context,
+                  VendorUserProfileScreen(),
+                ),
+                child: Container(
+                  height: 65.h,
+                  padding: EdgeInsets.all(20.w),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Color(0xFFEBEBEB)),
+                    ),
                   ),
-                ],
-              );
-            }),
-
-            20.verticalSpace,
-
-            // profile
-            GestureDetector(
-              onTap: () => AppHelperFunctions.navigateToScreen(
-                context,
-                VendorUserProfileScreen(),
-              ),
-              child: Container(
-                height: 65.h,
-                padding: EdgeInsets.all(20.w),
-                decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Color(0xFFEBEBEB))),
-                ),
-                child: Row(
-                  children: [
-                    Image.asset(
-                      IconPath.navProfile,
-                      height: 20.h,
-                      color: AppColors.bodyDarkGray,
-                    ),
-                    10.horizontalSpace,
-                    Text(
-                      'Profile',
-                      style: getTextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        IconPath.navProfile,
+                        height: 20.h,
                         color: AppColors.bodyDarkGray,
                       ),
-                    ),
-                  ],
+                      10.horizontalSpace,
+                      Text(
+                        'Profile',
+                        style: getTextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.bodyDarkGray,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
 
-            // notification
-            GestureDetector(
-              onTap: () {
-                Get.toNamed(AppRoute.getNotificationScreen());
-              },
-              child: Container(
-                height: 65.h,
-                padding: EdgeInsets.all(20.w),
-                decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Color(0xFFEBEBEB))),
-                ),
-                child: Row(
-                  children: [
-                    Image.asset(
-                      IconPath.notificationOutline,
-                      height: 20.h,
-                      color: AppColors.bodyDarkGray,
+              // notification
+              GestureDetector(
+                onTap: () {
+                  Get.toNamed(AppRoute.getNotificationScreen());
+                },
+                child: Container(
+                  height: 65.h,
+                  padding: EdgeInsets.all(20.w),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Color(0xFFEBEBEB)),
                     ),
-                    10.horizontalSpace,
-                    Text(
-                      'Notification',
-                      style: getTextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
+                  ),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        IconPath.notificationOutline,
+                        height: 20.h,
                         color: AppColors.bodyDarkGray,
                       ),
-                    ),
-                  ],
+                      10.horizontalSpace,
+                      Text(
+                        'Notification',
+                        style: getTextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.bodyDarkGray,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
 
-            // payment history
-            GestureDetector(
-              onTap: () => AppHelperFunctions.navigateToScreen(
-                context,
-                PaymentHistoryScreen(),
-              ),
-              child: Container(
-                height: 65.h,
-                padding: EdgeInsets.all(20.w),
-                decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Color(0xFFEBEBEB))),
+              // payment history
+              GestureDetector(
+                onTap: () => AppHelperFunctions.navigateToScreen(
+                  context,
+                  PaymentHistoryScreen(),
                 ),
-                child: Row(
-                  children: [
-                    Image.asset(
-                      IconPath.wallet,
-                      height: 20.h,
-                      color: AppColors.bodyDarkGray,
+                child: Container(
+                  height: 65.h,
+                  padding: EdgeInsets.all(20.w),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Color(0xFFEBEBEB)),
                     ),
-                    10.horizontalSpace,
-                    Text(
-                      'Payment History',
-                      style: getTextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
+                  ),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        IconPath.wallet,
+                        height: 20.h,
                         color: AppColors.bodyDarkGray,
                       ),
-                    ),
-                  ],
+                      10.horizontalSpace,
+                      Text(
+                        'Payment History',
+                        style: getTextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.bodyDarkGray,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
 
-            // Completed booking
-            GestureDetector(
-              onTap: () =>
-                  AppHelperFunctions.navigateToScreen(context, BookingScreen()),
-              child: Container(
-                height: 65.h,
-                padding: EdgeInsets.all(20.w),
-                decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Color(0xFFEBEBEB))),
+              // Completed booking
+              GestureDetector(
+                onTap: () => AppHelperFunctions.navigateToScreen(
+                  context,
+                  BookingScreen(),
                 ),
-                child: Row(
-                  children: [
-                    Image.asset(
-                      IconPath.ticket,
-                      height: 20.h,
-                      color: AppColors.bodyDarkGray,
+                child: Container(
+                  height: 65.h,
+                  padding: EdgeInsets.all(20.w),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Color(0xFFEBEBEB)),
                     ),
-                    10.horizontalSpace,
-                    Text(
-                      'Completed Booking',
-                      style: getTextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w400,
+                  ),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        IconPath.ticket,
+                        height: 20.h,
                         color: AppColors.bodyDarkGray,
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            // logout
-            GestureDetector(
-              onTap: () {
-                StorageService.logoutUser();
-                Get.offAllNamed(AppRoute.selectRoleScreen);
-              },
-              child: Container(
-                height: 65.h,
-                padding: EdgeInsets.all(20.w),
-                decoration: BoxDecoration(
-                  border: Border(bottom: BorderSide(color: Color(0xFFEBEBEB))),
-                ),
-                child: Row(
-                  children: [
-                    Image.asset(
-                      IconPath.logout,
-                      height: 20.h,
-                      color: AppColors.bodyDarkGray,
-                    ),
-                    10.horizontalSpace,
-                    Text(
-                      'Log Out',
-                      style: getTextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.primaryDeepBlueNormal,
+                      10.horizontalSpace,
+                      Text(
+                        'Completed Booking',
+                        style: getTextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.bodyDarkGray,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
+
+              // logout
+              GestureDetector(
+                onTap: () {
+                  StorageService.logoutUser();
+                  Get.offAllNamed(AppRoute.selectRoleScreen);
+                },
+                child: Container(
+                  height: 65.h,
+                  padding: EdgeInsets.all(20.w),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Color(0xFFEBEBEB)),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Image.asset(
+                        IconPath.logout,
+                        height: 20.h,
+                        color: AppColors.bodyDarkGray,
+                      ),
+                      10.horizontalSpace,
+                      Text(
+                        'Log Out',
+                        style: getTextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.primaryDeepBlueNormal,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

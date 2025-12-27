@@ -290,10 +290,10 @@ class HomeController extends GetxController {
 
     final token = StorageService.token;
 
-    final vendorid = StorageService.vendorId;
+    final vendorId = StorageService.vendorId;
 
 
-    AppLoggerHelper.info("The actual vendor is: ${vendorId}");
+    AppLoggerHelper.info("The actual vendor is: $vendorId");
 
 
     final result = await _networkCaller.getRequest(
@@ -338,30 +338,5 @@ class HomeController extends GetxController {
     // SnackBarConstant.success("Trending fetched successfully");
   }
 
-  // fetch packages by category slug
-  Future<void> getPackagesByCategory({required String categorySlug}) async {
-    isCategoryPackagesLoading.value = true;
-    final token = StorageService.token;
 
-    final url = Uri.parse(ApiConstants.dealsAndPromotions).replace(
-      queryParameters: {'category_slug': categorySlug},
-    );
-
-    final response = await _networkCaller.getRequest(
-      url.toString(),
-      token: "Bearer $token",
-    );
-
-    if (!response.isSuccess) {
-      SnackBarConstant.error(response.errorMessage);
-      isCategoryPackagesLoading.value = false;
-      isCategoryPackagesError.value = true;
-      return;
-    }
-
-    categoryPackages.value = PackagesModel.fromJson(response.responseData);
-    isCategoryPackagesLoading.value = false;
-    isCategoryPackagesError.value = false;
-    SnackBarConstant.success("Packages fetched successfully");
-  }
 }
