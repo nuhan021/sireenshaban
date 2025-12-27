@@ -21,6 +21,7 @@ class LoginController extends GetxController {
 
   final TextEditingController passwordController = TextEditingController();
 
+
   RxBool isObscure = true.obs;
 
   RxBool isLogInLoading = false.obs;

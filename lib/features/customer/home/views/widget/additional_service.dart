@@ -88,31 +88,31 @@ class AdditionalService extends StatelessWidget {
                 // search bar
                 controller.isAdditionalServicesClose.value
                     ? IField(
-                        controller: additionalSearchController,
-                        borderColor: AppColors.primaryDeepBlueLight,
-                        filled: true,
-                        fillColour: AppColors.softGray,
-                        hintText: 'Search services provider',
-                        hintTextStyle: getTextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
+                  controller: additionalSearchController,
+                  borderColor: AppColors.primaryDeepBlueLight,
+                  filled: true,
+                  fillColour: AppColors.softGray,
+                  hintText: 'Search services provider',
+                  hintTextStyle: getTextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w500,
+                  ),
 
-                        suffixIcon: IconButton(
-                          onPressed: () {},
-                          icon: Image.asset(
-                            IconPath.navSearch,
-                            height: 24.h,
-                            color: Colors.grey.shade800,
-                          ),
-                        ),
-                      )
+                  suffixIcon: IconButton(
+                    onPressed: () {},
+                    icon: Image.asset(
+                      IconPath.navSearch,
+                      height: 24.h,
+                      color: Colors.grey.shade800,
+                    ),
+                  ),
+                )
                     : SizedBox(),
 
                 8.verticalSpace,
 
                 if (controller.isAdditionalServicesClose.value)
-                  // providers list view
+                // providers list view
                   Expanded(
                     child: ListView.builder(
                       itemCount: controller.categorys.value!.data.length,

@@ -30,7 +30,7 @@ class FeaturedVendors extends StatelessWidget {
             GestureDetector(
               onTap: () => AppHelperFunctions.navigateToScreen(
                 context,
-                const VendorsScreen(),
+                VendorsScreen(),
               ),
               child: Text(
                 'Explore All',

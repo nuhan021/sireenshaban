@@ -20,13 +20,7 @@ class HomeController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    // if(isFromVendor==true){
 
-
-    // }
-    // if (Get.isRegistered<UserController>()) {
-    //   Get.find<UserController>().loadFromStorage();
-    // }
     if(isFromVendor) {
       getVendorProfile();
       getDealsAndPromotions();
@@ -66,6 +60,7 @@ class HomeController extends GetxController {
 
   RxBool isCategoryPackagesLoading = false.obs;
   RxBool isCategoryPackagesError = false.obs;
+
 
 
 
@@ -341,5 +336,32 @@ class HomeController extends GetxController {
     isTrendingNearbyLoading.value = false;
     isTrendingNearbyError.value = false;
     // SnackBarConstant.success("Trending fetched successfully");
+  }
+
+  // fetch packages by category slug
+  Future<void> getPackagesByCategory({required String categorySlug}) async {
+    isCategoryPackagesLoading.value = true;
+    final token = StorageService.token;
+
+    final url = Uri.parse(ApiConstants.dealsAndPromotions).replace(
+      queryParameters: {'category_slug': categorySlug},
+    );
+
+    final response = await _networkCaller.getRequest(
+      url.toString(),
+      token: "Bearer $token",
+    );
+
+    if (!response.isSuccess) {
+      SnackBarConstant.error(response.errorMessage);
+      isCategoryPackagesLoading.value = false;
+      isCategoryPackagesError.value = true;
+      return;
+    }
+
+    categoryPackages.value = PackagesModel.fromJson(response.responseData);
+    isCategoryPackagesLoading.value = false;
+    isCategoryPackagesError.value = false;
+    SnackBarConstant.success("Packages fetched successfully");
   }
 }
