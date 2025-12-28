@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "349271557472",
+    "project_id": "sireenshaban-f2197",
+    "storage_bucket": "sireenshaban-f2197.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:349271557472:android:5d73c0261bea309c3c8a05",
+        "android_client_info": {
+          "package_name": "com.example.sireenshaban"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCykK89Z6g4F-6E19iOHWZQD4yPcz2W9sg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,10 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:sireenshaban/features/customer/booking/views/screens/user_booking_details_screen.dart';
-
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
 import '../../../../../core/utils/constants/icon_path.dart';
@@ -24,9 +21,13 @@ class BookingScreen extends StatelessWidget {
       debugPrint('📋 [BookingScreen] bookings.value is NULL');
       return [];
     }
-    debugPrint('📋 [BookingScreen] Total bookings: ${controller.bookings.value!.data.length}');
+    debugPrint(
+      '📋 [BookingScreen] Total bookings: ${controller.bookings.value!.data.length}',
+    );
     for (var booking in controller.bookings.value!.data) {
-      debugPrint('   📌 ID: ${booking.id}, Status: "${booking.status}", Date: ${booking.date}');
+      debugPrint(
+        '   📌 ID: ${booking.id}, Status: "${booking.status}", Date: ${booking.date}',
+      );
     }
     return controller.bookings.value!.data;
   }
@@ -91,13 +92,21 @@ class BookingScreen extends StatelessWidget {
 
       body: Obx(() {
         debugPrint('📋 [BookingScreen] ========== BUILD ==========');
-        debugPrint('📋 [BookingScreen] isBookingLoading: ${controller.isBookingLoading.value}');
-        debugPrint('📋 [BookingScreen] isBookingError: ${controller.isBookingError.value}');
-        debugPrint('📋 [BookingScreen] bookings.value is null: ${controller.bookings.value == null}');
+        debugPrint(
+          '📋 [BookingScreen] isBookingLoading: ${controller.isBookingLoading.value}',
+        );
+        debugPrint(
+          '📋 [BookingScreen] isBookingError: ${controller.isBookingError.value}',
+        );
+        debugPrint(
+          '📋 [BookingScreen] bookings.value is null: ${controller.bookings.value == null}',
+        );
         if (controller.bookings.value != null) {
-          debugPrint('📋 [BookingScreen] bookings.data.length: ${controller.bookings.value!.data.length}');
+          debugPrint(
+            '📋 [BookingScreen] bookings.data.length: ${controller.bookings.value!.data.length}',
+          );
         }
-        
+
         if (controller.isBookingLoading.value) {
           debugPrint('📋 [BookingScreen] Showing LOADING state');
           return const Center(child: CircularProgressIndicator());
@@ -105,7 +114,9 @@ class BookingScreen extends StatelessWidget {
 
         // Handle null bookings data
         if (controller.bookings.value == null) {
-          debugPrint('📋 [BookingScreen] Showing NULL DATA state (refresh button)');
+          debugPrint(
+            '📋 [BookingScreen] Showing NULL DATA state (refresh button)',
+          );
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -147,16 +158,15 @@ class BookingScreen extends StatelessWidget {
               children: [
                 Icon(Icons.event_busy, size: 50.sp, color: Colors.grey),
                 10.verticalSpace,
-                Text(
-                  "No bookings found",
-                  style: TextStyle(color: Colors.grey),
-                ),
+                Text("No bookings found", style: TextStyle(color: Colors.grey)),
               ],
             ),
           );
         }
-        
-        debugPrint('📋 [BookingScreen] Showing DATA state with ${allBookings.length} bookings');
+
+        debugPrint(
+          '📋 [BookingScreen] Showing DATA state with ${allBookings.length} bookings',
+        );
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -340,7 +350,7 @@ class BookingScreen extends StatelessWidget {
                             GestureDetector(
                               onTap: () => AppHelperFunctions.navigateToScreen(
                                 context,
-                                UserBookingDetailsScreen(bookingId: item.id,),
+                                UserBookingDetailsScreen(bookingId: item.id),
                               ),
                               child: Row(
                                 children: [
@@ -371,7 +381,7 @@ class BookingScreen extends StatelessWidget {
                 },
               ),
             ),
-            
+
             30.verticalSpace,
           ],
         ).paddingSymmetric(horizontal: 20.w);
