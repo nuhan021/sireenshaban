@@ -2,6 +2,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:sireenshaban/app.dart';
+import 'package:sireenshaban/core/services/firebase/firebase_fcm_service.dart';
+import 'package:sireenshaban/core/services/firebase/push_notification_handler.dart';
 import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/authentication/services/user_info_services.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,10 @@ void main() async {
       "pk_test_51RoJIeDhobi5OiZ3oHj8zXbGeudmmLNnQeDAb12cWe5wkQmDTGRMeoEMyzEUc7qlYbjdhf3nv4G3zJIsPMfjs6vE00tggZfHek";
   await dotenv.load(fileName: ".env");
   await StorageService.init();
+
+  // Initialize Firebase FCM
+  await FirebaseFCMService.initialize();
+  PushNotificationHandler.configure();
 
   // If a token exists from previous session, fetch the latest profile
   try {

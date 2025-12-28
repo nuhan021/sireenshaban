@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:sireenshaban/core/services/firebase/fcm_token_service.dart';
 import 'package:sireenshaban/core/services/network_caller.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/constants/api_constants.dart';
@@ -87,6 +88,14 @@ class LoginController extends GetxController {
       AppLoggerHelper.info('Profile fetch result: $profileFetched');
     } catch (e) {
       AppLoggerHelper.error('Profile fetch exception: $e');
+    }
+
+    // Send FCM token to backend
+    try {
+      final fcmService = FCMTokenService();
+      await fcmService.sendFCMTokenToBackend();
+    } catch (e) {
+      AppLoggerHelper.error('Error sending FCM token: $e');
     }
 
     AppLoggerHelper.debug(loginModel.value!.data.token);
