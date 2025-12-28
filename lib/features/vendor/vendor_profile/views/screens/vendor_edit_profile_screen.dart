@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
+import 'package:sireenshaban/features/customer/profile/views/screens/profile_screen.dart';
 import 'dart:io';
 import '../../controller/vendor_edit_profile_controller.dart';
 import 'package:sireenshaban/core/common/widgets/IField.dart';
@@ -360,7 +361,14 @@ class _VendorEditProfileScreenState extends State<VendorEditProfileScreen> {
               return CustomPrimaryButton(
                 text: loading ? 'Saving...' : 'Save Change',
                 color: AppColors.primaryDeepBlueNormal,
-                onPressed: loading ? () {} : controller.updateProfile,
+                isLoading: loading,
+                onPressed: () async {
+                  if (loading) return;
+                  final isSuccess = await controller.updateProfile();
+                  if (isSuccess) {
+                    Get.off(() => const ProfileScreen());
+                  }
+                },
               );
             }),
 

@@ -7,10 +7,12 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
 import 'package:sireenshaban/features/customer/booking/views/screens/booking_screen.dart';
+import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/customer/payment_history/views/screens/payment_history_screen.dart';
 import 'package:sireenshaban/features/customer/profile/controllers/profile_controller.dart';
 import 'package:sireenshaban/features/customer/profile/models/user_model.dart';
 import 'package:sireenshaban/features/customer/user_profile/views/screens/user_profile_screen.dart';
+import 'package:sireenshaban/features/vendor/vendor_profile/views/screens/vendor_user_profile_screen.dart';
 
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
@@ -18,16 +20,41 @@ import '../../../../../core/utils/constants/icon_path.dart';
 import '../../../../../routes/app_routes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-class ProfileScreen extends StatelessWidget {
-  ProfileScreen({super.key});
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
 
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
   final ProfileController _profileController = Get.put(ProfileController());
+  final HomeController _homeController = Get.find<HomeController>();
+
+  @override
+  void initState() {
+    super.initState();
+    if (_homeController.isFromVendor) {
+      _homeController.getVendorProfile();
+    } else {
+      _profileController.getProfile();
+    }
+  }
 
   String _buildLocationText(UserModel user) {
     final parts = <String>[
       if ((user.address ?? '').isNotEmpty) user.address!,
       if ((user.city ?? '').isNotEmpty) user.city!,
       if ((user.country ?? '').isNotEmpty) user.country!,
+    ];
+    return parts.isNotEmpty ? parts.join(', ') : 'Location not set';
+  }
+
+  String _buildVendorLocationText(String? address, String? city, String? country) {
+    final parts = <String>[
+      if ((address ?? '').isNotEmpty) address!,
+      if ((city ?? '').isNotEmpty) city!,
+      if ((country ?? '').isNotEmpty) country!,
     ];
     return parts.isNotEmpty ? parts.join(', ') : 'Location not set';
   }
@@ -68,35 +95,73 @@ class ProfileScreen extends StatelessWidget {
         ],
       ),
       body: Obx(() {
-        if (_profileController.isProfileLoading.value) {
-          return Center(
-            child: LoadingAnimationWidget.staggeredDotsWave(
-              color: AppColors.primaryDeepBlueLight,
-              size: 25.h,
-            ),
-          );
-        }
-
-        if (_profileController.isProfileError.value) {
-          return Center(
-            child: IconButton(
-              onPressed: _profileController.getProfile,
-              icon: const Icon(
-                Icons.refresh,
-                color: AppColors.primaryDeepBlueNormal,
+        if (_homeController.isFromVendor) {
+          if (_homeController.isVendorProfileLoading.value) {
+            return Center(
+              child: LoadingAnimationWidget.staggeredDotsWave(
+                color: AppColors.primaryDeepBlueLight,
+                size: 25.h,
               ),
-            ),
-          );
+            );
+          }
+
+          if (_homeController.isVendorProfileError.value) {
+            return Center(
+              child: IconButton(
+                onPressed: _homeController.getVendorProfile,
+                icon: const Icon(
+                  Icons.refresh,
+                  color: AppColors.primaryDeepBlueNormal,
+                ),
+              ),
+            );
+          }
+        } else {
+          if (_profileController.isProfileLoading.value) {
+            return Center(
+              child: LoadingAnimationWidget.staggeredDotsWave(
+                color: AppColors.primaryDeepBlueLight,
+                size: 25.h,
+              ),
+            );
+          }
+
+          if (_profileController.isProfileError.value) {
+            return Center(
+              child: IconButton(
+                onPressed: _profileController.getProfile,
+                icon: const Icon(
+                  Icons.refresh,
+                  color: AppColors.primaryDeepBlueNormal,
+                ),
+              ),
+            );
+          }
         }
 
-        final user = _profileController.user.value;
-        final imageUrl = user?.image ?? '';
-        final fullName = user == null
-            ? 'User'
-            : '${user.firstName} ${user.lastName}'.trim();
-        final locationText = user == null
-            ? 'Location not set'
-            : _buildLocationText(user);
+        final isVendor = _homeController.isFromVendor;
+        final vendorUser =
+            isVendor ? _homeController.vendorUser.value?.vendor.user : null;
+        final user = isVendor ? null : _profileController.user.value;
+
+        final imageUrl =
+            isVendor ? (vendorUser?.image ?? '') : (user?.image ?? '');
+        final fullName = isVendor
+            ? (vendorUser == null
+                ? 'User'
+                : '${vendorUser.firstName} ${vendorUser.lastName}'.trim())
+            : (user == null
+                ? 'User'
+                : '${user.firstName} ${user.lastName}'.trim());
+        final locationText = isVendor
+            ? _buildVendorLocationText(
+                vendorUser?.address,
+                vendorUser?.city,
+                vendorUser?.country,
+              )
+            : user == null
+                ? 'Location not set'
+                : _buildLocationText(user);
 
         // ফিক্সড: একটি SingleChildScrollView বা Column রিটার্ন করা হয়েছে
         return SingleChildScrollView(
@@ -176,7 +241,9 @@ class ProfileScreen extends StatelessWidget {
                 title: 'Profile',
                 onTap: () => AppHelperFunctions.navigateToScreen(
                   context,
-                  UserProfileScreen(),
+                  _homeController.isFromVendor
+                      ? VendorUserProfileScreen()
+                      : UserProfileScreen(),
                 ),
               ),
 
