@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
+import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
 import 'package:sireenshaban/core/utils/constants/icon_path.dart';
@@ -11,14 +12,13 @@ import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/community_events.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/deals_and_promotions.dart';
-import 'package:sireenshaban/features/stripe/controller/stripe_controller.dart';
 import 'package:sireenshaban/features/vendor/create_event/views/screens/create_event_screen.dart';
-import 'package:sireenshaban/features/vendor/create_package/view/screens/create_package.dart';
-import 'package:sireenshaban/features/vendor/vendor_booking_request/views/widgets/booking_request_card.dart';
-import 'package:sireenshaban/features/vendor/vendor_home/views/controller/vendor_home_controller.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile/views/widgets/vendor_profile_header.dart';
 
 import 'package:sireenshaban/features/vendor/vendor_schedule/views/widgets/vendor_schedule_card.dart';
+
+import '../../../../../routes/app_routes.dart';
+import '../../../create_package/view/screens/create_package.dart';
 
 class VendorHomeScreen extends StatelessWidget {
   VendorHomeScreen({super.key});
@@ -66,17 +66,21 @@ class VendorHomeScreen extends StatelessWidget {
 
         body: Obx(() {
           if (controller.isVendorProfileLoading.value) {
-            return Center(child: LoadingAnimationWidget.dotsTriangle(
-              color: AppColors.primaryDeepBlueNormal,
-              size: 25.h,
-            ));
+            return Center(
+              child: LoadingAnimationWidget.dotsTriangle(
+                color: AppColors.primaryDeepBlueNormal,
+                size: 25.h,
+              ),
+            );
           }
 
           if (controller.isVendorProfileError.value) {
-            return Center(child: IconButton(
-              onPressed: () => controller.getVendorProfile(),
-              icon: Icon(Icons.refresh),
-            ));
+            return Center(
+              child: IconButton(
+                onPressed: () => controller.getVendorProfile(),
+                icon: Icon(Icons.refresh),
+              ),
+            );
           }
 
           if (controller.vendorUser.value == null) {
@@ -144,6 +148,79 @@ class VendorHomeScreen extends StatelessWidget {
                   children: [
                     TextButton(
                       onPressed: () {
+                        if (controller
+                                    .vendorUser
+                                    .value
+                                    ?.vendor
+                                    .user
+                                    .subscriptionPlanId ==
+                                null ||
+                            controller
+                                    .vendorUser
+                                    .value
+                                    ?.vendor
+                                    .user
+                                    .subscriptionPlanId ==
+                                1) {
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) {
+                              return AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16.r),
+                                ),
+                                title: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.stars,
+                                      color: Colors.orange,
+                                      size: 28.sp,
+                                    ),
+                                    10.horizontalSpace,
+                                    Text(
+                                      "Upgrade Required",
+                                      style: getTextStyle(
+                                        fontSize: 18.sp,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                content: Text(
+                                  "You are currently on a Free Plan. To access premium vendor features, please upgrade your subscription.",
+                                  style: getTextStyle(
+                                    fontSize: 14.sp,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text(
+                                      "Later",
+                                      style: getTextStyle(color: Colors.grey),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 150.w,
+                                    child: CustomPrimaryButton(
+                                      text: 'Upgrade Now',
+                                      color: AppColors.primaryDeepBlueNormal,
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        Get.toNamed(
+                                          AppRoute.subscriptionScreen,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                          return;
+                        }
                         AppHelperFunctions.navigateToScreen(
                           context,
                           CreatePackage(),
@@ -161,6 +238,79 @@ class VendorHomeScreen extends StatelessWidget {
 
                     TextButton(
                       onPressed: () {
+                        if (controller
+                                    .vendorUser
+                                    .value
+                                    ?.vendor
+                                    .user
+                                    .subscriptionPlanId ==
+                                1 ||
+                            controller
+                                    .vendorUser
+                                    .value
+                                    ?.vendor
+                                    .user
+                                    .subscriptionPlanId ==
+                                2) {
+                          showDialog(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (context) {
+                              return AlertDialog(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16.r),
+                                ),
+                                title: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.stars,
+                                      color: Colors.orange,
+                                      size: 28.sp,
+                                    ),
+                                    10.horizontalSpace,
+                                    Text(
+                                      "Upgrade Required",
+                                      style: getTextStyle(
+                                        fontSize: 18.sp,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                content: Text(
+                                  "You are currently on a Growth Plan. To access premium vendor features, please upgrade your subscription.",
+                                  style: getTextStyle(
+                                    fontSize: 14.sp,
+                                    color: Colors.grey,
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: Text(
+                                      "Later",
+                                      style: getTextStyle(color: Colors.grey),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    width: 150.w,
+                                    child: CustomPrimaryButton(
+                                      text: 'Upgrade Now',
+                                      color: AppColors.primaryDeepBlueNormal,
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                        Get.toNamed(
+                                          AppRoute.subscriptionScreen,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                          return;
+                        }
                         AppHelperFunctions.navigateToScreen(
                           context,
                           CreateEventScreen(),
@@ -217,7 +367,8 @@ class VendorHomeScreen extends StatelessWidget {
                                 style: getTextStyle(
                                   fontSize: 20.sp,
                                   fontWeight: FontWeight.w700,
-                                  color: AppColors.secondaryInfoMediumGrayDarker,
+                                  color:
+                                      AppColors.secondaryInfoMediumGrayDarker,
                                 ),
                               ).paddingOnly(left: 20.w),
                             ],
@@ -230,7 +381,10 @@ class VendorHomeScreen extends StatelessWidget {
                           SizedBox(height: 8.h),
                           Text(
                             "No deals or promotions found",
-                            style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 14.sp,
+                            ),
                           ),
                         ],
                       ),
@@ -245,7 +399,6 @@ class VendorHomeScreen extends StatelessWidget {
                 }),
 
                 40.verticalSpace,
-
 
                 // events
                 Obx(() {
@@ -284,7 +437,8 @@ class VendorHomeScreen extends StatelessWidget {
                                 style: getTextStyle(
                                   fontSize: 20.sp,
                                   fontWeight: FontWeight.w700,
-                                  color: AppColors.secondaryInfoMediumGrayDarker,
+                                  color:
+                                      AppColors.secondaryInfoMediumGrayDarker,
                                 ),
                               ).paddingOnly(left: 20.w),
                             ],
@@ -297,7 +451,10 @@ class VendorHomeScreen extends StatelessWidget {
                           SizedBox(height: 8.h),
                           Text(
                             "No event found",
-                            style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 14.sp,
+                            ),
                           ),
                         ],
                       ),
@@ -359,7 +516,10 @@ class VendorHomeScreen extends StatelessWidget {
                           SizedBox(height: 8.h),
                           Text(
                             "No Today Schedule Found",
-                            style: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                            style: TextStyle(
+                              color: Colors.grey,
+                              fontSize: 14.sp,
+                            ),
                           ),
                         ],
                       ),

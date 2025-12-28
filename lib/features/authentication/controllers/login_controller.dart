@@ -21,7 +21,6 @@ class LoginController extends GetxController {
 
   final TextEditingController passwordController = TextEditingController();
 
-
   RxBool isObscure = true.obs;
 
   RxBool isLogInLoading = false.obs;
@@ -72,12 +71,12 @@ class LoginController extends GetxController {
     if (loginModel.value!.data.vendor != null) {
       await StorageService.savaVendorId(loginModel.value!.data.vendor!.id);
     }
-AppLoggerHelper.debug("vendor ID : ${StorageService.vendorId}");
-
+    AppLoggerHelper.debug("vendor ID : ${StorageService.vendorId}");
 
     StorageService.savaVendorId(loginModel.value!.data.vendor!.id);
-    AppLoggerHelper.debug('Saved Vendor ID: ${loginModel.value!.data.vendor!.id}');
-
+    AppLoggerHelper.debug(
+      'Saved Vendor ID: ${loginModel.value!.data.vendor!.id}',
+    );
 
     StorageService.savaVendorId(loginModel.value!.data.vendor.id);
 
@@ -96,8 +95,8 @@ AppLoggerHelper.debug("vendor ID : ${StorageService.vendorId}");
 
     if (loginModel.value!.data.user.role == 'Vendor') {
       if (loginModel.value!.data.user.isFirstTime) {
-        // Get.offAllNamed(AppRoute.vendorSetupScreen);
-        Get.offAllNamed(AppRoute.subscriptionScreen);
+        Get.offAllNamed(AppRoute.vendorSetupScreen);
+        // Get.offAllNamed(AppRoute.subscriptionScreen);
       } else {
         Get.offAllNamed(AppRoute.vendorBottomNavBar);
       }

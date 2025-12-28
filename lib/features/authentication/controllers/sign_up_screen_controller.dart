@@ -30,6 +30,7 @@ class SignUpScreenController extends GetxController {
   }
 
   Future<void> signUp(String role) async {
+
     if (emailController.text.trim().isEmpty ||
         passwordController.text.trim().isEmpty ||
         retypePasswordController.text.trim().isEmpty) {
@@ -44,6 +45,7 @@ class SignUpScreenController extends GetxController {
 
     late String userRole = role.toString().split('.')[1];
     userRole = userRole[0].toUpperCase() + userRole.substring(1);
+    AppLoggerHelper.info(userRole);
 
     isSignUpLoading.value = true;
 
