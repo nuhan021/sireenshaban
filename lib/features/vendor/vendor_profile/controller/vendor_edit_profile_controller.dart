@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'dart:convert';
 
 import '../../../../core/services/storage_service.dart';
@@ -25,17 +26,20 @@ class VendorEditProfileController extends GetxController {
   final ImagePicker _picker = ImagePicker();
   final Rxn<XFile> profileImage = Rxn<XFile>();
   final Rxn<XFile> coverImage = Rxn<XFile>();
+  final HomeController homeController = Get.find<HomeController>();
 
   @override
   void onInit() {
     super.onInit();
     // Default/example values (kept from previous screen initState)
-    firstNameController.text = 'Sara';
-    lastNameController.text = 'Nim';
-    countryController.text = 'USA';
-    cityController.text = 'New York';
-    addressController.text = '456 Market Street';
-    serviceController.text = 'Photographer';
+    if (homeController.vendorUser.value != null) {
+      firstNameController.text = homeController.vendorUser.value!.vendor.user.firstName;
+      lastNameController.text = homeController.vendorUser.value!.vendor.user.lastName;
+      countryController.text = homeController.vendorUser.value!.vendor.user.country;
+      cityController.text = homeController.vendorUser.value!.vendor.user.city;
+      addressController.text = homeController.vendorUser.value!.vendor.user.address!;
+      serviceController.text = 'Photographer';
+    }
   }
 
   @override
@@ -52,9 +56,11 @@ class VendorEditProfileController extends GetxController {
 
   final RxBool isUpdating = false.obs;
 
-  Future<void> updateProfile() async {
-    if (isUpdating.value) return;
+
+  Future<bool> updateProfile() async {
+    if (isUpdating.value) return false;
     isUpdating.value = true;
+    var isSuccess = false;
 
     try {
       final fields = <String, String>{
@@ -91,12 +97,18 @@ class VendorEditProfileController extends GetxController {
             // Refresh UserController so all screens update reactively
             final userCtrl = Get.find<UserController>();
             userCtrl.refreshFromStorage();
+
+            if (homeController.isFromVendor) {
+              await homeController.getVendorProfile();
+            }
           }
         } catch (_) {
           // ignore parse errors
         }
 
         SnackBarConstant.success('Profile updated successfully');
+        isSuccess = true;
+      
       } else {
         final msg = resp.body.isNotEmpty
             ? resp.body
@@ -108,6 +120,7 @@ class VendorEditProfileController extends GetxController {
     } finally {
       isUpdating.value = false;
     }
+    return isSuccess;
   }
 
   Future<void> pickProfileImageFromGallery() async {

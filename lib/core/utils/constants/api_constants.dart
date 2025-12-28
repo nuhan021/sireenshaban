@@ -1,8 +1,10 @@
 class ApiConstants {
   ApiConstants._();
 
-  static const String baseUrl = "https://overapprehensive-optatively-meri.ngrok-free.dev/api/v1";
-      // "https://api.thecommunitylist.com/api/v1";
+  static const String baseUrl =
+      "https://overapprehensive-optatively-meri.ngrok-free.dev/api/v1";
+  // "https://api.thecommunitylist.com/api/v1";
+
   static const String login = "$baseUrl/login";
   static const String editProfile = "$baseUrl/profile";
   static const String register = "$baseUrl/register";
@@ -16,7 +18,8 @@ class ApiConstants {
   static const String trendingNearby = "$baseUrl/trending-nearby";
   static const String communityEvents = "$baseUrl/events";
   static const String bookings = "$baseUrl/bookings";
-  static const String serviceRequest = "$baseUrl/serviceRequest/service-requests";
+  static const String serviceRequest =
+      "$baseUrl/serviceRequest/service-requests";
   static const String serviceRequestDetails = "$baseUrl/serviceRequest";
   static const String bookingsByVendor = "$baseUrl/booking-list-by-vendor";
   static const String bookingsByUser = "$baseUrl/booking-list-by-user";
@@ -32,7 +35,6 @@ class ApiConstants {
   static const String saveFcmToken = "$baseUrl/save-fcm-token";
   static const String pusherAuth = "$baseUrl/pusher/auth";
   static const String quotes = "$baseUrl/quotes";
-
 
   // payment
   static const String subscriptionPayment = "$baseUrl/payment/process";
