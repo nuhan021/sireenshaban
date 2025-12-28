@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/features/select_role/controller/select_role_controller.dart';
 import 'package:sireenshaban/core/controllers/user_controller.dart';
+import 'package:sireenshaban/features/stripe/controller/stripe_controller.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile_info/views/controller/vendor_profile_info_map_controller.dart';
 // Import your vendor setup controller
 import 'package:sireenshaban/features/vendor/vendor_setup/controller/vendor_setup_screen_controller.dart';
@@ -22,6 +23,11 @@ class ControllerBinder extends Bindings {
 
     Get.lazyPut<SelectRoleController>(
           () => SelectRoleController(),
+      fenix: true,
+    );
+
+    Get.lazyPut<StripeController>(
+          () => StripeController(),
       fenix: true,
     );
   }

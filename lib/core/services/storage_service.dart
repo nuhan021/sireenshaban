@@ -6,6 +6,7 @@ class StorageService {
   static const String _tokenKey = 'token';
   static const String _idKey = 'userId';
   static const String _vendorOdKey = 'vendorId';
+  static const String _fcmTokenKey = 'fcmToken';
   static const String onboardingStatus = "onboarding";
   static const String _role = "role";
   static const String _profileKey = 'user_profile';
@@ -91,8 +92,18 @@ class StorageService {
   static String? get email => userProfile?['email'] as String?;
   static String? get city => userProfile?['city'] as String?;
   static String? get address => userProfile?['address'] as String?;
-  
+
+  // FCM Token methods
+  static Future<void> setFCMToken(String token) async {
+    await _preferences?.setString(_fcmTokenKey, token);
+  }
+
+  static String? get fcmToken => _preferences?.getString(_fcmTokenKey);
+
+  static Future<void> clearFCMToken() async {
+    await _preferences?.remove(_fcmTokenKey);
+  }
+
   // Getter for vendor ID (from vendor profile data)
   // The vendor object is nested inside the user profile for vendors
-
 }

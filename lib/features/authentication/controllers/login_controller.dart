@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:sireenshaban/core/services/firebase/fcm_token_service.dart';
 import 'package:sireenshaban/core/services/network_caller.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/constants/api_constants.dart';
@@ -20,7 +21,6 @@ class LoginController extends GetxController {
   final TextEditingController emailController = TextEditingController();
 
   final TextEditingController passwordController = TextEditingController();
-
 
   RxBool isObscure = true.obs;
 
@@ -72,12 +72,12 @@ class LoginController extends GetxController {
     if (loginModel.value!.data.vendor != null) {
       await StorageService.savaVendorId(loginModel.value!.data.vendor!.id);
     }
-AppLoggerHelper.debug("vendor ID : ${StorageService.vendorId}");
-
+    AppLoggerHelper.debug("vendor ID : ${StorageService.vendorId}");
 
     StorageService.savaVendorId(loginModel.value!.data.vendor!.id);
-    AppLoggerHelper.debug('Saved Vendor ID: ${loginModel.value!.data.vendor!.id}');
-
+    AppLoggerHelper.debug(
+      'Saved Vendor ID: ${loginModel.value!.data.vendor!.id}',
+    );
 
     StorageService.savaVendorId(loginModel.value!.data.vendor.id);
 
@@ -90,14 +90,22 @@ AppLoggerHelper.debug("vendor ID : ${StorageService.vendorId}");
       AppLoggerHelper.error('Profile fetch exception: $e');
     }
 
+    // Send FCM token to backend
+    try {
+      final fcmService = FCMTokenService();
+      await fcmService.sendFCMTokenToBackend();
+    } catch (e) {
+      AppLoggerHelper.error('Error sending FCM token: $e');
+    }
+
     AppLoggerHelper.debug(loginModel.value!.data.token);
 
     SnackBarConstant.success("Login successful");
 
     if (loginModel.value!.data.user.role == 'Vendor') {
       if (loginModel.value!.data.user.isFirstTime) {
-        // Get.offAllNamed(AppRoute.vendorSetupScreen);
-        Get.offAllNamed(AppRoute.subscriptionScreen);
+        Get.offAllNamed(AppRoute.vendorSetupScreen);
+        // Get.offAllNamed(AppRoute.subscriptionScreen);
       } else {
         Get.offAllNamed(AppRoute.vendorBottomNavBar);
       }
