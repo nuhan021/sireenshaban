@@ -11,7 +11,9 @@ import 'package:sireenshaban/features/vendor/vendor_setup/views/widgets/virtual_
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/common/widgets/IField.dart';
 import '../../../../../core/utils/constants/colors.dart';
+import '../../../../../core/utils/constants/enums.dart';
 import '../../controller/vendor_setup_screen_controller.dart';
+import '../../../../customer/interest/categori_model.dart';
 
 class VendorSetupPage2nd extends StatelessWidget {
   const VendorSetupPage2nd({
@@ -75,6 +77,69 @@ class VendorSetupPage2nd extends StatelessWidget {
 
           15.verticalSpace,
 
+          Text(
+            'Select Account Type',
+            style: getTextStyle(
+              fontSize: 12.sp,
+              fontWeight: FontWeight.w500,
+              color: AppColors.primaryDeepBlueNormal,
+            ),
+          ),
+
+          5.verticalSpace,
+
+          Obx(() {
+            return PopupMenuButton<ServicesGroup>(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+              onSelected: (ServicesGroup value) {
+                HapticFeedback.heavyImpact();
+                vendorSetupScreenController.selectedServiceGroup.value = value;
+              },
+              itemBuilder: (context) {
+                return ServicesGroup.values.map((ServicesGroup group) {
+                  return PopupMenuItem<ServicesGroup>(
+                    value: group,
+                    child: Text(
+                      vendorSetupScreenController.getServiceGroupName(group),
+                      style: getTextStyle(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        color: AppColors.primaryDeepBlueNormal,
+                      ),
+                    ),
+                  );
+                }).toList();
+              },
+              child: Container(
+                width: double.maxFinite,
+                height: 50.h,
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12.r),
+                  border: Border.all(color: const Color(0xFFEBEBEB)),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      vendorSetupScreenController.getServiceGroupName(
+                        vendorSetupScreenController.selectedServiceGroup.value,
+                      ),
+                      style: getTextStyle(
+                        fontSize: 14.sp,
+                        color: AppColors.bodyDarkGray,
+                      ),
+                    ),
+                    const Icon(Icons.keyboard_arrow_down_sharp, color: AppColors.bodyDarkGray),
+                  ],
+                ),
+              ),
+            );
+          }),
+
+          20.verticalSpace,
+
           // business category
           Text(
             'Service/Business Category',
@@ -87,23 +152,39 @@ class VendorSetupPage2nd extends StatelessWidget {
 
           5.verticalSpace,
           Obx(() {
-            return PopupMenuButton(
-              onSelected: (value) {
-                HapticFeedback.heavyImpact();
-                vendorSetupScreenController.businessCategory.value = value
-                    .toString();
-              },
+            if (vendorSetupScreenController.isCategoriLoading.value) {
+              return const SizedBox(
+                height: 50,
+                child: Center(child: CircularProgressIndicator(strokeWidth: 2)),
+              );
+            }
 
+            final List<Datum> categories =
+                vendorSetupScreenController.categoriModel.value?.data ?? [];
+
+            return PopupMenuButton<dynamic>(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.r),
+              ),
+              onSelected: (value) {
+                final selectedDatum = value as Datum;
+
+                HapticFeedback.heavyImpact();
+                vendorSetupScreenController.selectedCategoryId.value =
+                    selectedDatum.id;
+                vendorSetupScreenController.selectedCategoryName.value =
+                    selectedDatum.name;
+
+                AppLoggerHelper.info(selectedDatum.id.toString());
+              },
               itemBuilder: (context) {
-                return vendorSetupScreenController.businessCategoryList.map((
-                  item,
-                ) {
-                  return PopupMenuItem(
+                return categories.map((Datum item) {
+                  return PopupMenuItem<dynamic>(
                     value: item,
                     child: Text(
-                      item,
+                      item.name,
                       style: getTextStyle(
-                        fontSize: 12.sp,
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
                         color: AppColors.primaryDeepBlueNormal,
                       ),
@@ -111,7 +192,6 @@ class VendorSetupPage2nd extends StatelessWidget {
                   );
                 }).toList();
               },
-
               child: Container(
                 width: double.maxFinite,
                 height: 50.h,
@@ -119,12 +199,22 @@ class VendorSetupPage2nd extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12.r),
+                  border: Border.all(color: const Color(0xFFEBEBEB)),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(vendorSetupScreenController.businessCategory.value),
-                    Icon(Icons.keyboard_arrow_down_sharp),
+                    Text(
+                      vendorSetupScreenController.selectedCategoryName.value,
+                      style: getTextStyle(
+                        fontSize: 14.sp,
+                        color: AppColors.bodyDarkGray,
+                      ),
+                    ),
+                    const Icon(
+                      Icons.keyboard_arrow_down_sharp,
+                      color: AppColors.bodyDarkGray,
+                    ),
                   ],
                 ),
               ),

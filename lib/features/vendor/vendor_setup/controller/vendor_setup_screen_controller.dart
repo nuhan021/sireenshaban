@@ -11,9 +11,74 @@ import 'package:sireenshaban/core/utils/constants/colors.dart';
 import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/routes/app_routes.dart';
 
+import '../../../../core/services/network_caller.dart';
+import '../../../../core/utils/constants/enums.dart';
 import '../../../../core/utils/constants/snackbar_constant.dart';
+import '../../../customer/interest/categori_model.dart';
 
 class VendorSetupScreenController extends GetxController {
+
+  @override
+  void onInit() {
+    super.onInit();
+    getCategory();
+  }
+  final NetworkCaller _networkCaller = NetworkCaller();
+
+  Rx<ServicesGroup> selectedServiceGroup = ServicesGroup.businessAndCreativeServices.obs;
+
+
+  String getServiceGroupName(ServicesGroup group) {
+    switch (group) {
+      case ServicesGroup.businessAndCreativeServices:
+        return "Business and Creative Services";
+      case ServicesGroup.personalCareAndEducation:
+        return "Personal Care and Education";
+      case ServicesGroup.homeAndMaintenanceServices:
+        return "Home and Maintenance Services";
+    }
+  }
+
+  RxBool isCategoriLoading = false.obs;
+  RxBool isCategoriError = false.obs;
+  Rx<CategoriModel?> categoriModel = Rx<CategoriModel?>(null);
+
+  RxnInt selectedCategoryId = RxnInt();
+  RxString selectedCategoryName = 'Select Category'.obs;
+
+  Future<void> getCategory() async {
+    isCategoriLoading.value = true;
+    final token = StorageService.token;
+
+    AppLoggerHelper.debug(token!);
+
+    final response = await _networkCaller.getRequest(
+      ApiConstants.categories,
+      token: "Bearer $token",
+    );
+
+    if (response.statusCode == 401) {
+      isCategoriError.value = true;
+      isCategoriLoading.value = false;
+      SnackBarConstant.error("Unauthorized");
+      return;
+    }
+
+    if (!response.isSuccess) {
+      isCategoriLoading.value = false;
+      isCategoriError.value = true;
+      SnackBarConstant.error(response.errorMessage);
+      return;
+    }
+
+    isCategoriError.value = false;
+
+    categoriModel.value = CategoriModel.fromJson(response.responseData);
+
+    isCategoriLoading.value = false;
+    SnackBarConstant.success("Category fetched successfully");
+  }
+
   final PageController pageController = PageController();
 
   RxBool isSubmitLoading = false.obs;
@@ -207,6 +272,11 @@ class VendorSetupScreenController extends GetxController {
 
   Future<void> submit() async {
     if (isSubmitLoading.value) return;
+    if (selectedCategoryId.value == null) {
+      SnackBarConstant.error("Please select a business category");
+      return;
+    }
+
     isSubmitLoading.value = true;
 
     try {
@@ -229,10 +299,11 @@ class VendorSetupScreenController extends GetxController {
         MapEntry('city', cityController.text.trim()),
         MapEntry('address', roadController.text.trim()),
         MapEntry('business_name', businessNameController.text.trim()),
-        MapEntry('category_id', (businessCategoryList.indexOf(businessCategory.value) + 1).toString()),
+        MapEntry('category_id', selectedCategoryId.value.toString()),
         MapEntry('latitude', shopLocation.latitude.toString()),
         MapEntry('longitude', shopLocation.longitude.toString()),
         MapEntry('status', '1'),
+        MapEntry('services_group', selectedServiceGroup.value.name),
       ]);
 
       // --- Settings (Array format maintenance) ---

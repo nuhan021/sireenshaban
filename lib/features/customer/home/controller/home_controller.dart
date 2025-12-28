@@ -11,6 +11,7 @@ import 'package:sireenshaban/features/customer/home/model/trendingModel.dart' hi
 import 'package:sireenshaban/features/customer/interest/categori_model.dart' hide Datum;
 import 'package:sireenshaban/features/vendor/vendor_home/model/vendor_booking_model.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile/model/vendor_user_model.dart';
+import 'package:sireenshaban/routes/app_routes.dart';
 
 class HomeController extends GetxController {
   HomeController({this.isFromVendor = false});
@@ -300,6 +301,14 @@ class HomeController extends GetxController {
       "${ApiConstants.vendorProfile}/$vendorId",
       token: "Bearer $token",
     );
+
+    if(result.statusCode == 404) {
+      isVendorProfileLoading.value = false;
+      isVendorProfileError.value = true;
+      SnackBarConstant.error("Please setup first");
+      Get.offAllNamed(AppRoute.vendorSetupScreen);
+      return;
+    }
 
     if(!result.isSuccess) {
       SnackBarConstant.error(result.errorMessage);
