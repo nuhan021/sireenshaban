@@ -12,7 +12,7 @@ class PaymentIntentModel {
   bool success;
   String message;
   Stripe stripe;
-  int amount;
+  double amount;
 
   PaymentIntentModel({
     required this.success,
@@ -261,8 +261,8 @@ class Metadata {
 
   factory Metadata.fromJson(Map<String, dynamic> json) => Metadata(
     paymentId: json["payment_id"],
-    planId: json["plan_id"],
-    userId: json["user_id"],
+    planId: json["plan_id"] ?? '',
+    userId: json["user_id"] ?? '',
   );
 
   Map<String, dynamic> toJson() => {

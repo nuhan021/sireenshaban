@@ -2,8 +2,8 @@ class ApiConstants {
   ApiConstants._();
 
   static const String baseUrl =
-      "https://api.thecommunitylist.com/api/v1";
-  // "https://api.thecommunitylist.com/api/v1";
+  "https://api.thecommunitylist.com/api/v1";
+
   static const String login = "$baseUrl/login";
   static const String editProfile = "$baseUrl/profile";
   static const String register = "$baseUrl/register";

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/common/widgets/custom_loading.dart';
+import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/customer/community_event_booking/controller/event_controller.dart';
 import 'package:sireenshaban/features/customer/community_event_booking/views/widgets/event_schedul.dart';
@@ -47,6 +48,8 @@ class CommunityEventBookingScreen extends StatefulWidget {
 class _CommunityEventBookingScreenState
     extends State<CommunityEventBookingScreen> {
   late Datum data;
+
+  String? role = StorageService.role;
 
   @override
   void initState() {
@@ -155,7 +158,7 @@ class _CommunityEventBookingScreenState
                   date: data.eventDate,
                   time: data.eventTime,
                   price: data.ticketPrice,
-                  isFromVendor: true,
+                  isFromVendor: role == Vendor ? true : false,
                 ),
 
                 20.verticalSpace,
@@ -241,7 +244,7 @@ class _CommunityEventBookingScreenState
                     }
                     return CustomPrimaryButton(
                       text:
-                          "Confirm Booking & Pay \$${widget.eventController.stringPrice.value}",
+                          "Confirm Booking & Pay",
                       textColor: AppColors.cardBackgroundSoftGray,
                       color: AppColors.primaryDeepBlueNormal,
                       onPressed: () {

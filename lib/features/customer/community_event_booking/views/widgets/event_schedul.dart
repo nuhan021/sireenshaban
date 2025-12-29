@@ -7,7 +7,13 @@ import 'package:sireenshaban/core/utils/constants/icon_path.dart';
 import 'package:sireenshaban/features/customer/community_event_booking/controller/event_controller.dart';
 
 class EventSchedul extends StatelessWidget {
-  EventSchedul({super.key, required this.date, required this.time, required this.price, this.isFromVendor = false});
+  EventSchedul({
+    super.key,
+    required this.date,
+    required this.time,
+    required this.price,
+    this.isFromVendor = false,
+  });
 
   final String price;
   final DateTime date;
@@ -144,93 +150,91 @@ class EventSchedul extends StatelessWidget {
             ),
           ),
 
-
           Divider(color: Color(0xFFD1D3D8)).paddingSymmetric(horizontal: 20.w),
 
-          if(isFromVendor == false)
-          Row(
-            children: [
-              Image.asset(IconPath.people, height: 24.h),
-              7.horizontalSpace,
-              Text(
-                "Number of Tickets",
-                style: getTextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.bodyDarkGray,
+          if (isFromVendor == false)
+            Row(
+              children: [
+                Image.asset(IconPath.people, height: 24.h),
+                7.horizontalSpace,
+                Text(
+                  "Number of Tickets",
+                  style: getTextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.bodyDarkGray,
+                  ),
                 ),
-              ),
-            ],
-          ).paddingSymmetric(horizontal: 20.w),
+              ],
+            ).paddingSymmetric(horizontal: 20.w),
 
           // add ticket number
-          if(isFromVendor == false)
-          Container(
-            height: 85,
-            width: double.maxFinite,
-            padding: EdgeInsets.symmetric(horizontal: 20.w),
-            decoration: BoxDecoration(
-              color: AppColors.primaryDeepBlueLight,
-              borderRadius: BorderRadius.circular(12.r),
-            ),
+          if (isFromVendor == false)
+            Container(
+              height: 85,
+              width: double.maxFinite,
+              padding: EdgeInsets.symmetric(horizontal: 20.w),
+              decoration: BoxDecoration(
+                color: AppColors.primaryDeepBlueLight,
+                borderRadius: BorderRadius.circular(12.r),
+              ),
 
-            child: Row(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // - button
+                  IconButton(
+                    onPressed: () {
+                      controller.decreaseTicketNumber(price);
+                    },
+                    icon: Icon(
+                      Icons.remove_circle,
+                      color: AppColors.primaryDeepBlueNormal,
+                      size: 40,
+                    ),
+                  ),
+
+                  Obx(() {
+                    return Text(
+                      controller.ticketNumber.value.toString(),
+                      style: getTextStyle(
+                        fontSize: 22.sp,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.primaryDeepBlueNormal,
+                      ),
+                    );
+                  }),
+
+                  // + button
+                  IconButton(
+                    onPressed: () {
+                      controller.increaseTicketNumber(price);
+                    },
+                    icon: Icon(
+                      Icons.add_circle,
+                      color: AppColors.primaryDeepBlueNormal,
+                      size: 40,
+                    ),
+                  ),
+                ],
+              ),
+            ).paddingSymmetric(horizontal: 20.w),
+
+          // total price
+          if (isFromVendor == false)
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // - button
-                IconButton(
-                  onPressed: () {
-                    controller.decreaseTicketNumber(price);
-                  },
-                  icon: Icon(
-                    Icons.remove_circle,
+                Text(
+                  'Total Paid',
+                  style: getTextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
                     color: AppColors.primaryDeepBlueNormal,
-                    size: 40,
                   ),
                 ),
 
                 Obx(() {
-                  return Text(
-                    controller.ticketNumber.value.toString(),
-                    style: getTextStyle(
-                      fontSize: 22.sp,
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primaryDeepBlueNormal,
-                    ),
-                  );
-                }),
-
-                // + button
-                IconButton(
-                  onPressed: () {
-                    controller.increaseTicketNumber(price);
-                  },
-                  icon: Icon(
-                    Icons.add_circle,
-                    color: AppColors.primaryDeepBlueNormal,
-                    size: 40,
-                  ),
-                ),
-              ],
-            ),
-          ).paddingSymmetric(horizontal: 20.w),
-
-          // total price
-          if(isFromVendor == false)
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Total Paid',
-                style: getTextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.primaryDeepBlueNormal,
-                ),
-              ),
-
-              Obx(
-                      () {
                   return Text(
                     '\$${controller.stringPrice.value}',
                     style: getTextStyle(
@@ -239,10 +243,9 @@ class EventSchedul extends StatelessWidget {
                       color: AppColors.bodyDarkGray,
                     ),
                   );
-                }
-              ),
-            ],
-          ).paddingSymmetric(horizontal: 20.w),
+                }),
+              ],
+            ).paddingSymmetric(horizontal: 20.w),
         ],
       ),
     );
