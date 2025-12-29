@@ -54,7 +54,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                     .vendorUser
                     .value!
                     .vendor
-                    .user.image,
+                    .user.backgroundImage,
                 profilePhoto:
                 homeController.vendorUser.value!.vendor.user.image,
               ),

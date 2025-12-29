@@ -38,6 +38,7 @@ class VendorEditProfileController extends GetxController {
   RxString travelDistance = '0'.obs;
   RxBool atMyBusinessAddress = false.obs;
   RxBool iTravelToTheClient = false.obs;
+  RxBool isSubmitLoading = false.obs;
 
   String dialCode = '';
   LatLng? shopLocation;
@@ -47,6 +48,46 @@ class VendorEditProfileController extends GetxController {
   final Rxn<XFile> profileImage = Rxn<XFile>();
   final Rxn<XFile> coverImage = Rxn<XFile>();
   final HomeController homeController = Get.find<HomeController>();
+
+  final List<String> daysOrder = [
+    'Saturday',
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+  ];
+
+  final Map<String, RxBool> weekDays = {
+    'Saturday': true.obs,
+    'Sunday': false.obs,
+    'Monday': true.obs,
+    'Tuesday': true.obs,
+    'Wednesday': true.obs,
+    'Thursday': true.obs,
+    'Friday': true.obs,
+  };
+
+  final Map<String, Rx<TimeOfDay>> startTimes = {
+    'Saturday': TimeOfDay.now().obs,
+    'Sunday': TimeOfDay.now().obs,
+    'Monday': TimeOfDay.now().obs,
+    'Tuesday': TimeOfDay.now().obs,
+    'Wednesday': TimeOfDay.now().obs,
+    'Thursday': TimeOfDay.now().obs,
+    'Friday': TimeOfDay.now().obs,
+  };
+
+  final Map<String, Rx<TimeOfDay>> endTimes = {
+    'Saturday': TimeOfDay.now().obs,
+    'Sunday': TimeOfDay.now().obs,
+    'Monday': TimeOfDay.now().obs,
+    'Tuesday': TimeOfDay.now().obs,
+    'Wednesday': TimeOfDay.now().obs,
+    'Thursday': TimeOfDay.now().obs,
+    'Friday': TimeOfDay.now().obs,
+  };
 
   @override
   void onInit() {
@@ -74,10 +115,12 @@ class VendorEditProfileController extends GetxController {
       }
       travelDistance.value = settings.maxTravelDistance;
       travelFeePolicyController.text = settings.travelPolicy;
-      atMyBusinessAddress.value =
-          settings.serviceType.contains("At my business address");
-      iTravelToTheClient.value =
-          settings.serviceType.contains("I travel to the client");
+      atMyBusinessAddress.value = settings.serviceType.contains(
+        "At my business address",
+      );
+      iTravelToTheClient.value = settings.serviceType.contains(
+        "I travel to the client",
+      );
 
       if (vendor.servicesGroup != null) {
         selectedServiceGroup.value = ServicesGroup.values.firstWhere(
@@ -166,6 +209,7 @@ class VendorEditProfileController extends GetxController {
         final msg = resp.body.isNotEmpty
             ? resp.body
             : 'Failed: ${resp.statusCode}';
+        AppLoggerHelper.info(msg.toString());
         SnackBarConstant.error(msg);
         AppLoggerHelper.error("Profile update failed: $msg");
       }
@@ -177,140 +221,96 @@ class VendorEditProfileController extends GetxController {
     return isSuccess;
   }
 
-  Future<bool> updateVendorProfile() async {
-    if (isUpdating.value) return false;
-    isUpdating.value = true;
-    var isSuccess = false;
+  Future<void> updateVendorProfile() async {
+    if (isSubmitLoading.value) return;
+
+    // Accessing the exact data from your Rx variable
+    final vendorData = homeController.vendorUser.value?.vendor;
+
+    if (vendorData == null) {
+      SnackBarConstant.error("Vendor data is not available");
+      return;
+    }
+
+    isSubmitLoading.value = true;
 
     try {
       final dio = Dio();
-      final token = StorageService.token;
-
       dio.options.headers = {
-        'Authorization': token != null ? 'Bearer $token' : '',
+        'Authorization': 'Bearer ${StorageService.token}',
         'Accept': 'application/json',
         'ngrok-skip-browser-warning': '69420',
       };
 
-      final formData = FormData();
+      FormData formData = FormData();
 
-      final vendor = homeController.vendorUser.value?.vendor;
-      final user = vendor?.user;
-      final settings = vendor?.settings;
+      // --- Basic Information from Vendor Model ---
+      formData.fields.addAll([
+        MapEntry('first_name', firstNameController.text.trim()),
+        MapEntry('last_name', lastNameController.text.trim()),
+        MapEntry('phone_number', vendorData.user.phoneNumber),
+        MapEntry('country', countryController.text.trim()),
+        MapEntry('city', cityController.text.trim()),
+        MapEntry('address', addressController.text.trim() ?? ''),
+        MapEntry('business_name', vendorData.businessName),
+        MapEntry('category_id', vendorData.categoryId.toString()),
+        MapEntry('latitude', vendorData.latitude),
+        MapEntry('longitude', vendorData.longitude),
+        MapEntry('status', vendorData.status.toString()),
+        MapEntry('services_group', vendorData.servicesGroup ?? ''),
+      ]);
 
-      String? resolveText(TextEditingController controller, String? fallback) {
-        final trimmed = controller.text.trim();
-        if (trimmed.isNotEmpty) return trimmed;
-        final fallbackTrimmed = fallback?.trim();
-        if (fallbackTrimmed != null && fallbackTrimmed.isNotEmpty) {
-          return fallbackTrimmed;
-        }
-        return null;
+      // --- Settings from Vendor Model ---
+      formData.fields.addAll([
+        MapEntry('settings[offers_virtual]', vendorData.settings.offersVirtual ? "1" : "0"),
+        MapEntry('settings[max_travel_distance]', vendorData.settings.maxTravelDistance),
+        MapEntry('settings[travel_policy]', vendorData.settings.travelPolicy),
+        MapEntry('settings[payment_method]', vendorData.settings.paymentMethod),
+      ]);
+
+      // Mapping Team Size list
+      for (var size in vendorData.settings.teamSize) {
+        formData.fields.add(MapEntry('settings[team_size][]', size));
       }
 
-      void addIfNotEmpty(String key, String? value) {
-        final trimmed = value?.trim();
-        if (trimmed != null && trimmed.isNotEmpty) {
-          formData.fields.add(MapEntry(key, trimmed));
-        }
+      // Mapping Service Type list
+      for (var type in vendorData.settings.serviceType) {
+        formData.fields.add(MapEntry('settings[service_type][]', type));
       }
 
-      addIfNotEmpty(
-        'first_name',
-        resolveText(firstNameController, user?.firstName),
-      );
-      addIfNotEmpty('last_name', resolveText(lastNameController, user?.lastName));
-      addIfNotEmpty('phone_number', () {
-        final dialed = '${dialCode}${numberController.text.trim()}'.trim();
-        if (dialed.isNotEmpty) return dialed;
-        return user?.phoneNumber;
-      }());
-      addIfNotEmpty('country', resolveText(countryController, user?.country));
-      addIfNotEmpty('city', resolveText(cityController, user?.city));
-      addIfNotEmpty('address', resolveText(addressController, user?.address));
-      addIfNotEmpty(
-        'business_name',
-        resolveText(businessNameController, vendor?.businessName),
-      );
+      // --- Business Hours from Vendor Model ---
+      // Mapping the exact businessHours list from the model
+      for (int i = 0; i < vendorData.businessHours.length; i++) {
+        final hour = vendorData.businessHours[i];
 
-      final categoryId = selectedCategoryId.value ?? vendor?.categoryId;
-      if (categoryId != null) {
-        formData.fields.add(MapEntry('category_id', categoryId.toString()));
+        // Converting "15:06:00" to the "15.06" format required by your API
+        String formattedOpen = hour.openTime.replaceAll(':', '.').substring(0, 5);
+        String formattedClose = hour.closeTime.replaceAll(':', '.').substring(0, 5);
+
+        formData.fields.addAll([
+          MapEntry('business_hours[$i][day]', hour.day),
+          MapEntry('business_hours[$i][is_closed]', hour.isClosed.toString()),
+          MapEntry('business_hours[$i][open_time]', formattedOpen),
+          MapEntry('business_hours[$i][close_time]', formattedClose),
+        ]);
       }
 
-      final lat = shopLocation?.latitude.toString() ?? vendor?.latitude;
-      final lng = shopLocation?.longitude.toString() ?? vendor?.longitude;
-      addIfNotEmpty('latitude', lat);
-      addIfNotEmpty('longitude', lng);
-      addIfNotEmpty('status', (vendor?.status ?? 1).toString());
-      addIfNotEmpty(
-        'services_group',
-        vendor?.servicesGroup ?? selectedServiceGroup.value.name,
-      );
-
-      addIfNotEmpty(
-        'settings[offers_virtual]',
-        (offerVirtualMeeting.value ? "1" : "0"),
-      );
-      addIfNotEmpty('settings[team_size][]', teamSize.value);
-      addIfNotEmpty('settings[max_travel_distance]', travelDistance.value);
-      addIfNotEmpty(
-        'settings[travel_policy]',
-        resolveText(travelFeePolicyController, settings?.travelPolicy),
-      );
-      addIfNotEmpty(
-        'settings[payment_method]',
-        settings?.paymentMethod ?? 'Stripe',
-      );
-
-      if (atMyBusinessAddress.value) {
-        addIfNotEmpty(
-          'settings[service_type][]',
-          "At my business address",
-        );
-      }
-      if (iTravelToTheClient.value) {
-        addIfNotEmpty(
-          'settings[service_type][]',
-          "I travel to the client",
-        );
-      }
-
-      if (vendor?.businessHours != null) {
-        for (var i = 0; i < vendor!.businessHours.length; i++) {
-          final hour = vendor.businessHours[i];
-          addIfNotEmpty('business_hours[$i][day]', hour.day);
-          addIfNotEmpty(
-            'business_hours[$i][is_closed]',
-            hour.isClosed.toString(),
-          );
-          addIfNotEmpty('business_hours[$i][open_time]', hour.openTime);
-          addIfNotEmpty('business_hours[$i][close_time]', hour.closeTime);
-        }
-      }
-
+      // --- Image Handling ---
       if (profileImage.value != null) {
-        formData.files.add(
-          MapEntry(
-            'image',
-            await MultipartFile.fromFile(profileImage.value!.path),
-          ),
-        );
+        formData.files.add(MapEntry(
+          'image',
+          await MultipartFile.fromFile(profileImage.value!.path),
+        ));
       }
 
       if (coverImage.value != null) {
-        formData.files.add(
-          MapEntry(
-            'background_image',
-            await MultipartFile.fromFile(coverImage.value!.path),
-          ),
-        );
+        formData.files.add(MapEntry(
+          'background_image',
+          await MultipartFile.fromFile(coverImage.value!.path),
+        ));
       }
 
-      if (formData.fields.isEmpty && formData.files.isEmpty) {
-        SnackBarConstant.error('Nothing to update.');
-        return false;
-      }
+      AppLoggerHelper.debug('Submitting update to: ${ApiConstants.updateVendor}');
 
       final response = await dio.post(
         ApiConstants.updateVendor,
@@ -318,27 +318,29 @@ class VendorEditProfileController extends GetxController {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        isSuccess =
-            response.data['success'] == true ||
-            response.data['status'] == 'success';
+        bool isSuccess = response.data['success'] == true || response.data['status'] == 'success';
 
         if (isSuccess) {
-          SnackBarConstant.success('Profile updated successfully');
+          AppLoggerHelper.info('✅ SUCCESS: Vendor profile updated successfully');
+          SnackBarConstant.success('Profile updated successfully!');
+
+          // Refresh the global vendor state
+          await homeController.getVendorProfile();
+
+          await Future.delayed(const Duration(milliseconds: 500));
+          Get.back();
         } else {
-          SnackBarConstant.error(
-            response.data['message'] ?? 'Failed to update',
-          );
+          SnackBarConstant.error(response.data['message'] ?? 'Update failed');
         }
       } else {
         SnackBarConstant.error('Server error: ${response.statusCode}');
       }
     } on DioException catch (e) {
-      SnackBarConstant.error(e.response?.data.toString() ?? e.message ?? '');
+      AppLoggerHelper.error('Update Error', e.response?.data.toString() ?? e.message!);
+      SnackBarConstant.error(e.response?.data['message'] ?? 'An error occurred during update');
     } finally {
-      isUpdating.value = false;
+      isSubmitLoading.value = false;
     }
-
-    return isSuccess;
   }
 
   Future<void> pickProfileImageFromGallery() async {
