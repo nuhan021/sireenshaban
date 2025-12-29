@@ -25,7 +25,7 @@ class FCMTokenService {
 
       final response = await _networkCaller.postRequest(
         ApiConstants.saveFcmToken,
-        token: authToken,
+        token: 'Bearer $authToken',
         body: {'fcm_token': token},
       );
 
