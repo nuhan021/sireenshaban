@@ -364,31 +364,32 @@ class _VendorEditProfileScreenState extends State<VendorEditProfileScreen> {
                 color: AppColors.primaryDeepBlueNormal,
                 isLoading: loading,
                 onPressed: () async {
-                  if (loading) return;
-                  final isSuccess = await controller.updateVendorProfile();
-                  if (isSuccess) {
-                    final role = StorageService.role?.toLowerCase();
-                    final isVendor =
-                        controller.homeController.isFromVendor ||
-                        role == 'vendor';
-                    if (isVendor) {
-                      final navController =
-                          Get.isRegistered<VendorBottomNavBarController>()
-                              ? Get.find<VendorBottomNavBarController>()
-                              : Get.put(VendorBottomNavBarController());
-                      navController.changeCurrentIndex(4);
-                      navController.jumpToScreen(4);
-                      Get.offAllNamed(AppRoute.getVendorBottomNavBar());
-                    } else {
-                      final navController =
-                          Get.isRegistered<CustomerBottomNavBarController>()
-                              ? Get.find<CustomerBottomNavBarController>()
-                              : Get.put(CustomerBottomNavBarController());
-                      navController.changeCurrentIndex(4);
-                      navController.jumpToScreen(4);
-                      Get.offAllNamed(AppRoute.getCustomerBottomNavBar());
-                    }
-                  }
+                  controller.updateVendorProfile();
+                  // if (loading) return;
+                  // final isSuccess = await controller.updateVendorProfile();
+                  // if (isSuccess) {
+                  //   final role = StorageService.role?.toLowerCase();
+                  //   final isVendor =
+                  //       controller.homeController.isFromVendor ||
+                  //       role == 'vendor';
+                  //   if (isVendor) {
+                  //     final navController =
+                  //         Get.isRegistered<VendorBottomNavBarController>()
+                  //             ? Get.find<VendorBottomNavBarController>()
+                  //             : Get.put(VendorBottomNavBarController());
+                  //     navController.changeCurrentIndex(4);
+                  //     navController.jumpToScreen(4);
+                  //     Get.offAllNamed(AppRoute.getVendorBottomNavBar());
+                  //   } else {
+                  //     final navController =
+                  //         Get.isRegistered<CustomerBottomNavBarController>()
+                  //             ? Get.find<CustomerBottomNavBarController>()
+                  //             : Get.put(CustomerBottomNavBarController());
+                  //     navController.changeCurrentIndex(4);
+                  //     navController.jumpToScreen(4);
+                  //     Get.offAllNamed(AppRoute.getCustomerBottomNavBar());
+                  //   }
+                  // }
                 },
               );
             }),
