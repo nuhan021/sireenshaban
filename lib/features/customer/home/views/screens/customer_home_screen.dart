@@ -120,7 +120,7 @@ class CustomerHomeScreen extends StatelessWidget {
                 if (controller.isCommunityEventsError.value) {
                   return Center(
                     child: IconButton(
-                      onPressed: () => controller.getDealsAndPromotions(),
+                      onPressed: () => controller.getCommunityEvents(),
                       icon: Icon(
                         Icons.refresh,
                         color: AppColors.primaryDeepBlueNormal,

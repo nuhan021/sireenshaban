@@ -40,6 +40,7 @@ class TrendingNearby extends StatelessWidget {
               final item = controller.trending.value!.data[index];
               return TrendingNearbyCard(
                 image: item.image ?? '',
+                coverImage: item.backgroundImage,
                 title: item.businessName ?? '',
                 status: 'popular',
                 group: ServicesGroup.businessAndCreativeServices,

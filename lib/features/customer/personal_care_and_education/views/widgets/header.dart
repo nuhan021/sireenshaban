@@ -37,9 +37,9 @@ class Header extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.r), bottomRight: Radius.circular(10.r)),
-                child: image != null && image!.isNotEmpty
+                child: vendorAvatar != null && vendorAvatar!.isNotEmpty
                     ? CachedNetworkImage(
-                        imageUrl: image!,
+                        imageUrl: vendorAvatar!,
                         fit: BoxFit.cover,
                         height: 225.h,
                         width: double.maxFinite,
@@ -62,11 +62,11 @@ class Header extends StatelessWidget {
                 left: 15.w,
                 child: CircleAvatar(
                   radius: 50.r,
-                  backgroundImage: (vendorAvatar != null && vendorAvatar!.isNotEmpty)
-                      ? NetworkImage(vendorAvatar!)
+                  backgroundImage: (image != null && image!.isNotEmpty)
+                      ? NetworkImage(image!)
                       : null,
                   backgroundColor: Colors.grey[300],
-                  child: (vendorAvatar == null || vendorAvatar!.isEmpty)
+                  child: (image == null || image!.isEmpty)
                       ? Icon(Icons.person)
                       : null,
                 ),
