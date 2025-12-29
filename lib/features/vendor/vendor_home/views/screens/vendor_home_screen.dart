@@ -251,7 +251,12 @@ class VendorHomeScreen extends StatelessWidget {
                                     ?.vendor
                                     .user
                                     .subscriptionPlanId ==
-                                2) {
+                                2 || controller
+                            .vendorUser
+                            .value
+                            ?.vendor
+                            .user
+                            .subscriptionPlanId == null) {
                           showDialog(
                             context: context,
                             barrierDismissible: false,

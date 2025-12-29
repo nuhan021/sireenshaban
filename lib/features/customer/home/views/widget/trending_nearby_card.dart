@@ -21,6 +21,7 @@ class TrendingNearbyCard extends StatelessWidget {
     required this.group,
     required this.controller,
     required this.vendorId,
+    this.coverImage,
   });
   final String image;
   final String title;
@@ -28,6 +29,7 @@ class TrendingNearbyCard extends StatelessWidget {
   final ServicesGroup group;
   final HomeController controller;
   final int vendorId;
+  final String? coverImage;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +41,7 @@ class TrendingNearbyCard extends StatelessWidget {
               context,
               BusinessAndCreativeServicesScreens(
                 image: image,
+                coverImage: coverImage,
                 title: title,
                 controller: controller,
                 vendorId: vendorId,
