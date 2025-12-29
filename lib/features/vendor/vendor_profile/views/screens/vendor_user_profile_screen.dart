@@ -54,12 +54,12 @@ class VendorUserProfileScreen extends StatelessWidget {
         child: Column(
           children: [
             // profile header (cover + avatar)
-            VendorProfileHeader(
-              coverPhoto:
-                  "https://cdn.shopify.com/s/files/1/0681/6976/1043/files/connor-ellsworth-y4QxywTWZj8-unsplash_1024x1024.jpg?v=1679340043",
-              profilePhoto:
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEGUodmPqUNG8wJWNkNCvqiNkr1T9tsft5oQ&s",
-            ),
+            // VendorProfileHeader(
+            //   coverPhoto:
+            //       "https://cdn.shopify.com/s/files/1/0681/6976/1043/files/connor-ellsworth-y4QxywTWZj8-unsplash_1024x1024.jpg?v=1679340043",
+            //   profilePhoto:
+            //       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEGUodmPqUNG8wJWNkNCvqiNkr1T9tsft5oQ&s",
+            // ),
 
             12.verticalSpace,
 
@@ -74,6 +74,8 @@ class VendorUserProfileScreen extends StatelessWidget {
                 child: Image.asset(IconPath.edit, height: 20.h),
               ),
             ),
+
+            10.verticalSpace,
 
             // first name
             Obx(() {
