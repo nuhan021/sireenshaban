@@ -50,7 +50,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return parts.isNotEmpty ? parts.join(', ') : 'Location not set';
   }
 
-  String _buildVendorLocationText(String? address, String? city, String? country) {
+  String _buildVendorLocationText(
+    String? address,
+    String? city,
+    String? country,
+  ) {
     final parts = <String>[
       if ((address ?? '').isNotEmpty) address!,
       if ((city ?? '').isNotEmpty) city!,
@@ -140,19 +144,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
         }
 
         final isVendor = _homeController.isFromVendor;
-        final vendorUser =
-            isVendor ? _homeController.vendorUser.value?.vendor.user : null;
+        final vendorUser = isVendor
+            ? _homeController.vendorUser.value?.vendor.user
+            : null;
         final user = isVendor ? null : _profileController.user.value;
 
-        final imageUrl =
-            isVendor ? (vendorUser?.image ?? '') : (user?.image ?? '');
+        final imageUrl = isVendor
+            ? (vendorUser?.image ?? '')
+            : (user?.image ?? '');
         final fullName = isVendor
             ? (vendorUser == null
-                ? 'User'
-                : '${vendorUser.firstName} ${vendorUser.lastName}'.trim())
+                  ? 'User'
+                  : '${vendorUser.firstName} ${vendorUser.lastName}'.trim())
             : (user == null
-                ? 'User'
-                : '${user.firstName} ${user.lastName}'.trim());
+                  ? 'User'
+                  : '${user.firstName} ${user.lastName}'.trim());
         final locationText = isVendor
             ? _buildVendorLocationText(
                 vendorUser?.address,
@@ -160,8 +166,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 vendorUser?.country,
               )
             : user == null
-                ? 'Location not set'
-                : _buildLocationText(user);
+            ? 'Location not set'
+            : _buildLocationText(user);
 
         // ফিক্সড: একটি SingleChildScrollView বা Column রিটার্ন করা হয়েছে
         return SingleChildScrollView(
@@ -189,8 +195,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               height: 125.h,
                               width: 125.w,
                               placeholder: (context, url) => Center(
-                                child:
-                                    LoadingAnimationWidget.staggeredDotsWave(
+                                child: LoadingAnimationWidget.staggeredDotsWave(
                                   color: AppColors.primaryDeepBlueLight,
                                   size: 25.h,
                                 ),

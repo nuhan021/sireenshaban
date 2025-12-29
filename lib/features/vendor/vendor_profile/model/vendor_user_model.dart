@@ -36,6 +36,7 @@ class Vendor {
   String accountBalance;
   String latitude;
   String longitude;
+  String? servicesGroup;
   dynamic paymentInformation;
   dynamic paymentType;
   int status;
@@ -57,6 +58,7 @@ class Vendor {
     required this.accountBalance,
     required this.latitude,
     required this.longitude,
+    this.servicesGroup,
     required this.paymentInformation,
     required this.paymentType,
     required this.status,
@@ -79,6 +81,7 @@ class Vendor {
     accountBalance: json["account_balance"],
     latitude: json["latitude"],
     longitude: json["longitude"],
+    servicesGroup: json["services_group"],
     paymentInformation: json["payment_information"],
     paymentType: json["payment_type"],
     status: json["status"],
@@ -101,6 +104,7 @@ class Vendor {
     "account_balance": accountBalance,
     "latitude": latitude,
     "longitude": longitude,
+    "services_group": servicesGroup,
     "payment_information": paymentInformation,
     "payment_type": paymentType,
     "status": status,
