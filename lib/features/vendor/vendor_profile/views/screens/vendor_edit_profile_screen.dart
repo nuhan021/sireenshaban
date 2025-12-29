@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/features/customer/customer_bottom_nav_bar/controller/customer_bottom_nav_bar_controller.dart';
+import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/vendor/vendor_bottom_nav_bar/controller/vendor_bottom_nav_bar_controller.dart';
 import 'dart:io';
 import '../../controller/vendor_edit_profile_controller.dart';
@@ -26,6 +27,7 @@ class _VendorEditProfileScreenState extends State<VendorEditProfileScreen> {
   final VendorEditProfileController controller = Get.put(
     VendorEditProfileController(),
   );
+  final HomeController homeController = Get.put(HomeController());
 
   @override
   void initState() {
@@ -358,33 +360,58 @@ class _VendorEditProfileScreenState extends State<VendorEditProfileScreen> {
             20.verticalSpace,
 
             Obx(() {
-              final loading = controller.isUpdating.value;
+              final loading = controller.isSubmitLoading.value;
               return CustomPrimaryButton(
                 text: loading ? 'Saving...' : 'Save Change',
                 color: AppColors.primaryDeepBlueNormal,
                 isLoading: loading,
                 onPressed: () async {
-                  controller.updateVendorProfile();
-                  // if (loading) return;
-                  // final isSuccess = await controller.updateVendorProfile();
-                  // if (isSuccess) {
-                  //   final role = StorageService.role?.toLowerCase();
-                  //   final isVendor =
-                  //       controller.homeController.isFromVendor ||
-                  //       role == 'vendor';
-                  //   if (isVendor) {
+                  //for vendor update profile
+                  if (loading) return;
+                  await controller.updateVendorProfile();
+
+                  if (controller.issuccess.value) {
+                    final role = StorageService.role?.toLowerCase();
+                    final isVendor =
+                        controller.homeController.isFromVendor ||
+                        role == 'vendor';
+                    if (isVendor) {
+                      final navController =
+                          Get.isRegistered<VendorBottomNavBarController>()
+                          ? Get.find<VendorBottomNavBarController>()
+                          : Get.put(VendorBottomNavBarController());
+                      navController.changeCurrentIndex(4);
+                      navController.jumpToScreen(4);
+                      Get.offAllNamed(AppRoute.getVendorBottomNavBar());
+                    } else {
+                      final navController =
+                          Get.isRegistered<CustomerBottomNavBarController>()
+                          ? Get.find<CustomerBottomNavBarController>()
+                          : Get.put(CustomerBottomNavBarController());
+                      navController.changeCurrentIndex(4);
+                      navController.jumpToScreen(4);
+                      Get.offAllNamed(AppRoute.getCustomerBottomNavBar());
+                    }
+                  }
+                  // // for customer update profile
+
+                  // // if (loading) return;
+                  // final success = await controller.updateProfile();
+
+                  // if (success) {
+                  //   if (homeController.isFromVendor == false) {
                   //     final navController =
                   //         Get.isRegistered<VendorBottomNavBarController>()
-                  //             ? Get.find<VendorBottomNavBarController>()
-                  //             : Get.put(VendorBottomNavBarController());
+                  //         ? Get.find<VendorBottomNavBarController>()
+                  //         : Get.put(VendorBottomNavBarController());
                   //     navController.changeCurrentIndex(4);
                   //     navController.jumpToScreen(4);
                   //     Get.offAllNamed(AppRoute.getVendorBottomNavBar());
                   //   } else {
                   //     final navController =
                   //         Get.isRegistered<CustomerBottomNavBarController>()
-                  //             ? Get.find<CustomerBottomNavBarController>()
-                  //             : Get.put(CustomerBottomNavBarController());
+                  //         ? Get.find<CustomerBottomNavBarController>()
+                  //         : Get.put(CustomerBottomNavBarController());
                   //     navController.changeCurrentIndex(4);
                   //     navController.jumpToScreen(4);
                   //     Get.offAllNamed(AppRoute.getCustomerBottomNavBar());
