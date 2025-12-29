@@ -39,6 +39,7 @@ class VendorEditProfileController extends GetxController {
   RxBool atMyBusinessAddress = false.obs;
   RxBool iTravelToTheClient = false.obs;
   RxBool isSubmitLoading = false.obs;
+  RxBool issuccess = false.obs;
 
   String dialCode = '';
   LatLng? shopLocation;
@@ -251,7 +252,7 @@ class VendorEditProfileController extends GetxController {
         MapEntry('phone_number', vendorData.user.phoneNumber),
         MapEntry('country', countryController.text.trim()),
         MapEntry('city', cityController.text.trim()),
-        MapEntry('address', addressController.text.trim() ?? ''),
+        MapEntry('address', addressController.text.trim()),
         MapEntry('business_name', vendorData.businessName),
         MapEntry('category_id', vendorData.categoryId.toString()),
         MapEntry('latitude', vendorData.latitude),
@@ -321,6 +322,7 @@ class VendorEditProfileController extends GetxController {
         bool isSuccess = response.data['success'] == true || response.data['status'] == 'success';
 
         if (isSuccess) {
+          issuccess.value = true;
           AppLoggerHelper.info('✅ SUCCESS: Vendor profile updated successfully');
           SnackBarConstant.success('Profile updated successfully!');
 
