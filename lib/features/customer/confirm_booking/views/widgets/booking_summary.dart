@@ -93,32 +93,32 @@ class BookingSummary extends StatelessWidget {
               ),
             ),
           ),
-          Divider(
-            color: AppColors.primaryDeepBlueLight,
-          ),
+          // Divider(
+          //   color: AppColors.primaryDeepBlueLight,
+          // ),
 
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Total',
-                style: getTextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.bodyDarkGray
-                ),
-              ),
-
-              Text(
-                '\$$totalPrice',
-                style: getTextStyle(
-                    fontSize: 20.sp,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.bodyDarkGray
-                ),
-              ),
-            ],
-          ).paddingSymmetric(horizontal: 15.w)
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     Text(
+          //       'Total',
+          //       style: getTextStyle(
+          //         fontSize: 16.sp,
+          //         fontWeight: FontWeight.w500,
+          //         color: AppColors.bodyDarkGray
+          //       ),
+          //     ),
+          //
+          //     Text(
+          //       '\$$totalPrice',
+          //       style: getTextStyle(
+          //           fontSize: 20.sp,
+          //           fontWeight: FontWeight.w600,
+          //           color: AppColors.bodyDarkGray
+          //       ),
+          //     ),
+          //   ],
+          // ).paddingSymmetric(horizontal: 15.w)
         ],
       ),
 

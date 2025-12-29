@@ -131,7 +131,7 @@ class CreatePackageController extends GetxController {
       request.fields['latitude'] = latLng?.latitude.toString() ?? "";
       request.fields['longitude'] = latLng?.longitude.toString() ?? "";
       // request.fields['duration'] = "120";
-      request.fields['valid_until'] = "2025-12-25";
+      request.fields['valid_until'] = "2026-12-25";
       // request.fields['subtitle'] = "Special Package Creation";
 
       // 2. Image File
