@@ -5,10 +5,14 @@ import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/constants/api_constants.dart';
 import 'package:sireenshaban/core/utils/constants/snackbar_constant.dart';
 import 'package:sireenshaban/core/utils/logging/logger.dart';
-import 'package:sireenshaban/features/customer/home/model/eventModel.dart' hide Datum;
-import 'package:sireenshaban/features/customer/home/model/packages_model.dart' hide Datum;
-import 'package:sireenshaban/features/customer/home/model/trendingModel.dart' hide Datum;
-import 'package:sireenshaban/features/customer/interest/categori_model.dart' hide Datum;
+import 'package:sireenshaban/features/customer/home/model/eventModel.dart'
+    hide Datum;
+import 'package:sireenshaban/features/customer/home/model/packages_model.dart'
+    hide Datum;
+import 'package:sireenshaban/features/customer/home/model/trendingModel.dart'
+    hide Datum;
+import 'package:sireenshaban/features/customer/interest/categori_model.dart'
+    hide Datum;
 import 'package:sireenshaban/features/vendor/vendor_home/model/vendor_booking_model.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile/model/vendor_user_model.dart';
 import 'package:sireenshaban/routes/app_routes.dart';
@@ -22,7 +26,7 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
 
-    if(isFromVendor) {
+    if (isFromVendor) {
       getVendorProfile();
       getDealsAndPromotions();
       getBooking();
@@ -62,9 +66,6 @@ class HomeController extends GetxController {
   RxBool isCategoryPackagesLoading = false.obs;
   RxBool isCategoryPackagesError = false.obs;
 
-
-
-
   Rx<CategoriModel?> categorys = Rx<CategoriModel?>(null);
   Rx<PackagesModel?> packages = Rx<PackagesModel?>(null);
   Rx<PackagesModel?> categoryPackages = Rx<PackagesModel?>(null);
@@ -73,14 +74,14 @@ class HomeController extends GetxController {
   Rx<VendorBookingModel?> bookings = Rx<VendorBookingModel?>(null);
   Rx<VendorUserModel?> vendorUser = Rx<VendorUserModel?>(null);
 
-
   Rx<DateTime> selectedDate = DateTime.now().obs;
 
   List<Datum> get filteredBookings {
     if (bookings.value == null) return [];
 
     return bookings.value!.data.where((booking) {
-      bool isSameDate = booking.date.year == selectedDate.value.year &&
+      bool isSameDate =
+          booking.date.year == selectedDate.value.year &&
           booking.date.month == selectedDate.value.month &&
           booking.date.day == selectedDate.value.day;
 
@@ -96,8 +97,6 @@ class HomeController extends GetxController {
     selectedDate.value = date;
   }
 
-
-
   void changeIsAdditionalServicesClose({required bool value}) {
     isAdditionalServicesClose.value = value;
   }
@@ -105,7 +104,6 @@ class HomeController extends GetxController {
   void changeCarouselCurrentIndex({required int value}) {
     carouselCurrentIndex.value = value;
   }
-
 
   // fetch additional service
   Future<void> getAdditionalService() async {
@@ -117,7 +115,7 @@ class HomeController extends GetxController {
       token: "Bearer $token",
     );
 
-    if(!response.isSuccess) {
+    if (!response.isSuccess) {
       SnackBarConstant.error(response.errorMessage);
       isAdditionalServiceLoading.value = false;
       isAdditionalServiceError.value = true;
@@ -130,7 +128,6 @@ class HomeController extends GetxController {
     // SnackBarConstant.success("Category fetched successfully");
   }
 
-
   // fetch deals and promotions
   Future<void> getDealsAndPromotions() async {
     isDealsAndPromotionLoading.value = true;
@@ -141,7 +138,9 @@ class HomeController extends GetxController {
     if (isFromVendor) {
       // 🚨 Debug this line: Ensure StorageService.userId is not null or empty
       final vendorId = StorageService.vendorId;
-      AppLoggerHelper.debug("Debugging Vendor URL: ${ApiConstants.dealsAndPromotions}/?vendor_id=$vendorId");
+      AppLoggerHelper.debug(
+        "Debugging Vendor URL: ${ApiConstants.dealsAndPromotions}/?vendor_id=$vendorId",
+      );
       endPoint = "${ApiConstants.dealsAndPromotions}/?vendor_id=$vendorId";
     }
 
@@ -152,7 +151,7 @@ class HomeController extends GetxController {
       token: "Bearer $token",
     );
 
-    if(!response.isSuccess) {
+    if (!response.isSuccess) {
       SnackBarConstant.error(response.errorMessage);
       isDealsAndPromotionLoading.value = false;
       isDealsAndPromotionError.value = true;
@@ -170,9 +169,9 @@ class HomeController extends GetxController {
     isCategoryPackagesLoading.value = true;
     final token = StorageService.token;
 
-    final url = Uri.parse(ApiConstants.dealsAndPromotions).replace(
-      queryParameters: {'category_slug': categorySlug},
-    );
+    final url = Uri.parse(
+      ApiConstants.dealsAndPromotions,
+    ).replace(queryParameters: {'category_slug': categorySlug});
 
     final response = await _networkCaller.getRequest(
       url.toString(),
@@ -228,16 +227,22 @@ class HomeController extends GetxController {
     final userId = StorageService.userId;
     final vendorId = StorageService.vendorId;
     final userRole = StorageService.role?.toLowerCase();
-    
+
     // Log all relevant parameters
-    AppLoggerHelper.debug("📋 [Booking] ========== BOOKING FETCH START ==========");
-    AppLoggerHelper.debug("📋 [Booking] Token exists: ${token != null && token.isNotEmpty}");
+    AppLoggerHelper.debug(
+      "📋 [Booking] ========== BOOKING FETCH START ==========",
+    );
+    AppLoggerHelper.debug(
+      "📋 [Booking] Token exists: ${token != null && token.isNotEmpty}",
+    );
     AppLoggerHelper.debug("📋 [Booking] User ID: $userId");
     AppLoggerHelper.debug("📋 [Booking] Vendor ID: $vendorId");
     AppLoggerHelper.debug("📋 [Booking] User Role: $userRole");
     AppLoggerHelper.debug("📋 [Booking] isFromVendor flag: $isFromVendor");
-    AppLoggerHelper.debug("📋 [Booking] Full user profile: ${StorageService.userProfile}");
-    
+    AppLoggerHelper.debug(
+      "📋 [Booking] Full user profile: ${StorageService.userProfile}",
+    );
+
     // Determine the correct endpoint based on user role
     String endpoint;
     if (isFromVendor || userRole == 'vendor') {
@@ -245,7 +250,9 @@ class HomeController extends GetxController {
       final idToUse = vendorId ?? userId;
       endpoint = "${ApiConstants.bookingsByVendor}/$idToUse";
       AppLoggerHelper.debug("📋 [Booking] Using VENDOR endpoint: $endpoint");
-      AppLoggerHelper.debug("📋 [Booking] Using ID: $idToUse (vendorId: $vendorId, userId: $userId)");
+      AppLoggerHelper.debug(
+        "📋 [Booking] Using ID: $idToUse (vendorId: $vendorId, userId: $userId)",
+      );
     } else {
       endpoint = "${ApiConstants.bookingsByUser}/$userId";
       AppLoggerHelper.debug("📋 [Booking] Using USER endpoint: $endpoint");
@@ -256,11 +263,17 @@ class HomeController extends GetxController {
       token: "Bearer $token",
     );
 
-    AppLoggerHelper.debug("📋 [Booking] Response success: ${response.isSuccess}");
-    AppLoggerHelper.debug("📋 [Booking] Response status code: ${response.statusCode}");
-    AppLoggerHelper.debug("📋 [Booking] Response data: ${response.responseData}");
+    AppLoggerHelper.debug(
+      "📋 [Booking] Response success: ${response.isSuccess}",
+    );
+    AppLoggerHelper.debug(
+      "📋 [Booking] Response status code: ${response.statusCode}",
+    );
+    AppLoggerHelper.debug(
+      "📋 [Booking] Response data: ${response.responseData}",
+    );
 
-    if(!response.isSuccess) {
+    if (!response.isSuccess) {
       AppLoggerHelper.debug("❌ [Booking] Error: ${response.errorMessage}");
       SnackBarConstant.error(response.errorMessage);
       isBookingLoading.value = false;
@@ -269,22 +282,27 @@ class HomeController extends GetxController {
     }
 
     bookings.value = VendorBookingModel.fromJson(response.responseData);
-    AppLoggerHelper.debug("✅ [Booking] Parsed ${bookings.value?.data.length ?? 0} bookings");
-    
+    AppLoggerHelper.debug(
+      "✅ [Booking] Parsed ${bookings.value?.data.length ?? 0} bookings",
+    );
+
     // Log each booking status
     if (bookings.value != null) {
       for (var booking in bookings.value!.data) {
-        AppLoggerHelper.debug("   📌 Booking ID: ${booking.id}, Status: ${booking.status}, Date: ${booking.date}");
+        AppLoggerHelper.debug(
+          "   📌 Booking ID: ${booking.id}, Status: ${booking.status}, Date: ${booking.date}",
+        );
       }
     }
-    
-    AppLoggerHelper.debug("📋 [Booking] ========== BOOKING FETCH END ==========");
-    
+
+    AppLoggerHelper.debug(
+      "📋 [Booking] ========== BOOKING FETCH END ==========",
+    );
+
     isBookingLoading.value = false;
     isBookingError.value = false;
     // SnackBarConstant.success("Bookings fetched successfully");
   }
-
 
   Future<void> getVendorProfile() async {
     isVendorProfileLoading.value = true;
@@ -293,16 +311,14 @@ class HomeController extends GetxController {
 
     final vendorId = StorageService.vendorId;
 
-
     AppLoggerHelper.info("The actual vendor is: $vendorId");
-
 
     final result = await _networkCaller.getRequest(
       "${ApiConstants.vendorProfile}/$vendorId",
       token: "Bearer $token",
     );
 
-    if(result.statusCode == 404) {
+    if (result.statusCode == 404) {
       isVendorProfileLoading.value = false;
       isVendorProfileError.value = true;
       SnackBarConstant.error("Please setup first");
@@ -310,7 +326,7 @@ class HomeController extends GetxController {
       return;
     }
 
-    if(!result.isSuccess) {
+    if (!result.isSuccess) {
       SnackBarConstant.error(result.errorMessage);
       isVendorProfileLoading.value = false;
       isVendorProfileError.value = true;
@@ -320,9 +336,12 @@ class HomeController extends GetxController {
     vendorUser.value = VendorUserModel.fromJson(result.responseData);
     isVendorProfileLoading.value = false;
     isVendorProfileError.value = false;
+    AppLoggerHelper.debug(
+      "📋 [Vendor Profile] Fetched vendor profile successfully${result.responseData}",
+    );
+    AppLoggerHelper.debug("profile Image : ${vendorUser.value!.vendor.user.image}");
     // SnackBarConstant.success("Vendor profile fetched successfully");
   }
-
 
   // fetch trending nearby
   Future<void> getTrendingNearby() async {
@@ -334,7 +353,7 @@ class HomeController extends GetxController {
       token: "Bearer $token",
     );
 
-    if(!response.isSuccess) {
+    if (!response.isSuccess) {
       SnackBarConstant.error(response.errorMessage);
       isTrendingNearbyLoading.value = false;
       isTrendingNearbyError.value = true;
@@ -346,6 +365,4 @@ class HomeController extends GetxController {
     isTrendingNearbyError.value = false;
     // SnackBarConstant.success("Trending fetched successfully");
   }
-
-
 }

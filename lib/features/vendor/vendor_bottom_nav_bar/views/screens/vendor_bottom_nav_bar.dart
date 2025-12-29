@@ -17,9 +17,10 @@ import '../../../../../core/utils/constants/icon_path.dart';
 class VendorBottomNavBar extends StatelessWidget {
   VendorBottomNavBar({super.key});
 
-  final VendorBottomNavBarController navaberController = Get.put(
-    VendorBottomNavBarController(),
-  );
+  final VendorBottomNavBarController navaberController =
+      Get.isRegistered<VendorBottomNavBarController>()
+          ? Get.find<VendorBottomNavBarController>()
+          : Get.put(VendorBottomNavBarController());
 
   List<Widget> _buildScreens() {
     return [

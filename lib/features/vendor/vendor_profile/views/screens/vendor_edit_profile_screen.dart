@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
-import 'package:sireenshaban/features/customer/profile/views/screens/profile_screen.dart';
+import 'package:sireenshaban/features/customer/customer_bottom_nav_bar/controller/customer_bottom_nav_bar_controller.dart';
+import 'package:sireenshaban/features/vendor/vendor_bottom_nav_bar/controller/vendor_bottom_nav_bar_controller.dart';
 import 'dart:io';
 import '../../controller/vendor_edit_profile_controller.dart';
 import 'package:sireenshaban/core/common/widgets/IField.dart';
@@ -364,9 +365,29 @@ class _VendorEditProfileScreenState extends State<VendorEditProfileScreen> {
                 isLoading: loading,
                 onPressed: () async {
                   if (loading) return;
-                  final isSuccess = await controller.updateProfile();
+                  final isSuccess = await controller.updateVendorProfile();
                   if (isSuccess) {
-                    Get.off(() => const ProfileScreen());
+                    final role = StorageService.role?.toLowerCase();
+                    final isVendor =
+                        controller.homeController.isFromVendor ||
+                        role == 'vendor';
+                    if (isVendor) {
+                      final navController =
+                          Get.isRegistered<VendorBottomNavBarController>()
+                              ? Get.find<VendorBottomNavBarController>()
+                              : Get.put(VendorBottomNavBarController());
+                      navController.changeCurrentIndex(4);
+                      navController.jumpToScreen(4);
+                      Get.offAllNamed(AppRoute.getVendorBottomNavBar());
+                    } else {
+                      final navController =
+                          Get.isRegistered<CustomerBottomNavBarController>()
+                              ? Get.find<CustomerBottomNavBarController>()
+                              : Get.put(CustomerBottomNavBarController());
+                      navController.changeCurrentIndex(4);
+                      navController.jumpToScreen(4);
+                      Get.offAllNamed(AppRoute.getCustomerBottomNavBar());
+                    }
                   }
                 },
               );

@@ -16,7 +16,10 @@ import '../../../../../core/utils/constants/icon_path.dart';
 class CustomerBottomNavBar extends StatelessWidget {
   CustomerBottomNavBar({super.key});
 
-  final CustomerBottomNavBarController navaberController = Get.put(CustomerBottomNavBarController());
+  final CustomerBottomNavBarController navaberController =
+      Get.isRegistered<CustomerBottomNavBarController>()
+          ? Get.find<CustomerBottomNavBarController>()
+          : Get.put(CustomerBottomNavBarController());
 
   List<Widget> _buildScreens() {
     return [

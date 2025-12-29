@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile/views/screens/vendor_user_profile_screen.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile/views/widgets/vendor_profile_header.dart';
-
 import '../../../../../core/common/styles/global_text_style.dart';
-import '../../../../../core/controllers/user_controller.dart';
 import '../../../../../core/utils/constants/colors.dart';
 import '../../../../../core/utils/constants/icon_path.dart';
 import '../../../../../core/utils/helpers/app_helper.dart';
@@ -16,10 +13,22 @@ import '../../../../../routes/app_routes.dart';
 import '../../../../customer/booking/views/screens/booking_screen.dart';
 import '../../../../customer/payment_history/views/screens/payment_history_screen.dart';
 
-class VendorProfileScreen extends StatelessWidget {
-  VendorProfileScreen({super.key});
+class VendorProfileScreen extends StatefulWidget {
+  const VendorProfileScreen({super.key});
 
+  @override
+  State<VendorProfileScreen> createState() => _VendorProfileScreenState();
+}
+
+class _VendorProfileScreenState extends State<VendorProfileScreen> {
   final HomeController homeController = Get.find<HomeController>();
+  @override
+  void initState() {
+    if(homeController.isFromVendor == true) {
+      homeController.getVendorProfile();
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +54,7 @@ class VendorProfileScreen extends StatelessWidget {
                     .vendorUser
                     .value!
                     .vendor
-                    .user
-                    .backgroundImage,
+                    .user.image,
                 profilePhoto:
                 homeController.vendorUser.value!.vendor.user.image,
               ),
