@@ -21,6 +21,7 @@ void main() async {
 
   // Initialize Firebase FCM
   await FirebaseFCMService.initialize();
+  await PushNotificationHandler.initialize();
   PushNotificationHandler.configure();
 
   // If a token exists from previous session, fetch the latest profile
