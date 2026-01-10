@@ -1,13 +1,10 @@
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/services/firebase/fcm_token_service.dart';
 import 'package:sireenshaban/core/services/network_caller.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/constants/api_constants.dart';
-import 'package:sireenshaban/core/utils/constants/colors.dart';
 import 'package:sireenshaban/core/utils/constants/snackbar_constant.dart';
 import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/authentication/services/user_info_services.dart';
@@ -69,14 +66,12 @@ class LoginController extends GetxController {
       loginModel.value!.data.user.id.toString(),
     );
     await StorageService.saveRole(loginModel.value!.data.user.role);
-    if (loginModel.value!.data.vendor != null) {
-      await StorageService.savaVendorId(loginModel.value!.data.vendor!.id);
-    }
-    AppLoggerHelper.debug("vendor ID : ${StorageService.vendorId}");
+    await StorageService.savaVendorId(loginModel.value!.data.vendor.id);
+      AppLoggerHelper.debug("vendor ID : ${StorageService.vendorId}");
 
-    StorageService.savaVendorId(loginModel.value!.data.vendor!.id);
+    StorageService.savaVendorId(loginModel.value!.data.vendor.id);
     AppLoggerHelper.debug(
-      'Saved Vendor ID: ${loginModel.value!.data.vendor!.id}',
+      'Saved Vendor ID: ${loginModel.value!.data.vendor.id}',
     );
 
     StorageService.savaVendorId(loginModel.value!.data.vendor.id);

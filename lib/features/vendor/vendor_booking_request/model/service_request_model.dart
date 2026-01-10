@@ -2,17 +2,16 @@ class ServiceRequestListResponse {
   final String message;
   final List<ServiceRequestListItem> requests;
 
-  ServiceRequestListResponse({
-    required this.message,
-    required this.requests,
-  });
+  ServiceRequestListResponse({required this.message, required this.requests});
 
   factory ServiceRequestListResponse.fromJson(Map<String, dynamic> json) {
     return ServiceRequestListResponse(
       message: json["message"] ?? "",
       requests: (json["requests"] as List<dynamic>? ?? [])
-          .map((item) => ServiceRequestListItem.fromJson(
-              item as Map<String, dynamic>))
+          .map(
+            (item) =>
+                ServiceRequestListItem.fromJson(item as Map<String, dynamic>),
+          )
           .toList(),
     );
   }
@@ -81,14 +80,13 @@ class CustomerSummary {
 class ServiceRequestDetailResponse {
   final ServiceRequestDetail serviceRequest;
 
-  ServiceRequestDetailResponse({
-    required this.serviceRequest,
-  });
+  ServiceRequestDetailResponse({required this.serviceRequest});
 
   factory ServiceRequestDetailResponse.fromJson(Map<String, dynamic> json) {
     return ServiceRequestDetailResponse(
-      serviceRequest:
-          ServiceRequestDetail.fromJson(json["service_request"] ?? {}),
+      serviceRequest: ServiceRequestDetail.fromJson(
+        json["service_request"] ?? {},
+      ),
     );
   }
 }
@@ -135,11 +133,7 @@ class CustomerDetail {
   final String name;
   final String email;
 
-  CustomerDetail({
-    required this.id,
-    required this.name,
-    required this.email,
-  });
+  CustomerDetail({required this.id, required this.name, required this.email});
 
   factory CustomerDetail.fromJson(Map<String, dynamic> json) {
     return CustomerDetail(
@@ -154,10 +148,7 @@ class VendorDetail {
   final int id;
   final String businessName;
 
-  VendorDetail({
-    required this.id,
-    required this.businessName,
-  });
+  VendorDetail({required this.id, required this.businessName});
 
   factory VendorDetail.fromJson(Map<String, dynamic> json) {
     return VendorDetail(

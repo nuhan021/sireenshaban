@@ -8,9 +8,10 @@ import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
 
 class SpecialConcern extends StatelessWidget {
-   SpecialConcern({super.key,});
+  SpecialConcern({super.key});
 
-  final ConfirmBookingController confirmBookingController = Get.find<ConfirmBookingController>();
+  final ConfirmBookingController confirmBookingController =
+      Get.find<ConfirmBookingController>();
 
   @override
   Widget build(BuildContext context) {

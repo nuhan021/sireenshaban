@@ -42,7 +42,9 @@ class BookingDetailsController extends GetxController {
       final data = response.responseData['data'];
       if (data != null) {
         bookingDetails.value = Datum.fromJson(data);
-        debugPrint("✅ [BookingDetails] Booking loaded: ID ${bookingDetails.value?.id}");
+        debugPrint(
+          "✅ [BookingDetails] Booking loaded: ID ${bookingDetails.value?.id}",
+        );
       }
     } catch (e) {
       debugPrint("❌ [BookingDetails] Parse error: $e");

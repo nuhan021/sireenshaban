@@ -55,7 +55,7 @@ class BookingDetailsScreen extends StatelessWidget {
                     color: AppColors.bodyDarkGray,
                   ),
                 ),
-                
+
                 Text(
                   "Are you sure you want to cancel your reservation with Marco’s Kitchen on Sept 28 at 10:00 AM",
                   textAlign: TextAlign.center,
@@ -65,15 +65,23 @@ class BookingDetailsScreen extends StatelessWidget {
                     color: AppColors.bodyDarkGray,
                   ),
                 ),
-                
+
                 Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    CustomPrimaryButton(text: "keep Booking", color: AppColors.primaryDeepBlueNormal, onPressed: () => Navigator.pop(context)),
+                    CustomPrimaryButton(
+                      text: "keep Booking",
+                      color: AppColors.primaryDeepBlueNormal,
+                      onPressed: () => Navigator.pop(context),
+                    ),
                     5.verticalSpace,
-                    CustomPrimaryButton(text: "Confirm Cancel", color: Color(0xFFC20000), onPressed: () => Navigator.pop(context)),
+                    CustomPrimaryButton(
+                      text: "Confirm Cancel",
+                      color: Color(0xFFC20000),
+                      onPressed: () => Navigator.pop(context),
+                    ),
                   ],
-                ).paddingSymmetric(horizontal: 40.w)
+                ).paddingSymmetric(horizontal: 40.w),
               ],
             ),
           ),
@@ -96,7 +104,7 @@ class BookingDetailsScreen extends StatelessWidget {
             padding: EdgeInsets.all(7.w),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Color(0xFF3333331A),
+              color: Color(0xff3333331a),
             ),
             child: Image.asset(
               IconPath.arrowBack,

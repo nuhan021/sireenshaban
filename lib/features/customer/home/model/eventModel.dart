@@ -4,7 +4,8 @@
 
 import 'dart:convert';
 
-EventModel eventModelFromJson(String str) => EventModel.fromJson(json.decode(str));
+EventModel eventModelFromJson(String str) =>
+    EventModel.fromJson(json.decode(str));
 
 String eventModelToJson(EventModel data) => json.encode(data.toJson());
 
@@ -12,10 +13,7 @@ class EventModel {
   bool success;
   List<Datum> data;
 
-  EventModel({
-    required this.success,
-    required this.data,
-  });
+  EventModel({required this.success, required this.data});
 
   factory EventModel.fromJson(Map<String, dynamic> json) => EventModel(
     success: json["success"],
@@ -106,7 +104,8 @@ class Datum {
     "title": title,
     "slug": slug,
     "description": description,
-    "event_date": "${eventDate.year.toString().padLeft(4, '0')}-${eventDate.month.toString().padLeft(2, '0')}-${eventDate.day.toString().padLeft(2, '0')}",
+    "event_date":
+        "${eventDate.year.toString().padLeft(4, '0')}-${eventDate.month.toString().padLeft(2, '0')}-${eventDate.day.toString().padLeft(2, '0')}",
     "event_time": eventTime,
     "venue_type": venueType,
     "location": location,

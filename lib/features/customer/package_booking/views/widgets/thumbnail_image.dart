@@ -7,7 +7,12 @@ import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
 
 class ThumbnailImage extends StatelessWidget {
-  const ThumbnailImage({super.key, required this.image, required this.rating, required this.reviews});
+  const ThumbnailImage({
+    super.key,
+    required this.image,
+    required this.rating,
+    required this.reviews,
+  });
 
   final String image;
   final int rating;
@@ -22,17 +27,24 @@ class ThumbnailImage extends StatelessWidget {
         children: [
           // thumbnail image
           ClipRRect(
-              borderRadius: BorderRadius.only(bottomRight: Radius.circular(10.r), bottomLeft: Radius.circular(10.r)),
-              child: CachedNetworkImage(
-                imageUrl: image,
-                fit: BoxFit.cover,
-                height: 326.h,
-                width: double.maxFinite,
-                placeholder: (context, url) => Center(
-                  child: LoadingAnimationWidget.staggeredDotsWave(color: AppColors.primaryDeepBlueLight, size: 25.h),
+            borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(10.r),
+              bottomLeft: Radius.circular(10.r),
+            ),
+            child: CachedNetworkImage(
+              imageUrl: image,
+              fit: BoxFit.cover,
+              height: 326.h,
+              width: double.maxFinite,
+              placeholder: (context, url) => Center(
+                child: LoadingAnimationWidget.staggeredDotsWave(
+                  color: AppColors.primaryDeepBlueLight,
+                  size: 25.h,
                 ),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-              )),
+              ),
+              errorWidget: (context, url, error) => const Icon(Icons.error),
+            ),
+          ),
 
           // rating and reviews
           Align(
@@ -50,7 +62,7 @@ class ThumbnailImage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   // star
-                  Icon(Icons.star_rounded, color: Color(0xFFF0C020),),
+                  Icon(Icons.star_rounded, color: Color(0xFFF0C020)),
 
                   // star value
                   Text(
@@ -58,7 +70,7 @@ class ThumbnailImage extends StatelessWidget {
                     style: getTextStyle(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.cardBackgroundSoftGray
+                      color: AppColors.cardBackgroundSoftGray,
                     ),
                   ),
 
@@ -67,13 +79,13 @@ class ThumbnailImage extends StatelessWidget {
                     style: getTextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w400,
-                      color: Color(0xFFD1D3D8)
+                      color: Color(0xFFD1D3D8),
                     ),
-                  )
+                  ),
                 ],
               ),
             ).paddingOnly(left: 20.w, bottom: 20.h),
-          )
+          ),
         ],
       ),
     );

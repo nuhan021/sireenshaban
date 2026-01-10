@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
-import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 
 class UserController extends GetxController {
   // Reactive profile fields
@@ -18,8 +17,6 @@ class UserController extends GetxController {
     super.onInit();
     loadFromStorage();
   }
-
-
 
   /// Load all profile fields from StorageService
   void loadFromStorage() {

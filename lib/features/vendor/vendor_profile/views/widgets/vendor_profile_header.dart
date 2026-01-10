@@ -46,10 +46,8 @@ class VendorProfileHeader extends StatelessWidget {
                       size: 25.h,
                     ),
                   ),
-                  errorWidget: (context, url, error) => Image.asset(
-                    _fallbackCover,
-                    fit: BoxFit.cover,
-                  ),
+                  errorWidget: (context, url, error) =>
+                      Image.asset(_fallbackCover, fit: BoxFit.cover),
                 ),
               ),
               Positioned(
@@ -58,10 +56,7 @@ class VendorProfileHeader extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    border: Border.all(
-                      color: Colors.white,
-                      width: 2.w,
-                    ),
+                    border: Border.all(color: Colors.white, width: 2.w),
                   ),
                   child: CachedNetworkImage(
                     imageUrl: profilePhoto,
@@ -83,7 +78,7 @@ class VendorProfileHeader extends StatelessWidget {
                     ),
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),

@@ -263,8 +263,14 @@ class VendorEditProfileController extends GetxController {
 
       // --- Settings from Vendor Model ---
       formData.fields.addAll([
-        MapEntry('settings[offers_virtual]', vendorData.settings.offersVirtual ? "1" : "0"),
-        MapEntry('settings[max_travel_distance]', vendorData.settings.maxTravelDistance),
+        MapEntry(
+          'settings[offers_virtual]',
+          vendorData.settings.offersVirtual ? "1" : "0",
+        ),
+        MapEntry(
+          'settings[max_travel_distance]',
+          vendorData.settings.maxTravelDistance,
+        ),
         MapEntry('settings[travel_policy]', vendorData.settings.travelPolicy),
         MapEntry('settings[payment_method]', vendorData.settings.paymentMethod),
       ]);
@@ -285,8 +291,12 @@ class VendorEditProfileController extends GetxController {
         final hour = vendorData.businessHours[i];
 
         // Converting "15:06:00" to the "15.06" format required by your API
-        String formattedOpen = hour.openTime.replaceAll(':', '.').substring(0, 5);
-        String formattedClose = hour.closeTime.replaceAll(':', '.').substring(0, 5);
+        String formattedOpen = hour.openTime
+            .replaceAll(':', '.')
+            .substring(0, 5);
+        String formattedClose = hour.closeTime
+            .replaceAll(':', '.')
+            .substring(0, 5);
 
         formData.fields.addAll([
           MapEntry('business_hours[$i][day]', hour.day),
@@ -298,20 +308,26 @@ class VendorEditProfileController extends GetxController {
 
       // --- Image Handling ---
       if (profileImage.value != null) {
-        formData.files.add(MapEntry(
-          'image',
-          await MultipartFile.fromFile(profileImage.value!.path),
-        ));
+        formData.files.add(
+          MapEntry(
+            'image',
+            await MultipartFile.fromFile(profileImage.value!.path),
+          ),
+        );
       }
 
       if (coverImage.value != null) {
-        formData.files.add(MapEntry(
-          'background_image',
-          await MultipartFile.fromFile(coverImage.value!.path),
-        ));
+        formData.files.add(
+          MapEntry(
+            'background_image',
+            await MultipartFile.fromFile(coverImage.value!.path),
+          ),
+        );
       }
 
-      AppLoggerHelper.debug('Submitting update to: ${ApiConstants.updateVendor}');
+      AppLoggerHelper.debug(
+        'Submitting update to: ${ApiConstants.updateVendor}',
+      );
 
       final response = await dio.post(
         ApiConstants.updateVendor,
@@ -319,11 +335,15 @@ class VendorEditProfileController extends GetxController {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        bool isSuccess = response.data['success'] == true || response.data['status'] == 'success';
+        bool isSuccess =
+            response.data['success'] == true ||
+            response.data['status'] == 'success';
 
         if (isSuccess) {
           issuccess.value = true;
-          AppLoggerHelper.info('✅ SUCCESS: Vendor profile updated successfully');
+          AppLoggerHelper.info(
+            '✅ SUCCESS: Vendor profile updated successfully',
+          );
           SnackBarConstant.success('Profile updated successfully!');
 
           // Refresh the global vendor state
@@ -338,8 +358,13 @@ class VendorEditProfileController extends GetxController {
         SnackBarConstant.error('Server error: ${response.statusCode}');
       }
     } on DioException catch (e) {
-      AppLoggerHelper.error('Update Error', e.response?.data.toString() ?? e.message!);
-      SnackBarConstant.error(e.response?.data['message'] ?? 'An error occurred during update');
+      AppLoggerHelper.error(
+        'Update Error',
+        e.response?.data.toString() ?? e.message!,
+      );
+      SnackBarConstant.error(
+        e.response?.data['message'] ?? 'An error occurred during update',
+      );
     } finally {
       isSubmitLoading.value = false;
     }

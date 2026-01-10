@@ -23,7 +23,9 @@ class ChatListController extends GetxController {
       conversations.value = chats;
       debugPrint('✅ [ChatListController] Loaded ${chats.length} conversations');
       for (var chat in chats) {
-        debugPrint('   - ${chat.name} (ID: ${chat.userId}, Unread: ${chat.unreadCount})');
+        debugPrint(
+          '   - ${chat.name} (ID: ${chat.userId}, Unread: ${chat.unreadCount})',
+        );
       }
     } catch (e) {
       debugPrint('❌ [ChatListController] Error loading conversations: $e');
@@ -36,4 +38,3 @@ class ChatListController extends GetxController {
     await _loadConversations();
   }
 }
-

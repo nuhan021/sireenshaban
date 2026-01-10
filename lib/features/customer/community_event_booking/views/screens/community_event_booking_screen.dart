@@ -14,13 +14,10 @@ import '../../../../../core/common/widgets/custom_primary_button.dart';
 import '../../../../../core/utils/constants/colors.dart';
 import '../../../../../core/utils/constants/icon_path.dart';
 import '../../../../../core/utils/constants/image_path.dart';
-import '../../../../../core/utils/helpers/app_helper.dart';
-import '../../../booking_confirmed/views/screens/booking_confirmed_screen.dart';
 import '../../../confirm_booking/views/widgets/booking_summary.dart';
 import '../../../confirm_booking/views/widgets/package_booking_payment_method.dart';
 import '../../../home/model/eventModel.dart';
 import '../../../package_booking/views/widgets/booking_app_bar.dart';
-import '../../../package_booking/views/widgets/location_card.dart';
 import '../../../package_booking/views/widgets/thumbnail_image.dart';
 
 class CommunityEventBookingScreen extends StatefulWidget {
@@ -149,7 +146,7 @@ class _CommunityEventBookingScreenState
                 20.verticalSpace,
 
                 // location
-                LocationCard2(data: data,),
+                LocationCard2(data: data),
 
                 20.verticalSpace,
 
@@ -243,8 +240,7 @@ class _CommunityEventBookingScreenState
                       return CustomLoading();
                     }
                     return CustomPrimaryButton(
-                      text:
-                          "Confirm Booking & Pay",
+                      text: "Confirm Booking & Pay",
                       textColor: AppColors.cardBackgroundSoftGray,
                       color: AppColors.primaryDeepBlueNormal,
                       onPressed: () {

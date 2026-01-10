@@ -6,10 +6,8 @@ import 'package:get/get.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
-import 'package:sireenshaban/core/utils/constants/icon_path.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
 import 'package:sireenshaban/features/onboarding/views/screens/onboarding_screen_2.dart';
-import 'package:sireenshaban/routes/app_routes.dart';
 
 import '../../../../core/utils/constants/image_path.dart';
 

@@ -90,7 +90,9 @@ class VendorSetupPage2nd extends StatelessWidget {
 
           Obx(() {
             return PopupMenuButton<ServicesGroup>(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.r)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12.r),
+              ),
               onSelected: (ServicesGroup value) {
                 HapticFeedback.heavyImpact();
                 vendorSetupScreenController.selectedServiceGroup.value = value;
@@ -131,7 +133,10 @@ class VendorSetupPage2nd extends StatelessWidget {
                         color: AppColors.bodyDarkGray,
                       ),
                     ),
-                    const Icon(Icons.keyboard_arrow_down_sharp, color: AppColors.bodyDarkGray),
+                    const Icon(
+                      Icons.keyboard_arrow_down_sharp,
+                      color: AppColors.bodyDarkGray,
+                    ),
                   ],
                 ),
               ),

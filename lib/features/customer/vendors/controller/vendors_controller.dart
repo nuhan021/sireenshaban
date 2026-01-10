@@ -4,7 +4,7 @@ class VendorsController extends GetxController {
   var vendors = <MyVendor>[
     MyVendor(
       image:
-      "https://img.freepik.com/premium-photo/portrait-young-woman-dressed-splendid-evening-makeup-perfect-dense-wavy-hairstyle-make-up-manicure-jewellery-purple-tints-hairdressing-art-hair-care-makeup_353119-186.jpg?semt=ais_hybrid&w=740&q=80",
+          "https://img.freepik.com/premium-photo/portrait-young-woman-dressed-splendid-evening-makeup-perfect-dense-wavy-hairstyle-make-up-manicure-jewellery-purple-tints-hairdressing-art-hair-care-makeup_353119-186.jpg?semt=ais_hybrid&w=740&q=80",
       title: "Serenity Spa & Well",
       subtitle: "Beauty & Wellness",
       service: "parlour",
@@ -15,7 +15,7 @@ class VendorsController extends GetxController {
     ),
     MyVendor(
       image:
-      "https://img.freepik.com/free-photo/tender-african-woman-smiling-enjoying-massage-with-closed-eyes-spa-resort_176420-13956.jpg",
+          "https://img.freepik.com/free-photo/tender-african-woman-smiling-enjoying-massage-with-closed-eyes-spa-resort_176420-13956.jpg",
       title: "Serenity Spa & Well",
       subtitle: "Beauty & Wellness",
       service: "Deep Tissue Massage",
@@ -26,7 +26,7 @@ class VendorsController extends GetxController {
     ),
     MyVendor(
       image:
-      "https://img.freepik.com/premium-photo/sexy-girl-doing-yoga-home-kitchen_321831-2764.jpg",
+          "https://img.freepik.com/premium-photo/sexy-girl-doing-yoga-home-kitchen_321831-2764.jpg",
       title: "Serenity Spa & Well",
       subtitle: "Beauty & Wellness",
       service: "Deep Tissue Massage",
@@ -38,7 +38,7 @@ class VendorsController extends GetxController {
 
     MyVendor(
       image:
-      "https://img.freepik.com/free-photo/female-doctor-hospital_23-2148827760.jpg",
+          "https://img.freepik.com/free-photo/female-doctor-hospital_23-2148827760.jpg",
       title: "Dr. Sarah Johnson",
       subtitle: "Healthcare",
       service: "Consultation",
@@ -49,7 +49,7 @@ class VendorsController extends GetxController {
     ),
     MyVendor(
       image:
-      "https://www.shutterstock.com/image-photo/profile-photo-attractive-family-doc-600nw-1724693776.jpg",
+          "https://www.shutterstock.com/image-photo/profile-photo-attractive-family-doc-600nw-1724693776.jpg",
       title: "Marco's Kitchen",
       subtitle: "Healthcare",
       service: "General Consultation",
@@ -61,7 +61,7 @@ class VendorsController extends GetxController {
 
     MyVendor(
       image:
-      "https://cdn.muscleandstrength.com/sites/default/files/styles/800x500/public/lean_woman_doing_dumbbell_row.jpg",
+          "https://cdn.muscleandstrength.com/sites/default/files/styles/800x500/public/lean_woman_doing_dumbbell_row.jpg",
       title: "Sarah Johnson",
       subtitle: "Gym",
       service: "Gym",
@@ -70,7 +70,6 @@ class VendorsController extends GetxController {
       price: "\$185",
       role: "doctor",
     ),
-
   ].obs;
 }
 

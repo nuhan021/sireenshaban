@@ -52,7 +52,7 @@ class VendorHomeScreen extends StatelessWidget {
                 padding: EdgeInsets.all(6.w),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Color(0xFF3333331A),
+                  color: Color(0xff3333331a),
                 ),
                 child: Image.asset(
                   IconPath.notification,
@@ -251,12 +251,14 @@ class VendorHomeScreen extends StatelessWidget {
                                     ?.vendor
                                     .user
                                     .subscriptionPlanId ==
-                                2 || controller
-                            .vendorUser
-                            .value
-                            ?.vendor
-                            .user
-                            .subscriptionPlanId == null) {
+                                2 ||
+                            controller
+                                    .vendorUser
+                                    .value
+                                    ?.vendor
+                                    .user
+                                    .subscriptionPlanId ==
+                                null) {
                           showDialog(
                             context: context,
                             barrierDismissible: false,

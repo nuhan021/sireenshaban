@@ -1,29 +1,29 @@
-
-class IconPath{
+class IconPath {
   IconPath._();
-  static const  String logo='';
-  static const  String distance ='assets/icons/distance.png';
-  static const  String calenderToday ='assets/icons/calendar_today.png';
-  static const  String calenderMonth ='assets/icons/calendar_month.png';
-  static const  String star ='assets/icons/star.png';
-  static const  String user ='assets/icons/user.png';
-  static const  String arrowBack ='assets/icons/arrow_back.png';
-  static const  String mic ='assets/icons/mic.png';
-  static const  String sliders ='assets/icons/sliders.png';
-  static const  String mobile ='assets/icons/mobile.png';
-  static const  String wallet ='assets/icons/wallet.png';
-  static const  String clock ='assets/icons/clock.png';
-  static const  String people ='assets/icons/people.png';
-  static const  String directBox ='assets/icons/directbox.png';
-  static const  String call ='assets/icons/call.png';
-  static const  String message ='assets/icons/message.png';
-  static const  String userSquare ='assets/icons/user_square.png';
-  static const  String notification ='assets/icons/notification.png';
-  static const  String notificationOutline ='assets/icons/notification_outline.png';
-  static const  String ticket ='assets/icons/ticket.png';
-  static const  String ticketFill ='assets/icons/ticket_fill.png';
-  static const  String logout ='assets/icons/logout.png';
-  static const  String edit ='assets/icons/edit.png';
+  static const String logo = '';
+  static const String distance = 'assets/icons/distance.png';
+  static const String calenderToday = 'assets/icons/calendar_today.png';
+  static const String calenderMonth = 'assets/icons/calendar_month.png';
+  static const String star = 'assets/icons/star.png';
+  static const String user = 'assets/icons/user.png';
+  static const String arrowBack = 'assets/icons/arrow_back.png';
+  static const String mic = 'assets/icons/mic.png';
+  static const String sliders = 'assets/icons/sliders.png';
+  static const String mobile = 'assets/icons/mobile.png';
+  static const String wallet = 'assets/icons/wallet.png';
+  static const String clock = 'assets/icons/clock.png';
+  static const String people = 'assets/icons/people.png';
+  static const String directBox = 'assets/icons/directbox.png';
+  static const String call = 'assets/icons/call.png';
+  static const String message = 'assets/icons/message.png';
+  static const String userSquare = 'assets/icons/user_square.png';
+  static const String notification = 'assets/icons/notification.png';
+  static const String notificationOutline =
+      'assets/icons/notification_outline.png';
+  static const String ticket = 'assets/icons/ticket.png';
+  static const String ticketFill = 'assets/icons/ticket_fill.png';
+  static const String logout = 'assets/icons/logout.png';
+  static const String edit = 'assets/icons/edit.png';
 
   // bottom nav bar icon
   static const String navHome = "assets/icons/nav_home.png";

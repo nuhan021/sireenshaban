@@ -64,9 +64,9 @@ class CustomerInterestController extends GetxController {
 
     category.clear();
 
-    categoriModel.value!.data.forEach((e) {
+    for (var e in categoriModel.value!.data) {
       category.add(InterestModel(e.id, role: e.name, image: e.image ?? ''));
-    });
+    }
 
     isCategoriLoading.value = false;
     SnackBarConstant.success("Category fetched successfully");

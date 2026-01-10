@@ -43,7 +43,7 @@ class VendorBookingController extends GetxController {
     isServiceRequestLoading.value = true;
 
     final token = StorageService.token;
-    AppLoggerHelper.debug("token is : ${token}");
+    AppLoggerHelper.debug("token is : $token");
     final authToken = token == null
         ? null
         : (token.startsWith("Bearer ") ? token : "Bearer $token");

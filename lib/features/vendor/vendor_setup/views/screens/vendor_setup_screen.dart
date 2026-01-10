@@ -195,7 +195,7 @@ class VendorSetupScreen extends StatelessWidget {
                                         .currentPageIndex
                                         .value ==
                                     0
-                                ? Color(0xFF33333333)
+                                ? Color(0xff33333333)
                                 : AppColors.bodyDarkGray,
                           );
                         }),
@@ -211,7 +211,7 @@ class VendorSetupScreen extends StatelessWidget {
                                           .currentPageIndex
                                           .value ==
                                       0
-                                  ? Color(0xFF33333333)
+                                  ? Color(0xff33333333)
                                   : AppColors.bodyDarkGray,
                             ),
                           );
@@ -257,7 +257,7 @@ class VendorSetupScreen extends StatelessWidget {
                                           .currentPageIndex
                                           .value ==
                                       2
-                                  ? Color(0xFF33333333)
+                                  ? Color(0xff33333333)
                                   : AppColors.bodyDarkGray,
                             ),
                           );
@@ -272,7 +272,7 @@ class VendorSetupScreen extends StatelessWidget {
                                         .currentPageIndex
                                         .value ==
                                     2
-                                ? Color(0xFF33333333)
+                                ? Color(0xff33333333)
                                 : AppColors.bodyDarkGray,
                           );
                         }),

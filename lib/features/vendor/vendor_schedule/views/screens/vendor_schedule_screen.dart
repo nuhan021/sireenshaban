@@ -69,8 +69,10 @@ class VendorScheduleScreen extends StatelessWidget {
               children: [
                 Text(
                   controller.selectedDate.value.year == DateTime.now().year &&
-                      controller.selectedDate.value.month == DateTime.now().month &&
-                      controller.selectedDate.value.day == DateTime.now().day
+                          controller.selectedDate.value.month ==
+                              DateTime.now().month &&
+                          controller.selectedDate.value.day ==
+                              DateTime.now().day
                       ? 'Today'
                       : "${controller.selectedDate.value.day}/${controller.selectedDate.value.month}/${controller.selectedDate.value.year}",
                   style: getTextStyle(
@@ -104,32 +106,40 @@ class VendorScheduleScreen extends StatelessWidget {
                       color: AppColors.secondaryInfoMediumGrayNormal,
                     ),
                   ),
-                )
+                ),
               ],
             ),
             20.verticalSpace,
             Expanded(
               child: dataList.isEmpty
                   ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.event_busy, size: 50.sp, color: Colors.grey),
-                    10.verticalSpace,
-                    Text(
-                      "No schedules for this date",
-                      style: getTextStyle(color: Colors.grey, fontSize: 14.sp),
-                    ),
-                  ],
-                ),
-              )
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.event_busy,
+                            size: 50.sp,
+                            color: Colors.grey,
+                          ),
+                          10.verticalSpace,
+                          Text(
+                            "No schedules for this date",
+                            style: getTextStyle(
+                              color: Colors.grey,
+                              fontSize: 14.sp,
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
                   : ListView.separated(
-                padding: EdgeInsets.only(bottom: 20.h),
-                itemCount: dataList.length,
-                separatorBuilder: (context, index) => 10.verticalSpace,
-                itemBuilder: (context, index) => VendorScheduleCard(data: dataList[index]),
-              ),
-            )
+                      padding: EdgeInsets.only(bottom: 20.h),
+                      itemCount: dataList.length,
+                      separatorBuilder: (context, index) => 10.verticalSpace,
+                      itemBuilder: (context, index) =>
+                          VendorScheduleCard(data: dataList[index]),
+                    ),
+            ),
           ],
         ).paddingSymmetric(horizontal: 20.w);
       }),

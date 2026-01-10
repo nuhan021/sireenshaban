@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:sireenshaban/core/controllers/user_controller.dart';
 import 'package:sireenshaban/core/services/network_caller.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/constants/api_constants.dart';
@@ -85,7 +84,7 @@ class HomeController extends GetxController {
           booking.date.month == selectedDate.value.month &&
           booking.date.day == selectedDate.value.day;
 
-      String status = booking.status?.toLowerCase() ?? '';
+      String status = booking.status.toLowerCase() ?? '';
       bool isValidStatus = status != 'completed' && status != 'pending';
 
       return isSameDate && isValidStatus;
@@ -339,7 +338,9 @@ class HomeController extends GetxController {
     AppLoggerHelper.debug(
       "📋 [Vendor Profile] Fetched vendor profile successfully${result.responseData}",
     );
-    AppLoggerHelper.debug("profile Image : ${vendorUser.value!.vendor.user.image}");
+    AppLoggerHelper.debug(
+      "profile Image : ${vendorUser.value!.vendor.user.image}",
+    );
     // SnackBarConstant.success("Vendor profile fetched successfully");
   }
 

@@ -71,10 +71,14 @@ class SearchScreen extends StatelessWidget {
               ),
               borderColor: Colors.transparent,
               suffixIcon: GestureDetector(
-                onTap: (){},
+                onTap: () {},
                 child: Padding(
                   padding: EdgeInsets.all(10.w),
-                  child: Image.asset(IconPath.navSearch, height: 24.h, color: AppColors.primaryDeepBlueNormal,),
+                  child: Image.asset(
+                    IconPath.navSearch,
+                    height: 24.h,
+                    color: AppColors.primaryDeepBlueNormal,
+                  ),
                 ),
               ),
             ),
@@ -87,7 +91,11 @@ class SearchScreen extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Image.asset(IconPath.navSearch, height: 25.h, color: AppColors.primaryDeepBlueNormal,),
+                  Image.asset(
+                    IconPath.navSearch,
+                    height: 25.h,
+                    color: AppColors.primaryDeepBlueNormal,
+                  ),
                   10.horizontalSpace,
                   Text(
                     "Dentist",
@@ -96,12 +104,16 @@ class SearchScreen extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                       color: AppColors.bodyDarkGray,
                     ),
-                  )
+                  ),
                 ],
               ).paddingSymmetric(vertical: 10.h),
               Row(
                 children: [
-                  Image.asset(IconPath.navSearch, height: 25.h, color: AppColors.primaryDeepBlueNormal,),
+                  Image.asset(
+                    IconPath.navSearch,
+                    height: 25.h,
+                    color: AppColors.primaryDeepBlueNormal,
+                  ),
                   10.horizontalSpace,
                   Text(
                     "Restaurant",
@@ -110,12 +122,16 @@ class SearchScreen extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                       color: AppColors.bodyDarkGray,
                     ),
-                  )
+                  ),
                 ],
               ).paddingSymmetric(vertical: 10.h),
               Row(
                 children: [
-                  Image.asset(IconPath.navSearch, height: 25.h, color: AppColors.primaryDeepBlueNormal,),
+                  Image.asset(
+                    IconPath.navSearch,
+                    height: 25.h,
+                    color: AppColors.primaryDeepBlueNormal,
+                  ),
                   10.horizontalSpace,
                   Text(
                     "Plumber",
@@ -124,12 +140,16 @@ class SearchScreen extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                       color: AppColors.bodyDarkGray,
                     ),
-                  )
+                  ),
                 ],
               ).paddingSymmetric(vertical: 10.h),
               Row(
                 children: [
-                  Image.asset(IconPath.navSearch, height: 25.h, color: AppColors.primaryDeepBlueNormal,),
+                  Image.asset(
+                    IconPath.navSearch,
+                    height: 25.h,
+                    color: AppColors.primaryDeepBlueNormal,
+                  ),
                   10.horizontalSpace,
                   Text(
                     "Electrician",
@@ -138,11 +158,11 @@ class SearchScreen extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                       color: AppColors.bodyDarkGray,
                     ),
-                  )
+                  ),
                 ],
               ).paddingSymmetric(vertical: 10.h),
             ],
-          ).paddingSymmetric(horizontal: 20.w)
+          ).paddingSymmetric(horizontal: 20.w),
         ],
       ).paddingSymmetric(horizontal: 20.w),
     );

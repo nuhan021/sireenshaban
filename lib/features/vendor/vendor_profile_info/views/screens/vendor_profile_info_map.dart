@@ -1,14 +1,11 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:http/http.dart' as http;
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
-import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile_info/views/controller/vendor_profile_info_map_controller.dart';
 
 class VendorProfileInfoMap extends StatefulWidget {
@@ -25,11 +22,6 @@ class VendorProfileInfoMap extends StatefulWidget {
 class _VendorProfileInfoMapState extends State<VendorProfileInfoMap> {
   final TextEditingController _searchController = TextEditingController();
 
-
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +31,9 @@ class _VendorProfileInfoMapState extends State<VendorProfileInfoMap> {
             return GoogleMap(
               onMapCreated: widget.controller.onMapCreated,
               initialCameraPosition: CameraPosition(
-                target: widget.controller.selectedPosition ?? widget.controller.shopLocation,
+                target:
+                    widget.controller.selectedPosition ??
+                    widget.controller.shopLocation,
                 zoom: 12.0,
               ),
               myLocationEnabled: false,
@@ -109,7 +103,8 @@ class _VendorProfileInfoMapState extends State<VendorProfileInfoMap> {
                               ),
                             ),
                           ),
-                          onChanged: (value) => widget.controller.getPlaceSuggestions(value),
+                          onChanged: (value) =>
+                              widget.controller.getPlaceSuggestions(value),
                         ),
                       ),
                     ),
@@ -127,16 +122,20 @@ class _VendorProfileInfoMapState extends State<VendorProfileInfoMap> {
               },
               onSelected: (suggestion) async {
                 _searchController.text = suggestion['description'];
-                LatLng pos = await widget.controller.getPlaceLatLng(suggestion['place_id']);
+                LatLng pos = await widget.controller.getPlaceLatLng(
+                  suggestion['place_id'],
+                );
 
-                widget.controller.mapController?.animateCamera(
+                widget.controller.mapController.animateCamera(
                   CameraUpdate.newLatLngZoom(pos, 15),
                 );
-                widget.controller.addMarker(pos, title: suggestion['description']);
+                widget.controller.addMarker(
+                  pos,
+                  title: suggestion['description'],
+                );
               },
             ),
           ),
-
 
           Positioned(
             bottom: 40.h,
@@ -154,13 +153,12 @@ class _VendorProfileInfoMapState extends State<VendorProfileInfoMap> {
                     blurRadius: 2,
                     spreadRadius: 2,
                   ),
-
                 ],
               ),
               // alignment: Alignment.center ,
               child: IconButton(
                 onPressed: () => widget.controller.getCurrentLocation(),
-                icon: Icon(Icons.my_location, color: Colors.white,),
+                icon: Icon(Icons.my_location, color: Colors.white),
               ),
             ),
           ),
@@ -181,16 +179,15 @@ class _VendorProfileInfoMapState extends State<VendorProfileInfoMap> {
                     blurRadius: 2,
                     spreadRadius: 2,
                   ),
-
                 ],
               ),
               // alignment: Alignment.center ,
               child: IconButton(
                 onPressed: () => Get.back(),
-                icon: Icon(Icons.check, color: Colors.white,),
+                icon: Icon(Icons.check, color: Colors.white),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

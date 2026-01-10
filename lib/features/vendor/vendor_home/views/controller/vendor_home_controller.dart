@@ -12,7 +12,6 @@ class VendorHomeController extends GetxController {
   RxBool isVendorHomePackageError = false.obs;
   Rx<PackagesModel?> packages = Rx<PackagesModel?>(null);
 
-
   // fetch deals and promotions
   Future<void> getDealsAndPromotions() async {
     isVendorHomePackageLoading.value = true;
@@ -23,7 +22,7 @@ class VendorHomeController extends GetxController {
       token: "Bearer $token",
     );
 
-    if(!response.isSuccess) {
+    if (!response.isSuccess) {
       SnackBarConstant.error(response.errorMessage);
       isVendorHomePackageLoading.value = false;
       isVendorHomePackageError.value = true;

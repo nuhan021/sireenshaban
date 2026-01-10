@@ -24,7 +24,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
   final HomeController homeController = Get.find<HomeController>();
   @override
   void initState() {
-    if(homeController.isFromVendor == true) {
+    if (homeController.isFromVendor == true) {
       homeController.getVendorProfile();
     }
     super.initState();
@@ -41,8 +41,8 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
           return Center(child: CircularProgressIndicator());
         }
 
-        if(homeController.vendorUser.value == null) {
-          return Center(child: Text('Vendor null'),);
+        if (homeController.vendorUser.value == null) {
+          return Center(child: Text('Vendor null'));
         }
 
         final userCtrl = homeController.vendorUser.value!.vendor.user;
@@ -54,13 +54,13 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                     .vendorUser
                     .value!
                     .vendor
-                    .user.backgroundImage,
+                    .user
+                    .backgroundImage,
                 profilePhoto:
-                homeController.vendorUser.value!.vendor.user.image,
+                    homeController.vendorUser.value!.vendor.user.image,
               ),
 
               // name
-
               Text(
                 '${userCtrl.firstName} ${userCtrl.lastName}',
                 style: getTextStyle(
@@ -69,7 +69,6 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                   color: AppColors.bodyDarkGray,
                 ),
               ),
-
 
               Text(
                 homeController.vendorUser.value!.vendor.categoryName,
@@ -102,7 +101,6 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                   ),
                 ],
               ),
-
 
               20.verticalSpace,
 

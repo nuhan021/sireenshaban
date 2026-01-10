@@ -62,7 +62,9 @@ class _TeamSizeOption extends StatelessWidget {
                 ),
                 child: Icon(
                   Icons.check,
-                  color: isSelected ? AppColors.primaryDeepBlueNormal : Colors.white,
+                  color: isSelected
+                      ? AppColors.primaryDeepBlueNormal
+                      : Colors.white,
                   size: 16,
                 ),
               ),
@@ -96,7 +98,8 @@ class TeamSize extends StatelessWidget {
         color: Colors.white,
         border: Border.all(color: const Color(0xFFE5E7EB)),
       ),
-      child: Column( // Obx removed from here
+      child: Column(
+        // Obx removed from here
         children: [
           // 1. Just me
           _TeamSizeOption(

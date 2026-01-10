@@ -57,7 +57,10 @@ class AdditionalServiceCard extends StatelessWidget {
                 imageUrl: img,
                 fit: BoxFit.cover,
                 placeholder: (context, url) => Center(
-                  child: LoadingAnimationWidget.staggeredDotsWave(color: AppColors.primaryDeepBlueLight, size: 25.h),
+                  child: LoadingAnimationWidget.staggeredDotsWave(
+                    color: AppColors.primaryDeepBlueLight,
+                    size: 25.h,
+                  ),
                 ),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
@@ -110,10 +113,13 @@ class AdditionalServiceCard extends StatelessWidget {
                 imageUrl: img,
                 fit: BoxFit.cover,
                 placeholder: (context, url) => Center(
-                  child: LoadingAnimationWidget.staggeredDotsWave(color: AppColors.primaryDeepBlueLight, size: 25.h),
+                  child: LoadingAnimationWidget.staggeredDotsWave(
+                    color: AppColors.primaryDeepBlueLight,
+                    size: 25.h,
+                  ),
                 ),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
-              )
+              ),
             ),
           ),
           7.horizontalSpace,

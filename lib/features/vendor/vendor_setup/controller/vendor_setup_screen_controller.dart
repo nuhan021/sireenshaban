@@ -1,9 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/constants/api_constants.dart';
@@ -17,16 +15,16 @@ import '../../../../core/utils/constants/snackbar_constant.dart';
 import '../../../customer/interest/categori_model.dart';
 
 class VendorSetupScreenController extends GetxController {
-
   @override
   void onInit() {
     super.onInit();
     getCategory();
   }
+
   final NetworkCaller _networkCaller = NetworkCaller();
 
-  Rx<ServicesGroup> selectedServiceGroup = ServicesGroup.businessAndCreativeServices.obs;
-
+  Rx<ServicesGroup> selectedServiceGroup =
+      ServicesGroup.businessAndCreativeServices.obs;
 
   String getServiceGroupName(ServicesGroup group) {
     switch (group) {
@@ -308,18 +306,31 @@ class VendorSetupScreenController extends GetxController {
 
       // --- Settings (Array format maintenance) ---
       formData.fields.addAll([
-        MapEntry('settings[offers_virtual]', offerVirtualMeeting.value ? "1" : "0"),
+        MapEntry(
+          'settings[offers_virtual]',
+          offerVirtualMeeting.value ? "1" : "0",
+        ),
         MapEntry('settings[team_size][]', teamSize.value.toString()),
-        MapEntry('settings[max_travel_distance]', travelDistance.value.toString()),
-        MapEntry('settings[travel_policy]', travelFeePolicyController.text.trim()),
+        MapEntry(
+          'settings[max_travel_distance]',
+          travelDistance.value.toString(),
+        ),
+        MapEntry(
+          'settings[travel_policy]',
+          travelFeePolicyController.text.trim(),
+        ),
         MapEntry('settings[payment_method]', "Stripe"),
       ]);
 
       if (atMyBusinessAddress.value) {
-        formData.fields.add(const MapEntry('settings[service_type][]', "At my business address"));
+        formData.fields.add(
+          const MapEntry('settings[service_type][]', "At my business address"),
+        );
       }
       if (iTravelToTheClient.value) {
-        formData.fields.add(const MapEntry('settings[service_type][]', "I travel to the client"));
+        formData.fields.add(
+          const MapEntry('settings[service_type][]', "I travel to the client"),
+        );
       }
 
       // --- Business Hours (Fixed: Format as Decimal Number) ---
@@ -331,37 +342,51 @@ class VendorSetupScreenController extends GetxController {
 
         // লজিক: 10:30 AM কে "10.30" স্ট্রিং হিসেবে পাঠানো যা সার্ভারে Number হিসেবে গণ্য হবে
         // padLeft নিশ্চিত করে যে 9:05 হবে 09.05
-        String openTimeDecimal = '${startTime.hour.toString().padLeft(2, '0')}.${startTime.minute.toString().padLeft(2, '0')}';
-        String closeTimeDecimal = '${endTime.hour.toString().padLeft(2, '0')}.${endTime.minute.toString().padLeft(2, '0')}';
+        String openTimeDecimal =
+            '${startTime.hour.toString().padLeft(2, '0')}.${startTime.minute.toString().padLeft(2, '0')}';
+        String closeTimeDecimal =
+            '${endTime.hour.toString().padLeft(2, '0')}.${endTime.minute.toString().padLeft(2, '0')}';
 
         formData.fields.addAll([
           MapEntry('business_hours[$i][day]', day),
           MapEntry('business_hours[$i][is_closed]', isClosed ? "1" : "0"),
           MapEntry('business_hours[$i][open_time]', openTimeDecimal), // "10.30"
-          MapEntry('business_hours[$i][close_time]', closeTimeDecimal), // "18.00"
+          MapEntry(
+            'business_hours[$i][close_time]',
+            closeTimeDecimal,
+          ), // "18.00"
         ]);
       }
 
       // --- Image Handling ---
       if (profileImage.value != null) {
-        formData.files.add(MapEntry(
-          'image',
-          await MultipartFile.fromFile(profileImage.value!.path),
-        ));
+        formData.files.add(
+          MapEntry(
+            'image',
+            await MultipartFile.fromFile(profileImage.value!.path),
+          ),
+        );
       }
 
       if (coverImage.value != null) {
-        formData.files.add(MapEntry(
-          'background_image',
-          await MultipartFile.fromFile(coverImage.value!.path),
-        ));
+        formData.files.add(
+          MapEntry(
+            'background_image',
+            await MultipartFile.fromFile(coverImage.value!.path),
+          ),
+        );
       }
 
       AppLoggerHelper.debug('Submitting to: ${ApiConstants.updateVendor}');
-      final response = await dio.post(ApiConstants.updateVendor, data: formData);
+      final response = await dio.post(
+        ApiConstants.updateVendor,
+        data: formData,
+      );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        bool isSuccess = response.data['success'] == true || response.data['status'] == 'success';
+        bool isSuccess =
+            response.data['success'] == true ||
+            response.data['status'] == 'success';
 
         if (isSuccess) {
           AppLoggerHelper.info('✅ SUCCESS: Succesfully updated vendor profile');
@@ -377,15 +402,22 @@ class VendorSetupScreenController extends GetxController {
           await Future.delayed(const Duration(milliseconds: 500));
           Get.offAllNamed(AppRoute.vendorBottomNavBar);
         } else {
-          AppLoggerHelper.error('❌ FAILED: Server returned success false', response.data.toString());
-          SnackBarConstant.error(response.data['message'] ?? 'Failed to update');
+          AppLoggerHelper.error(
+            '❌ FAILED: Server returned success false',
+            response.data.toString(),
+          );
+          SnackBarConstant.error(
+            response.data['message'] ?? 'Failed to update',
+          );
         }
       } else {
         SnackBarConstant.error('Server error: ${response.statusCode}');
       }
-
     } on DioException catch (e) {
-      AppLoggerHelper.error('Submission Error', e.response?.data.toString() ?? e.message!);
+      AppLoggerHelper.error(
+        'Submission Error',
+        e.response?.data.toString() ?? e.message!,
+      );
       SnackBarConstant.error('Check all fields and try again.');
     } finally {
       isSubmitLoading.value = false;

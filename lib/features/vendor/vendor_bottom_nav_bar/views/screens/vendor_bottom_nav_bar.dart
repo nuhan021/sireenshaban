@@ -19,8 +19,8 @@ class VendorBottomNavBar extends StatelessWidget {
 
   final VendorBottomNavBarController navaberController =
       Get.isRegistered<VendorBottomNavBarController>()
-          ? Get.find<VendorBottomNavBarController>()
-          : Get.put(VendorBottomNavBarController());
+      ? Get.find<VendorBottomNavBarController>()
+      : Get.put(VendorBottomNavBarController());
 
   List<Widget> _buildScreens() {
     return [

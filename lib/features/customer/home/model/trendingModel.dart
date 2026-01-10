@@ -4,7 +4,8 @@
 
 import 'dart:convert';
 
-TrendingModel trendingModelFromJson(String str) => TrendingModel.fromJson(json.decode(str));
+TrendingModel trendingModelFromJson(String str) =>
+    TrendingModel.fromJson(json.decode(str));
 
 String trendingModelToJson(TrendingModel data) => json.encode(data.toJson());
 

@@ -45,14 +45,16 @@ class ChatMessage {
       voiceUrl: json['voice_url'] as String?,
       isRead: json['is_read'] == 1 ? true : false,
       createdAt: DateTime.parse(json['created_at'] as String),
-      deletedAt: json['deleted_at'] != null ? DateTime.parse(json['deleted_at'] as String) : null,
+      deletedAt: json['deleted_at'] != null
+          ? DateTime.parse(json['deleted_at'] as String)
+          : null,
       senderData: json['sender'] as Map<String, dynamic>?,
     );
   }
 
   types.Message toChatUIMessage() {
     final String? imageUrl = _constructImageUrl(senderData?['image']);
-    
+
     final user = types.User(
       id: senderId.toString(),
       firstName: senderData?['first_name'] ?? 'User',
@@ -66,8 +68,10 @@ class ChatMessage {
       debugPrint('🎙️ [ChatMessage] Creating audio message:');
       debugPrint('   Voice URL from API: $voiceUrl');
       debugPrint('   Voice URL length: ${voiceUrl!.length}');
-      debugPrint('   Voice URL is valid HTTP: ${voiceUrl!.startsWith(RegExp(r'^https?://'))}');
-      
+      debugPrint(
+        '   Voice URL is valid HTTP: ${voiceUrl!.startsWith(RegExp(r'^https?://'))}',
+      );
+
       return types.AudioMessage(
         author: user,
         createdAt: createdAt.millisecondsSinceEpoch,
@@ -92,18 +96,21 @@ class ChatMessage {
   /// Construct full image URL from relative path
   String? _constructImageUrl(String? imagePath) {
     if (imagePath == null || imagePath.isEmpty) return null;
-    
+
     // If already a full URL, return as is
     if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
       return imagePath.isNotEmpty ? imagePath : null;
     }
-    
+
     // Convert relative path to full URL
     // Remove leading slashes if present
-    final cleanPath = imagePath.startsWith('/') ? imagePath.substring(1) : imagePath;
-    
+    final cleanPath = imagePath.startsWith('/')
+        ? imagePath.substring(1)
+        : imagePath;
+
     // Construct full URL
-    final fullUrl = '${ApiConstants.baseUrl.replaceAll('/api/v1', '')}/storage/$cleanPath';
+    final fullUrl =
+        '${ApiConstants.baseUrl.replaceAll('/api/v1', '')}/storage/$cleanPath';
     return fullUrl.isNotEmpty ? fullUrl : null;
   }
 }
@@ -135,10 +142,13 @@ class ChatConversation {
     try {
       // Handle avatar URL construction
       String? avatarUrl = json['avatar'] as String?;
-      if (avatarUrl != null && avatarUrl.isNotEmpty && !avatarUrl.startsWith('http')) {
-        avatarUrl = '${ApiConstants.baseUrl.replaceAll('/api/v1', '')}/storage/$avatarUrl';
+      if (avatarUrl != null &&
+          avatarUrl.isNotEmpty &&
+          !avatarUrl.startsWith('http')) {
+        avatarUrl =
+            '${ApiConstants.baseUrl.replaceAll('/api/v1', '')}/storage/$avatarUrl';
       }
-      
+
       // Ensure avatarUrl is never an empty string
       if (avatarUrl != null && avatarUrl.isEmpty) {
         avatarUrl = null;
@@ -150,8 +160,9 @@ class ChatConversation {
         email: json['email'] as String,
         avatar: avatarUrl,
         isOnline: json['is_online'] as bool,
-        lastSeen: json['last_seen'] != null && json['last_seen'].toString().isNotEmpty 
-            ? DateTime.parse(json['last_seen'] as String) 
+        lastSeen:
+            json['last_seen'] != null && json['last_seen'].toString().isNotEmpty
+            ? DateTime.parse(json['last_seen'] as String)
             : null,
         lastMessage: json['last_message'] as String? ?? '',
         lastMessageTime: json['last_message_time'] as String? ?? '',
@@ -182,7 +193,7 @@ class UserStatus {
     final isOnline = json['is_online'] as bool;
     final lastSeenStr = json['last_seen'] as String?;
     DateTime? lastSeen;
-    
+
     if (lastSeenStr != null && lastSeenStr.isNotEmpty) {
       try {
         lastSeen = DateTime.parse(lastSeenStr);
@@ -227,4 +238,3 @@ class UserStatus {
     }
   }
 }
-

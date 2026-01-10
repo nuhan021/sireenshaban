@@ -14,60 +14,62 @@ class RequestTabs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-            () {
-        return Row(
-          children: [
-            Expanded(
-              child: GestureDetector(
-                onTap: () => controller.changeBookingRequest(BookingRequest.newRequest),
-                child: Container(
-                  height: 40.h,
-                  width: double.maxFinite,
-                  padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.r),
-                    color: AppColors.primaryDeepBlueNormal,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Center(
-                          child: Text(
-                            'New',
-                            overflow: TextOverflow.ellipsis,
-                            style: getTextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.cardBackgroundSoftGray),
+    return Obx(() {
+      return Row(
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: () =>
+                  controller.changeBookingRequest(BookingRequest.newRequest),
+              child: Container(
+                height: 40.h,
+                width: double.maxFinite,
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12.r),
+                  color: AppColors.primaryDeepBlueNormal,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Center(
+                        child: Text(
+                          'New',
+                          overflow: TextOverflow.ellipsis,
+                          style: getTextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.cardBackgroundSoftGray,
                           ),
                         ),
                       ),
-                      5.horizontalSpace,
-                      Container(
-                        height: 20.h,
-                        width: 20.w,
-                        decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.cardBackgroundSoftGray),
-                        alignment: AlignmentGeometry.center,
-                        child: Text(
-                          controller.serviceRequests.length.toString(),
-                          style: getTextStyle(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.primaryDeepBlueNormal),
+                    ),
+                    5.horizontalSpace,
+                    Container(
+                      height: 20.h,
+                      width: 20.w,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: AppColors.cardBackgroundSoftGray,
+                      ),
+                      alignment: AlignmentGeometry.center,
+                      child: Text(
+                        controller.serviceRequests.length.toString(),
+                        style: getTextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.primaryDeepBlueNormal,
                         ),
-                      )
-                    ],
-                  ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ],
-        );
-      }
-    );
+          ),
+        ],
+      );
+    });
   }
 }

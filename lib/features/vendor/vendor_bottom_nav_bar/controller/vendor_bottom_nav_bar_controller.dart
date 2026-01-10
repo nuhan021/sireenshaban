@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:persistent_bottom_nav_bar_v2/persistent_bottom_nav_bar_v2.dart';
 
 class VendorBottomNavBarController extends GetxController {
-
   RxInt currentIndex = 0.obs;
 
   final PersistentTabController controller = PersistentTabController(
@@ -13,7 +12,6 @@ class VendorBottomNavBarController extends GetxController {
   void changeCurrentIndex(int index) {
     currentIndex.value = index;
   }
-
 
   //change screen
   void jumpToScreen(int index) {

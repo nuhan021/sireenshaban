@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/constants/icon_path.dart';
-import 'package:sireenshaban/features/customer/community_event_booking/controller/event_controller.dart';
 
 import '../../../../../core/utils/constants/colors.dart';
 
@@ -30,7 +27,7 @@ class PackageBookingPaymentMethod extends StatelessWidget {
             padding: EdgeInsets.all(12.w),
             decoration: BoxDecoration(
               color: AppColors.primaryDeepBlueLight,
-              borderRadius: BorderRadius.circular(8.r)
+              borderRadius: BorderRadius.circular(8.r),
             ),
 
             child: Row(
@@ -42,9 +39,9 @@ class PackageBookingPaymentMethod extends StatelessWidget {
                   style: getTextStyle(
                     fontSize: 16.sp,
                     fontWeight: FontWeight.w500,
-                    color: AppColors.bodyDarkGray
+                    color: AppColors.bodyDarkGray,
                   ),
-                )
+                ),
               ],
             ),
           ),

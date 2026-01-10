@@ -4,9 +4,11 @@
 
 import 'dart:convert';
 
-PaymentIntentModel paymentIntentModelFromJson(String str) => PaymentIntentModel.fromJson(json.decode(str));
+PaymentIntentModel paymentIntentModelFromJson(String str) =>
+    PaymentIntentModel.fromJson(json.decode(str));
 
-String paymentIntentModelToJson(PaymentIntentModel data) => json.encode(data.toJson());
+String paymentIntentModelToJson(PaymentIntentModel data) =>
+    json.encode(data.toJson());
 
 class PaymentIntentModel {
   bool success;
@@ -21,12 +23,13 @@ class PaymentIntentModel {
     required this.amount,
   });
 
-  factory PaymentIntentModel.fromJson(Map<String, dynamic> json) => PaymentIntentModel(
-    success: json["success"],
-    message: json["message"],
-    stripe: Stripe.fromJson(json["stripe"]),
-    amount: json["amount"],
-  );
+  factory PaymentIntentModel.fromJson(Map<String, dynamic> json) =>
+      PaymentIntentModel(
+        success: json["success"],
+        message: json["message"],
+        stripe: Stripe.fromJson(json["stripe"]),
+        amount: json["amount"],
+      );
 
   Map<String, dynamic> toJson() => {
     "success": success,
@@ -132,7 +135,9 @@ class Stripe {
     amountReceived: json["amount_received"],
     application: json["application"],
     applicationFeeAmount: json["application_fee_amount"],
-    automaticPaymentMethods: AutomaticPaymentMethods.fromJson(json["automatic_payment_methods"]),
+    automaticPaymentMethods: AutomaticPaymentMethods.fromJson(
+      json["automatic_payment_methods"],
+    ),
     canceledAt: json["canceled_at"],
     cancellationReason: json["cancellation_reason"],
     captureMethod: json["capture_method"],
@@ -151,9 +156,16 @@ class Stripe {
     nextAction: json["next_action"],
     onBehalfOf: json["on_behalf_of"],
     paymentMethod: json["payment_method"],
-    paymentMethodConfigurationDetails: PaymentMethodConfigurationDetails.fromJson(json["payment_method_configuration_details"]),
-    paymentMethodOptions: PaymentMethodOptions.fromJson(json["payment_method_options"]),
-    paymentMethodTypes: List<String>.from(json["payment_method_types"].map((x) => x)),
+    paymentMethodConfigurationDetails:
+        PaymentMethodConfigurationDetails.fromJson(
+          json["payment_method_configuration_details"],
+        ),
+    paymentMethodOptions: PaymentMethodOptions.fromJson(
+      json["payment_method_options"],
+    ),
+    paymentMethodTypes: List<String>.from(
+      json["payment_method_types"].map((x) => x),
+    ),
     processing: json["processing"],
     receiptEmail: json["receipt_email"],
     review: json["review"],
@@ -195,9 +207,12 @@ class Stripe {
     "next_action": nextAction,
     "on_behalf_of": onBehalfOf,
     "payment_method": paymentMethod,
-    "payment_method_configuration_details": paymentMethodConfigurationDetails.toJson(),
+    "payment_method_configuration_details": paymentMethodConfigurationDetails
+        .toJson(),
     "payment_method_options": paymentMethodOptions.toJson(),
-    "payment_method_types": List<dynamic>.from(paymentMethodTypes.map((x) => x)),
+    "payment_method_types": List<dynamic>.from(
+      paymentMethodTypes.map((x) => x),
+    ),
     "processing": processing,
     "receipt_email": receiptEmail,
     "review": review,
@@ -215,13 +230,10 @@ class Stripe {
 class AmountDetails {
   List<dynamic> tip;
 
-  AmountDetails({
-    required this.tip,
-  });
+  AmountDetails({required this.tip});
 
-  factory AmountDetails.fromJson(Map<String, dynamic> json) => AmountDetails(
-    tip: List<dynamic>.from(json["tip"].map((x) => x)),
-  );
+  factory AmountDetails.fromJson(Map<String, dynamic> json) =>
+      AmountDetails(tip: List<dynamic>.from(json["tip"].map((x) => x)));
 
   Map<String, dynamic> toJson() => {
     "tip": List<dynamic>.from(tip.map((x) => x)),
@@ -237,10 +249,11 @@ class AutomaticPaymentMethods {
     required this.enabled,
   });
 
-  factory AutomaticPaymentMethods.fromJson(Map<String, dynamic> json) => AutomaticPaymentMethods(
-    allowRedirects: json["allow_redirects"],
-    enabled: json["enabled"],
-  );
+  factory AutomaticPaymentMethods.fromJson(Map<String, dynamic> json) =>
+      AutomaticPaymentMethods(
+        allowRedirects: json["allow_redirects"],
+        enabled: json["enabled"],
+      );
 
   Map<String, dynamic> toJson() => {
     "allow_redirects": allowRedirects,
@@ -276,35 +289,27 @@ class PaymentMethodConfigurationDetails {
   String id;
   dynamic parent;
 
-  PaymentMethodConfigurationDetails({
-    required this.id,
-    required this.parent,
-  });
+  PaymentMethodConfigurationDetails({required this.id, required this.parent});
 
-  factory PaymentMethodConfigurationDetails.fromJson(Map<String, dynamic> json) => PaymentMethodConfigurationDetails(
-    id: json["id"],
-    parent: json["parent"],
-  );
+  factory PaymentMethodConfigurationDetails.fromJson(
+    Map<String, dynamic> json,
+  ) =>
+      PaymentMethodConfigurationDetails(id: json["id"], parent: json["parent"]);
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "parent": parent,
-  };
+  Map<String, dynamic> toJson() => {"id": id, "parent": parent};
 }
 
 class PaymentMethodOptions {
   Card card;
   Link link;
 
-  PaymentMethodOptions({
-    required this.card,
-    required this.link,
-  });
+  PaymentMethodOptions({required this.card, required this.link});
 
-  factory PaymentMethodOptions.fromJson(Map<String, dynamic> json) => PaymentMethodOptions(
-    card: Card.fromJson(json["card"]),
-    link: Link.fromJson(json["link"]),
-  );
+  factory PaymentMethodOptions.fromJson(Map<String, dynamic> json) =>
+      PaymentMethodOptions(
+        card: Card.fromJson(json["card"]),
+        link: Link.fromJson(json["link"]),
+      );
 
   Map<String, dynamic> toJson() => {
     "card": card.toJson(),
@@ -343,15 +348,10 @@ class Card {
 class Link {
   dynamic persistentToken;
 
-  Link({
-    required this.persistentToken,
-  });
+  Link({required this.persistentToken});
 
-  factory Link.fromJson(Map<String, dynamic> json) => Link(
-    persistentToken: json["persistent_token"],
-  );
+  factory Link.fromJson(Map<String, dynamic> json) =>
+      Link(persistentToken: json["persistent_token"]);
 
-  Map<String, dynamic> toJson() => {
-    "persistent_token": persistentToken,
-  };
+  Map<String, dynamic> toJson() => {"persistent_token": persistentToken};
 }

@@ -71,10 +71,14 @@ class ChatController extends GetxController {
     debugPrint('   Receiver: ${receiverId.value}');
 
     try {
-      final chatMessages = await _chatService.fetchChatHistory(receiverId.value);
+      final chatMessages = await _chatService.fetchChatHistory(
+        receiverId.value,
+      );
       messages.value = chatMessages
           .map((msg) {
-            debugPrint('   Message ID: ${msg.id}, From: ${msg.senderId}, To: ${msg.receiverId}, Text: "${msg.message}"');
+            debugPrint(
+              '   Message ID: ${msg.id}, From: ${msg.senderId}, To: ${msg.receiverId}, Text: "${msg.message}"',
+            );
             return msg.toChatUIMessage();
           })
           .toList()
@@ -97,7 +101,9 @@ class ChatController extends GetxController {
       return;
     }
 
-    debugPrint('👤 [ChatController] Loading user status for receiver: ${receiverId.value}');
+    debugPrint(
+      '👤 [ChatController] Loading user status for receiver: ${receiverId.value}',
+    );
 
     try {
       final status = await _chatService.getUserStatus(receiverId.value);
@@ -133,22 +139,29 @@ class ChatController extends GetxController {
     );
 
     messages.insert(0, optimisticMessage);
-    debugPrint('💬 [ChatController] Added optimistic message with ID: ${optimisticMessage.id}');
+    debugPrint(
+      '💬 [ChatController] Added optimistic message with ID: ${optimisticMessage.id}',
+    );
 
     try {
-      final sentMessage = await _chatService.sendTextMessage(receiverId.value, message.text);
+      final sentMessage = await _chatService.sendTextMessage(
+        receiverId.value,
+        message.text,
+      );
       if (sentMessage != null) {
         debugPrint('✅ [ChatController] Server confirmed message');
         debugPrint('   Message ID: ${sentMessage.id}');
         debugPrint('   From: ${sentMessage.senderId}');
         debugPrint('   To: ${sentMessage.receiverId}');
-        
+
         messages.removeWhere((msg) => msg.id == optimisticMessage.id);
         messages.insert(0, sentMessage.toChatUIMessage());
         debugPrint('✅ [ChatController] Message sent and UI updated');
       } else {
         _updateMessageStatus(optimisticMessage.id, types.Status.error);
-        debugPrint('❌ [ChatController] Server returned null - message not sent');
+        debugPrint(
+          '❌ [ChatController] Server returned null - message not sent',
+        );
       }
     } catch (e) {
       _updateMessageStatus(optimisticMessage.id, types.Status.error);
@@ -174,10 +187,7 @@ class ChatController extends GetxController {
 
         debugPrint('🎤 [ChatController] Recording to: $_recordingPath');
 
-        await _audioRecorder.start(
-          const RecordConfig(),
-          path: _recordingPath!,
-        );
+        await _audioRecorder.start(const RecordConfig(), path: _recordingPath!);
 
         isRecording.value = true;
         debugPrint('✅ [ChatController] Voice recording started');
@@ -222,17 +232,24 @@ class ChatController extends GetxController {
     );
 
     messages.insert(0, optimisticMessage);
-    debugPrint('🎤 [ChatController] Added optimistic voice message with ID: ${optimisticMessage.id}');
+    debugPrint(
+      '🎤 [ChatController] Added optimistic voice message with ID: ${optimisticMessage.id}',
+    );
 
     try {
-      final sentMessage = await _chatService.sendVoiceMessage(receiverId.value, voiceFile);
+      final sentMessage = await _chatService.sendVoiceMessage(
+        receiverId.value,
+        voiceFile,
+      );
       if (sentMessage != null) {
         messages.removeWhere((msg) => msg.id == optimisticMessage.id);
         messages.insert(0, sentMessage.toChatUIMessage());
         debugPrint('✅ [ChatController] Voice message sent and UI updated');
       } else {
         _updateMessageStatus(optimisticMessage.id, types.Status.error);
-        debugPrint('❌ [ChatController] Server returned null - voice message not sent');
+        debugPrint(
+          '❌ [ChatController] Server returned null - voice message not sent',
+        );
       }
     } catch (e) {
       _updateMessageStatus(optimisticMessage.id, types.Status.error);
@@ -244,14 +261,18 @@ class ChatController extends GetxController {
     final index = messages.indexWhere((msg) => msg.id == messageId);
     if (index != -1) {
       messages[index] = messages[index].copyWith(status: status);
-      debugPrint('📝 [ChatController] Updated message $messageId status to: $status');
+      debugPrint(
+        '📝 [ChatController] Updated message $messageId status to: $status',
+      );
     }
   }
 
   void _setupPusher() {
     // TODO: Configure Pusher with your credentials from backend
     // Get Pusher key and cluster from your backend configuration
-    debugPrint('🔌 [ChatController] Pusher setup deferred until chat is initialized');
+    debugPrint(
+      '🔌 [ChatController] Pusher setup deferred until chat is initialized',
+    );
   }
 
   // TODO: Activate when Pusher credentials are available
@@ -272,8 +293,10 @@ class ChatController extends GetxController {
       // TODO: Get Pusher credentials from environment or backend config
       // For now, this is a placeholder that logs the requirement
       debugPrint('🔌 [ChatController] Pusher requires backend configuration');
-      debugPrint('   Get credentials from: backend env or /api/v1/pusher-auth endpoint');
-      
+      debugPrint(
+        '   Get credentials from: backend env or /api/v1/pusher-auth endpoint',
+      );
+
       // Once you have credentials, uncomment:
       // await _chatService.setupPusherForChat(
       //   userId,
@@ -296,8 +319,10 @@ class ChatController extends GetxController {
   // ignore: unused_element
   void _handleNewMessage(dynamic eventData) {
     try {
-      debugPrint('📬 [ChatController] New message received via Pusher: $eventData');
-      
+      debugPrint(
+        '📬 [ChatController] New message received via Pusher: $eventData',
+      );
+
       // Parse the message and add to messages list
       if (eventData is String) {
         final decodedData = jsonDecode(eventData) as Map<String, dynamic>;
@@ -313,7 +338,7 @@ class ChatController extends GetxController {
   void _processIncomingMessage(Map<String, dynamic> messageData) {
     try {
       final message = ChatMessage.fromJson(messageData);
-      
+
       // Only add if it's from the other user
       if (message.senderId != int.parse(currentUser.value?.id ?? '0')) {
         final chatUIMessage = message.toChatUIMessage();
@@ -330,11 +355,11 @@ class ChatController extends GetxController {
   void _handleStatusChange(dynamic eventData) {
     try {
       debugPrint('👤 [ChatController] User status changed: $eventData');
-      
+
       if (eventData is Map<String, dynamic>) {
         final isOnline = eventData['is_online'] ?? false;
         final lastSeen = eventData['last_seen'] ?? '';
-        
+
         isOnline.value = isOnline as bool;
         lastSeenText.value = isOnline ? 'Online' : lastSeen;
       }
@@ -350,4 +375,3 @@ class ChatController extends GetxController {
     super.onClose();
   }
 }
-

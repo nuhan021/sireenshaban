@@ -42,7 +42,7 @@ class VendorBookingRequestScreen extends StatelessWidget {
               height: 40.h,
               width: 40.w,
               decoration: BoxDecoration(
-                color: Color(0xFF3333331A),
+                color: Color(0xff3333331a),
                 shape: BoxShape.circle,
               ),
               alignment: AlignmentGeometry.center,
@@ -97,9 +97,8 @@ class VendorBookingRequestScreen extends StatelessWidget {
               return ListView.separated(
                 itemCount: requests.length,
                 separatorBuilder: (context, index) => 10.verticalSpace,
-                itemBuilder: (context, index) => BookingRequestCard(
-                  request: requests[index],
-                ),
+                itemBuilder: (context, index) =>
+                    BookingRequestCard(request: requests[index]),
               );
             }),
           ),

@@ -53,7 +53,7 @@ class _ChatScreenState extends State<ChatScreen> {
             height: 40.h,
             width: 40.w,
             decoration: BoxDecoration(
-              color: Color(0xFF3333331A),
+              color: Color(0xff3333331a),
               shape: BoxShape.circle,
             ),
             alignment: AlignmentGeometry.center,
@@ -64,11 +64,17 @@ class _ChatScreenState extends State<ChatScreen> {
         title: ListTile(
           contentPadding: EdgeInsets.zero,
           leading: CircleAvatar(
-            backgroundImage: widget.receiverAvatar != null && widget.receiverAvatar!.isNotEmpty
+            backgroundImage:
+                widget.receiverAvatar != null &&
+                    widget.receiverAvatar!.isNotEmpty
                 ? NetworkImage(widget.receiverAvatar!)
                 : null,
             backgroundColor: Colors.grey[300],
-            child: (widget.receiverAvatar == null || widget.receiverAvatar!.isEmpty) ? Icon(Icons.person) : null,
+            child:
+                (widget.receiverAvatar == null ||
+                    widget.receiverAvatar!.isEmpty)
+                ? Icon(Icons.person)
+                : null,
           ),
           title: Obx(() {
             return Text(
@@ -86,7 +92,9 @@ class _ChatScreenState extends State<ChatScreen> {
               style: getTextStyle(
                 fontSize: 12.sp,
                 fontWeight: FontWeight.w400,
-                color: controller.isOnline.value ? AppColors.success : AppColors.secondaryInfoMediumGray,
+                color: controller.isOnline.value
+                    ? AppColors.success
+                    : AppColors.secondaryInfoMediumGray,
               ),
             );
           }),
@@ -109,22 +117,31 @@ class _ChatScreenState extends State<ChatScreen> {
                 itemCount: controller.messages.length,
                 itemBuilder: (context, index) {
                   final message = controller.messages[index];
-                  final isCurrentUser = message.author.id == controller.currentUser.value?.id;
+                  final isCurrentUser =
+                      message.author.id == controller.currentUser.value?.id;
 
                   return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 16.w,
+                      vertical: 8.h,
+                    ),
                     child: Row(
-                      mainAxisAlignment:
-                          isCurrentUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+                      mainAxisAlignment: isCurrentUser
+                          ? MainAxisAlignment.end
+                          : MainAxisAlignment.start,
                       children: [
                         if (!isCurrentUser)
                           CircleAvatar(
-                            backgroundImage: message.author.imageUrl != null && message.author.imageUrl!.isNotEmpty
+                            backgroundImage:
+                                message.author.imageUrl != null &&
+                                    message.author.imageUrl!.isNotEmpty
                                 ? NetworkImage(message.author.imageUrl!)
                                 : null,
                             backgroundColor: Colors.grey[300],
                             radius: 20.r,
-                            child: (message.author.imageUrl == null || message.author.imageUrl!.isEmpty)
+                            child:
+                                (message.author.imageUrl == null ||
+                                    message.author.imageUrl!.isEmpty)
                                 ? Icon(Icons.person)
                                 : null,
                           ),
@@ -152,7 +169,9 @@ class _ChatScreenState extends State<ChatScreen> {
                                     style: getTextStyle(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.w400,
-                                      color: isCurrentUser ? Colors.white : Colors.black87,
+                                      color: isCurrentUser
+                                          ? Colors.white
+                                          : Colors.black87,
                                     ),
                                   ),
                                 if (message is types.AudioMessage)
@@ -163,8 +182,11 @@ class _ChatScreenState extends State<ChatScreen> {
                                 SizedBox(height: 4.h),
                                 Text(
                                   _formatTime(
-                                      DateTime.fromMillisecondsSinceEpoch(
-                                          message.createdAt ?? DateTime.now().millisecondsSinceEpoch)),
+                                    DateTime.fromMillisecondsSinceEpoch(
+                                      message.createdAt ??
+                                          DateTime.now().millisecondsSinceEpoch,
+                                    ),
+                                  ),
                                   style: getTextStyle(
                                     fontSize: 11.sp,
                                     fontWeight: FontWeight.w400,
@@ -180,12 +202,16 @@ class _ChatScreenState extends State<ChatScreen> {
                         if (isCurrentUser) SizedBox(width: 8.w),
                         if (isCurrentUser)
                           CircleAvatar(
-                            backgroundImage: message.author.imageUrl != null && message.author.imageUrl!.isNotEmpty
+                            backgroundImage:
+                                message.author.imageUrl != null &&
+                                    message.author.imageUrl!.isNotEmpty
                                 ? NetworkImage(message.author.imageUrl!)
                                 : null,
                             backgroundColor: Colors.grey[300],
                             radius: 20.r,
-                            child: (message.author.imageUrl == null || message.author.imageUrl!.isEmpty)
+                            child:
+                                (message.author.imageUrl == null ||
+                                    message.author.imageUrl!.isEmpty)
                                 ? Icon(Icons.person)
                                 : null,
                           ),
@@ -231,11 +257,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: CircleAvatar(
                       backgroundColor: AppColors.primaryDeepBlueNormal,
                       radius: 22.r,
-                      child: Icon(
-                        Icons.send,
-                        color: Colors.white,
-                        size: 20.sp,
-                      ),
+                      child: Icon(Icons.send, color: Colors.white, size: 20.sp),
                     ),
                   ),
                   // SizedBox(width: 8.w),

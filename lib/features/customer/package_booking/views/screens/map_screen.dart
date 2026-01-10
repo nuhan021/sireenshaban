@@ -23,7 +23,10 @@ class _MapScreenState extends State<MapScreen> {
     return Scaffold(
       body: GoogleMap(
         onMapCreated: _onMapCreated,
-        initialCameraPosition: CameraPosition(target: _shopLocation, zoom: 12.0),
+        initialCameraPosition: CameraPosition(
+          target: _shopLocation,
+          zoom: 12.0,
+        ),
         myLocationEnabled: false,
         myLocationButtonEnabled: false,
         zoomControlsEnabled: false, // remove + / - buttons

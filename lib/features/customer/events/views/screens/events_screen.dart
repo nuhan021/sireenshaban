@@ -72,14 +72,11 @@ class EventsScreen extends StatelessWidget {
           );
         }
 
-        if(_homeController.isCommunityEventsError.value) {
+        if (_homeController.isCommunityEventsError.value) {
           return Center(
             child: IconButton(
               onPressed: () => _homeController.getAdditionalService(),
-              icon: Icon(
-                Icons.refresh,
-                color: AppColors.primaryDeepBlueNormal,
-              ),
+              icon: Icon(Icons.refresh, color: AppColors.primaryDeepBlueNormal),
             ),
           );
         }
@@ -121,11 +118,13 @@ class EventsScreen extends StatelessWidget {
                 itemCount: _homeController.communityEvents.value!.data.length,
                 separatorBuilder: (context, index) => 15.verticalSpace,
                 itemBuilder: (context, index) {
-                  final item = _homeController.communityEvents.value!.data[index];
+                  final item =
+                      _homeController.communityEvents.value!.data[index];
                   return EventCard(
                     bannerImage: item.image ?? '',
                     title: item.title,
-                    date: "${item.eventDate.day}-${item.eventDate.month}-${item.eventDate.year}",
+                    date:
+                        "${item.eventDate.day}-${item.eventDate.month}-${item.eventDate.year}",
                     location: item.location,
                     ticketPrice: item.ticketPrice,
                   );

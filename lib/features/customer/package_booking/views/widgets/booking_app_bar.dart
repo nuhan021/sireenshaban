@@ -13,13 +13,13 @@ class BookingAppBar extends StatelessWidget {
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: 4, sigmaY: 4), // blur strength
         child: Container(
-          padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top), // safe area for notch/status bar
+          padding: EdgeInsets.only(
+            top: MediaQuery.of(context).padding.top,
+          ), // safe area for notch/status bar
           height: 50.h + MediaQuery.of(context).padding.top,
           decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.1), // frosted glass effect
-              border: Border.all(
-                color: Colors.white.withOpacity(0.2),
-              )
+            color: Colors.white.withOpacity(0.1), // frosted glass effect
+            border: Border.all(color: Colors.white.withOpacity(0.2)),
           ),
 
           child: Row(
@@ -29,7 +29,7 @@ class BookingAppBar extends StatelessWidget {
               // back button
               IconButton(
                 onPressed: () => Navigator.pop(context),
-                icon: Icon(Icons.arrow_back_outlined, color: Colors.white,),
+                icon: Icon(Icons.arrow_back_outlined, color: Colors.white),
               ),
 
               Container(
@@ -37,11 +37,11 @@ class BookingAppBar extends StatelessWidget {
                 width: 40.w,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Color(0xFF3333331A),
+                  color: Color(0xff3333331a),
                 ),
                 child: IconButton(
                   onPressed: () {},
-                  icon: Icon(Icons.favorite, color: Colors.white,),
+                  icon: Icon(Icons.favorite, color: Colors.white),
                 ),
               ).paddingOnly(right: 10.w),
             ],

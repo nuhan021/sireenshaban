@@ -5,7 +5,6 @@ import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
 import 'package:sireenshaban/core/utils/constants/enums.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
-import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/customer/confirm_booking/views/screens/confirm_booking_screen.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/customer/home/model/packages_model.dart';
@@ -42,7 +41,6 @@ class PackageBookingPage extends StatefulWidget {
 }
 
 class _PackageBookingPageState extends State<PackageBookingPage> {
-
   final HomeController _homeController = Get.find<HomeController>();
 
   late Datum data;
@@ -69,7 +67,11 @@ class _PackageBookingPageState extends State<PackageBookingPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // thumbnail image
-            ThumbnailImage(image: data.image ?? '', rating: data.reviewsSumRating, reviews: data.reviews.length),
+            ThumbnailImage(
+              image: data.image ?? '',
+              rating: data.reviewsSumRating,
+              reviews: data.reviews.length,
+            ),
 
             30.verticalSpace,
 
@@ -97,7 +99,7 @@ class _PackageBookingPageState extends State<PackageBookingPage> {
                                       : null,
                                   longitude: data.vendor.longitude is num
                                       ? (data.vendor.longitude as num)
-                                          .toDouble()
+                                            .toDouble()
                                       : null,
                                 ),
                               );
@@ -186,12 +188,12 @@ class _PackageBookingPageState extends State<PackageBookingPage> {
                 20.verticalSpace,
 
                 // location
-                LocationCard(data: data,),
+                LocationCard(data: data),
 
                 20.verticalSpace,
 
                 // reviews
-                Reviews(review: data.reviews,),
+                Reviews(review: data.reviews),
 
                 40.verticalSpace,
 
@@ -203,7 +205,7 @@ class _PackageBookingPageState extends State<PackageBookingPage> {
                         color: AppColors.primaryDeepBlueNormal,
                         onPressed: () => AppHelperFunctions.navigateToScreen(
                           context,
-                          ConfirmBookingScreen(data: data,),
+                          ConfirmBookingScreen(data: data),
                         ),
                       ),
 

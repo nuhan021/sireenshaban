@@ -15,11 +15,23 @@ class VendorRequestStatusScreen extends StatelessWidget {
 
   final Datum? data;
 
-
   String formatMyDate(DateTime? date) {
     if (date == null) return "N/A";
 
-    List<String> months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    List<String> months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
 
     return "${date.day} ${months[date.month - 1]}, ${date.year}";
   }
@@ -37,7 +49,7 @@ class VendorRequestStatusScreen extends StatelessWidget {
       int hours = difference.inHours % 24;
       int minutes = difference.inMinutes % 60;
 
-      return"$days days and $hours hour left";
+      return "$days days and $hours hour left";
     }
   }
 
@@ -65,7 +77,7 @@ class VendorRequestStatusScreen extends StatelessWidget {
               height: 40.h,
               width: 40.w,
               decoration: BoxDecoration(
-                color: Color(0xFF3333331A),
+                color: Color(0xff3333331a),
                 shape: BoxShape.circle,
               ),
               alignment: AlignmentGeometry.center,
@@ -86,7 +98,7 @@ class VendorRequestStatusScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20.h),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(14.r),
-                color: AppColors.cardBackgroundSoftGray
+                color: AppColors.cardBackgroundSoftGray,
               ),
 
               child: Column(
@@ -115,22 +127,26 @@ class VendorRequestStatusScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  
+
                   30.verticalSpace,
-                  
+
                   // date and time
                   Row(
                     children: [
-                      Image.asset(IconPath.navCalendar, height: 25.h, color: AppColors.bodyDarkGray,),
+                      Image.asset(
+                        IconPath.navCalendar,
+                        height: 25.h,
+                        color: AppColors.bodyDarkGray,
+                      ),
                       5.horizontalSpace,
                       Text(
-                          formatMyDate(data!.date),
+                        formatMyDate(data!.date),
                         style: getTextStyle(
                           fontSize: 22.sp,
                           fontWeight: FontWeight.w600,
-                          color: AppColors.bodyDarkGray
+                          color: AppColors.bodyDarkGray,
                         ),
-                      )
+                      ),
                     ],
                   ),
                   15.verticalSpace,
@@ -138,78 +154,80 @@ class VendorRequestStatusScreen extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       // date
-                      Expanded(child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Date',
-                            style: getTextStyle(
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Date',
+                              style: getTextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w500,
-                                color: AppColors.bodyDarkGray
-                            ),
-                          ),
-                          10.verticalSpace,
-                          Container(
-
-                            height: 37.h,
-                            width: double.maxFinite,
-                            decoration: BoxDecoration(
-                              color: AppColors.primaryDeepBlueLight,
-                              borderRadius: BorderRadius.circular(4.r),
-                            ),
-
-                            alignment: AlignmentGeometry.center,
-                            child: Text(
-                                formatMyDate(data!.date),
-                              style: getTextStyle(
-                                fontSize: 12.sp,
-                                fontWeight: FontWeight.w400,
-                                color: AppColors.bodyDarkGray
+                                color: AppColors.bodyDarkGray,
                               ),
                             ),
-                          ),
-                        ],
-                      )),
+                            10.verticalSpace,
+                            Container(
+                              height: 37.h,
+                              width: double.maxFinite,
+                              decoration: BoxDecoration(
+                                color: AppColors.primaryDeepBlueLight,
+                                borderRadius: BorderRadius.circular(4.r),
+                              ),
+
+                              alignment: AlignmentGeometry.center,
+                              child: Text(
+                                formatMyDate(data!.date),
+                                style: getTextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.bodyDarkGray,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
 
                       18.horizontalSpace,
 
                       // date
-                      Expanded(child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Time',
-                            style: getTextStyle(
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Time',
+                              style: getTextStyle(
                                 fontSize: 16.sp,
                                 fontWeight: FontWeight.w500,
-                                color: AppColors.bodyDarkGray
-                            ),
-                          ),
-                          10.verticalSpace,
-                          Container(
-
-                            height: 37.h,
-                            width: double.maxFinite,
-                            decoration: BoxDecoration(
-                              color: AppColors.primaryDeepBlueLight,
-                              borderRadius: BorderRadius.circular(4.r),
-                            ),
-
-                            alignment: AlignmentGeometry.center,
-                            child: Text(
-                              data!.time,
-                              style: getTextStyle(
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w400,
-                                  color: AppColors.bodyDarkGray
+                                color: AppColors.bodyDarkGray,
                               ),
                             ),
-                          ),
-                        ],
-                      )),
+                            10.verticalSpace,
+                            Container(
+                              height: 37.h,
+                              width: double.maxFinite,
+                              decoration: BoxDecoration(
+                                color: AppColors.primaryDeepBlueLight,
+                                borderRadius: BorderRadius.circular(4.r),
+                              ),
+
+                              alignment: AlignmentGeometry.center,
+                              child: Text(
+                                data!.time,
+                                style: getTextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.bodyDarkGray,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
@@ -221,8 +239,8 @@ class VendorRequestStatusScreen extends StatelessWidget {
               width: double.maxFinite,
               padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20.h),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(14.r),
-                  color: AppColors.cardBackgroundSoftGray
+                borderRadius: BorderRadius.circular(14.r),
+                color: AppColors.cardBackgroundSoftGray,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -255,7 +273,7 @@ class VendorRequestStatusScreen extends StatelessWidget {
                     style: getTextStyle(
                       fontSize: 13.sp,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.bodyDarkGray
+                      color: AppColors.bodyDarkGray,
                     ),
                   ),
 
@@ -280,10 +298,10 @@ class VendorRequestStatusScreen extends StatelessWidget {
                           style: getTextStyle(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w400,
-                            color: AppColors.bodyDarkGray
+                            color: AppColors.bodyDarkGray,
                           ),
                         ),
-                      )
+                      ),
                     ],
                   ),
 
@@ -306,14 +324,14 @@ class VendorRequestStatusScreen extends StatelessWidget {
                         child: Text(
                           data?.package?.title ?? '',
                           style: getTextStyle(
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.bodyDarkGray
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.bodyDarkGray,
                           ),
                         ),
-                      )
+                      ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
@@ -374,7 +392,6 @@ class VendorRequestStatusScreen extends StatelessWidget {
             //     ],
             //   ),
             // ),
-
             20.verticalSpace,
 
             // payment method
@@ -382,8 +399,8 @@ class VendorRequestStatusScreen extends StatelessWidget {
               width: double.maxFinite,
               padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20.h),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(14.r),
-                  color: AppColors.cardBackgroundSoftGray
+                borderRadius: BorderRadius.circular(14.r),
+                color: AppColors.cardBackgroundSoftGray,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -393,7 +410,7 @@ class VendorRequestStatusScreen extends StatelessWidget {
                     style: getTextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.bodyDarkGray
+                      color: AppColors.bodyDarkGray,
                     ),
                   ),
 
@@ -405,8 +422,8 @@ class VendorRequestStatusScreen extends StatelessWidget {
                     width: double.maxFinite,
                     padding: EdgeInsets.all(12.w),
                     decoration: BoxDecoration(
-                        color: AppColors.primaryDeepBlueLight,
-                        borderRadius: BorderRadius.circular(8.r)
+                      color: AppColors.primaryDeepBlueLight,
+                      borderRadius: BorderRadius.circular(8.r),
                     ),
 
                     child: Row(
@@ -416,11 +433,11 @@ class VendorRequestStatusScreen extends StatelessWidget {
                         Text(
                           'Stripe',
                           style: getTextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
-                              color: AppColors.bodyDarkGray
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.bodyDarkGray,
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -435,8 +452,8 @@ class VendorRequestStatusScreen extends StatelessWidget {
               width: double.maxFinite,
               padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 20.h),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(14.r),
-                  color: AppColors.cardBackgroundSoftGray
+                borderRadius: BorderRadius.circular(14.r),
+                color: AppColors.cardBackgroundSoftGray,
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -446,7 +463,7 @@ class VendorRequestStatusScreen extends StatelessWidget {
                     style: getTextStyle(
                       fontSize: 20.sp,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.bodyDarkGray
+                      color: AppColors.bodyDarkGray,
                     ),
                   ),
 
@@ -472,7 +489,6 @@ class VendorRequestStatusScreen extends StatelessWidget {
                           color: AppColors.bodyDarkGray,
                         ),
                       ),
-
                     ],
                   ),
                   10.verticalSpace,
@@ -496,13 +512,12 @@ class VendorRequestStatusScreen extends StatelessWidget {
                           color: AppColors.bodyDarkGray,
                         ),
                       ),
-
                     ],
                   ),
 
                   12.verticalSpace,
 
-                  Divider(color: Color(0xFFB9C2DB),),
+                  Divider(color: Color(0xFFB9C2DB)),
 
                   12.verticalSpace,
 
@@ -526,7 +541,6 @@ class VendorRequestStatusScreen extends StatelessWidget {
                           color: AppColors.bodyDarkGray,
                         ),
                       ),
-
                     ],
                   ),
                 ],
@@ -535,13 +549,20 @@ class VendorRequestStatusScreen extends StatelessWidget {
 
             20.verticalSpace,
 
-            CustomPrimaryButton(text: data!.status == "Pending"? "Send Quote" : data!.status == "Confirmed" ? "Make Complete" : "Cancel", color: AppColors.primaryDeepBlueNormal, onPressed: (){}),
+            CustomPrimaryButton(
+              text: data!.status == "Pending"
+                  ? "Send Quote"
+                  : data!.status == "Confirmed"
+                  ? "Make Complete"
+                  : "Cancel",
+              color: AppColors.primaryDeepBlueNormal,
+              onPressed: () {},
+            ),
 
             20.verticalSpace,
-
           ],
-        ).paddingSymmetric(horizontal: 20.w,),
-      )
+        ).paddingSymmetric(horizontal: 20.w),
+      ),
     );
   }
 }

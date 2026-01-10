@@ -19,10 +19,11 @@ class AppColors {
   static const Color secondaryTealLight = Color(0xFFE6F2F2);
   static const Color secondaryTealNormal = Color(0xFF008080);
 
-
   // Utility Colors
   static const Color success = Color(0xFF4CAF50); // Green for success messages
   static const Color warning = Color(0xFFFFA726); // Orange for warnings
   static const Color error = Color(0xFFF44336); // Red for error messages
-  static const Color info = Color(0xFF29B6F6); // Blue for informational messages
+  static const Color info = Color(
+    0xFF29B6F6,
+  ); // Blue for informational messages
 }

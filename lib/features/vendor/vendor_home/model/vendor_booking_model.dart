@@ -1,23 +1,23 @@
 import 'dart:convert';
 
-VendorBookingModel vendorBookingModelFromJson(String str) => VendorBookingModel.fromJson(json.decode(str));
-String vendorBookingModelToJson(VendorBookingModel data) => json.encode(data.toJson());
+VendorBookingModel vendorBookingModelFromJson(String str) =>
+    VendorBookingModel.fromJson(json.decode(str));
+String vendorBookingModelToJson(VendorBookingModel data) =>
+    json.encode(data.toJson());
 
 class VendorBookingModel {
   bool success;
   List<Datum> data;
 
-  VendorBookingModel({
-    required this.success,
-    required this.data,
-  });
+  VendorBookingModel({required this.success, required this.data});
 
-  factory VendorBookingModel.fromJson(Map<String, dynamic> json) => VendorBookingModel(
-    success: json["success"] ?? false,
-    data: json["data"] == null
-        ? []
-        : List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
-  );
+  factory VendorBookingModel.fromJson(Map<String, dynamic> json) =>
+      VendorBookingModel(
+        success: json["success"] ?? false,
+        data: json["data"] == null
+            ? []
+            : List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
     "success": success,
@@ -129,7 +129,8 @@ class Datum {
     "total": total,
     "status": status,
     "reviewed": reviewed,
-    "date": "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
+    "date":
+        "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
     "time": time,
     "user": user.toJson(),
     "vendor": vendor.toJson(),
@@ -166,7 +167,9 @@ class Event {
     id: json["id"] ?? 0,
     title: json["title"] ?? "",
     slug: json["slug"] ?? "",
-    eventDate: json["event_date"] == null ? DateTime.now() : DateTime.parse(json["event_date"]),
+    eventDate: json["event_date"] == null
+        ? DateTime.now()
+        : DateTime.parse(json["event_date"]),
     eventTime: json["event_time"] ?? "",
     venueType: json["venue_type"] ?? "",
     location: json["location"] ?? "",
@@ -177,7 +180,8 @@ class Event {
     "id": id,
     "title": title,
     "slug": slug,
-    "event_date": "${eventDate.year.toString().padLeft(4, '0')}-${eventDate.month.toString().padLeft(2, '0')}-${eventDate.day.toString().padLeft(2, '0')}",
+    "event_date":
+        "${eventDate.year.toString().padLeft(4, '0')}-${eventDate.month.toString().padLeft(2, '0')}-${eventDate.day.toString().padLeft(2, '0')}",
     "event_time": eventTime,
     "venue_type": venueType,
     "location": location,
@@ -250,7 +254,9 @@ class Payment {
     transactionId: json["transaction_id"] ?? "",
     currency: json["currency"] ?? "",
     status: json["status"] ?? "",
-    createdAt: json["created_at"] == null ? DateTime.now() : DateTime.parse(json["created_at"]),
+    createdAt: json["created_at"] == null
+        ? DateTime.now()
+        : DateTime.parse(json["created_at"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -285,7 +291,9 @@ class TimeSlot {
     dateId: json["date_id"] ?? 0,
     time: json["time"] ?? "",
     period: json["period"] ?? "",
-    availableDate: json["available_date"] == null ? null : AvailableDate.fromJson(json["available_date"]),
+    availableDate: json["available_date"] == null
+        ? null
+        : AvailableDate.fromJson(json["available_date"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -301,10 +309,7 @@ class AvailableDate {
   int id;
   DateTime date;
 
-  AvailableDate({
-    required this.id,
-    required this.date,
-  });
+  AvailableDate({required this.id, required this.date});
 
   factory AvailableDate.fromJson(Map<String, dynamic> json) => AvailableDate(
     id: json["id"] ?? 0,
@@ -313,7 +318,8 @@ class AvailableDate {
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "date": "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
+    "date":
+        "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
   };
 }
 

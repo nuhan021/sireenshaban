@@ -7,7 +7,6 @@ import 'package:sireenshaban/core/common/widgets/custom_loading.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
 import 'package:sireenshaban/features/customer/interest/controller/customer_interest_controller.dart';
 import 'package:sireenshaban/features/customer/interest/views/widgets/customer_interest_card.dart';
-import 'package:sireenshaban/routes/app_routes.dart';
 
 import '../../../../../core/common/widgets/custom_primary_button.dart';
 
@@ -31,11 +30,14 @@ class CustomerInterestScreen extends StatelessWidget {
             );
           }
 
-          if(controller.isCategoriError.value) {
+          if (controller.isCategoriError.value) {
             return Center(
-              child: OutlinedButton(onPressed: (){
-                controller.getCategory();
-              }, child: Text('Re-try')),
+              child: OutlinedButton(
+                onPressed: () {
+                  controller.getCategory();
+                },
+                child: Text('Re-try'),
+              ),
             );
           }
           return Column(
@@ -87,18 +89,16 @@ class CustomerInterestScreen extends StatelessWidget {
 
               10.verticalSpace,
 
-              Obx(
-                      () {
-                        if(controller.isSetCategoryLoading.value) {
-                          return CustomLoading();
-                        }
-                  return CustomPrimaryButton(
-                    text: 'Continue',
-                    color: AppColors.primaryDeepBlueNormal,
-                    onPressed: () => controller.setCategory(),
-                  );
+              Obx(() {
+                if (controller.isSetCategoryLoading.value) {
+                  return CustomLoading();
                 }
-              ),
+                return CustomPrimaryButton(
+                  text: 'Continue',
+                  color: AppColors.primaryDeepBlueNormal,
+                  onPressed: () => controller.setCategory(),
+                );
+              }),
 
               20.verticalSpace,
             ],

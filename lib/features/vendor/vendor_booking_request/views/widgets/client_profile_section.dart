@@ -8,10 +8,7 @@ import 'package:sireenshaban/features/vendor/vendor_booking_request/model/servic
 import '../../../../../core/utils/constants/icon_path.dart';
 
 class ClientProfileSection extends StatelessWidget {
-  const ClientProfileSection({
-    super.key,
-    required this.request,
-  });
+  const ClientProfileSection({super.key, required this.request});
 
   final ServiceRequestDetail request;
 
@@ -20,13 +17,17 @@ class ClientProfileSection extends StatelessWidget {
     final DateTime? requestDate = request.serviceDatetime;
     final String formattedDate = requestDate == null
         ? "-"
-        : AppHelperFunctions.getFormattedDate(requestDate, format: "MMM dd, yyyy");
+        : AppHelperFunctions.getFormattedDate(
+            requestDate,
+            format: "MMM dd, yyyy",
+          );
     final String formattedTime = requestDate == null
         ? "-"
         : AppHelperFunctions.getFormattedDate(requestDate, format: "hh:mm a");
     final String fullName = request.customer.name.trim();
-    final String statusLabel =
-        request.status.isEmpty ? "New Request" : request.status;
+    final String statusLabel = request.status.isEmpty
+        ? "New Request"
+        : request.status;
 
     return Container(
       width: double.maxFinite,
@@ -38,7 +39,6 @@ class ClientProfileSection extends StatelessWidget {
 
       child: Column(
         children: [
-
           // profile picture, name and others,
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,7 +47,9 @@ class ClientProfileSection extends StatelessWidget {
               CircleAvatar(
                 backgroundColor: Colors.white,
                 radius: 50.r,
-                backgroundImage: NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCAh5xHkS7NYy0rbv7pv-yCtxbuSxTTVpUD1yF-Ol6WEGO4ERHVM9OagmsxQklY2JlJDQ&usqp=CAU"),
+                backgroundImage: NetworkImage(
+                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCAh5xHkS7NYy0rbv7pv-yCtxbuSxTTVpUD1yF-Ol6WEGO4ERHVM9OagmsxQklY2JlJDQ&usqp=CAU",
+                ),
               ),
 
               20.horizontalSpace,
@@ -61,7 +63,7 @@ class ClientProfileSection extends StatelessWidget {
                       style: getTextStyle(
                         fontSize: 20.sp,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.bodyDarkGray
+                        color: AppColors.bodyDarkGray,
                       ),
                     ),
 
@@ -72,9 +74,9 @@ class ClientProfileSection extends StatelessWidget {
                           ? "No email provided"
                           : request.customer.email,
                       style: getTextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.secondaryInfoMediumGrayNormal
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.secondaryInfoMediumGrayNormal,
                       ),
                     ),
 
@@ -82,11 +84,14 @@ class ClientProfileSection extends StatelessWidget {
 
                     Container(
                       width: 100.w,
-                      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 3.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 10.w,
+                        vertical: 3.h,
+                      ),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12.r),
                         color: Color(0xFFB6E9E3),
-                        border: Border.all(color: Color(0xFF14B8A6))
+                        border: Border.all(color: Color(0xFF14B8A6)),
                       ),
 
                       alignment: AlignmentGeometry.center,
@@ -95,35 +100,39 @@ class ClientProfileSection extends StatelessWidget {
                         style: getTextStyle(
                           fontSize: 10.sp,
                           fontWeight: FontWeight.w400,
-                          color: Color(0xFF0C6E64)
+                          color: Color(0xFF0C6E64),
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
 
           20.verticalSpace,
 
-          Divider(color: AppColors.primaryDeepBlueLight,),
+          Divider(color: AppColors.primaryDeepBlueLight),
 
           20.verticalSpace,
 
           // date and time
           Row(
             children: [
-              Image.asset(IconPath.navCalendar, height: 25.h, color: AppColors.bodyDarkGray,),
+              Image.asset(
+                IconPath.navCalendar,
+                height: 25.h,
+                color: AppColors.bodyDarkGray,
+              ),
               5.horizontalSpace,
               Text(
                 'Date & Time',
                 style: getTextStyle(
-                    fontSize: 22.sp,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.bodyDarkGray
+                  fontSize: 22.sp,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.bodyDarkGray,
                 ),
-              )
+              ),
             ],
           ),
           15.verticalSpace,
@@ -131,78 +140,80 @@ class ClientProfileSection extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               // date
-              Expanded(child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Date',
-                    style: getTextStyle(
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Date',
+                      style: getTextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w500,
-                        color: AppColors.bodyDarkGray
-                    ),
-                  ),
-                  10.verticalSpace,
-                  Container(
-
-                    height: 37.h,
-                    width: double.maxFinite,
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryDeepBlueLight,
-                      borderRadius: BorderRadius.circular(4.r),
-                    ),
-
-                    alignment: AlignmentGeometry.center,
-                    child: Text(
-                      formattedDate,
-                      style: getTextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.bodyDarkGray
+                        color: AppColors.bodyDarkGray,
                       ),
                     ),
-                  ),
-                ],
-              )),
+                    10.verticalSpace,
+                    Container(
+                      height: 37.h,
+                      width: double.maxFinite,
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryDeepBlueLight,
+                        borderRadius: BorderRadius.circular(4.r),
+                      ),
+
+                      alignment: AlignmentGeometry.center,
+                      child: Text(
+                        formattedDate,
+                        style: getTextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.bodyDarkGray,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
 
               18.horizontalSpace,
 
               // date
-              Expanded(child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Time',
-                    style: getTextStyle(
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Time',
+                      style: getTextStyle(
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w500,
-                        color: AppColors.bodyDarkGray
-                    ),
-                  ),
-                  10.verticalSpace,
-                  Container(
-
-                    height: 37.h,
-                    width: double.maxFinite,
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryDeepBlueLight,
-                      borderRadius: BorderRadius.circular(4.r),
-                    ),
-
-                    alignment: AlignmentGeometry.center,
-                    child: Text(
-                      formattedTime,
-                      style: getTextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.bodyDarkGray
+                        color: AppColors.bodyDarkGray,
                       ),
                     ),
-                  ),
-                ],
-              )),
+                    10.verticalSpace,
+                    Container(
+                      height: 37.h,
+                      width: double.maxFinite,
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryDeepBlueLight,
+                        borderRadius: BorderRadius.circular(4.r),
+                      ),
+
+                      alignment: AlignmentGeometry.center,
+                      child: Text(
+                        formattedTime,
+                        style: getTextStyle(
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.bodyDarkGray,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
-          )
+          ),
         ],
       ),
     );

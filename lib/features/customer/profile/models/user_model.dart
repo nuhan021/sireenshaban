@@ -24,28 +24,28 @@ class UserModel {
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        id: json["id"] ?? 0,
-        firstName: json["first_name"] ?? "",
-        lastName: json["last_name"] ?? "",
-        phoneNumber: json["phone_number"] ?? "",
-        email: json["email"] ?? "",
-        country: json["country"],
-        city: json["city"],
-        address: json["address"],
-        image: json["image"],
-        backgroundImage: json["background_image"],
-      );
+    id: json["id"] ?? 0,
+    firstName: json["first_name"] ?? "",
+    lastName: json["last_name"] ?? "",
+    phoneNumber: json["phone_number"] ?? "",
+    email: json["email"] ?? "",
+    country: json["country"],
+    city: json["city"],
+    address: json["address"],
+    image: json["image"],
+    backgroundImage: json["background_image"],
+  );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "first_name": firstName,
-        "last_name": lastName,
-        "phone_number": phoneNumber,
-        "email": email,
-        "country": country,
-        "city": city,
-        "address": address,
-        "image": image,
-        "background_image": backgroundImage,
-      };
+    "id": id,
+    "first_name": firstName,
+    "last_name": lastName,
+    "phone_number": phoneNumber,
+    "email": email,
+    "country": country,
+    "city": city,
+    "address": address,
+    "image": image,
+    "background_image": backgroundImage,
+  };
 }

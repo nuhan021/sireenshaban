@@ -21,7 +21,6 @@ class IField extends StatelessWidget {
     super.key,
   });
 
-
   final String? Function(String?)? validator;
   final TextEditingController controller;
   final bool filled;
@@ -42,12 +41,16 @@ class IField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
-      validator: skipValidator? null : overrideValidator ? validator : (value) {
-        if(value == null || value.isEmpty) {
-          return 'This field is required';
-        }
-        return null;
-      },
+      validator: skipValidator
+          ? null
+          : overrideValidator
+          ? validator
+          : (value) {
+              if (value == null || value.isEmpty) {
+                return 'This field is required';
+              }
+              return null;
+            },
       onTapOutside: (_) {
         FocusScope.of(context).unfocus();
       },
@@ -59,23 +62,15 @@ class IField extends StatelessWidget {
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            color: borderColor,
-          ),
+          borderSide: BorderSide(color: borderColor),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            color: borderColor,
-            width: 1,
-          ),
+          borderSide: BorderSide(color: borderColor, width: 1),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(
-            color: borderColor,
-            width: 2,
-          ),
+          borderSide: BorderSide(color: borderColor, width: 2),
         ),
         contentPadding: const EdgeInsets.symmetric(horizontal: 20),
         filled: filled,
@@ -83,11 +78,13 @@ class IField extends StatelessWidget {
         suffixIcon: suffixIcon,
         prefixIcon: prefixIcon,
         hintText: hintText,
-        hintStyle: hintTextStyle ?? TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
-          color: Colors.grey.shade400,
-        ),
+        hintStyle:
+            hintTextStyle ??
+            TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: Colors.grey.shade400,
+            ),
       ),
     );
   }

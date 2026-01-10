@@ -10,24 +10,31 @@ import '../../controllers/change_password_controller.dart';
 
 class ChangePasswordScreen extends StatelessWidget {
   ChangePasswordScreen({super.key});
-  
+
   final controller = Get.put(ChangePasswordController());
 
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController retypePasswordController = TextEditingController();
+  final TextEditingController retypePasswordController =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(onPressed: () => Get.back(), icon: Icon(Icons.arrow_back)),
-        title: Text('Change Password', style: getTextStyle(
+        leading: IconButton(
+          onPressed: () => Get.back(),
+          icon: Icon(Icons.arrow_back),
+        ),
+        title: Text(
+          'Change Password',
+          style: getTextStyle(
             fontSize: 22.sp,
             fontWeight: FontWeight.w600,
-            color: AppColors.secondaryInfoMediumGray
-        ),),
+            color: AppColors.secondaryInfoMediumGray,
+          ),
+        ),
       ),
 
       body: SingleChildScrollView(
@@ -40,7 +47,6 @@ class ChangePasswordScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-
                   Text(
                     'New Password',
                     style: getTextStyle(
@@ -115,7 +121,6 @@ class ChangePasswordScreen extends StatelessWidget {
                     );
                   }),
 
-
                   30.verticalSpace,
 
                   CustomPrimaryButton(
@@ -125,7 +130,7 @@ class ChangePasswordScreen extends StatelessWidget {
                   ),
                 ],
               ),
-            )
+            ),
           ],
         ).paddingSymmetric(horizontal: 20.w),
       ),

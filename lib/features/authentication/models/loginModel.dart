@@ -4,7 +4,8 @@
 
 import 'dart:convert';
 
-LoginModel loginModelFromJson(String str) => LoginModel.fromJson(json.decode(str));
+LoginModel loginModelFromJson(String str) =>
+    LoginModel.fromJson(json.decode(str));
 
 String loginModelToJson(LoginModel data) => json.encode(data.toJson());
 
@@ -95,15 +96,10 @@ class User {
 class Vendor {
   int id;
 
-  Vendor({
-    required this.id,
-  });
+  Vendor({required this.id});
 
-  factory Vendor.fromJson(Map<String, dynamic> json) => Vendor(
-    id: json["id"] ?? 0,
-  );
+  factory Vendor.fromJson(Map<String, dynamic> json) =>
+      Vendor(id: json["id"] ?? 0);
 
-  Map<String, dynamic> toJson() => {
-    "id": id,
-  };
+  Map<String, dynamic> toJson() => {"id": id};
 }

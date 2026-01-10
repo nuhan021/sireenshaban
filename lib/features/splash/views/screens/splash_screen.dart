@@ -12,17 +12,13 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     Timer(const Duration(seconds: 2), () {
       Get.offNamed(AppRoute.onboardingScreen);
     });
 
-
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-          child: Image.asset(ImagePath.splashImg, height: 200.h,)
-      ),
+      body: Center(child: Image.asset(ImagePath.splashImg, height: 200.h)),
     );
   }
 }

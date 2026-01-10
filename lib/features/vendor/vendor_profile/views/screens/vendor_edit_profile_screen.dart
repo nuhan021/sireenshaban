@@ -75,7 +75,7 @@ class _VendorEditProfileScreenState extends State<VendorEditProfileScreen> {
               height: 40.h,
               width: 40.w,
               decoration: BoxDecoration(
-                color: Color(0xFF3333331A),
+                color: Color(0xff3333331a),
                 shape: BoxShape.circle,
               ),
               alignment: AlignmentGeometry.center,

@@ -28,9 +28,7 @@ class ProfileController extends GetxController {
       return;
     }
 
-    final response = await _profileServices.getProfile(
-      token: "Bearer $token",
-    );
+    final response = await _profileServices.getProfile(token: "Bearer $token");
 
     if (response.statusCode == 401) {
       isProfileLoading.value = false;

@@ -3,7 +3,7 @@ import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 
 class PusherService {
   static final PusherService _instance = PusherService._internal();
-  
+
   factory PusherService() {
     return _instance;
   }
@@ -24,13 +24,11 @@ class PusherService {
         return true;
       }
 
-      debugPrint('🔌 [Pusher] Initializing with key: ${key.substring(0, 10)}..., cluster: $cluster');
-
-      await pusher.init(
-        apiKey: key,
-        cluster: cluster,
-        useTLS: true,
+      debugPrint(
+        '🔌 [Pusher] Initializing with key: ${key.substring(0, 10)}..., cluster: $cluster',
       );
+
+      await pusher.init(apiKey: key, cluster: cluster, useTLS: true);
 
       debugPrint('✅ [Pusher] Initialization complete');
       _isInitialized = true;
@@ -53,7 +51,9 @@ class PusherService {
       await pusher.subscribe(
         channelName: channelName,
         onEvent: (event) {
-          debugPrint('📬 [Pusher] Event received on $channelName: ${event.eventName}');
+          debugPrint(
+            '📬 [Pusher] Event received on $channelName: ${event.eventName}',
+          );
           onEvent(event);
         },
         onSubscriptionSucceeded: onSubscriptionSucceeded != null
@@ -63,7 +63,9 @@ class PusherService {
             : null,
         onSubscriptionError: onSubscriptionError != null
             ? (error) {
-                debugPrint('❌ [Pusher] Subscription to $channelName error: $error');
+                debugPrint(
+                  '❌ [Pusher] Subscription to $channelName error: $error',
+                );
               }
             : null,
       );
@@ -91,14 +93,20 @@ class PusherService {
           onEvent(event);
         },
         onSubscriptionSucceeded: (subscription) {
-          debugPrint('✅ [Pusher] Private subscription to $channelName succeeded');
+          debugPrint(
+            '✅ [Pusher] Private subscription to $channelName succeeded',
+          );
         },
         onSubscriptionError: (error) {
-          debugPrint('❌ [Pusher] Private subscription to $channelName error: $error');
+          debugPrint(
+            '❌ [Pusher] Private subscription to $channelName error: $error',
+          );
         },
       );
 
-      debugPrint('✅ [Pusher] Successfully subscribed to private channel $channelName');
+      debugPrint(
+        '✅ [Pusher] Successfully subscribed to private channel $channelName',
+      );
       return true;
     } catch (e) {
       debugPrint('❌ [Pusher] Error subscribing to private channel: $e');

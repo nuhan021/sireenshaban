@@ -20,10 +20,12 @@ class ChatService {
   Future<List<ChatMessage>> fetchChatHistory(int receiverId) async {
     try {
       debugPrint('📱 [Chat] Fetching history with receiver ID: $receiverId');
-      final response = await http.get(
-        Uri.parse('${ApiConstants.chatHistory}/$receiverId'),
-        headers: _headers,
-      ).timeout(const Duration(seconds: 30));
+      final response = await http
+          .get(
+            Uri.parse('${ApiConstants.chatHistory}/$receiverId'),
+            headers: _headers,
+          )
+          .timeout(const Duration(seconds: 30));
 
       debugPrint('📱 [Chat] History fetch status: ${response.statusCode}');
       debugPrint('📱 [Chat] History response: ${response.body}');
@@ -34,7 +36,9 @@ class ChatService {
           final messages = (data['messages'] as List)
               .map((msg) => ChatMessage.fromJson(msg as Map<String, dynamic>))
               .toList();
-          debugPrint('✅ [Chat] Successfully loaded ${messages.length} messages');
+          debugPrint(
+            '✅ [Chat] Successfully loaded ${messages.length} messages',
+          );
           return messages;
         }
       }
@@ -60,11 +64,13 @@ class ChatService {
       });
       debugPrint('📱 [Chat] Request body: $body');
 
-      final response = await http.post(
-        Uri.parse(ApiConstants.sendMessage),
-        headers: _headers,
-        body: body,
-      ).timeout(const Duration(seconds: 30));
+      final response = await http
+          .post(
+            Uri.parse(ApiConstants.sendMessage),
+            headers: _headers,
+            body: body,
+          )
+          .timeout(const Duration(seconds: 30));
 
       debugPrint('📱 [Chat] Send message status: ${response.statusCode}');
       debugPrint('📱 [Chat] Send message response: ${response.body}');
@@ -72,7 +78,9 @@ class ChatService {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body) as Map<String, dynamic>;
         if (data['success'] == true) {
-          final message = ChatMessage.fromJson(data['message'] as Map<String, dynamic>);
+          final message = ChatMessage.fromJson(
+            data['message'] as Map<String, dynamic>,
+          );
           debugPrint('✅ [Chat] Message sent successfully');
           debugPrint('   Message ID: ${message.id}');
           debugPrint('   From: ${message.senderId}');
@@ -99,7 +107,10 @@ class ChatService {
       debugPrint('📱 [Chat] Voice file size: ${voiceFile.lengthSync()} bytes');
       debugPrint('📱 [Chat] Voice file exists: ${voiceFile.existsSync()}');
 
-      final request = http.MultipartRequest('POST', Uri.parse(ApiConstants.sendMessage));
+      final request = http.MultipartRequest(
+        'POST',
+        Uri.parse(ApiConstants.sendMessage),
+      );
       request.headers.addAll({
         'Authorization': 'Bearer $token',
         'Accept': 'application/json',
@@ -111,7 +122,9 @@ class ChatService {
       );
 
       debugPrint('📱 [Chat] Sending voice request...');
-      final streamedResponse = await request.send().timeout(const Duration(seconds: 30));
+      final streamedResponse = await request.send().timeout(
+        const Duration(seconds: 30),
+      );
       final response = await http.Response.fromStream(streamedResponse);
 
       debugPrint('📱 [Chat] Voice send status: ${response.statusCode}');
@@ -120,13 +133,19 @@ class ChatService {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body) as Map<String, dynamic>;
         if (data['success'] == true) {
-          final message = ChatMessage.fromJson(data['message'] as Map<String, dynamic>);
-          debugPrint('✅ [Chat] Voice message sent successfully with ID: ${message.id}');
+          final message = ChatMessage.fromJson(
+            data['message'] as Map<String, dynamic>,
+          );
+          debugPrint(
+            '✅ [Chat] Voice message sent successfully with ID: ${message.id}',
+          );
           debugPrint('   Voice URL: ${message.voiceUrl}');
           return message;
         }
       }
-      debugPrint('❌ [Chat] Failed to send voice message: ${response.statusCode}');
+      debugPrint(
+        '❌ [Chat] Failed to send voice message: ${response.statusCode}',
+      );
       return null;
     } catch (e) {
       debugPrint('❌ [Chat] Error sending voice message: $e');
@@ -137,11 +156,13 @@ class ChatService {
   Future<bool> markMessagesAsRead(int senderId) async {
     try {
       debugPrint('📱 [Chat] Marking messages from sender $senderId as read');
-      final response = await http.post(
-        Uri.parse(ApiConstants.markRead),
-        headers: _headers,
-        body: jsonEncode({'sender_id': senderId}),
-      ).timeout(const Duration(seconds: 30));
+      final response = await http
+          .post(
+            Uri.parse(ApiConstants.markRead),
+            headers: _headers,
+            body: jsonEncode({'sender_id': senderId}),
+          )
+          .timeout(const Duration(seconds: 30));
 
       debugPrint('📱 [Chat] Mark read status: ${response.statusCode}');
       debugPrint('📱 [Chat] Mark read response: ${response.body}');
@@ -160,10 +181,12 @@ class ChatService {
   Future<UserStatus?> getUserStatus(int contactId) async {
     try {
       debugPrint('📱 [Chat] Fetching user status for contact: $contactId');
-      final response = await http.get(
-        Uri.parse('${ApiConstants.userStatus}/$contactId/status'),
-        headers: _headers,
-      ).timeout(const Duration(seconds: 30));
+      final response = await http
+          .get(
+            Uri.parse('${ApiConstants.userStatus}/$contactId/status'),
+            headers: _headers,
+          )
+          .timeout(const Duration(seconds: 30));
 
       debugPrint('📱 [Chat] User status fetch: ${response.statusCode}');
       debugPrint('📱 [Chat] User status response: ${response.body}');
@@ -171,7 +194,9 @@ class ChatService {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body) as Map<String, dynamic>;
         if (data['success'] == true) {
-          final status = UserStatus.fromJson(data['receiver'] as Map<String, dynamic>);
+          final status = UserStatus.fromJson(
+            data['receiver'] as Map<String, dynamic>,
+          );
           debugPrint('✅ [Chat] User status: ${status.statusText}');
           return status;
         }
@@ -186,10 +211,9 @@ class ChatService {
   Future<List<ChatConversation>> fetchChatList() async {
     try {
       debugPrint('📱 [Chat] Fetching chat list...');
-      final response = await http.get(
-        Uri.parse(ApiConstants.chatList),
-        headers: _headers,
-      ).timeout(const Duration(seconds: 30));
+      final response = await http
+          .get(Uri.parse(ApiConstants.chatList), headers: _headers)
+          .timeout(const Duration(seconds: 30));
 
       debugPrint('📱 [Chat] Chat list fetch: ${response.statusCode}');
       debugPrint('📱 [Chat] Chat list response: ${response.body}');
@@ -197,24 +221,26 @@ class ChatService {
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body) as Map<String, dynamic>;
         debugPrint('📱 [Chat] Parsing response...');
-        
+
         if (data['success'] == true) {
           final messagesData = data['messages'];
           debugPrint('📱 [Chat] Messages type: ${messagesData.runtimeType}');
-          debugPrint('📱 [Chat] Messages count: ${(messagesData as List?)?.length ?? 0}');
-          
+          debugPrint(
+            '📱 [Chat] Messages count: ${(messagesData as List?)?.length ?? 0}',
+          );
+
           if (messagesData is List && messagesData.isNotEmpty) {
             try {
-              final conversations = messagesData
-                  .map((msg) {
-                    debugPrint('📱 [Chat] Parsing conversation:');
-                    debugPrint('   User ID: ${msg['user_id']}');
-                    debugPrint('   Name: ${msg['name']}');
-                    debugPrint('   Last Message: ${msg['last_message']}');
-                    return ChatConversation.fromJson(msg as Map<String, dynamic>);
-                  })
-                  .toList();
-              debugPrint('✅ [Chat] Successfully loaded ${conversations.length} conversations');
+              final conversations = messagesData.map((msg) {
+                debugPrint('📱 [Chat] Parsing conversation:');
+                debugPrint('   User ID: ${msg['user_id']}');
+                debugPrint('   Name: ${msg['name']}');
+                debugPrint('   Last Message: ${msg['last_message']}');
+                return ChatConversation.fromJson(msg as Map<String, dynamic>);
+              }).toList();
+              debugPrint(
+                '✅ [Chat] Successfully loaded ${conversations.length} conversations',
+              );
               return conversations;
             } catch (e) {
               debugPrint('❌ [Chat] Error parsing conversations: $e');
@@ -240,11 +266,13 @@ class ChatService {
   Future<bool> saveFcmToken(String fcmToken) async {
     try {
       debugPrint('📱 [Chat] Saving FCM token: ${fcmToken.substring(0, 20)}...');
-      final response = await http.post(
-        Uri.parse(ApiConstants.saveFcmToken),
-        headers: _headers,
-        body: jsonEncode({'fcm_token': fcmToken}),
-      ).timeout(const Duration(seconds: 30));
+      final response = await http
+          .post(
+            Uri.parse(ApiConstants.saveFcmToken),
+            headers: _headers,
+            body: jsonEncode({'fcm_token': fcmToken}),
+          )
+          .timeout(const Duration(seconds: 30));
 
       debugPrint('📱 [Chat] FCM token save: ${response.statusCode}');
       debugPrint('📱 [Chat] FCM response: ${response.body}');
@@ -261,29 +289,33 @@ class ChatService {
   }
 
   // PUSHER INTEGRATION METHODS
-  
+
   /// Setup Pusher for real-time chat
-  Future<bool> setupPusherForChat(int userId, String pusherKey, String pusherCluster) async {
+  Future<bool> setupPusherForChat(
+    int userId,
+    String pusherKey,
+    String pusherCluster,
+  ) async {
     try {
       debugPrint('🔌 [Chat] Setting up Pusher for user: $userId');
-      
+
       final initialized = await _pusherService.initialize(
         key: pusherKey,
         cluster: pusherCluster,
         userId: userId.toString(),
       );
-      
+
       if (!initialized) {
         debugPrint('❌ [Chat] Failed to initialize Pusher');
         return false;
       }
-      
+
       final connected = await _pusherService.connect();
       if (!connected) {
         debugPrint('❌ [Chat] Failed to connect Pusher');
         return false;
       }
-      
+
       debugPrint('✅ [Chat] Pusher setup completed');
       return true;
     } catch (e) {
@@ -304,15 +336,15 @@ class ChatService {
       // Sort IDs to create consistent channel name regardless of direction
       final ids = [userId, otherUserId]..sort();
       final channelName = 'private-chat-${ids[0]}-${ids[1]}';
-      
+
       debugPrint('🔐 [Chat] Subscribing to private channel: $channelName');
-      
+
       final subscribed = await _pusherService.subscribeToPrivateChannel(
         channelName: channelName,
         authorizationUrl: '${ApiConstants.baseUrl}/pusher/auth',
         onEvent: (event) {
           debugPrint('📬 [Chat] Event on $channelName: ${event.eventName}');
-          
+
           if (event.eventName == 'new-message') {
             onNewMessage(event.data);
           } else if (event.eventName == 'user-status-changed') {
@@ -320,7 +352,7 @@ class ChatService {
           }
         },
       );
-      
+
       if (subscribed) {
         debugPrint('✅ [Chat] Successfully subscribed to $channelName');
       }
@@ -339,9 +371,9 @@ class ChatService {
   }) async {
     try {
       final channelName = 'presence-user-$userId';
-      
+
       debugPrint('👤 [Chat] Subscribing to presence channel: $channelName');
-      
+
       // Note: Presence channels require special auth, using public channel as fallback
       final subscribed = await _pusherService.subscribeToChannel(
         channelName: channelName,
@@ -350,7 +382,7 @@ class ChatService {
           onStatusChange(event.data);
         },
       );
-      
+
       if (subscribed) {
         debugPrint('✅ [Chat] Successfully subscribed to $channelName');
       }
@@ -366,9 +398,9 @@ class ChatService {
     try {
       final ids = [userId, otherUserId]..sort();
       final channelName = 'private-chat-${ids[0]}-${ids[1]}';
-      
+
       debugPrint('🔌 [Chat] Unsubscribing from channel: $channelName');
-      
+
       return await _pusherService.unsubscribe(channelName: channelName);
     } catch (e) {
       debugPrint('❌ [Chat] Error unsubscribing: $e');
@@ -387,4 +419,3 @@ class ChatService {
     }
   }
 }
-

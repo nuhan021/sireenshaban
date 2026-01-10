@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
-import 'package:sireenshaban/core/utils/constants/icon_path.dart';
 import 'package:sireenshaban/features/customer/home/model/packages_model.dart';
 import 'package:sireenshaban/features/customer/package_booking/views/widgets/reviews_card.dart';
 

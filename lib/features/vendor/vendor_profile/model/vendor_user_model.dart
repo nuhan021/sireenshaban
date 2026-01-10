@@ -4,23 +4,23 @@
 
 import 'dart:convert';
 
-VendorUserModel vendorUserModelFromJson(String str) => VendorUserModel.fromJson(json.decode(str));
+VendorUserModel vendorUserModelFromJson(String str) =>
+    VendorUserModel.fromJson(json.decode(str));
 
-String vendorUserModelToJson(VendorUserModel data) => json.encode(data.toJson());
+String vendorUserModelToJson(VendorUserModel data) =>
+    json.encode(data.toJson());
 
 class VendorUserModel {
   bool success;
   Vendor vendor;
 
-  VendorUserModel({
-    required this.success,
-    required this.vendor,
-  });
+  VendorUserModel({required this.success, required this.vendor});
 
-  factory VendorUserModel.fromJson(Map<String, dynamic> json) => VendorUserModel(
-    success: json["success"],
-    vendor: Vendor.fromJson(json["vendor"]),
-  );
+  factory VendorUserModel.fromJson(Map<String, dynamic> json) =>
+      VendorUserModel(
+        success: json["success"],
+        vendor: Vendor.fromJson(json["vendor"]),
+      );
 
   Map<String, dynamic> toJson() => {
     "success": success,
@@ -93,7 +93,9 @@ class Vendor {
     category: Category.fromJson(json["category"]),
     settings: Settings.fromJson(json["settings"]),
     vendorEarning: List<dynamic>.from(json["vendor_earning"].map((x) => x)),
-    businessHours: List<BusinessHour>.from(json["business_hours"].map((x) => BusinessHour.fromJson(x))),
+    businessHours: List<BusinessHour>.from(
+      json["business_hours"].map((x) => BusinessHour.fromJson(x)),
+    ),
   );
 
   Map<String, dynamic> toJson() => {

@@ -31,7 +31,7 @@ class VirtualMeeting extends StatelessWidget {
             style: getTextStyle(
               fontSize: 18.sp,
               fontWeight: FontWeight.w700,
-              color: AppColors.primaryDeepBlueNormal
+              color: AppColors.primaryDeepBlueNormal,
             ),
           ),
 
@@ -42,7 +42,7 @@ class VirtualMeeting extends StatelessWidget {
             style: getTextStyle(
               fontSize: 14.sp,
               fontWeight: FontWeight.w600,
-              color: AppColors.bodyDarkGray
+              color: AppColors.bodyDarkGray,
             ),
           ),
 
@@ -50,15 +50,15 @@ class VirtualMeeting extends StatelessWidget {
 
           Row(
             children: [
-              Icon(IconlyLight.video, size: 30,),
+              Icon(IconlyLight.video, size: 30),
               10.horizontalSpace,
               Expanded(
                 child: Text(
                   'Offer Virtual Meeting',
                   style: getTextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.accentNormal
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.accentNormal,
                   ),
                 ),
               ),
@@ -71,11 +71,13 @@ class VirtualMeeting extends StatelessWidget {
                     activeTrackColor: AppColors.primaryDeepBlueNormal,
                     inactiveThumbColor: AppColors.primaryDeepBlueNormal,
                     activeThumbColor: Colors.white,
-                    thumbIcon: MaterialStateProperty.resolveWith<Icon?>((states) {
-                      if (states.contains(MaterialState.disabled)) {
+                    thumbIcon: WidgetStateProperty.resolveWith<Icon?>((
+                      states,
+                    ) {
+                      if (states.contains(WidgetState.disabled)) {
                         return const Icon(Icons.close);
                       }
-                      if (states.contains(MaterialState.selected)) {
+                      if (states.contains(WidgetState.selected)) {
                         return Icon(
                           Icons.check,
                           size: 16,
@@ -97,7 +99,7 @@ class VirtualMeeting extends StatelessWidget {
                 );
               }),
             ],
-          )
+          ),
         ],
       ),
     );

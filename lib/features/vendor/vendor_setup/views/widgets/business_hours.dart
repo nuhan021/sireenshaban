@@ -39,12 +39,12 @@ class BusinessHours extends StatelessWidget {
                             activeTrackColor: AppColors.primaryDeepBlueNormal,
                             inactiveThumbColor: AppColors.primaryDeepBlueNormal,
                             activeThumbColor: Colors.white,
-                            thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
+                            thumbIcon: WidgetStateProperty.resolveWith<Icon?>(
                               (states) {
-                                if (states.contains(MaterialState.disabled)) {
+                                if (states.contains(WidgetState.disabled)) {
                                   return const Icon(Icons.close);
                                 }
-                                if (states.contains(MaterialState.selected)) {
+                                if (states.contains(WidgetState.selected)) {
                                   return Icon(
                                     Icons.check,
                                     size: 16,
@@ -185,7 +185,6 @@ class BusinessHours extends StatelessWidget {
                   }
 
                   return SizedBox();
-
                 }),
               ],
             ),

@@ -5,11 +5,8 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
-import 'package:sireenshaban/core/utils/constants/enums.dart';
-import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/authentication/controllers/sign_up_screen_controller.dart';
 import 'package:sireenshaban/features/select_role/controller/select_role_controller.dart';
-import 'package:sireenshaban/routes/app_routes.dart';
 import '../../../../core/common/widgets/custom_loading.dart';
 import '../../../../core/utils/constants/colors.dart';
 
@@ -88,8 +85,11 @@ class VerificationCodeSendSuccessScreen extends StatelessWidget {
               26.verticalSpace,
 
               Obx(() {
-                if(signUpScreenController.isResendOtpLoading.value) {
-                  return LoadingAnimationWidget.dotsTriangle(color: AppColors.primaryDeepBlueNormal, size: 25.h);
+                if (signUpScreenController.isResendOtpLoading.value) {
+                  return LoadingAnimationWidget.dotsTriangle(
+                    color: AppColors.primaryDeepBlueNormal,
+                    size: 25.h,
+                  );
                 }
                 return TextButton(
                   onPressed: () => signUpScreenController.resendOtp(),

@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,12 +29,15 @@ class _LocationCardState extends State<LocationCard2> {
   @override
   void initState() {
     super.initState();
-    final double lat = double.tryParse(widget.data?.vendor.latitude?.toString() ?? '') ?? 40.74003379333115;
-    final double lng = double.tryParse(widget.data?.vendor.longitude?.toString() ?? '') ?? -73.99088234777156;
+    final double lat =
+        double.tryParse(widget.data?.vendor.latitude?.toString() ?? '') ??
+        40.74003379333115;
+    final double lng =
+        double.tryParse(widget.data?.vendor.longitude?.toString() ?? '') ??
+        -73.99088234777156;
 
     _shopLocation = LatLng(lat, lng);
   }
-
 
   void _onMapCreated(GoogleMapController controller) {
     _mapController = controller;
@@ -118,8 +120,10 @@ class _LocationCardState extends State<LocationCard2> {
         ),
 
         TextButton(
-          onPressed: () =>
-              AppHelperFunctions.navigateToScreen(context, MapScreen(position: _shopLocation,)),
+          onPressed: () => AppHelperFunctions.navigateToScreen(
+            context,
+            MapScreen(position: _shopLocation),
+          ),
           child: Text(
             'View Map',
             style: getTextStyle(

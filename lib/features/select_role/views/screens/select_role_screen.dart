@@ -24,13 +24,7 @@ class SelectRoleScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(
-              child: Center(
-                child: Image.asset(
-                  ImagePath.selectRole,
-                ),
-              ),
-            ),
+            Expanded(child: Center(child: Image.asset(ImagePath.selectRole))),
 
             10.verticalSpace,
             Text(
@@ -50,7 +44,6 @@ class SelectRoleScreen extends StatelessWidget {
                 color: AppColors.secondaryMediumGray,
               ),
             ),
-
 
             Obx(() {
               return GestureDetector(
@@ -157,7 +150,7 @@ class SelectRoleScreen extends StatelessWidget {
               onPressed: () => Get.toNamed(AppRoute.loginScreen),
             ),
 
-            20.verticalSpace
+            20.verticalSpace,
           ],
         ).paddingSymmetric(horizontal: 20.w),
       ),

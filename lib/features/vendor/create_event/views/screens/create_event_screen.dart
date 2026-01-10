@@ -43,7 +43,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   _buildCategoryDropdown(),
                   16.verticalSpace,
                   _buildLabel("Event Title"),
-                  IField(controller: controller.titleController, hintText: 'Demo Event', filled: true, fillColour: Colors.white, borderColor: const Color(0xFFEBEBEB)),
+                  IField(
+                    controller: controller.titleController,
+                    hintText: 'Demo Event',
+                    filled: true,
+                    fillColour: Colors.white,
+                    borderColor: const Color(0xFFEBEBEB),
+                  ),
                   16.verticalSpace,
 
                   // Single Date and Time Row
@@ -57,7 +63,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   16.verticalSpace,
 
                   _buildLabel("Description"),
-                  IField(controller: controller.descriptionController, hintText: 'Tell us about the event', filled: true, fillColour: Colors.white, borderColor: const Color(0xFFEBEBEB)),
+                  IField(
+                    controller: controller.descriptionController,
+                    hintText: 'Tell us about the event',
+                    filled: true,
+                    fillColour: Colors.white,
+                    borderColor: const Color(0xFFEBEBEB),
+                  ),
                   16.verticalSpace,
 
                   Row(
@@ -67,7 +79,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             _buildLabel("Ticket Price"),
-                            IField(controller: controller.ticketPriceController, hintText: '200', filled: true, fillColour: Colors.white, borderColor: const Color(0xFFEBEBEB)),
+                            IField(
+                              controller: controller.ticketPriceController,
+                              hintText: '200',
+                              filled: true,
+                              fillColour: Colors.white,
+                              borderColor: const Color(0xFFEBEBEB),
+                            ),
                           ],
                         ),
                       ),
@@ -77,7 +95,13 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             _buildLabel("Max Attendees"),
-                            IField(controller: controller.maxAttendeesController, hintText: '500', filled: true, fillColour: Colors.white, borderColor: const Color(0xFFEBEBEB)),
+                            IField(
+                              controller: controller.maxAttendeesController,
+                              hintText: '500',
+                              filled: true,
+                              fillColour: Colors.white,
+                              borderColor: const Color(0xFFEBEBEB),
+                            ),
                           ],
                         ),
                       ),
@@ -86,29 +110,34 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
                   16.verticalSpace,
 
                   _buildLabel("Organizer Contact"),
-                  IField(controller: controller.contactController, hintText: '880156845698', filled: true, fillColour: Colors.white, borderColor: const Color(0xFFEBEBEB)),
+                  IField(
+                    controller: controller.contactController,
+                    hintText: '880156845698',
+                    filled: true,
+                    fillColour: Colors.white,
+                    borderColor: const Color(0xFFEBEBEB),
+                  ),
 
                   24.verticalSpace,
                   Center(
                     child: TextButton.icon(
-                      onPressed: () => Get.toNamed(AppRoute.vendorProfileInfoMap),
+                      onPressed: () =>
+                          Get.toNamed(AppRoute.vendorProfileInfoMap),
                       icon: const Icon(Icons.map),
                       label: const Text('Select Event Location'),
                     ),
                   ),
                   30.verticalSpace,
-                  Obx(
-                          () {
-                            if(controller.isLoading.value) {
-                              return Center(child: CustomLoading(),);
-                            }
-                      return CustomPrimaryButton(
-                        text: 'Publish Event',
-                        color: AppColors.primaryDeepBlueNormal,
-                        onPressed: () => controller.submitEvent(),
-                      );
+                  Obx(() {
+                    if (controller.isLoading.value) {
+                      return Center(child: CustomLoading());
                     }
-                  ),
+                    return CustomPrimaryButton(
+                      text: 'Publish Event',
+                      color: AppColors.primaryDeepBlueNormal,
+                      onPressed: () => controller.submitEvent(),
+                    );
+                  }),
                 ],
               ),
             ),
@@ -125,20 +154,46 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         _buildLabel("Event Date"),
         GestureDetector(
           onTap: () async {
-            DateTime? picked = await showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime.now(), lastDate: DateTime(2030));
+            DateTime? picked = await showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime.now(),
+              lastDate: DateTime(2030),
+            );
             if (picked != null) controller.selectedDate.value = picked;
           },
-          child: Obx(() => Container(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 14.h),
-            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8.r), border: Border.all(color: const Color(0xFFEBEBEB))),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(controller.selectedDate.value == null ? "Select Date" : DateFormat('yyyy-MM-dd').format(controller.selectedDate.value!), style: TextStyle(color: controller.selectedDate.value == null ? Colors.grey : Colors.black)),
-                const Icon(Icons.calendar_month, size: 20, color: Colors.grey),
-              ],
+          child: Obx(
+            () => Container(
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 14.h),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8.r),
+                border: Border.all(color: const Color(0xFFEBEBEB)),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    controller.selectedDate.value == null
+                        ? "Select Date"
+                        : DateFormat(
+                            'yyyy-MM-dd',
+                          ).format(controller.selectedDate.value!),
+                    style: TextStyle(
+                      color: controller.selectedDate.value == null
+                          ? Colors.grey
+                          : Colors.black,
+                    ),
+                  ),
+                  const Icon(
+                    Icons.calendar_month,
+                    size: 20,
+                    color: Colors.grey,
+                  ),
+                ],
+              ),
             ),
-          )),
+          ),
         ),
       ],
     );
@@ -151,20 +206,38 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
         _buildLabel("Event Time"),
         GestureDetector(
           onTap: () async {
-            TimeOfDay? picked = await showTimePicker(context: context, initialTime: TimeOfDay.now());
+            TimeOfDay? picked = await showTimePicker(
+              context: context,
+              initialTime: TimeOfDay.now(),
+            );
             if (picked != null) controller.selectedTime.value = picked;
           },
-          child: Obx(() => Container(
-            padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 14.h),
-            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8.r), border: Border.all(color: const Color(0xFFEBEBEB))),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(controller.selectedTime.value == null ? "Select Time" : controller.selectedTime.value!.format(context), style: TextStyle(color: controller.selectedTime.value == null ? Colors.grey : Colors.black)),
-                const Icon(Icons.access_time, size: 20, color: Colors.grey),
-              ],
+          child: Obx(
+            () => Container(
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 14.h),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8.r),
+                border: Border.all(color: const Color(0xFFEBEBEB)),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    controller.selectedTime.value == null
+                        ? "Select Time"
+                        : controller.selectedTime.value!.format(context),
+                    style: TextStyle(
+                      color: controller.selectedTime.value == null
+                          ? Colors.grey
+                          : Colors.black,
+                    ),
+                  ),
+                  const Icon(Icons.access_time, size: 20, color: Colors.grey),
+                ],
+              ),
             ),
-          )),
+          ),
         ),
       ],
     );
@@ -175,13 +248,22 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
       final categories = homeController.categorys.value?.data ?? [];
       return Container(
         padding: EdgeInsets.symmetric(horizontal: 12.w),
-        decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(8.r), border: Border.all(color: const Color(0xFFEBEBEB))),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8.r),
+          border: Border.all(color: const Color(0xFFEBEBEB)),
+        ),
         child: DropdownButtonHideUnderline(
           child: DropdownButton<int>(
             isExpanded: true,
             hint: const Text("Select Category"),
             value: controller.selectedCategoryId.value,
-            items: categories.map((cat) => DropdownMenuItem(value: cat.id, child: Text(cat.name))).toList(),
+            items: categories
+                .map(
+                  (cat) =>
+                      DropdownMenuItem(value: cat.id, child: Text(cat.name)),
+                )
+                .toList(),
             onChanged: (val) => controller.selectedCategoryId.value = val,
           ),
         ),
@@ -190,16 +272,29 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
   }
 
   Widget _buildImagePicker() {
-    return Obx(() => GestureDetector(
-      onTap: () => controller.pickImage(),
-      child: Container(
-        height: 225.h, width: double.infinity, color: Colors.grey[200],
-        child: controller.eventImage.value != null
-            ? Image.file(File(controller.eventImage.value!.path), fit: BoxFit.cover)
-            : const Icon(Icons.add_a_photo, size: 50, color: Colors.grey),
+    return Obx(
+      () => GestureDetector(
+        onTap: () => controller.pickImage(),
+        child: Container(
+          height: 225.h,
+          width: double.infinity,
+          color: Colors.grey[200],
+          child: controller.eventImage.value != null
+              ? Image.file(
+                  File(controller.eventImage.value!.path),
+                  fit: BoxFit.cover,
+                )
+              : const Icon(Icons.add_a_photo, size: 50, color: Colors.grey),
+        ),
       ),
-    ));
+    );
   }
 
-  Widget _buildLabel(String text) => Padding(padding: EdgeInsets.only(bottom: 5.h), child: Text(text, style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold)));
+  Widget _buildLabel(String text) => Padding(
+    padding: EdgeInsets.only(bottom: 5.h),
+    child: Text(
+      text,
+      style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
+    ),
+  );
 }

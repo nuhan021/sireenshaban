@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_stripe/flutter_stripe.dart' hide Stripe;
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/constants/api_constants.dart';
 import 'package:sireenshaban/core/utils/constants/snackbar_constant.dart';
-import 'package:sireenshaban/features/stripe/model/payment_intent.dart' hide Stripe;
+import 'package:sireenshaban/features/stripe/model/payment_intent.dart'
+    hide Stripe;
 import 'package:sireenshaban/features/subscription/model/subscription_plans_model.dart';
 import '../../../../core/services/network_caller.dart';
 import '../../../../routes/app_routes.dart';
@@ -17,7 +17,9 @@ class StripeController extends GetxController {
   RxBool isSubscriptionPlanError = false.obs;
   RxBool isPaymentProcessing = false.obs;
 
-  Rx<SubscriptionPlansModel?> subscriptionPlans = Rx<SubscriptionPlansModel?>(null);
+  Rx<SubscriptionPlansModel?> subscriptionPlans = Rx<SubscriptionPlansModel?>(
+    null,
+  );
   Rx<PaymentIntentModel?> paymentIntent = Rx<PaymentIntentModel?>(null);
 
   @override
@@ -36,7 +38,9 @@ class StripeController extends GetxController {
     );
 
     if (response.isSuccess) {
-      subscriptionPlans.value = SubscriptionPlansModel.fromJson(response.responseData);
+      subscriptionPlans.value = SubscriptionPlansModel.fromJson(
+        response.responseData,
+      );
     } else {
       isSubscriptionPlanError.value = true;
       SnackBarConstant.error('Failed to load subscription plans');
@@ -62,7 +66,6 @@ class StripeController extends GetxController {
           paymentIntentClientSecret: clientSecret,
           merchantDisplayName: 'Sireen Shaban',
           style: ThemeMode.light,
-
         ),
       );
 
@@ -70,7 +73,6 @@ class StripeController extends GetxController {
 
       SnackBarConstant.success('Subscription successful!');
       Get.offAllNamed(AppRoute.vendorBottomNavBar);
-
     } on StripeException catch (e) {
       if (e.error.code == FailureCode.Canceled) {
         SnackBarConstant.error('Payment Canceled');

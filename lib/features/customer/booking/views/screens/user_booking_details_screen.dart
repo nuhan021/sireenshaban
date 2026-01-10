@@ -10,7 +10,7 @@ import '../../../../../core/utils/constants/image_path.dart';
 import '../../../../../routes/app_routes.dart';
 
 class UserBookingDetailsScreen extends StatefulWidget {
-  UserBookingDetailsScreen({super.key, required this.bookingId});
+  const UserBookingDetailsScreen({super.key, required this.bookingId});
 
   final int bookingId;
 
@@ -59,7 +59,7 @@ class _UserBookingDetailsScreenState extends State<UserBookingDetailsScreen> {
               height: 40.h,
               width: 40.w,
               decoration: BoxDecoration(
-                color: Color(0xFF3333331A),
+                color: Color(0xff3333331a),
                 shape: BoxShape.circle,
               ),
               alignment: AlignmentGeometry.center,

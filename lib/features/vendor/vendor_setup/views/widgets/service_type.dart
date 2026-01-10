@@ -27,16 +27,19 @@ class ServiceType extends StatelessWidget {
           Obx(() {
             return GestureDetector(
               onTap: () {
-
                 HapticFeedback.heavyImpact();
 
-                controller.atMyBusinessAddress.value = !controller.atMyBusinessAddress.value;},
+                controller.atMyBusinessAddress.value =
+                    !controller.atMyBusinessAddress.value;
+              },
               child: Container(
                 height: 40.h,
                 width: double.maxFinite,
                 padding: EdgeInsets.symmetric(horizontal: 12.w),
                 decoration: BoxDecoration(
-                  color: controller.atMyBusinessAddress.value ? AppColors.primaryDeepBlueNormal : Colors.white,
+                  color: controller.atMyBusinessAddress.value
+                      ? AppColors.primaryDeepBlueNormal
+                      : Colors.white,
                   borderRadius: BorderRadius.circular(6.r),
                 ),
                 child: Row(
@@ -48,7 +51,9 @@ class ServiceType extends StatelessWidget {
                         style: getTextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w500,
-                          color: controller.atMyBusinessAddress.value ? Colors.white : AppColors.bodyDarkGray,
+                          color: controller.atMyBusinessAddress.value
+                              ? Colors.white
+                              : AppColors.bodyDarkGray,
                         ),
                       ),
                     ),
@@ -57,12 +62,16 @@ class ServiceType extends StatelessWidget {
                       height: 24.h,
                       width: 24.w,
                       decoration: BoxDecoration(
-                        color: controller.atMyBusinessAddress.value ? Colors.white : Color(0xFFD8D8D8),
+                        color: controller.atMyBusinessAddress.value
+                            ? Colors.white
+                            : Color(0xFFD8D8D8),
                         borderRadius: BorderRadius.circular(6.r),
                       ),
                       child: Icon(
                         Icons.check,
-                        color:controller.atMyBusinessAddress.value? AppColors.primaryDeepBlueNormal : Colors.white,
+                        color: controller.atMyBusinessAddress.value
+                            ? AppColors.primaryDeepBlueNormal
+                            : Colors.white,
                         size: 16,
                       ),
                     ),
@@ -77,15 +86,18 @@ class ServiceType extends StatelessWidget {
           Obx(() {
             return GestureDetector(
               onTap: () {
-                 HapticFeedback.heavyImpact();
-                controller.iTravelToTheClient.value = !controller.iTravelToTheClient.value;
-            },
+                HapticFeedback.heavyImpact();
+                controller.iTravelToTheClient.value =
+                    !controller.iTravelToTheClient.value;
+              },
               child: Container(
                 height: 40.h,
                 width: double.maxFinite,
                 padding: EdgeInsets.symmetric(horizontal: 12.w),
                 decoration: BoxDecoration(
-                  color: controller.iTravelToTheClient.value ? AppColors.primaryDeepBlueNormal : Colors.white,
+                  color: controller.iTravelToTheClient.value
+                      ? AppColors.primaryDeepBlueNormal
+                      : Colors.white,
                   borderRadius: BorderRadius.circular(6.r),
                 ),
                 child: Row(
@@ -97,7 +109,9 @@ class ServiceType extends StatelessWidget {
                         style: getTextStyle(
                           fontSize: 12.sp,
                           fontWeight: FontWeight.w500,
-                          color: controller.iTravelToTheClient.value ? Colors.white : AppColors.bodyDarkGray,
+                          color: controller.iTravelToTheClient.value
+                              ? Colors.white
+                              : AppColors.bodyDarkGray,
                         ),
                       ),
                     ),
@@ -106,12 +120,16 @@ class ServiceType extends StatelessWidget {
                       height: 24.h,
                       width: 24.w,
                       decoration: BoxDecoration(
-                        color: controller.iTravelToTheClient.value ? Colors.white : Color(0xFFD8D8D8),
+                        color: controller.iTravelToTheClient.value
+                            ? Colors.white
+                            : Color(0xFFD8D8D8),
                         borderRadius: BorderRadius.circular(6.r),
                       ),
                       child: Icon(
                         Icons.check,
-                        color:controller.iTravelToTheClient.value? AppColors.primaryDeepBlueNormal : Colors.white,
+                        color: controller.iTravelToTheClient.value
+                            ? AppColors.primaryDeepBlueNormal
+                            : Colors.white,
                         size: 16,
                       ),
                     ),

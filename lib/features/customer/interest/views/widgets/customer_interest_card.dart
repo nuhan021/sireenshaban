@@ -4,7 +4,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
-import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/customer/interest/controller/customer_interest_controller.dart';
 
 import '../../../../../core/utils/constants/colors.dart';
@@ -96,7 +95,7 @@ class CustomerInterestCard extends StatelessWidget {
             width: double.maxFinite,
             color: Colors.transparent,
           ),
-        )
+        ),
       ],
     );
   }

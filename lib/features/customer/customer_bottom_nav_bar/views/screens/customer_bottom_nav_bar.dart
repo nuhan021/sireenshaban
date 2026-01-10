@@ -18,8 +18,8 @@ class CustomerBottomNavBar extends StatelessWidget {
 
   final CustomerBottomNavBarController navaberController =
       Get.isRegistered<CustomerBottomNavBarController>()
-          ? Get.find<CustomerBottomNavBarController>()
-          : Get.put(CustomerBottomNavBarController());
+      ? Get.find<CustomerBottomNavBarController>()
+      : Get.put(CustomerBottomNavBarController());
 
   List<Widget> _buildScreens() {
     return [
@@ -27,23 +27,22 @@ class CustomerBottomNavBar extends StatelessWidget {
       SearchScreen(),
       EventsScreen(),
       ChatListScreen(),
-      ProfileScreen()
+      ProfileScreen(),
     ];
   }
-
 
   List<PersistentTabConfig> _tabs() => [
     PersistentTabConfig(
       screen: _buildScreens()[0],
       item: ItemConfig(
-        icon: Obx(
-                () {
-            return Image.asset(
-              width: 20.w,
-              navaberController.currentIndex.value == 0 ? IconPath.navFillHome :IconPath.navHome,
-            );
-          }
-        ),
+        icon: Obx(() {
+          return Image.asset(
+            width: 20.w,
+            navaberController.currentIndex.value == 0
+                ? IconPath.navFillHome
+                : IconPath.navHome,
+          );
+        }),
         title: "Home",
         textStyle: getTextStyle(fontSize: 10.sp, fontWeight: FontWeight.w500),
         activeForegroundColor: AppColors.primaryDeepBlueNormal,
@@ -54,14 +53,14 @@ class CustomerBottomNavBar extends StatelessWidget {
     PersistentTabConfig(
       screen: _buildScreens()[1],
       item: ItemConfig(
-        icon: Obx(
-                () {
-              return Image.asset(
-                width: 20.w,
-                navaberController.currentIndex.value == 1 ? IconPath.navFillSearch :IconPath.navSearch,
-              );
-            }
-        ),
+        icon: Obx(() {
+          return Image.asset(
+            width: 20.w,
+            navaberController.currentIndex.value == 1
+                ? IconPath.navFillSearch
+                : IconPath.navSearch,
+          );
+        }),
         title: "Search",
         textStyle: getTextStyle(fontSize: 10.sp, fontWeight: FontWeight.w500),
         activeForegroundColor: AppColors.primaryDeepBlueNormal,
@@ -72,14 +71,14 @@ class CustomerBottomNavBar extends StatelessWidget {
     PersistentTabConfig(
       screen: _buildScreens()[2],
       item: ItemConfig(
-        icon: Obx(
-                () {
-              return Image.asset(
-                width: 20.w,
-                navaberController.currentIndex.value == 2 ? IconPath.navFillCalendar :IconPath.navCalendar,
-              );
-            }
-        ),
+        icon: Obx(() {
+          return Image.asset(
+            width: 20.w,
+            navaberController.currentIndex.value == 2
+                ? IconPath.navFillCalendar
+                : IconPath.navCalendar,
+          );
+        }),
         title: "Events",
         textStyle: getTextStyle(fontSize: 10.sp, fontWeight: FontWeight.w500),
         activeForegroundColor: AppColors.primaryDeepBlueNormal,
@@ -90,14 +89,14 @@ class CustomerBottomNavBar extends StatelessWidget {
     PersistentTabConfig(
       screen: _buildScreens()[3],
       item: ItemConfig(
-        icon: Obx(
-                () {
-              return Image.asset(
-                width: 20.w,
-                navaberController.currentIndex.value == 3 ? IconPath.navFillMessage :IconPath.navMessage,
-              );
-            }
-        ),
+        icon: Obx(() {
+          return Image.asset(
+            width: 20.w,
+            navaberController.currentIndex.value == 3
+                ? IconPath.navFillMessage
+                : IconPath.navMessage,
+          );
+        }),
         title: "Chat",
         textStyle: getTextStyle(fontSize: 10.sp, fontWeight: FontWeight.w500),
         activeForegroundColor: AppColors.primaryDeepBlueNormal,
@@ -108,14 +107,14 @@ class CustomerBottomNavBar extends StatelessWidget {
     PersistentTabConfig(
       screen: _buildScreens()[4],
       item: ItemConfig(
-        icon: Obx(
-                () {
-              return Image.asset(
-                width: 20.w,
-                navaberController.currentIndex.value == 4 ? IconPath.navFillProfile :IconPath.navProfile,
-              );
-            }
-        ),
+        icon: Obx(() {
+          return Image.asset(
+            width: 20.w,
+            navaberController.currentIndex.value == 4
+                ? IconPath.navFillProfile
+                : IconPath.navProfile,
+          );
+        }),
         title: "Profile",
         textStyle: getTextStyle(fontSize: 10.sp, fontWeight: FontWeight.w500),
         activeForegroundColor: AppColors.primaryDeepBlueNormal,
@@ -130,7 +129,8 @@ class CustomerBottomNavBar extends StatelessWidget {
       controller: navaberController.controller,
 
       tabs: _tabs(),
-      navBarBuilder: (navBarConfig) => Style1BottomNavBar(navBarConfig: navBarConfig, height: 60.h),
+      navBarBuilder: (navBarConfig) =>
+          Style1BottomNavBar(navBarConfig: navBarConfig, height: 60.h),
       onTabChanged: (index) {
         navaberController.changeCurrentIndex(index);
       },
