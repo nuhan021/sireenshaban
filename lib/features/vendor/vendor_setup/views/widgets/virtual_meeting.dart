@@ -71,9 +71,7 @@ class VirtualMeeting extends StatelessWidget {
                     activeTrackColor: AppColors.primaryDeepBlueNormal,
                     inactiveThumbColor: AppColors.primaryDeepBlueNormal,
                     activeThumbColor: Colors.white,
-                    thumbIcon: WidgetStateProperty.resolveWith<Icon?>((
-                      states,
-                    ) {
+                    thumbIcon: WidgetStateProperty.resolveWith<Icon?>((states) {
                       if (states.contains(WidgetState.disabled)) {
                         return const Icon(Icons.close);
                       }

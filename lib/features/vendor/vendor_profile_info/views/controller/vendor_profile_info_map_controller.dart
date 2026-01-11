@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 import 'package:sireenshaban/features/vendor/vendor_setup/controller/vendor_setup_screen_controller.dart';
 
-
 class VendorProfileInfoMapController extends GetxController {
   final String googleApiKey = "AIzaSyA22IxMllRCaf9DcNTmyjKPcHpY5okWfhc";
 

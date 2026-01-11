@@ -39,25 +39,25 @@ class BusinessHours extends StatelessWidget {
                             activeTrackColor: AppColors.primaryDeepBlueNormal,
                             inactiveThumbColor: AppColors.primaryDeepBlueNormal,
                             activeThumbColor: Colors.white,
-                            thumbIcon: WidgetStateProperty.resolveWith<Icon?>(
-                              (states) {
-                                if (states.contains(WidgetState.disabled)) {
-                                  return const Icon(Icons.close);
-                                }
-                                if (states.contains(WidgetState.selected)) {
-                                  return Icon(
-                                    Icons.check,
-                                    size: 16,
-                                    color: AppColors.primaryDeepBlueNormal,
-                                  );
-                                }
-                                return const Icon(
-                                  Icons.close,
+                            thumbIcon: WidgetStateProperty.resolveWith<Icon?>((
+                              states,
+                            ) {
+                              if (states.contains(WidgetState.disabled)) {
+                                return const Icon(Icons.close);
+                              }
+                              if (states.contains(WidgetState.selected)) {
+                                return Icon(
+                                  Icons.check,
                                   size: 16,
-                                  color: Colors.white,
+                                  color: AppColors.primaryDeepBlueNormal,
                                 );
-                              },
-                            ),
+                              }
+                              return const Icon(
+                                Icons.close,
+                                size: 16,
+                                color: Colors.white,
+                              );
+                            }),
                             value: vendorSetupScreenController
                                 .weekDays[day]!
                                 .value,

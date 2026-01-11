@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/services/firebase/fcm_token_service.dart';
@@ -67,7 +66,7 @@ class LoginController extends GetxController {
     );
     await StorageService.saveRole(loginModel.value!.data.user.role);
     await StorageService.savaVendorId(loginModel.value!.data.vendor.id);
-      AppLoggerHelper.debug("vendor ID : ${StorageService.vendorId}");
+    AppLoggerHelper.debug("vendor ID : ${StorageService.vendorId}");
 
     StorageService.savaVendorId(loginModel.value!.data.vendor.id);
     AppLoggerHelper.debug(
