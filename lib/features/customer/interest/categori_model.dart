@@ -4,7 +4,8 @@
 
 import 'dart:convert';
 
-CategoriModel categoriModelFromJson(String str) => CategoriModel.fromJson(json.decode(str));
+CategoriModel categoriModelFromJson(String str) =>
+    CategoriModel.fromJson(json.decode(str));
 
 String categoriModelToJson(CategoriModel data) => json.encode(data.toJson());
 
@@ -12,10 +13,7 @@ class CategoriModel {
   bool success;
   List<Datum> data;
 
-  CategoriModel({
-    required this.success,
-    required this.data,
-  });
+  CategoriModel({required this.success, required this.data});
 
   factory CategoriModel.fromJson(Map<String, dynamic> json) => CategoriModel(
     success: json["success"],

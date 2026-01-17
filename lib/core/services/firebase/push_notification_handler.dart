@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:sireenshaban/core/utils/logging/logger.dart';
 
 @pragma('vm:entry-point')
@@ -18,6 +18,30 @@ void _handleMessage(RemoteMessage message) {
 }
 
 class PushNotificationHandler {
+  static final FlutterLocalNotificationsPlugin _localNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  static Future<void> initialize() async {
+    // Initialize local notifications
+    const AndroidInitializationSettings androidInitializationSettings =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+
+    const DarwinInitializationSettings iosInitializationSettings =
+        DarwinInitializationSettings(
+          requestAlertPermission: true,
+          requestBadgePermission: true,
+          requestSoundPermission: true,
+        );
+
+    const InitializationSettings initializationSettings =
+        InitializationSettings(
+          android: androidInitializationSettings,
+          iOS: iosInitializationSettings,
+        );
+
+    await _localNotificationsPlugin.initialize(initializationSettings);
+  }
+
   static void configure() {
     // Handle background messages
     FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -38,12 +62,44 @@ class PushNotificationHandler {
     });
   }
 
-  static void _showForegroundNotification(RemoteMessage message) {
-    // You can use local notifications plugin here if needed
-    // For now, just logging
-    AppLoggerHelper.info(
-      'Foreground notification - Title: ${message.notification?.title}',
-    );
+  static Future<void> _showForegroundNotification(RemoteMessage message) async {
+    try {
+      final String title = message.notification?.title ?? 'Notification';
+      final String body = message.notification?.body ?? '';
+
+      AppLoggerHelper.info('Showing foreground notification - Title: $title');
+
+      const AndroidNotificationDetails androidNotificationDetails =
+          AndroidNotificationDetails(
+            'sireenshaban_notifications',
+            'Default Notifications',
+            channelDescription: 'Default notification channel',
+            importance: Importance.max,
+            priority: Priority.high,
+            showWhen: true,
+          );
+
+      const DarwinNotificationDetails iosNotificationDetails =
+          DarwinNotificationDetails(
+            presentAlert: true,
+            presentBadge: true,
+            presentSound: true,
+          );
+
+      const NotificationDetails notificationDetails = NotificationDetails(
+        android: androidNotificationDetails,
+        iOS: iosNotificationDetails,
+      );
+
+      await _localNotificationsPlugin.show(
+        message.messageId.hashCode,
+        title,
+        body,
+        notificationDetails,
+      );
+    } catch (e) {
+      AppLoggerHelper.error('Error showing foreground notification: $e');
+    }
   }
 
   static void _navigateToScreen(String? screen) {

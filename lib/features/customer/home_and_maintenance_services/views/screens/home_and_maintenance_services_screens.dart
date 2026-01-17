@@ -53,7 +53,6 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
 
             40.verticalSpace,
 
-
             // select date and time
             // booking slot
             // CustomPrimaryButton(
@@ -65,7 +64,6 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
             //     SelectTimeAndDateScreen(),
             //   ),
             // ).paddingSymmetric(horizontal: 20.w),
-
             20.verticalSpace,
 
             // Issue Details
@@ -147,8 +145,6 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
                             color: AppColors.bodyDarkGray,
                           ),
                         ),
-
-
                       ],
                     ),
                   ),
@@ -301,24 +297,21 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
 
             PackageBookingPaymentMethod().paddingSymmetric(horizontal: 20.w),
 
-
             40.verticalSpace,
 
             // booking summary
             Text(
               'Booking Summary',
               style: getTextStyle(
-                  fontSize: 22.sp,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.bodyDarkGray
+                fontSize: 22.sp,
+                fontWeight: FontWeight.w600,
+                color: AppColors.bodyDarkGray,
               ),
             ).paddingSymmetric(horizontal: 20.w),
 
             20.verticalSpace,
 
             BookingSummary(),
-
-
 
             40.verticalSpace,
 

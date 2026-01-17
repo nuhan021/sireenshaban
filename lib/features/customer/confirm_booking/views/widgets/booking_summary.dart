@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 
 import '../../../../../core/utils/constants/colors.dart';
@@ -40,7 +39,7 @@ class BookingSummary extends StatelessWidget {
               style: getTextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w500,
-                color: AppColors.bodyDarkGray
+                color: AppColors.bodyDarkGray,
               ),
             ),
 
@@ -53,17 +52,15 @@ class BookingSummary extends StatelessWidget {
                 Text(
                   '\$$actualPrice',
                   style: getTextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.bodyDarkGray
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.bodyDarkGray,
                   ),
                 ),
               ],
             ),
           ),
-          Divider(
-            color: AppColors.primaryDeepBlueLight,
-          ),
+          Divider(color: AppColors.primaryDeepBlueLight),
 
           ListTile(
             title: Text(
@@ -71,7 +68,7 @@ class BookingSummary extends StatelessWidget {
               style: getTextStyle(
                 fontSize: 16.sp,
                 fontWeight: FontWeight.w500,
-                color: AppColors.bodyDarkGray
+                color: AppColors.bodyDarkGray,
               ),
             ),
 
@@ -83,13 +80,12 @@ class BookingSummary extends StatelessWidget {
             //       color: AppColors.secondaryInfoMediumGrayNormal
             //   ),
             // ),
-
             trailing: Text(
               '\$$actualPrice',
               style: getTextStyle(
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w500,
-                  color: AppColors.bodyDarkGray
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w500,
+                color: AppColors.bodyDarkGray,
               ),
             ),
           ),
@@ -121,7 +117,6 @@ class BookingSummary extends StatelessWidget {
           // ).paddingSymmetric(horizontal: 15.w)
         ],
       ),
-
     );
   }
 }

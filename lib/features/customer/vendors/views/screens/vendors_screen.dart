@@ -34,9 +34,9 @@ class _VendorsScreenState extends State<VendorsScreen> {
   }
 
   String _getPackageDate(
-      DateTime? validUntil,
-      List<AvailableDate> availableDates,
-      ) {
+    DateTime? validUntil,
+    List<AvailableDate> availableDates,
+  ) {
     if (availableDates.isNotEmpty) {
       return AppHelperFunctions.getFormattedDate(availableDates.first.date);
     }

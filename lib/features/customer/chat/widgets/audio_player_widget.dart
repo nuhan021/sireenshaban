@@ -73,9 +73,13 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
       if (_audioPlayer.audioSource == null) {
         isLoading.value = true;
         debugPrint('📻 [AudioPlayer] Loading audio from: ${widget.audioUrl}');
-        debugPrint('📻 [AudioPlayer] URL is valid: ${widget.audioUrl.isNotEmpty}');
-        debugPrint('📻 [AudioPlayer] URL starts with http: ${widget.audioUrl.startsWith('http')}');
-        
+        debugPrint(
+          '📻 [AudioPlayer] URL is valid: ${widget.audioUrl.isNotEmpty}',
+        );
+        debugPrint(
+          '📻 [AudioPlayer] URL starts with http: ${widget.audioUrl.startsWith('http')}',
+        );
+
         try {
           await _audioPlayer.setUrl(widget.audioUrl);
           isLoading.value = false;
@@ -84,7 +88,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
           isLoading.value = false;
           debugPrint('❌ [AudioPlayer] Error loading audio: $loadError');
           debugPrint('   Error details: ${loadError.toString()}');
-          
+
           if (mounted) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
@@ -117,7 +121,7 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     if (seconds.isNaN || seconds.isInfinite) {
       return '0:00';
     }
-    
+
     final duration = Duration(seconds: seconds.toInt());
     final minutes = duration.inMinutes;
     final secs = duration.inSeconds % 60;
@@ -150,13 +154,17 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                           child: CircularProgressIndicator(
                             strokeWidth: 2,
                             valueColor: AlwaysStoppedAnimation<Color>(
-                              widget.isCurrentUser ? Colors.white : Colors.black87,
+                              widget.isCurrentUser
+                                  ? Colors.white
+                                  : Colors.black87,
                             ),
                           ),
                         )
                       : Icon(
                           isPlaying.value ? Icons.pause : Icons.play_arrow,
-                          color: widget.isCurrentUser ? Colors.white : Colors.black87,
+                          color: widget.isCurrentUser
+                              ? Colors.white
+                              : Colors.black87,
                           size: 18.sp,
                         ),
                 ),
@@ -168,10 +176,14 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
                   child: LinearProgressIndicator(
                     minHeight: 3.h,
                     value: duration.value > 0
-                        ? (playbackPosition.value / duration.value).clamp(0.0, 1.0)
+                        ? (playbackPosition.value / duration.value).clamp(
+                            0.0,
+                            1.0,
+                          )
                         : 0.0,
-                    backgroundColor:
-                        widget.isCurrentUser ? Colors.white24 : Colors.grey[400],
+                    backgroundColor: widget.isCurrentUser
+                        ? Colors.white24
+                        : Colors.grey[400],
                     valueColor: AlwaysStoppedAnimation<Color>(
                       widget.isCurrentUser ? Colors.white : Colors.blue,
                     ),
@@ -200,4 +212,3 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
     super.dispose();
   }
 }
-

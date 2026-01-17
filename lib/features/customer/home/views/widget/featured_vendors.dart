@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
-import 'package:sireenshaban/features/customer/home/views/widget/featured_vendors_card.dart';
 import 'package:sireenshaban/features/customer/vendors/views/screens/vendors_screen.dart';
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
@@ -28,10 +27,8 @@ class FeaturedVendors extends StatelessWidget {
             ),
 
             GestureDetector(
-              onTap: () => AppHelperFunctions.navigateToScreen(
-                context,
-                VendorsScreen(),
-              ),
+              onTap: () =>
+                  AppHelperFunctions.navigateToScreen(context, VendorsScreen()),
               child: Text(
                 'Explore All',
                 style: getTextStyle(

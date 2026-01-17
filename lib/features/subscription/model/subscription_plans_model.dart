@@ -4,23 +4,23 @@
 
 import 'dart:convert';
 
-SubscriptionPlansModel subscriptionPlansModelFromJson(String str) => SubscriptionPlansModel.fromJson(json.decode(str));
+SubscriptionPlansModel subscriptionPlansModelFromJson(String str) =>
+    SubscriptionPlansModel.fromJson(json.decode(str));
 
-String subscriptionPlansModelToJson(SubscriptionPlansModel data) => json.encode(data.toJson());
+String subscriptionPlansModelToJson(SubscriptionPlansModel data) =>
+    json.encode(data.toJson());
 
 class SubscriptionPlansModel {
   bool success;
   List<Plan> plans;
 
-  SubscriptionPlansModel({
-    required this.success,
-    required this.plans,
-  });
+  SubscriptionPlansModel({required this.success, required this.plans});
 
-  factory SubscriptionPlansModel.fromJson(Map<String, dynamic> json) => SubscriptionPlansModel(
-    success: json["success"],
-    plans: List<Plan>.from(json["plans"].map((x) => Plan.fromJson(x))),
-  );
+  factory SubscriptionPlansModel.fromJson(Map<String, dynamic> json) =>
+      SubscriptionPlansModel(
+        success: json["success"],
+        plans: List<Plan>.from(json["plans"].map((x) => Plan.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
     "success": success,

@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 
 /// Firebase Messaging Configuration and Setup
 /// This service handles Firebase Cloud Messaging (FCM) push notifications
-/// 
+///
 /// To properly setup Firebase:
 /// 1. Go to https://console.firebase.google.com
 /// 2. Create a new project or select existing
@@ -19,7 +19,7 @@ import 'package:flutter/foundation.dart';
 ///    - Add coreLibraryDesugaring
 /// 9. Configure iOS (Info.plist):
 ///    - Add push notification capability
-/// 
+///
 /// Setup Instructions: See /lib/core/services/firebase/notification_readME.txt
 
 class FirebaseMessagingSetup {

@@ -31,7 +31,9 @@ class SubscriptionCard extends StatelessWidget {
           color: Colors.white,
           borderRadius: BorderRadius.circular(24.r),
           border: Border.all(
-            color: plan.isPopular ? AppColors.primaryDeepBlueNormal : const Color(0xFFE9EBF3),
+            color: plan.isPopular
+                ? AppColors.primaryDeepBlueNormal
+                : const Color(0xFFE9EBF3),
             width: plan.isPopular ? 2 : 1.5,
           ),
           boxShadow: [
@@ -61,7 +63,10 @@ class SubscriptionCard extends StatelessWidget {
                 ),
                 if (plan.isPopular)
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.w,
+                      vertical: 6.h,
+                    ),
                     decoration: BoxDecoration(
                       color: AppColors.primaryDeepBlueNormal,
                       borderRadius: BorderRadius.circular(20.r),

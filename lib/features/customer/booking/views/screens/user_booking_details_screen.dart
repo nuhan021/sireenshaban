@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:sireenshaban/core/common/widgets/IField.dart';
+import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
 import 'package:sireenshaban/features/customer/booking/controller/booking_details_controller.dart';
 
 import '../../../../../core/common/styles/global_text_style.dart';
@@ -10,7 +12,7 @@ import '../../../../../core/utils/constants/image_path.dart';
 import '../../../../../routes/app_routes.dart';
 
 class UserBookingDetailsScreen extends StatefulWidget {
-  UserBookingDetailsScreen({super.key, required this.bookingId});
+  const UserBookingDetailsScreen({super.key, required this.bookingId});
 
   final int bookingId;
 
@@ -59,7 +61,7 @@ class _UserBookingDetailsScreenState extends State<UserBookingDetailsScreen> {
               height: 40.h,
               width: 40.w,
               decoration: BoxDecoration(
-                color: Color(0xFF3333331A),
+                color: Color(0xff3333331a),
                 shape: BoxShape.circle,
               ),
               alignment: AlignmentGeometry.center,
@@ -426,83 +428,99 @@ class _UserBookingDetailsScreenState extends State<UserBookingDetailsScreen> {
 
               40.verticalSpace,
 
-              // rating
-              // Text(
-              //   'Give Rating',
-              //   style: getTextStyle(
-              //     fontSize: 16.sp,
-              //     fontWeight: FontWeight.w600,
-              //     color: AppColors.primaryDeepBlueNormal,
-              //   ),
-              // ),
-              //
-              // 10.verticalSpace,
-              //
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     for (int i = 0; i < 5; i++)
-              //       Icon(
-              //         Icons.star_outline_rounded,
-              //         color: Color(0xFFF0C020),
-              //         size: 20.h,
-              //       ).paddingSymmetric(horizontal: 3.w),
-              //   ],
-              // ),
-              //
-              // 10.verticalSpace,
-              //
-              // Text(
-              //   '0.00',
-              //   style: getTextStyle(
-              //     fontSize: 12.sp,
-              //     fontWeight: FontWeight.w400,
-              //     color: AppColors.secondaryInfoMediumGrayNormal
-              //   ),
-              // ),
-              //
-              // 20.verticalSpace,
-              //
-              // // feedback
-              // Text(
-              //   'Give feedback',
-              //   style: getTextStyle(
-              //     fontSize: 16.sp,
-              //     fontWeight: FontWeight.w600,
-              //     color: AppColors.primaryDeepBlueNormal,
-              //   ),
-              // ),
-              //
-              // 10.verticalSpace,
-              //
-              // IField(
-              //   controller: TextEditingController(),
-              //   borderColor: Color(0xFFD1D3D8),
-              //   maxLine: 5,
-              //   filled: true,
-              //   fillColour: Colors.white,
-              //   hintText: 'Your Feedback',
-              // ),
-              //
-              // 30.verticalSpace,
-              //
-              // Container(
-              //   height: 50.h,
-              //   width: double.maxFinite,
-              //   decoration: BoxDecoration(
-              //     borderRadius: BorderRadius.circular(12.r),
-              //     border: Border.all(color: AppColors.primaryDeepBlueNormal,width: 2)
-              //   ),
-              //   alignment: AlignmentGeometry.center,
-              //   child: Text(
-              //     'Submit',
-              //     style: getTextStyle(
-              //       fontSize: 16.sp,
-              //       fontWeight: FontWeight.w600,
-              //       color: AppColors.primaryDeepBlueNormal
-              //     ),
-              //   ),
-              // ),
+              // Confirm Booking button - show only if payment is unpaid
+              if (data.payment.status.toLowerCase() == 'unpaid')
+                CustomPrimaryButton(
+                  text: 'Confirm Booking',
+                  color: AppColors.primaryDeepBlueNormal,
+                  textColor: Colors.white,
+                  onPressed: () {},
+                ),
+              30.verticalSpace,
+
+              // Rating and Review only if booking is completed/cancelled
+              if (data.status.toLowerCase() == 'completed' ||
+                  data.status.toLowerCase() == 'cancelled') ...[
+                Text(
+                  'Give Rating',
+                  style: getTextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primaryDeepBlueNormal,
+                  ),
+                ),
+
+                10.verticalSpace,
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    for (int i = 0; i < 5; i++)
+                      Icon(
+                        Icons.star_outline_rounded,
+                        color: Color(0xFFF0C020),
+                        size: 20.h,
+                      ).paddingSymmetric(horizontal: 3.w),
+                  ],
+                ),
+
+                10.verticalSpace,
+
+                Text(
+                  '0.00',
+                  style: getTextStyle(
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.secondaryInfoMediumGrayNormal,
+                  ),
+                ),
+
+                20.verticalSpace,
+
+                // // feedback
+                Text(
+                  'Give feedback',
+                  style: getTextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primaryDeepBlueNormal,
+                  ),
+                ),
+
+                10.verticalSpace,
+
+                IField(
+                  controller: TextEditingController(),
+                  borderColor: Color(0xFFD1D3D8),
+                  maxLine: 5,
+                  filled: true,
+                  fillColour: Colors.white,
+                  hintText: 'Your Feedback',
+                ),
+
+                30.verticalSpace,
+
+                Container(
+                  height: 50.h,
+                  width: double.maxFinite,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12.r),
+                    border: Border.all(
+                      color: AppColors.primaryDeepBlueNormal,
+                      width: 2,
+                    ),
+                  ),
+                  alignment: AlignmentGeometry.center,
+                  child: Text(
+                    'Submit',
+                    style: getTextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primaryDeepBlueNormal,
+                    ),
+                  ),
+                ),
+              ],
               30.verticalSpace,
             ],
           ).paddingSymmetric(horizontal: 20.w),

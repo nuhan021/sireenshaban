@@ -53,7 +53,7 @@ class HomeSearchBar extends StatelessWidget {
                   Icon(
                     Icons.mic_none_outlined,
                     color: AppColors.secondaryInfoMediumGray,
-                  )
+                  ),
                 ],
               ),
               // child: Center(

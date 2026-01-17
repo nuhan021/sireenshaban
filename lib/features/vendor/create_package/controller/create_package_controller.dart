@@ -11,12 +11,13 @@ import '../../../../core/utils/logging/logger.dart';
 enum ServicesGroup {
   businessAndCreativeServices,
   personalCareAndEducation,
-  homeAndMaintenanceServices
+  homeAndMaintenanceServices,
 }
 
 class CreatePackageController extends GetxController {
   final ImagePicker _imagePicker = ImagePicker();
-  final VendorProfileInfoMapController _mapController = Get.find<VendorProfileInfoMapController>();
+  final VendorProfileInfoMapController _mapController =
+      Get.find<VendorProfileInfoMapController>();
 
   // --- Reactive States ---
   final RxBool isLoading = false.obs;
@@ -27,8 +28,13 @@ class CreatePackageController extends GetxController {
   final Rxn<ServicesGroup> selectedServiceGroup = Rxn<ServicesGroup>();
 
   // --- Selection Data ---
-  final RxMap<DateTime, List<String>> selectedSlots = <DateTime, List<String>>{}.obs;
-  final RxList<String> customTimeSlots = <String>["09:30 AM", "12:00 PM", "03:00 PM"].obs;
+  final RxMap<DateTime, List<String>> selectedSlots =
+      <DateTime, List<String>>{}.obs;
+  final RxList<String> customTimeSlots = <String>[
+    "09:30 AM",
+    "12:00 PM",
+    "03:00 PM",
+  ].obs;
 
   // --- Form Controllers ---
   final TextEditingController titleController = TextEditingController();
@@ -82,7 +88,9 @@ class CreatePackageController extends GetxController {
   void addCustomTime(String newTime) {
     if (!customTimeSlots.contains(newTime)) {
       customTimeSlots.add(newTime);
-      customTimeSlots.sort((a, b) => DateFormat.jm().parse(a).compareTo(DateFormat.jm().parse(b)));
+      customTimeSlots.sort(
+        (a, b) => DateFormat.jm().parse(a).compareTo(DateFormat.jm().parse(b)),
+      );
     }
   }
 
@@ -105,9 +113,10 @@ class CreatePackageController extends GetxController {
     AppLoggerHelper.info('The latitude: ${latLng?.longitude.toString()}');
 
     try {
-
       // Credentials and URL from your Postman setup
-      var uri = Uri.parse("${ApiConstants.baseUrl}/packages"); // Update with actual base URL
+      var uri = Uri.parse(
+        "${ApiConstants.baseUrl}/packages",
+      ); // Update with actual base URL
       var request = http.MultipartRequest('POST', uri);
 
       request.headers.addAll({
@@ -136,13 +145,17 @@ class CreatePackageController extends GetxController {
 
       // 2. Image File
       if (bannerImage.value != null) {
-        request.files.add(await http.MultipartFile.fromPath('image', bannerImage.value!.path));
+        request.files.add(
+          await http.MultipartFile.fromPath('image', bannerImage.value!.path),
+        );
       }
 
       // 3. Nested Array Logic: dates[i][slots][j][time]
       int dateIndex = 0;
       selectedSlots.forEach((date, times) {
-        request.fields['dates[$dateIndex][date]'] = DateFormat('yyyy-MM-dd').format(date);
+        request.fields['dates[$dateIndex][date]'] = DateFormat(
+          'yyyy-MM-dd',
+        ).format(date);
 
         for (int slotIndex = 0; slotIndex < times.length; slotIndex++) {
           String timeValue = times[slotIndex];
@@ -150,8 +163,10 @@ class CreatePackageController extends GetxController {
           // নিশ্চিত করুন timeValue টি স্ট্রিং (যেমন: "09:30 AM")
           String formattedTime = _formatTo24H(timeValue);
 
-          request.fields['dates[$dateIndex][slots][$slotIndex][time]'] = formattedTime;
-          request.fields['dates[$dateIndex][slots][$slotIndex][period]'] = _determinePeriod(timeValue);
+          request.fields['dates[$dateIndex][slots][$slotIndex][time]'] =
+              formattedTime;
+          request.fields['dates[$dateIndex][slots][$slotIndex][period]'] =
+              _determinePeriod(timeValue);
         }
         dateIndex++;
       });
@@ -164,7 +179,12 @@ class CreatePackageController extends GetxController {
         Get.back();
         AppLoggerHelper.info('Created');
         AppLoggerHelper.info(responseData);
-        Get.snackbar("Success", "Package Published Successfully", backgroundColor: Colors.green, colorText: Colors.white);
+        Get.snackbar(
+          "Success",
+          "Package Published Successfully",
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
       } else {
         AppLoggerHelper.error("Server Error", responseData);
         Get.snackbar("Error", "Failed to upload: ${response.statusCode}");
@@ -205,7 +225,8 @@ class CreatePackageController extends GetxController {
       Get.snackbar("Required", "Banner image is missing");
       return false;
     }
-    if (selectedCategoryId.value == null || selectedServiceGroup.value == null) {
+    if (selectedCategoryId.value == null ||
+        selectedServiceGroup.value == null) {
       Get.snackbar("Required", "Please select Category and Service Group");
       return false;
     }

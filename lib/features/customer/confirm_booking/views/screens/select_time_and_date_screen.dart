@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:intl/intl.dart';
 import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/customer/confirm_booking/views/controller/confirm_booking_controller.dart';
@@ -21,10 +20,13 @@ class SelectTimeAndDateScreen extends StatefulWidget {
   final List<AvailableDate> availableDates;
   final int serviceDuration;
 
-  final ConfirmBookingController confirmBookingController = Get.put(ConfirmBookingController());
+  final ConfirmBookingController confirmBookingController = Get.put(
+    ConfirmBookingController(),
+  );
 
   @override
-  State<SelectTimeAndDateScreen> createState() => _SelectTimeAndDateScreenState();
+  State<SelectTimeAndDateScreen> createState() =>
+      _SelectTimeAndDateScreenState();
 }
 
 class _SelectTimeAndDateScreenState extends State<SelectTimeAndDateScreen> {
@@ -45,8 +47,9 @@ class _SelectTimeAndDateScreenState extends State<SelectTimeAndDateScreen> {
 
   // Check করুন কোন তারিখ available কিনা
   bool _isDateAvailable(DateTime day) {
-    return widget.availableDates.any((availableDate) =>
-        isSameDay(availableDate.date, day));
+    return widget.availableDates.any(
+      (availableDate) => isSameDay(availableDate.date, day),
+    );
   }
 
   // Selected date এর time slots পান
@@ -54,7 +57,7 @@ class _SelectTimeAndDateScreenState extends State<SelectTimeAndDateScreen> {
     if (_selectedDay == null) return [];
 
     final dateInfo = widget.availableDates.firstWhere(
-          (d) => isSameDay(d.date, _selectedDay!),
+      (d) => isSameDay(d.date, _selectedDay!),
       orElse: () => AvailableDate(
         id: 0,
         packageId: 0,
@@ -72,9 +75,9 @@ class _SelectTimeAndDateScreenState extends State<SelectTimeAndDateScreen> {
   // Booking confirm করুন
   Future<void> _confirmBooking() async {
     if (_selectedDay == null || _selectedTimeSlot == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please select date and time')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Please select date and time')));
       return;
     }
 
@@ -194,14 +197,14 @@ class _SelectTimeAndDateScreenState extends State<SelectTimeAndDateScreen> {
                   Expanded(
                     child: _selectedDay == null
                         ? Center(
-                      child: Text(
-                        'Please select a date',
-                        style: getTextStyle(
-                          fontSize: 14.sp,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    )
+                            child: Text(
+                              'Please select a date',
+                              style: getTextStyle(
+                                fontSize: 14.sp,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          )
                         : _buildTimeSlotsList(),
                   ),
                 ],
@@ -225,13 +228,13 @@ class _SelectTimeAndDateScreenState extends State<SelectTimeAndDateScreen> {
                 child: _isLoading
                     ? CircularProgressIndicator(color: Colors.white)
                     : Text(
-                  'Confirm Booking',
-                  style: getTextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.white,
-                  ),
-                ),
+                        'Confirm Booking',
+                        style: getTextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
               ),
             ),
           ),
@@ -247,10 +250,7 @@ class _SelectTimeAndDateScreenState extends State<SelectTimeAndDateScreen> {
       return Center(
         child: Text(
           'No time slots available',
-          style: getTextStyle(
-            fontSize: 14.sp,
-            color: Colors.grey,
-          ),
+          style: getTextStyle(fontSize: 14.sp, color: Colors.grey),
         ),
       );
     }
@@ -272,10 +272,10 @@ class _SelectTimeAndDateScreenState extends State<SelectTimeAndDateScreen> {
           onTap: isBooked
               ? null
               : () {
-            setState(() {
-              _selectedTimeSlot = slot;
-            });
-          },
+                  setState(() {
+                    _selectedTimeSlot = slot;
+                  });
+                },
           child: Container(
             decoration: BoxDecoration(
               color: isBooked

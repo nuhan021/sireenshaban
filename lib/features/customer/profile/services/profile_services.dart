@@ -6,9 +6,6 @@ class ProfileServices {
   final NetworkCaller _networkCaller = NetworkCaller();
 
   Future<ResponseData> getProfile({required String token}) {
-    return _networkCaller.getRequest(
-      ApiConstants.profile,
-      token: token,
-    );
+    return _networkCaller.getRequest(ApiConstants.profile, token: token);
   }
 }

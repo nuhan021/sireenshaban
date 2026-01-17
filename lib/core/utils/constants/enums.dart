@@ -1,5 +1,6 @@
 /// LIST OF Enums
 /// They cannot be created inside a class.
+library;
 
 enum TextSizes { small, medium, large }
 
@@ -14,22 +15,15 @@ enum PaymentMethods {
   creditCard,
   paystack,
   razorPay,
-  paytm
+  paytm,
 }
 
 enum ServicesGroup {
   businessAndCreativeServices,
   personalCareAndEducation,
-  homeAndMaintenanceServices
+  homeAndMaintenanceServices,
 }
 
-enum UserRole {
-  customer,
-  vendor,
-}
+enum UserRole { customer, vendor }
 
-enum BookingRequest {
-  newRequest,
-  quotedRequest,
-  rejectedRequest,
-}
+enum BookingRequest { newRequest, quotedRequest, rejectedRequest }

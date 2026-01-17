@@ -26,7 +26,8 @@ class AppRoute {
   static String onboardingScreen = "/onboardingScreen";
   static String selectRoleScreen = "/selectRoleScreen";
   static String customerInterestScreen = "/customerInterestScreen";
-  static String verificationCodeSendSuccessScreen = "/verificationCodeSendSuccessScreen";
+  static String verificationCodeSendSuccessScreen =
+      "/verificationCodeSendSuccessScreen";
   static String forgetPasswordScreen = "/forgetPasswordScreen";
   static String changePasswordScreen = "/changePasswordScreen";
   static String vendorsScreen = "/vendorsScreen";
@@ -44,17 +45,14 @@ class AppRoute {
   // vendor bottom nav bar
   static String vendorBottomNavBar = "/vendorBottomNavBar";
 
-
-
-
-
   static String getLoginScreen() => loginScreen;
   static String getSignUpScreen() => signUpScreen;
   static String getSplashScreen() => splashScreen;
   static String getOnboardingScreen() => onboardingScreen;
   static String getSelectRoleScreen() => selectRoleScreen;
   static String getCustomerInterestScreen() => customerInterestScreen;
-  static String getVerificationCodeSendSuccessScreen() => verificationCodeSendSuccessScreen;
+  static String getVerificationCodeSendSuccessScreen() =>
+      verificationCodeSendSuccessScreen;
   static String getForgetPasswordScreen() => forgetPasswordScreen;
   static String getChangePasswordScreen() => changePasswordScreen;
   static String getVendorsScreen() => vendorsScreen;
@@ -66,17 +64,11 @@ class AppRoute {
   static String getVendorSetupProfileScreen1st() => vendorSetupScreen1st;
   static String getSubscriptionScreen() => subscriptionScreen;
 
-
-
-
   // customer bottom nav bar
   static String getCustomerBottomNavBar() => customerBottomNavBar;
 
   // vendor bottom nav bar
   static String getVendorBottomNavBar() => vendorBottomNavBar;
-
-
-
 
   static List<GetPage> routes = [
     GetPage(name: loginScreen, page: () => LoginScreen()),
@@ -85,7 +77,10 @@ class AppRoute {
     GetPage(name: onboardingScreen, page: () => const OnboardingScreen1()),
     GetPage(name: selectRoleScreen, page: () => SelectRoleScreen()),
     GetPage(name: customerInterestScreen, page: () => CustomerInterestScreen()),
-    GetPage(name: verificationCodeSendSuccessScreen, page: () => VerificationCodeSendSuccessScreen()),
+    GetPage(
+      name: verificationCodeSendSuccessScreen,
+      page: () => VerificationCodeSendSuccessScreen(),
+    ),
     GetPage(name: forgetPasswordScreen, page: () => ForgetPasswordScreen()),
     GetPage(name: changePasswordScreen, page: () => ChangePasswordScreen()),
     GetPage(name: vendorsScreen, page: () => const VendorsScreen()),
@@ -94,7 +89,8 @@ class AppRoute {
       name: chatScreen,
       page: () {
         final receiverId = Get.arguments?['receiverId'] as int? ?? 0;
-        final receiverName = Get.arguments?['receiverName'] as String? ?? 'User';
+        final receiverName =
+            Get.arguments?['receiverName'] as String? ?? 'User';
         final receiverAvatar = Get.arguments?['receiverAvatar'] as String?;
         return ChatScreen(
           receiverId: receiverId,
@@ -109,13 +105,10 @@ class AppRoute {
     GetPage(name: vendorSetupScreen1st, page: () => VendorSetupScreen()),
     GetPage(name: subscriptionScreen, page: () => SubscriptionScreen()),
 
-
-
     // customer bottom nav bar
     GetPage(name: customerBottomNavBar, page: () => CustomerBottomNavBar()),
 
     // vendor bottom nav bar
     GetPage(name: vendorBottomNavBar, page: () => VendorBottomNavBar()),
-
   ];
 }

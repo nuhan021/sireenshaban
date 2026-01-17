@@ -26,7 +26,7 @@ class BookingConfirmedScreen extends StatelessWidget {
             padding: EdgeInsets.all(7.w),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              color: Color(0xFF3333331A),
+              color: Color(0xff3333331a),
             ),
             child: Image.asset(
               IconPath.arrowBack,
@@ -429,7 +429,10 @@ class BookingConfirmedScreen extends StatelessWidget {
               CustomPrimaryButton(
                 text: 'View Booking Details',
                 color: AppColors.primaryDeepBlueNormal,
-                onPressed: () => AppHelperFunctions.navigateToScreen(context, BookingDetailsScreen()),
+                onPressed: () => AppHelperFunctions.navigateToScreen(
+                  context,
+                  BookingDetailsScreen(),
+                ),
               ).paddingSymmetric(horizontal: 20.w),
 
               30.verticalSpace,

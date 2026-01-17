@@ -14,7 +14,12 @@ import '../../../../../core/utils/constants/colors.dart';
 import '../../../home/views/widget/deals_and_promotions.dart';
 
 class PersonalCareAndEducationScreens extends StatelessWidget {
-  PersonalCareAndEducationScreens({super.key, required this.image, required this.title, required this.controller});
+  PersonalCareAndEducationScreens({
+    super.key,
+    required this.image,
+    required this.title,
+    required this.controller,
+  });
 
   final String image;
   final String title;
@@ -29,14 +34,16 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
       backgroundColor: Color(0xFFF9FAFB),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        leading: IconButton(onPressed: () => Navigator.pop(context), icon: Icon(Icons.arrow_back_outlined, color: Colors.white,)),
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: Icon(Icons.arrow_back_outlined, color: Colors.white),
+        ),
       ),
 
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             // header
             Header(
               image: image,
@@ -49,7 +56,7 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
             40.verticalSpace,
 
             // deals and promotions
-            DealsAndPromotions(controller: controller,),
+            DealsAndPromotions(controller: controller),
 
             40.verticalSpace,
 
@@ -64,9 +71,7 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
             //     SelectTimeAndDateScreen(),
             //   ),
             // ).paddingSymmetric(horizontal: 20.w),
-
             20.verticalSpace,
-
 
             // project details
             Container(
@@ -76,7 +81,7 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Colors.white,
                 border: Border.all(color: Color(0xFFE5E5E5)),
-                borderRadius: BorderRadius.circular(14.r)
+                borderRadius: BorderRadius.circular(14.r),
               ),
 
               child: Column(
@@ -120,13 +125,16 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
                         Text(
                           'Select event type',
                           style: getTextStyle(
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w400,
-                              color: AppColors.secondaryInfoMediumGrayNormal
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
+                            color: AppColors.secondaryInfoMediumGrayNormal,
                           ),
                         ),
 
-                        Icon(Icons.keyboard_arrow_down_sharp, color: Color(0xFFB9C2DB),)
+                        Icon(
+                          Icons.keyboard_arrow_down_sharp,
+                          color: Color(0xFFB9C2DB),
+                        ),
                       ],
                     ),
                   ),
@@ -148,14 +156,11 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
                     filled: true,
                     fillColour: AppColors.primaryDeepBlueLight,
                   ),
-
-
                 ],
               ),
             ).paddingSymmetric(horizontal: 20.w),
 
             20.verticalSpace,
-
 
             // contact details
             Container(
@@ -163,9 +168,9 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
               width: double.maxFinite,
               padding: EdgeInsets.all(12.w),
               decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Color(0xFFE5E5E5)),
-                  borderRadius: BorderRadius.circular(14.r)
+                color: Colors.white,
+                border: Border.all(color: Color(0xFFE5E5E5)),
+                borderRadius: BorderRadius.circular(14.r),
               ),
 
               child: Column(
@@ -175,7 +180,7 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
                   // title
                   Row(
                     children: [
-                      Image.asset(IconPath.userSquare, height: 24.h,),
+                      Image.asset(IconPath.userSquare, height: 24.h),
                       8.horizontalSpace,
                       Text(
                         'Contact Details',
@@ -248,13 +253,12 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
             40.verticalSpace,
 
             // package booking
-
             Text(
               'Payment Method',
               style: getTextStyle(
                 fontSize: 22.sp,
                 fontWeight: FontWeight.w600,
-                color: AppColors.bodyDarkGray
+                color: AppColors.bodyDarkGray,
               ),
             ).paddingSymmetric(horizontal: 20.w),
 
@@ -268,9 +272,9 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
             Text(
               'Booking Summary',
               style: getTextStyle(
-                  fontSize: 22.sp,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.bodyDarkGray
+                fontSize: 22.sp,
+                fontWeight: FontWeight.w600,
+                color: AppColors.bodyDarkGray,
               ),
             ).paddingSymmetric(horizontal: 20.w),
 
@@ -278,23 +282,29 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
 
             BookingSummary(),
 
-
             40.verticalSpace,
 
             // submit butto
-            CustomPrimaryButton(text: 'Send Request for Quote', color: AppColors.primaryDeepBlueNormal, onPressed: (){}).paddingSymmetric(horizontal: 20.w),
+            CustomPrimaryButton(
+              text: 'Send Request for Quote',
+              color: AppColors.primaryDeepBlueNormal,
+              onPressed: () {},
+            ).paddingSymmetric(horizontal: 20.w),
 
             20.verticalSpace,
 
             Center(
-              child: TextButton(onPressed: (){}, child: Text(
-                'Cancel',
-                style: getTextStyle(
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.accentNormal
+              child: TextButton(
+                onPressed: () {},
+                child: Text(
+                  'Cancel',
+                  style: getTextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.accentNormal,
+                  ),
                 ),
-              )),
+              ),
             ),
 
             20.verticalSpace,

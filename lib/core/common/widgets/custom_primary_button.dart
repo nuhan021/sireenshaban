@@ -28,7 +28,7 @@ class CustomPrimaryButton extends StatelessWidget {
         width: double.maxFinite,
         decoration: BoxDecoration(
           color: isLoading ? color.withOpacity(0.7) : color,
-          borderRadius: BorderRadius.circular(12.r)
+          borderRadius: BorderRadius.circular(12.r),
         ),
         child: Center(
           child: isLoading

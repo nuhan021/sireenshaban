@@ -39,7 +39,11 @@ class ChatListScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.chat_bubble_outline, size: 64.sp, color: Colors.grey),
+                Icon(
+                  Icons.chat_bubble_outline,
+                  size: 64.sp,
+                  color: Colors.grey,
+                ),
                 SizedBox(height: 16.h),
                 Text(
                   'No conversations yet',
@@ -104,11 +108,13 @@ class ChatListTile extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 28.r,
-              backgroundImage: conversation.avatar != null && conversation.avatar!.isNotEmpty
+              backgroundImage:
+                  conversation.avatar != null && conversation.avatar!.isNotEmpty
                   ? NetworkImage(conversation.avatar!)
                   : null,
               backgroundColor: Colors.grey[300],
-              child: (conversation.avatar == null || conversation.avatar!.isEmpty)
+              child:
+                  (conversation.avatar == null || conversation.avatar!.isEmpty)
                   ? Icon(Icons.person, color: Colors.grey[600])
                   : null,
             ),
@@ -188,4 +194,3 @@ class ChatListTile extends StatelessWidget {
     );
   }
 }
-

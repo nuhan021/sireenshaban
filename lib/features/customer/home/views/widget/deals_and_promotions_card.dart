@@ -24,7 +24,8 @@ class DealsAndPromotionsCard extends StatelessWidget {
     required this.role,
     required this.group,
     required this.controller,
-    this.isFromVendorScreen = false, required this.rating,
+    this.isFromVendorScreen = false,
+    required this.rating,
   });
 
   final int id;

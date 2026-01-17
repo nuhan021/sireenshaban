@@ -1,13 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/multipart/multipart_file.dart';
-import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:flutter_google_places_sdk/flutter_google_places_sdk.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile_info/views/controller/vendor_profile_info_map_controller.dart';
 import '../../../../core/services/storage_service.dart';
 import '../../../../core/utils/constants/api_constants.dart';
@@ -49,7 +44,10 @@ class CreateEventController extends GetxController {
 
   Future<void> pickImage() async {
     try {
-      final XFile? pickedFile = await _imagePicker.pickImage(source: ImageSource.gallery, imageQuality: 80);
+      final XFile? pickedFile = await _imagePicker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 80,
+      );
       if (pickedFile != null) eventImage.value = pickedFile;
     } catch (e) {
       AppLoggerHelper.error('Image pick failed', e.toString());
@@ -87,7 +85,9 @@ class CreateEventController extends GetxController {
 
       // Date & Time formatting
       if (selectedDate.value != null) {
-        request.fields['event_date'] = DateFormat('yyyy-MM-dd').format(selectedDate.value!);
+        request.fields['event_date'] = DateFormat(
+          'yyyy-MM-dd',
+        ).format(selectedDate.value!);
       }
 
       if (selectedTime.value != null) {
@@ -109,10 +109,9 @@ class CreateEventController extends GetxController {
 
       // 2. Image File (Screen অনুযায়ী key হচ্ছে 'image')
       if (eventImage.value != null) {
-        request.files.add(await http.MultipartFile.fromPath(
-          'image',
-          eventImage.value!.path,
-        ));
+        request.files.add(
+          await http.MultipartFile.fromPath('image', eventImage.value!.path),
+        );
       }
 
       // 3. Execute Request
@@ -122,8 +121,12 @@ class CreateEventController extends GetxController {
       if (response.statusCode == 200 || response.statusCode == 201) {
         Get.back();
         AppLoggerHelper.info('Event Created Successfully');
-        Get.snackbar("Success", "Event Published Successfully",
-            backgroundColor: Colors.green, colorText: Colors.white);
+        Get.snackbar(
+          "Success",
+          "Event Published Successfully",
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
       } else {
         AppLoggerHelper.error("Server Error", responseData);
         Get.snackbar("Error", "Failed to upload: ${response.statusCode}");
@@ -136,7 +139,7 @@ class CreateEventController extends GetxController {
     }
   }
 
-// --- Validation Helper ---
+  // --- Validation Helper ---
   bool _validateEventForm() {
     if (eventImage.value == null) {
       Get.snackbar("Required", "Event image is missing");

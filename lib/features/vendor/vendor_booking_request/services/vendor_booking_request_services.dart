@@ -6,10 +6,7 @@ class VendorBookingRequestServices {
   final NetworkCaller _networkCaller = NetworkCaller();
 
   Future<ResponseData> getServiceRequests({required String token}) {
-    return _networkCaller.getRequest(
-      ApiConstants.serviceRequest,
-      token: token,
-    );
+    return _networkCaller.getRequest(ApiConstants.serviceRequest, token: token);
   }
 
   Future<ResponseData> getServiceRequestDetails({

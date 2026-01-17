@@ -4,7 +4,8 @@
 
 import 'dart:convert';
 
-PackagesModel packagesModelFromJson(String str) => PackagesModel.fromJson(json.decode(str));
+PackagesModel packagesModelFromJson(String str) =>
+    PackagesModel.fromJson(json.decode(str));
 
 String packagesModelToJson(PackagesModel data) => json.encode(data.toJson());
 
@@ -12,10 +13,7 @@ class PackagesModel {
   bool success;
   List<Datum> data;
 
-  PackagesModel({
-    required this.success,
-    required this.data,
-  });
+  PackagesModel({required this.success, required this.data});
 
   factory PackagesModel.fromJson(Map<String, dynamic> json) => PackagesModel(
     success: json["success"],
@@ -101,7 +99,9 @@ class Datum {
     slug: json["slug"],
     description: json["description"],
     serviceGroup: json["service_group"],
-    validUntil: json["valid_until"] == null ? null : DateTime.parse(json["valid_until"]),
+    validUntil: json["valid_until"] == null
+        ? null
+        : DateTime.parse(json["valid_until"]),
     subtitle: json["subtitle"],
 
     pricePerEvent: json["price_per_event"],
@@ -121,7 +121,9 @@ class Datum {
     updatedAt: DateTime.parse(json["updated_at"]),
     deletedAt: json["deleted_at"],
     reviewsSumRating: json["reviews_sum_rating"],
-    availableDates: List<AvailableDate>.from(json["available_dates"].map((x) => AvailableDate.fromJson(x))),
+    availableDates: List<AvailableDate>.from(
+      json["available_dates"].map((x) => AvailableDate.fromJson(x)),
+    ),
     vendor: Vendor.fromJson(json["vendor"]),
     category: Category.fromJson(json["category"]),
     reviews: List<Review>.from(json["reviews"].map((x) => Review.fromJson(x))),
@@ -135,7 +137,9 @@ class Datum {
     "slug": slug,
     "description": description,
     "service_group": serviceGroup,
-    "valid_until": validUntil != null ? "${validUntil!.year.toString().padLeft(4, '0')}-${validUntil!.month.toString().padLeft(2, '0')}-${validUntil!.day.toString().padLeft(2, '0')}" : null,
+    "valid_until": validUntil != null
+        ? "${validUntil!.year.toString().padLeft(4, '0')}-${validUntil!.month.toString().padLeft(2, '0')}-${validUntil!.day.toString().padLeft(2, '0')}"
+        : null,
     "subtitle": subtitle,
     "price_per_event": pricePerEvent,
     "capacity": capacity,
@@ -152,7 +156,9 @@ class Datum {
     "updated_at": updatedAt.toIso8601String(),
     "deleted_at": deletedAt,
     "reviews_sum_rating": reviewsSumRating,
-    "available_dates": List<dynamic>.from(availableDates.map((x) => x.toJson())),
+    "available_dates": List<dynamic>.from(
+      availableDates.map((x) => x.toJson()),
+    ),
     "vendor": vendor.toJson(),
     "category": category.toJson(),
     "reviews": List<dynamic>.from(reviews.map((x) => x.toJson())),
@@ -185,14 +191,17 @@ class AvailableDate {
     date: DateTime.parse(json["date"]),
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
-    timeSlots: List<TimeSlot>.from(json["time_slots"].map((x) => TimeSlot.fromJson(x))),
+    timeSlots: List<TimeSlot>.from(
+      json["time_slots"].map((x) => TimeSlot.fromJson(x)),
+    ),
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "package_id": packageId,
     "event_id": eventId,
-    "date": "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
+    "date":
+        "${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
     "time_slots": List<dynamic>.from(timeSlots.map((x) => x.toJson())),

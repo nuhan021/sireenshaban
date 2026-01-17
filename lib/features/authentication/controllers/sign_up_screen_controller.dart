@@ -30,7 +30,6 @@ class SignUpScreenController extends GetxController {
   }
 
   Future<void> signUp(String role) async {
-
     if (emailController.text.trim().isEmpty ||
         passwordController.text.trim().isEmpty ||
         retypePasswordController.text.trim().isEmpty) {
@@ -38,7 +37,7 @@ class SignUpScreenController extends GetxController {
       return;
     }
 
-    if(passwordController.text != retypePasswordController.text) {
+    if (passwordController.text != retypePasswordController.text) {
       SnackBarConstant.warning('Passwords do not match');
       return;
     }
@@ -55,7 +54,7 @@ class SignUpScreenController extends GetxController {
         "email": emailController.text.trim(),
         "password": passwordController.text,
         "password_confirmation": retypePasswordController.text,
-        "role": userRole
+        "role": userRole,
       },
     );
 
@@ -71,7 +70,6 @@ class SignUpScreenController extends GetxController {
     Get.toNamed(AppRoute.verificationCodeSendSuccessScreen);
   }
 
-
   Future<void> verifyOtp(bool isFromSignUpScreen) async {
     AppLoggerHelper.debug(otp);
     if (otp.isEmpty) {
@@ -83,10 +81,7 @@ class SignUpScreenController extends GetxController {
 
     final response = await _networkCaller.postRequest(
       ApiConstants.verifyOtp,
-      body: {
-        "email": emailController.text.trim(),
-        "otp": otp,
-      },
+      body: {"email": emailController.text.trim(), "otp": otp},
     );
 
     if (!response.isSuccess) {
@@ -104,14 +99,11 @@ class SignUpScreenController extends GetxController {
   }
 
   Future<void> resendOtp() async {
-
     isResendOtpLoading.value = true;
 
     final response = await _networkCaller.postRequest(
       ApiConstants.resendOtp,
-      body: {
-        "email": emailController.text.trim()
-      },
+      body: {"email": emailController.text.trim()},
     );
 
     if (!response.isSuccess) {

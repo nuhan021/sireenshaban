@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
 
 class CustomLoading extends StatelessWidget {
@@ -17,7 +16,10 @@ class CustomLoading extends StatelessWidget {
         borderRadius: BorderRadius.circular(12.r),
       ),
       child: Center(
-        child: LoadingAnimationWidget.dotsTriangle(color: Colors.white, size: 25.w),
+        child: LoadingAnimationWidget.dotsTriangle(
+          color: Colors.white,
+          size: 25.w,
+        ),
       ),
     );
   }

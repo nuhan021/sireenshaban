@@ -45,18 +45,16 @@ class ReviewsCard extends StatelessWidget {
         //   ).paddingOnly(top: 20.h),
         // ),
 
-
         // review
-
         Text(
           review.comment,
           textAlign: TextAlign.justify,
           style: getTextStyle(
             fontSize: 12.sp,
             fontWeight: FontWeight.w400,
-            color: AppColors.secondaryInfoMediumGrayNormal
+            color: AppColors.secondaryInfoMediumGrayNormal,
           ),
-        ).paddingOnly(left: 20.w)
+        ).paddingOnly(left: 20.w),
       ],
     ).paddingOnly(bottom: 20.h);
   }

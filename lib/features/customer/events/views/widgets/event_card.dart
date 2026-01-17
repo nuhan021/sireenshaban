@@ -47,9 +47,12 @@ class _EventCardState extends State<EventCard> {
     );
 
     setState(() {
-      dominantColor = paletteGenerator.dominantColor?.color ?? AppColors.primaryDeepBlueNormal;
+      dominantColor =
+          paletteGenerator.dominantColor?.color ??
+          AppColors.primaryDeepBlueNormal;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -154,8 +157,15 @@ class _EventCardState extends State<EventCard> {
           CustomPrimaryButton(
             text: "View details",
             color: dominantColor ?? AppColors.primaryDeepBlueNormal,
-            onPressed: () => AppHelperFunctions.navigateToScreen(context, CommunityEventBookingScreen(id: 1,image: widget.bannerImage, title: widget.title,)),
-          )
+            onPressed: () => AppHelperFunctions.navigateToScreen(
+              context,
+              CommunityEventBookingScreen(
+                id: 1,
+                image: widget.bannerImage,
+                title: widget.title,
+              ),
+            ),
+          ),
         ],
       ),
     );

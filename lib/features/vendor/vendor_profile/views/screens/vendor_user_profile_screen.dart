@@ -40,7 +40,7 @@ class VendorUserProfileScreen extends StatelessWidget {
               height: 40.h,
               width: 40.w,
               decoration: BoxDecoration(
-                color: Color(0xFF3333331A),
+                color: Color(0xff3333331a),
                 shape: BoxShape.circle,
               ),
               alignment: AlignmentGeometry.center,
@@ -60,7 +60,6 @@ class VendorUserProfileScreen extends StatelessWidget {
             //   profilePhoto:
             //       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEGUodmPqUNG8wJWNkNCvqiNkr1T9tsft5oQ&s",
             // ),
-
             12.verticalSpace,
 
             // edit icon

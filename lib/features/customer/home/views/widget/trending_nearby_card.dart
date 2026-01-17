@@ -51,13 +51,21 @@ class TrendingNearbyCard extends StatelessWidget {
           case ServicesGroup.personalCareAndEducation:
             AppHelperFunctions.navigateToScreen(
               context,
-              PersonalCareAndEducationScreens(image: image, title: title, controller: controller,),
+              PersonalCareAndEducationScreens(
+                image: image,
+                title: title,
+                controller: controller,
+              ),
             );
 
           default:
             AppHelperFunctions.navigateToScreen(
               context,
-              HomeAndMaintenanceServicesScreens(image: image, title: title, controller: controller,),
+              HomeAndMaintenanceServicesScreens(
+                image: image,
+                title: title,
+                controller: controller,
+              ),
             );
         }
       },
@@ -85,10 +93,13 @@ class TrendingNearbyCard extends StatelessWidget {
                   height: 113.h,
                   width: double.maxFinite,
                   placeholder: (context, url) => Center(
-                    child: LoadingAnimationWidget.staggeredDotsWave(color: AppColors.primaryDeepBlueLight, size: 25.h),
+                    child: LoadingAnimationWidget.staggeredDotsWave(
+                      color: AppColors.primaryDeepBlueLight,
+                      size: 25.h,
+                    ),
                   ),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
-                )
+                ),
               ),
 
               Row(

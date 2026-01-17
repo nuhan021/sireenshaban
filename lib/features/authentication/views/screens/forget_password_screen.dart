@@ -173,9 +173,6 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                       fillColour: AppColors.primaryDeepBlueLight,
                     );
                   }),
-
-
-
                 ],
               ),
             ),
@@ -185,7 +182,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             CustomPrimaryButton(
               text: 'Send',
               color: AppColors.primaryDeepBlueNormal,
-              onPressed: () => Get.to(VerificationCodeSendSuccessScreen(isFromSignUpScreen: false,)),
+              onPressed: () => Get.to(
+                VerificationCodeSendSuccessScreen(isFromSignUpScreen: false),
+              ),
             ),
           ],
         ).paddingSymmetric(horizontal: 20.w),

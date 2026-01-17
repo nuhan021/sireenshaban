@@ -46,9 +46,9 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
         title: Text(
           "Subscription Plan",
           style: getTextStyle(
-              fontSize: 18.sp,
-              fontWeight: FontWeight.bold,
-              color: Colors.black
+            fontSize: 18.sp,
+            fontWeight: FontWeight.bold,
+            color: Colors.black,
           ),
         ),
         centerTitle: true,
@@ -59,10 +59,13 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
             return const Center(child: CircularProgressIndicator());
           }
 
-          final plansList = stripeController.subscriptionPlans.value?.plans ?? [];
+          final plansList =
+              stripeController.subscriptionPlans.value?.plans ?? [];
 
           if (plansList.isEmpty) {
-            return const Center(child: Text("No subscription plans available."));
+            return const Center(
+              child: Text("No subscription plans available."),
+            );
           }
 
           return Column(
@@ -73,7 +76,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen> {
                   controller: _pageController,
                   physics: const BouncingScrollPhysics(),
                   itemCount: plansList.length,
-                  onPageChanged: (value) => setState(() => _currentPage = value),
+                  onPageChanged: (value) =>
+                      setState(() => _currentPage = value),
                   itemBuilder: (context, index) {
                     double scale = _currentPage == index ? 1.0 : 0.88;
                     return SubscriptionCard(

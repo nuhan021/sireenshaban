@@ -36,7 +36,10 @@ class Header extends StatelessWidget {
           child: Stack(
             children: [
               ClipRRect(
-                borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10.r), bottomRight: Radius.circular(10.r)),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(10.r),
+                  bottomRight: Radius.circular(10.r),
+                ),
                 child: vendorAvatar != null && vendorAvatar!.isNotEmpty
                     ? CachedNetworkImage(
                         imageUrl: vendorAvatar!,
@@ -44,17 +47,19 @@ class Header extends StatelessWidget {
                         height: 225.h,
                         width: double.maxFinite,
                         placeholder: (context, url) => Center(
-                          child: LoadingAnimationWidget.staggeredDotsWave(color: AppColors.primaryDeepBlueLight, size: 25.h),
+                          child: LoadingAnimationWidget.staggeredDotsWave(
+                            color: AppColors.primaryDeepBlueLight,
+                            size: 25.h,
+                          ),
                         ),
-                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                        errorWidget: (context, url, error) =>
+                            const Icon(Icons.error),
                       )
                     : Container(
                         height: 225.h,
                         width: double.maxFinite,
                         color: Colors.grey[300],
-                        child: Center(
-                          child: Icon(Icons.image, size: 50.h),
-                        ),
+                        child: Center(child: Icon(Icons.image, size: 50.h)),
                       ),
               ),
               Positioned(
@@ -70,7 +75,7 @@ class Header extends StatelessWidget {
                       ? Icon(Icons.person)
                       : null,
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -82,7 +87,7 @@ class Header extends StatelessWidget {
           style: getTextStyle(
             fontSize: 22.sp,
             fontWeight: FontWeight.w600,
-            color: AppColors.bodyDarkGray
+            color: AppColors.bodyDarkGray,
           ),
         ).paddingSymmetric(horizontal: 20.w),
 
@@ -91,16 +96,19 @@ class Header extends StatelessWidget {
           style: getTextStyle(
             fontSize: 16.sp,
             fontWeight: FontWeight.w400,
-            color: AppColors.bodyDarkGray
+            color: AppColors.bodyDarkGray,
           ),
         ).paddingSymmetric(horizontal: 20.w),
-        
+
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Row(
               children: [
-                Icon(Icons.location_on_outlined, color: AppColors.secondaryTealNormal,),
+                Icon(
+                  Icons.location_on_outlined,
+                  color: AppColors.secondaryTealNormal,
+                ),
                 8.horizontalSpace,
                 Text(
                   'New York',
@@ -109,7 +117,7 @@ class Header extends StatelessWidget {
                     fontWeight: FontWeight.w400,
                     color: AppColors.secondaryTealNormal,
                   ),
-                )
+                ),
               ],
             ),
 
@@ -125,13 +133,10 @@ class Header extends StatelessWidget {
                 );
               },
               child: Image.asset(IconPath.message, height: 25.h),
-            )
+            ),
           ],
         ).paddingSymmetric(horizontal: 20.w),
-
       ],
     );
   }
 }
-
-

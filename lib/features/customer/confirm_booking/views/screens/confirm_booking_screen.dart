@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:sireenshaban/core/common/widgets/custom_loading.dart';
 import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
-import 'package:sireenshaban/features/customer/booking_confirmed/views/screens/booking_confirmed_screen.dart';
 import 'package:sireenshaban/features/customer/confirm_booking/views/controller/confirm_booking_controller.dart';
 import 'package:sireenshaban/features/customer/confirm_booking/views/screens/select_time_and_date_screen.dart';
 import 'package:sireenshaban/features/customer/confirm_booking/views/widgets/booking_summary.dart';
@@ -13,7 +12,6 @@ import 'package:sireenshaban/features/customer/confirm_booking/views/widgets/spe
 
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
-import '../../../../../core/utils/constants/snackbar_constant.dart';
 import '../../../home/model/packages_model.dart';
 import '../../../package_booking/views/widgets/booking_app_bar.dart';
 import '../../../package_booking/views/widgets/thumbnail_image.dart';

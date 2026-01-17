@@ -6,8 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
 import 'package:sireenshaban/features/vendor/vendor_setup/controller/vendor_setup_screen_controller.dart';
 
-import '../../../../../core/utils/logging/logger.dart';
-
 class VendorProfileInfoMapController extends GetxController {
   final String googleApiKey = "AIzaSyA22IxMllRCaf9DcNTmyjKPcHpY5okWfhc";
 
@@ -92,9 +90,17 @@ class VendorProfileInfoMapController extends GetxController {
       "road": getComponent("route"),
     };
 
-    final VendorSetupScreenController vendorSetupScreenController1st = Get.find<VendorSetupScreenController>();
-    vendorSetupScreenController1st.addLocation(address['country']!, address['city']!, address['road']!);
-    vendorSetupScreenController1st.shopLocation = LatLng(position.latitude, position.longitude);
+    final VendorSetupScreenController vendorSetupScreenController1st =
+        Get.find<VendorSetupScreenController>();
+    vendorSetupScreenController1st.addLocation(
+      address['country']!,
+      address['city']!,
+      address['road']!,
+    );
+    vendorSetupScreenController1st.shopLocation = LatLng(
+      position.latitude,
+      position.longitude,
+    );
   }
 
   Future<LatLng> getPlaceLatLng(String placeId) async {

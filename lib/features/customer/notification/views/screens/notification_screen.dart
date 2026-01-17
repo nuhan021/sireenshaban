@@ -22,7 +22,7 @@ class NotificationScreen extends StatelessWidget {
             height: 40.h,
             width: 40.w,
             decoration: BoxDecoration(
-              color: Color(0xFF3333331A),
+              color: Color(0xff3333331a),
               shape: BoxShape.circle,
             ),
             alignment: AlignmentGeometry.center,
@@ -38,9 +38,9 @@ class NotificationScreen extends StatelessWidget {
             color: AppColors.bodyDarkGray,
           ),
         ),
-        
+
         actions: [
-          IconButton(onPressed: (){}, icon: Icon(Icons.more_vert_outlined))
+          IconButton(onPressed: () {}, icon: Icon(Icons.more_vert_outlined)),
         ],
       ),
 
@@ -49,7 +49,9 @@ class NotificationScreen extends StatelessWidget {
         itemBuilder: (context, index) => ListTile(
           leading: CircleAvatar(
             radius: 25.r,
-            backgroundImage: NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBRfNX_1coQjpFuoF1ky07sOzLxPc8SNj2Pg&s"),
+            backgroundImage: NetworkImage(
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBRfNX_1coQjpFuoF1ky07sOzLxPc8SNj2Pg&s",
+            ),
             backgroundColor: Colors.white,
           ),
 
