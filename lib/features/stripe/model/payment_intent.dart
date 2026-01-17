@@ -25,7 +25,7 @@ class PaymentIntentModel {
     success: json["success"],
     message: json["message"],
     stripe: Stripe.fromJson(json["stripe"]),
-    amount: json["amount"],
+    amount: (json["amount"] as num).toDouble(),
   );
 
   Map<String, dynamic> toJson() => {
