@@ -15,7 +15,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await initializeDateFormatting('en_US', "");
   Stripe.publishableKey =
-      "pk_test_51RoJIeDhobi5OiZ3oHj8zXbGeudmmLNnQeDAb12cWe5wkQmDTGRMeoEMyzEUc7qlYbjdhf3nv4G3zJIsPMfjs6vE00tggZfHek";
+      "pk_test_51ReAQ0RtGVwEb1tTI9N4Pz05qzXcpzpO3KrMqlPFhZrFTyHy8YF1x9ywtt7w32O9EPdJm4BMq6S8u09zQDpYd6oh00G4cmJMl0";
   await dotenv.load(fileName: ".env");
   await StorageService.init();
 

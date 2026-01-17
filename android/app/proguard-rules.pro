@@ -6,5 +6,6 @@
 -dontwarn kotlinx.parcelize.Parceler$DefaultImpls
 -dontwarn kotlinx.parcelize.Parceler
 -dontwarn kotlinx.parcelize.Parcelize
+-dontwarn org.slf4j.**
 # Keep Stripe classes
 -keep class com.stripe.** { *; }
