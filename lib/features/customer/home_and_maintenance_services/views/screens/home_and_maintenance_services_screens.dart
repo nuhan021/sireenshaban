@@ -17,11 +17,13 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
     required this.image,
     required this.title,
     required this.controller,
+    this.vendorUserId,
   });
 
   final String image;
   final String title;
   final HomeController controller;
+  final int? vendorUserId;
 
   final TextEditingController projectScopeController = TextEditingController();
 
@@ -49,6 +51,7 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
               vendorId: 0,
               vendorName: title,
               vendorAvatar: null,
+              vendorUserId: vendorUserId,
             ),
 
             40.verticalSpace,
@@ -322,22 +325,21 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
               onPressed: () {},
             ).paddingSymmetric(horizontal: 20.w),
 
-            20.verticalSpace,
+            // 20.verticalSpace,
 
-            Center(
-              child: TextButton(
-                onPressed: () {},
-                child: Text(
-                  'Cancel',
-                  style: getTextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.accentNormal,
-                  ),
-                ),
-              ),
-            ),
-
+            // Center(
+            //   child: TextButton(
+            //     onPressed: () {},
+            //     child: Text(
+            //       'Cancel',
+            //       style: getTextStyle(
+            //         fontSize: 14.sp,
+            //         fontWeight: FontWeight.w400,
+            //         color: AppColors.accentNormal,
+            //       ),
+            //     ),
+            //   ),
+            // ),
             20.verticalSpace,
           ],
         ),

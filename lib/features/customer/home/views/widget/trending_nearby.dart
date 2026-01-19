@@ -6,7 +6,6 @@ import 'package:sireenshaban/features/customer/home/views/widget/trending_nearby
 
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
-import '../../../../../core/utils/constants/enums.dart';
 
 class TrendingNearby extends StatelessWidget {
   const TrendingNearby({super.key, required this.controller});
@@ -41,11 +40,12 @@ class TrendingNearby extends StatelessWidget {
               return TrendingNearbyCard(
                 image: item.image ?? '',
                 coverImage: item.backgroundImage,
-                title: item.businessName ?? '',
+                title: item.businessName,
                 status: 'popular',
                 group: item.servicesGroup,
                 controller: controller,
                 vendorId: item.id,
+                vendorUserId: item.vendorUserId,
               );
             },
           ),

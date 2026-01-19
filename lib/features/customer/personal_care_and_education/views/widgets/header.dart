@@ -17,6 +17,7 @@ class Header extends StatelessWidget {
     required this.vendorId,
     required this.vendorName,
     this.vendorAvatar,
+    this.vendorUserId,
   });
 
   final String? image;
@@ -24,6 +25,7 @@ class Header extends StatelessWidget {
   final int vendorId;
   final String vendorName;
   final String? vendorAvatar;
+  final int? vendorUserId;
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +69,8 @@ class Header extends StatelessWidget {
                 left: 15.w,
                 child: CircleAvatar(
                   radius: 50.r,
-                  backgroundImage: (vendorAvatar != null && vendorAvatar!.isNotEmpty)
+                  backgroundImage:
+                      (vendorAvatar != null && vendorAvatar!.isNotEmpty)
                       ? NetworkImage(vendorAvatar!)
                       : null,
                   backgroundColor: Colors.grey[300],
@@ -126,7 +129,7 @@ class Header extends StatelessWidget {
                 Get.toNamed(
                   AppRoute.chatScreen,
                   arguments: {
-                    'receiverId': vendorId,
+                    'receiverId': vendorUserId ?? vendorId,
                     'receiverName': vendorName,
                     'receiverAvatar': vendorAvatar,
                   },

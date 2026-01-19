@@ -22,6 +22,7 @@ class BusinessAndCreativeServicesScreens extends StatelessWidget {
     this.latitude,
     this.longitude,
     this.coverImage,
+    this.vendorUserId,
   });
 
   final String image;
@@ -31,6 +32,7 @@ class BusinessAndCreativeServicesScreens extends StatelessWidget {
   final double? latitude;
   final double? longitude;
   final String? coverImage;
+  final int? vendorUserId;
 
   final BusinessAndServiceController serviceController = Get.put(
     BusinessAndServiceController(),
@@ -60,6 +62,7 @@ class BusinessAndCreativeServicesScreens extends StatelessWidget {
               vendorId: vendorId,
               vendorName: title,
               vendorAvatar: image,
+              vendorUserId: vendorUserId,
             ),
 
             40.verticalSpace,

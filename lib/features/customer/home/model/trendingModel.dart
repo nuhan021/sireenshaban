@@ -39,6 +39,7 @@ class TrendingModel {
 
 class Datum {
   int id;
+  int vendorUserId;
   String businessName;
   dynamic image;
   dynamic backgroundImage;
@@ -48,6 +49,7 @@ class Datum {
 
   Datum({
     required this.id,
+    required this.vendorUserId,
     required this.businessName,
     required this.image,
     required this.backgroundImage,
@@ -58,6 +60,7 @@ class Datum {
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     id: json["id"],
+    vendorUserId: json["vendor_user_id"],
     businessName: json["business_name"],
     image: json["image"],
     backgroundImage: json["background_image"],
@@ -68,11 +71,13 @@ class Datum {
 
   Map<String, dynamic> toJson() => {
     "id": id,
+    "vendor_user_id": vendorUserId,
     "business_name": businessName,
     "image": image,
     "background_image": backgroundImage,
     "rating": rating,
     "bookings": bookings,
+    "services_group": servicesGroup,
   };
 }
 

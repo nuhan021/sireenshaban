@@ -19,11 +19,13 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
     required this.image,
     required this.title,
     required this.controller,
+    this.vendorUserId,
   });
 
   final String image;
   final String title;
   final HomeController controller;
+  final int? vendorUserId;
 
   final TextEditingController projectScopeController = TextEditingController();
 
@@ -51,6 +53,7 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
               vendorId: 0,
               vendorName: title,
               vendorAvatar: null,
+              vendorUserId: vendorUserId,
             ),
 
             40.verticalSpace,
