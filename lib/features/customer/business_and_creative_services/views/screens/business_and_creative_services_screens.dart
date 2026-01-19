@@ -55,11 +55,11 @@ class BusinessAndCreativeServicesScreens extends StatelessWidget {
           children: [
             // header
             Header(
-              image: image,
+              image: coverImage,
               title: title,
               vendorId: vendorId,
               vendorName: title,
-              vendorAvatar: null,
+              vendorAvatar: image,
             ),
 
             40.verticalSpace,

@@ -43,7 +43,7 @@ class TrendingNearby extends StatelessWidget {
                 coverImage: item.backgroundImage,
                 title: item.businessName ?? '',
                 status: 'popular',
-                group: ServicesGroup.businessAndCreativeServices,
+                group: item.servicesGroup,
                 controller: controller,
                 vendorId: item.id,
               );
