@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sireenshaban/core/utils/constants/enums.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
+import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/customer/business_and_creative_services/views/screens/business_and_creative_services_screens.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/customer/home_and_maintenance_services/views/screens/home_and_maintenance_services_screens.dart';
@@ -26,17 +27,20 @@ class TrendingNearbyCard extends StatelessWidget {
   final String image;
   final String title;
   final String status;
-  final ServicesGroup group;
+  final String group;
   final HomeController controller;
   final int vendorId;
   final String? coverImage;
 
+
+
   @override
   Widget build(BuildContext context) {
+    AppLoggerHelper.debug(group);
     return GestureDetector(
       onTap: () {
         switch (group) {
-          case ServicesGroup.businessAndCreativeServices:
+          case "businessAndCreativeServices":
             AppHelperFunctions.navigateToScreen(
               context,
               BusinessAndCreativeServicesScreens(
@@ -48,7 +52,7 @@ class TrendingNearbyCard extends StatelessWidget {
               ),
             );
             break;
-          case ServicesGroup.personalCareAndEducation:
+          case "personalCareAndEducation":
             AppHelperFunctions.navigateToScreen(
               context,
               PersonalCareAndEducationScreens(

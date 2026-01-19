@@ -40,9 +40,9 @@ class Header extends StatelessWidget {
                   bottomLeft: Radius.circular(10.r),
                   bottomRight: Radius.circular(10.r),
                 ),
-                child: vendorAvatar != null && vendorAvatar!.isNotEmpty
+                child: image != null && image!.isNotEmpty
                     ? CachedNetworkImage(
-                        imageUrl: vendorAvatar!,
+                        imageUrl: image!,
                         fit: BoxFit.cover,
                         height: 225.h,
                         width: double.maxFinite,
@@ -67,11 +67,11 @@ class Header extends StatelessWidget {
                 left: 15.w,
                 child: CircleAvatar(
                   radius: 50.r,
-                  backgroundImage: (image != null && image!.isNotEmpty)
-                      ? NetworkImage(image!)
+                  backgroundImage: (vendorAvatar != null && vendorAvatar!.isNotEmpty)
+                      ? NetworkImage(vendorAvatar!)
                       : null,
                   backgroundColor: Colors.grey[300],
-                  child: (image == null || image!.isEmpty)
+                  child: (vendorAvatar == null || vendorAvatar!.isEmpty)
                       ? Icon(Icons.person)
                       : null,
                 ),
