@@ -101,11 +101,6 @@ class CustomerHomeScreen extends StatelessWidget {
 
               40.verticalSpace,
 
-              // featured vendors
-              // FeaturedVendors(),
-              //
-              // 40.verticalSpace,
-
               // community events
               Obx(() {
                 if (controller.isCommunityEventsLoading.value) {

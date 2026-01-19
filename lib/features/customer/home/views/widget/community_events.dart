@@ -24,7 +24,7 @@ class CommunityEvents extends StatelessWidget {
       children: [
         // title
         Text(
-          'Community Events',
+          controller.communityEvents.value!.data.isEmpty ? 'No Community Events':'Community Events',
           style: getTextStyle(
             fontSize: 18.sp,
             fontWeight: FontWeight.w600,
@@ -35,7 +35,7 @@ class CommunityEvents extends StatelessWidget {
         20.verticalSpace,
 
         SizedBox(
-          height: 305.h,
+          height:controller.communityEvents.value!.data.isEmpty ? 0.h: 305.h,
           width: double.maxFinite,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,

@@ -364,6 +364,6 @@ class HomeController extends GetxController {
     trending.value = TrendingModel.fromJson(response.responseData);
     isTrendingNearbyLoading.value = false;
     isTrendingNearbyError.value = false;
-    // SnackBarConstant.success("Trending fetched successfully");
+    SnackBarConstant.success("Trending fetched successfully");
   }
 }

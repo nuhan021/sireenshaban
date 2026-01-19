@@ -31,7 +31,7 @@ class TrendingNearby extends StatelessWidget {
         20.verticalSpace,
 
         SizedBox(
-          height: 180.h,
+          height: controller.trending.value!.data.isEmpty ? 0 : 180.h,
           width: double.maxFinite,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,

@@ -366,20 +366,7 @@ class VendorHomeScreen extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Deals & Promotions",
-                                style: getTextStyle(
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.w700,
-                                  color:
-                                      AppColors.secondaryInfoMediumGrayDarker,
-                                ),
-                              ).paddingOnly(left: 20.w),
-                            ],
-                          ),
+
                           Icon(
                             Icons.inventory_2_outlined,
                             color: Colors.grey,
@@ -436,20 +423,7 @@ class VendorHomeScreen extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                "Events",
-                                style: getTextStyle(
-                                  fontSize: 20.sp,
-                                  fontWeight: FontWeight.w700,
-                                  color:
-                                      AppColors.secondaryInfoMediumGrayDarker,
-                                ),
-                              ).paddingOnly(left: 20.w),
-                            ],
-                          ),
+
                           Icon(
                             Icons.inventory_2_outlined,
                             color: Colors.grey,

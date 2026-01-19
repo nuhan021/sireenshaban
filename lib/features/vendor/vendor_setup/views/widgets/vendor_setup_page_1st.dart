@@ -161,7 +161,7 @@ class VendorSetupPage1st extends StatelessWidget {
             children: [
               Expanded(
                 child: Text(
-                  'Set location',
+                  'Address',
                   textAlign: TextAlign.start,
                   style: getTextStyle(
                     fontSize: 14.sp,
@@ -254,7 +254,7 @@ class VendorSetupPage1st extends StatelessWidget {
 
           // road
           Text(
-            'Road',
+            'Street',
             style: getTextStyle(
               fontSize: 12.sp,
               fontWeight: FontWeight.w500,
