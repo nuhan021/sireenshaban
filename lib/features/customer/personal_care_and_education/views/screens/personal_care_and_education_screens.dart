@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/constants/icon_path.dart';
+import 'package:sireenshaban/features/customer/business_and_creative_services/controllers/business_and_service_controller.dart';
 import 'package:sireenshaban/features/customer/confirm_booking/views/widgets/booking_summary.dart';
 import 'package:sireenshaban/features/customer/confirm_booking/views/widgets/package_booking_payment_method.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
@@ -19,13 +20,22 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
     required this.image,
     required this.title,
     required this.controller,
+     this.vendorId,
+    this.latitude,
+    this.longitude,
   });
 
   final String image;
   final String title;
   final HomeController controller;
+  final int ?vendorId;
+  final double? latitude;
+  final double? longitude;
 
   final TextEditingController projectScopeController = TextEditingController();
+  final BusinessAndServiceController serviceController = Get.put(
+    BusinessAndServiceController(),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -204,7 +214,7 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
                   ),
 
                   IField(
-                    controller: projectScopeController,
+                    controller: serviceController.firstNameController2,
                     borderColor: Color(0xFFD1D3D8),
                     filled: true,
                     fillColour: AppColors.primaryDeepBlueLight,
@@ -288,7 +298,20 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
             CustomPrimaryButton(
               text: 'Send Request for Quote',
               color: AppColors.primaryDeepBlueNormal,
-              onPressed: () {},
+              isLoading: serviceController.isSubmitting.value,
+              onPressed: () {
+                serviceController.sendServiceRequest(
+                  firstName: serviceController.firstNameController2,
+                  lastName: serviceController.lastNameController2,
+                  email: serviceController.emailController2,
+                  phone: serviceController.phoneController2,
+                  paymentMethod: "Stripe",
+                  vendorId: vendorId!,
+                  latitude: latitude,
+                  longitude: longitude,
+                );
+            
+              },
             ).paddingSymmetric(horizontal: 20.w),
 
             20.verticalSpace,

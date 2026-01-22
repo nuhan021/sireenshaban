@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/constants/icon_path.dart';
+import 'package:sireenshaban/core/utils/logging/logger.dart';
+import 'package:sireenshaban/features/customer/business_and_creative_services/controllers/business_and_service_controller.dart';
 import 'package:sireenshaban/features/customer/confirm_booking/views/widgets/package_booking_payment_method.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/customer/personal_care_and_education/views/widgets/header.dart';
@@ -17,13 +19,22 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
     required this.image,
     required this.title,
     required this.controller,
+    this.vendorId,
+    this.latitude,
+    this.longitude,
   });
 
   final String image;
   final String title;
   final HomeController controller;
+  final int? vendorId;
+  final double? latitude;
+  final double? longitude;
 
   final TextEditingController projectScopeController = TextEditingController();
+  final BusinessAndServiceController serviceController = Get.put(
+    BusinessAndServiceController(),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +115,7 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
                   ),
 
                   IField(
-                    controller: projectScopeController,
+                    controller: serviceController.projectDetailsController3,
                     maxLine: 5,
                     borderColor: Color(0xFFD1D3D8),
                     filled: true,
@@ -121,72 +132,111 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
                     ),
                   ),
 
-                  Container(
-                    height: 70.h,
-                    width: double.maxFinite,
-                    padding: EdgeInsets.all(8.w),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryDeepBlueLight,
-                      borderRadius: BorderRadius.circular(8.r),
-                      border: Border.all(color: Color(0xFFD1D3D8)),
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Icon(
-                          Icons.camera_alt_outlined,
-                          color: AppColors.bodyDarkGray,
+                  8.verticalSpace,
+
+                  Obx(() {
+                    final hasImage =
+                        serviceController.selectedImage.value != null;
+                    return InkWell(
+                      onTap: () => serviceController.onSelectImage(),
+                      child: Container(
+                        height: 100.h, // Increased height for better preview
+                        width: double.maxFinite,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryDeepBlueLight,
+                          borderRadius: BorderRadius.circular(8.r),
+                          border: Border.all(color: const Color(0xFFD1D3D8)),
                         ),
-                        Text(
-                          'Select service type',
-                          style: getTextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.bodyDarkGray,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                        child: hasImage
+                            ? Stack(
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(8.r),
+                                    child: Image.file(
+                                      serviceController.selectedImage.value!,
+                                      width: double.maxFinite,
+                                      height: 100.h,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 5,
+                                    right: 5,
+                                    child: GestureDetector(
+                                      onTap: () =>
+                                          serviceController.clearImage(),
+                                      child: CircleAvatar(
+                                        radius: 12.r,
+                                        backgroundColor: Colors.red,
+                                        child: Icon(
+                                          Icons.close,
+                                          size: 16.sp,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.camera_alt_outlined,
+                                    color: AppColors.bodyDarkGray,
+                                  ),
+                                  Text(
+                                    'Select a photo',
+                                    style: getTextStyle(
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w400,
+                                      color: AppColors.bodyDarkGray,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                      ),
+                    );
+                  }),
 
                   //Service Type
-                  Text(
-                    'Service Type',
-                    style: getTextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.bodyDarkGray,
-                    ),
-                  ),
+                  // Text(
+                  //   'Service Type',
+                  //   style: getTextStyle(
+                  //     fontSize: 16.sp,
+                  //     fontWeight: FontWeight.w500,
+                  //     color: AppColors.bodyDarkGray,
+                  //   ),
+                  // ),
 
-                  Container(
-                    height: 47.h,
-                    width: double.maxFinite,
-                    padding: EdgeInsets.all(8.w),
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryDeepBlueLight,
-                      borderRadius: BorderRadius.circular(8.r),
-                      border: Border.all(color: Color(0xFFD1D3D8)),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Select service type',
-                          style: getTextStyle(
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                            color: AppColors.secondaryInfoMediumGrayNormal,
-                          ),
-                        ),
+                  // Container(
+                  //   height: 47.h,
+                  //   width: double.maxFinite,
+                  //   padding: EdgeInsets.all(8.w),
+                  //   decoration: BoxDecoration(
+                  //     color: AppColors.primaryDeepBlueLight,
+                  //     borderRadius: BorderRadius.circular(8.r),
+                  //     border: Border.all(color: Color(0xFFD1D3D8)),
+                  //   ),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       Text(
+                  //         'Select service type',
+                  //         style: getTextStyle(
+                  //           fontSize: 12.sp,
+                  //           fontWeight: FontWeight.w400,
+                  //           color: AppColors.secondaryInfoMediumGrayNormal,
+                  //         ),
+                  //       ),
 
-                        Icon(
-                          Icons.keyboard_arrow_down_sharp,
-                          color: Color(0xFFB9C2DB),
-                        ),
-                      ],
-                    ),
-                  ),
+                  //       Icon(
+                  //         Icons.keyboard_arrow_down_sharp,
+                  //         color: Color(0xFFB9C2DB),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                 ],
               ),
             ).paddingSymmetric(horizontal: 20.w),
@@ -226,7 +276,7 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
 
                   // Full Name
                   Text(
-                    'Full Name',
+                    'First Name',
                     style: getTextStyle(
                       fontSize: 16.sp,
                       fontWeight: FontWeight.w500,
@@ -235,11 +285,28 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
                   ),
 
                   IField(
-                    controller: projectScopeController,
+                    controller: serviceController.firstNameController3,
                     borderColor: Color(0xFFD1D3D8),
                     filled: true,
                     fillColour: AppColors.primaryDeepBlueLight,
-                    hintText: 'Full Name',
+                    hintText: 'First Name',
+                  ),
+                  // Full Name
+                  Text(
+                    'last Name',
+                    style: getTextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w500,
+                      color: AppColors.bodyDarkGray,
+                    ),
+                  ),
+
+                  IField(
+                    controller: serviceController.lastNameController3,
+                    borderColor: Color(0xFFD1D3D8),
+                    filled: true,
+                    fillColour: AppColors.primaryDeepBlueLight,
+                    hintText: 'last Name',
                   ),
 
                   // Phone Number
@@ -253,7 +320,7 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
                   ),
 
                   IField(
-                    controller: projectScopeController,
+                    controller: serviceController.phoneController3,
                     borderColor: Color(0xFFD1D3D8),
                     filled: true,
                     fillColour: AppColors.primaryDeepBlueLight,
@@ -271,7 +338,7 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
                   ),
 
                   IField(
-                    controller: projectScopeController,
+                    controller: serviceController.emailController3,
                     borderColor: Color(0xFFD1D3D8),
                     filled: true,
                     fillColour: AppColors.primaryDeepBlueLight,
@@ -319,10 +386,20 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
             CustomPrimaryButton(
               text: 'Send Request for Quote',
               color: AppColors.primaryDeepBlueNormal,
-              onPressed: () {},
+              onPressed: () {
+                serviceController.sendServiceRequest(
+                  vendorId: vendorId!,
+                  latitude: latitude,
+                  longitude: longitude,
+                  email: serviceController.emailController3,
+                  firstName: serviceController.firstNameController3,
+                  lastName: serviceController.lastNameController3,
+                  phone: serviceController.phoneController3,
+                  projectDetails: serviceController.projectDetailsController3,
+                //  image: serviceController.selectedImage.value,
+                );
+              },
             ).paddingSymmetric(horizontal: 20.w),
-
-            20.verticalSpace,
 
             Center(
               child: TextButton(

@@ -41,11 +41,12 @@ class TrendingNearby extends StatelessWidget {
               return TrendingNearbyCard(
                 image: item.image ?? '',
                 coverImage: item.backgroundImage,
-                title: item.businessName ?? '',
+                title: item.businessName,
                 status: 'popular',
                 group: item.servicesGroup,
                 controller: controller,
                 vendorId: item.id,
+                
               );
             },
           ),

@@ -317,7 +317,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               height: 20.h,
               color: isLogout
                   ? AppColors.primaryDeepBlueNormal
-                  : AppColors.bodyDarkGray,
+                  : null,
             ),
             10.horizontalSpace,
             Text(
