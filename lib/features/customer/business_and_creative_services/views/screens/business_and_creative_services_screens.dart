@@ -341,14 +341,13 @@ class BusinessAndCreativeServicesScreens extends StatelessWidget {
                 color: AppColors.primaryDeepBlueNormal,
                 isLoading: serviceController.isSubmitting.value,
                 onPressed: () => serviceController.sendServiceRequest(
-                  email: serviceController.emailController,
-                  firstName: serviceController.firstNameController,
-                  lastName: serviceController.lastNameController,
-                  phone: serviceController.phoneController,
-
                   vendorId: vendorId,
                   latitude: latitude,
                   longitude: longitude,
+                  // Pass the controllers used in this specific screen
+                  email: serviceController.emailController,
+                  phone: serviceController.phoneController,
+                  projectDetails: serviceController.projectDetailsController,
                 ),
               ).paddingSymmetric(horizontal: 20.w),
             ),

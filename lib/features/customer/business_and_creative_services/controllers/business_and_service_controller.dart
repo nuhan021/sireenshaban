@@ -33,7 +33,7 @@ class BusinessAndServiceController extends GetxController {
   final TextEditingController phoneController2 = TextEditingController();
   final TextEditingController emailController2 = TextEditingController();
 
-  //type 2 all controlles
+  //type 3 all controlles
   final TextEditingController projectDetailsController3 =
       TextEditingController();
   final TextEditingController firstNameController3 = TextEditingController();
@@ -64,185 +64,162 @@ class BusinessAndServiceController extends GetxController {
     }
   }
 
-  void _syncProfileFields(UserModel? user) {
-    if (user == null) return;
-    if (firstNameController.text.trim().isEmpty &&
-        // firstNameController2.text.trim().isEmpty ||
-        firstNameController3.text.trim().isEmpty) {
-      firstNameController.text = user.firstName;
-    }
-    if (lastNameController.text.trim().isEmpty &&
-        // lastNameController2.text.trim().isEmpty ||
-        lastNameController3.text.trim().isEmpty) {
-      lastNameController.text = user.lastName;
-    }
-    if (emailController.text.trim().isEmpty &&
-        // emailController2.text.trim().isEmpty ||
-        emailController3.text.trim().isEmpty) {
-      emailController.text = user.email;
-    }
-    if (phoneController.text.trim().isEmpty &&
-        // phoneController2.text.trim().isEmpty ||
-        phoneController3.text.trim().isEmpty) {
-      phoneController.text = user.phoneNumber;
-    }
-  }
-// Inside BusinessAndServiceController
-var selectedImage = Rx<File?>(null);
+void _syncProfileFields(UserModel? user) {
+  if (user == null) return;
 
-void onSelectImage() async {
-  File? image = await pickImage(ImageSource.gallery);
-  if (image != null) {
-    selectedImage.value = image;
-  }
+  // Group 1
+  firstNameController.text = user.firstName;
+  lastNameController.text = user.lastName;
+  emailController.text = user.email;
+  phoneController.text = user.phoneNumber;
+
+  // Group 2
+  firstNameController2.text = user.firstName;
+  lastNameController2.text = user.lastName;
+  emailController2.text = user.email;
+  phoneController2.text = user.phoneNumber;
+
+  // Group 3 (The ones used in your UI)
+  firstNameController3.text = user.firstName;
+  lastNameController3.text = user.lastName;
+  emailController3.text = user.email;
+  phoneController3.text = user.phoneNumber;
+  
+  AppLoggerHelper.debug("Profile fields synced for all controllers.");
 }
 
-void clearImage() {
-  selectedImage.value = null;
-}
-Future<File?> pickImage(ImageSource source) async {
-  try {
-    final ImagePicker picker = ImagePicker();
-    
-    // Pick the image
-    final XFile? pickedFile = await picker.pickImage(
-      source: source,
-      imageQuality: 80, // Compresses the image to save data/bandwidth
-      maxWidth: 1000,   // Resizes to reasonable dimensions
-    );
+  // Inside BusinessAndServiceController
+  var selectedImage = Rx<File?>(null);
 
-    if (pickedFile != null) {
-      // Convert XFile to standard File
-      return File(pickedFile.path);
-    } else {
-      print("User cancelled the picker.");
-      return null;
+  void onSelectImage() async {
+    File? image = await pickImage(ImageSource.gallery);
+    if (image != null) {
+      selectedImage.value = image;
     }
-  } catch (e) {
-    print("Error picking image: $e");
-    return null;
   }
-}
-  Future<void> sendServiceRequest({
-    required int vendorId,
-    String paymentMethod = 'Stripe',
-    DateTime? serviceDateTime,
-    double? latitude,
-    double? longitude,
-    TextEditingController? firstName,
-    TextEditingController? lastName,
-    TextEditingController? email,
-    TextEditingController? phone,
-    TextEditingController? projectDetails,
-    File? image,
-  }) async {
-    if (isSubmitting.value) return;
 
-    if (vendorId <= 0) {
-      SnackBarConstant.error('Invalid vendor.');
-      return;
-    }
+  void clearImage() {
+    selectedImage.value = null;
+  }
 
-    // 1. Extract and trim strings from controllers
-    // Using ?.text?.trim() ensures we don't crash if a controller is null
-    final fName = firstName?.text.trim() ?? '';
-    final lName = lastName?.text.trim() ?? '';
-    final emailVal = email?.text.trim() ?? '';
-    final phoneVal = phone?.text.trim() ?? '';
-    final details = projectDetails?.text.trim() ?? '';
-
-    AppLoggerHelper.debug(
-      'fName: $fName, lName: $lName, emailVal: $emailVal, phoneVal: $phoneVal, details: $details',
-    );
-
-    // 2. Comprehensive Validation
-    if (details.isEmpty ||
-        fName.isEmpty ||
-        lName.isEmpty ||
-        phoneVal.isEmpty ||
-        emailVal.isEmpty) {
-      SnackBarConstant.warning('Please fill all required fields.');
-      return;
-    }
-
-    isSubmitting.value = true;
-
+  Future<File?> pickImage(ImageSource source) async {
     try {
-      final token = StorageService.token;
-      if (token == null || token.isEmpty) {
-        isSubmitting.value = false;
-        SnackBarConstant.error('Unauthorized');
-        return;
-      }
+      final ImagePicker picker = ImagePicker();
 
-      // Date formatting
-      final formattedDate = DateFormat(
-        'yyyy-MM-dd HH:mm:ss',
-      ).format(serviceDateTime ?? DateTime.now());
-
-      // Location Logic
-      final mapPosition = _mapController?.selectedPosition;
-      double? resolvedLatitude = mapPosition?.latitude ?? latitude;
-      double? resolvedLongitude = mapPosition?.longitude ?? longitude;
-
-      if (resolvedLatitude == null || resolvedLongitude == null) {
-        try {
-          final currentPosition = await Geolocator.getCurrentPosition(
-            locationSettings: const LocationSettings(
-              accuracy: LocationAccuracy.bestForNavigation,
-            ),
-          );
-          resolvedLatitude = currentPosition.latitude;
-          resolvedLongitude = currentPosition.longitude;
-        } catch (_) {
-          /* Fallback to null */
-        }
-      }
-
-      // 3. Construct the Body using the extracted values
-      final body = <String, dynamic>{
-        "vendor_id": vendorId,
-        "first_name": fName,
-        "last_name": lName,
-        "email": emailVal,
-        "phone_number": phoneVal,
-        "project_details": details,
-        "payment_method": paymentMethod,
-        "service_datetime": formattedDate,
-        "image": image,
-      };
-
-      if (resolvedLatitude != null)
-        body["location_latitude"] = resolvedLatitude;
-      if (resolvedLongitude != null)
-        body["location_longitude"] = resolvedLongitude;
-
-      final response = await _service.createServiceRequest(
-        body: body,
-        token: "Bearer $token",
+      // Pick the image
+      final XFile? pickedFile = await picker.pickImage(
+        source: source,
+        imageQuality: 80, // Compresses the image to save data/bandwidth
+        maxWidth: 1000, // Resizes to reasonable dimensions
       );
 
-      // 4. Handle Response
-      if (response.statusCode == 401) {
-        SnackBarConstant.error('Unauthorized');
-      } else if (response.isSuccess ||
-          response.statusCode == 200 ||
-          response.statusCode == 201) {
-        final message = response.responseData is Map
-            ? response.responseData["message"]
-            : null;
-        SnackBarConstant.success(
-          message ?? 'Service request sent successfully.',
-        );
+      if (pickedFile != null) {
+        // Convert XFile to standard File
+        return File(pickedFile.path);
       } else {
-        SnackBarConstant.error(response.errorMessage);
+        print("User cancelled the picker.");
+        return null;
       }
     } catch (e) {
-      SnackBarConstant.error('An unexpected error occurred.');
-    } finally {
-      isSubmitting.value = false;
+      print("Error picking image: $e");
+      return null;
     }
   }
+
+ Future<void> sendServiceRequest({
+  required int vendorId,
+  String paymentMethod = 'Stripe',
+  DateTime? serviceDateTime,
+  double? latitude,
+  double? longitude,
+  // Pass the controllers from the UI
+  required TextEditingController email,
+  required TextEditingController phone,
+  required TextEditingController projectDetails,
+  File? image,
+}) async {
+  if (isSubmitting.value) return;
+
+  if (vendorId <= 0) {
+    SnackBarConstant.error('Invalid vendor.');
+    return;
+  }
+
+  // Get the current user from the profile controller
+  final UserModel? user = _profileController?.user.value;
+  
+  if (user == null) {
+    SnackBarConstant.error('User profile not found.');
+    return;
+  }
+
+  // 1. Extract values
+  final emailVal = email.text.trim();
+  final phoneVal = phone.text.trim();
+  final details = projectDetails.text.trim();
+
+  // 2. Validation
+  if (details.isEmpty || phoneVal.isEmpty || emailVal.isEmpty) {
+    SnackBarConstant.warning('Please fill all required fields.');
+    return;
+  }
+
+  isSubmitting.value = true;
+
+  try {
+    final token = StorageService.token;
+    if (token == null || token.isEmpty) {
+      SnackBarConstant.error('Unauthorized');
+      return;
+    }
+
+    final formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss')
+        .format(serviceDateTime ?? DateTime.now());
+
+    // Location logic
+    final mapPosition = _mapController?.selectedPosition;
+    double? resolvedLatitude = mapPosition?.latitude ?? latitude;
+    double? resolvedLongitude = mapPosition?.longitude ?? longitude;
+
+    // 3. Construct the Body (Using fixed user names)
+    final body = <String, dynamic>{
+      "vendor_id": vendorId,
+      "first_name": user.firstName, // Fixed from profile
+      "last_name": user.lastName,   // Fixed from profile
+      "email": emailVal,
+      "phone_number": phoneVal,
+      "project_details": details,
+      "payment_method": paymentMethod,
+      "service_datetime": formattedDate,
+    };
+    
+    // Add image if exists
+    if (image != null) body["image"] = image;
+
+    if (resolvedLatitude != null) body["location_latitude"] = resolvedLatitude;
+    if (resolvedLongitude != null) body["location_longitude"] = resolvedLongitude;
+
+    AppLoggerHelper.debug("Request Body: $body");
+
+    final response = await _service.createServiceRequest(
+      body: body,
+      token: "Bearer $token",
+    );
+
+    // 4. Handle Response
+    if (response.isSuccess || response.statusCode == 200 || response.statusCode == 201) {
+      Get.snackbar("Success", "Request sent successfully");
+      Get.back(); // Optional: Navigate back after success
+    } else {
+      SnackBarConstant.error(response.errorMessage ?? 'Failed to send request');
+    }
+  } catch (e) {
+    AppLoggerHelper.error("Request Error: $e");
+    SnackBarConstant.error('An unexpected error occurred.');
+  } finally {
+    isSubmitting.value = false;
+  }
+}
 
   @override
   void onClose() {

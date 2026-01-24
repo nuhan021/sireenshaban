@@ -20,7 +20,7 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
     required this.image,
     required this.title,
     required this.controller,
-     this.vendorId,
+    this.vendorId,
     this.latitude,
     this.longitude,
   });
@@ -28,12 +28,12 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
   final String image;
   final String title;
   final HomeController controller;
-  final int ?vendorId;
+  final int? vendorId;
   final double? latitude;
   final double? longitude;
 
   final TextEditingController projectScopeController = TextEditingController();
-  final BusinessAndServiceController serviceController = Get.put(
+ final BusinessAndServiceController serviceController = Get.put(
     BusinessAndServiceController(),
   );
 
@@ -61,7 +61,6 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
               vendorId: 0,
               vendorName: title,
               vendorAvatar: null,
-              vendorUserId: vendorUserId,
             ),
 
             40.verticalSpace,
@@ -296,24 +295,25 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
             40.verticalSpace,
 
             // submit butto
-            CustomPrimaryButton(
-              text: 'Send Request for Quote',
-              color: AppColors.primaryDeepBlueNormal,
-              isLoading: serviceController.isSubmitting.value,
-              onPressed: () {
-                serviceController.sendServiceRequest(
-                  firstName: serviceController.firstNameController2,
-                  lastName: serviceController.lastNameController2,
-                  email: serviceController.emailController2,
-                  phone: serviceController.phoneController2,
-                  paymentMethod: "Stripe",
-                  vendorId: vendorId!,
-                  latitude: latitude,
-                  longitude: longitude,
-                );
-            
-              },
-            ).paddingSymmetric(horizontal: 20.w),
+            Obx(
+             ()=> CustomPrimaryButton(
+                text: 'Send Request for Quote',
+                color: AppColors.primaryDeepBlueNormal,
+                isLoading: serviceController.isSubmitting.value,
+                
+                onPressed: () {
+                  serviceController.sendServiceRequest(
+                    projectDetails: serviceController.projectDetailsController2,
+                    email: serviceController.emailController2,
+                    phone: serviceController.phoneController2,
+                    paymentMethod: "Stripe",
+                    vendorId: vendorId!,
+                    latitude: latitude,
+                    longitude: longitude,
+                  );
+                },
+              ).paddingSymmetric(horizontal: 20.w),
+            ),
 
             20.verticalSpace,
 
