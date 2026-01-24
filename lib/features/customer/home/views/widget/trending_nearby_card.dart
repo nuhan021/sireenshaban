@@ -23,7 +23,7 @@ class TrendingNearbyCard extends StatelessWidget {
     required this.group,
     required this.controller,
     required this.vendorId,
-    required this.vendorUserId,
+    
     this.coverImage,
   });
   final String image;
@@ -32,7 +32,7 @@ class TrendingNearbyCard extends StatelessWidget {
   final String group;
   final HomeController controller;
   final int vendorId;
-  final int vendorUserId;
+
   final String? coverImage;
 
   @override
@@ -74,7 +74,7 @@ class TrendingNearbyCard extends StatelessWidget {
                 image: image,
                 title: title,
                 controller: controller,
-                vendorUserId: vendorUserId,
+                vendorId: vendorId,
               ),
             );
               AppLoggerHelper.debug("case 3 : default");

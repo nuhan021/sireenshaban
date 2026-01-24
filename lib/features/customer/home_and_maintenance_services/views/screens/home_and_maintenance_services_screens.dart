@@ -8,6 +8,8 @@ import 'package:sireenshaban/features/customer/business_and_creative_services/co
 import 'package:sireenshaban/features/customer/confirm_booking/views/widgets/package_booking_payment_method.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/customer/personal_care_and_education/views/widgets/header.dart';
+import 'package:sireenshaban/features/customer/profile/controllers/profile_controller.dart';
+import 'package:sireenshaban/features/customer/profile/models/user_model.dart';
 import '../../../../../core/common/widgets/IField.dart';
 import '../../../../../core/common/widgets/custom_primary_button.dart';
 import '../../../../../core/utils/constants/colors.dart';
@@ -60,7 +62,7 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
               vendorId: 0,
               vendorName: title,
               vendorAvatar: null,
-              vendorUserId: vendorUserId,
+              vendorUserId: vendorId,
             ),
 
             40.verticalSpace,
@@ -80,7 +82,7 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
 
             // Issue Details
             Container(
-              height: 430.h,
+              // height: 430.h,
               width: double.maxFinite,
               padding: EdgeInsets.all(12.w),
               decoration: BoxDecoration(
@@ -115,90 +117,93 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
                     ),
                   ),
 
-                  IField(
-                    controller: serviceController.projectDetailsController3,
-                    maxLine: 5,
-                    borderColor: Color(0xFFD1D3D8),
-                    filled: true,
-                    fillColour: AppColors.primaryDeepBlueLight,
-                  ),
-
-                  // duration (hour)
-                  Text(
-                    'Add Photo/Video',
-                    style: getTextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.bodyDarkGray,
+                  Padding(
+                    padding:  EdgeInsets.only(top: 10.sp),
+                    child: IField(
+                      controller: serviceController.projectDetailsController3,
+                      maxLine: 5,
+                      borderColor: Color(0xFFD1D3D8),
+                      filled: true,
+                      fillColour: AppColors.primaryDeepBlueLight,
                     ),
                   ),
 
-                  8.verticalSpace,
+                  // // duration (hour)
+                  // Text(
+                  //   'Add Photo/Video',
+                  //   style: getTextStyle(
+                  //     fontSize: 16.sp,
+                  //     fontWeight: FontWeight.w500,
+                  //     color: AppColors.bodyDarkGray,
+                  //   ),
+                  // ),
 
-                  Obx(() {
-                    final hasImage =
-                        serviceController.selectedImage.value != null;
-                    return InkWell(
-                      onTap: () => serviceController.onSelectImage(),
-                      child: Container(
-                        height: 100.h, // Increased height for better preview
-                        width: double.maxFinite,
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryDeepBlueLight,
-                          borderRadius: BorderRadius.circular(8.r),
-                          border: Border.all(color: const Color(0xFFD1D3D8)),
-                        ),
-                        child: hasImage
-                            ? Stack(
-                                children: [
-                                  ClipRRect(
-                                    borderRadius: BorderRadius.circular(8.r),
-                                    child: Image.file(
-                                      serviceController.selectedImage.value!,
-                                      width: double.maxFinite,
-                                      height: 100.h,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                  Positioned(
-                                    top: 5,
-                                    right: 5,
-                                    child: GestureDetector(
-                                      onTap: () =>
-                                          serviceController.clearImage(),
-                                      child: CircleAvatar(
-                                        radius: 12.r,
-                                        backgroundColor: Colors.red,
-                                        child: Icon(
-                                          Icons.close,
-                                          size: 16.sp,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              )
-                            : Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.camera_alt_outlined,
-                                    color: AppColors.bodyDarkGray,
-                                  ),
-                                  Text(
-                                    'Select a photo',
-                                    style: getTextStyle(
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w400,
-                                      color: AppColors.bodyDarkGray,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                      ),
-                    );
-                  }),
+                  // 8.verticalSpace,
+
+                  // Obx(() {
+                  //   final hasImage =
+                  //       serviceController.selectedImage.value != null;
+                  //   return InkWell(
+                  //     onTap: () => serviceController.onSelectImage(),
+                  //     child: Container(
+                  //       height: 100.h, // Increased height for better preview
+                  //       width: double.maxFinite,
+                  //       decoration: BoxDecoration(
+                  //         color: AppColors.primaryDeepBlueLight,
+                  //         borderRadius: BorderRadius.circular(8.r),
+                  //         border: Border.all(color: const Color(0xFFD1D3D8)),
+                  //       ),
+                  //       child: hasImage
+                  //           ? Stack(
+                  //               children: [
+                  //                 ClipRRect(
+                  //                   borderRadius: BorderRadius.circular(8.r),
+                  //                   child: Image.file(
+                  //                     serviceController.selectedImage.value!,
+                  //                     width: double.maxFinite,
+                  //                     height: 100.h,
+                  //                     fit: BoxFit.cover,
+                  //                   ),
+                  //                 ),
+                  //                 Positioned(
+                  //                   top: 5,
+                  //                   right: 5,
+                  //                   child: GestureDetector(
+                  //                     onTap: () =>
+                  //                         serviceController.clearImage(),
+                  //                     child: CircleAvatar(
+                  //                       radius: 12.r,
+                  //                       backgroundColor: Colors.red,
+                  //                       child: Icon(
+                  //                         Icons.close,
+                  //                         size: 16.sp,
+                  //                         color: Colors.white,
+                  //                       ),
+                  //                     ),
+                  //                   ),
+                  //                 ),
+                  //               ],
+                  //             )
+                  //           : Column(
+                  //               mainAxisAlignment: MainAxisAlignment.center,
+                  //               children: [
+                  //                 Icon(
+                  //                   Icons.camera_alt_outlined,
+                  //                   color: AppColors.bodyDarkGray,
+                  //                 ),
+                  //                 Text(
+                  //                   'Select a photo',
+                  //                   style: getTextStyle(
+                  //                     fontSize: 12.sp,
+                  //                     fontWeight: FontWeight.w400,
+                  //                     color: AppColors.bodyDarkGray,
+                  //                   ),
+                  //                 ),
+                  //               ],
+                  //             ),
+                  //     ),
+                  //   );
+                  // }),
 
                   //Service Type
                   // Text(
@@ -286,6 +291,7 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
                   ),
 
                   IField(
+                    readOnly: true,
                     controller: serviceController.firstNameController3,
                     borderColor: Color(0xFFD1D3D8),
                     filled: true,
@@ -303,6 +309,7 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
                   ),
 
                   IField(
+                      readOnly: true,
                     controller: serviceController.lastNameController3,
                     borderColor: Color(0xFFD1D3D8),
                     filled: true,
@@ -384,37 +391,41 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
             40.verticalSpace,
 
             // submit butto
-            CustomPrimaryButton(
-              text: 'Send Request for Quote',
-              color: AppColors.primaryDeepBlueNormal,
-              onPressed: () {
-                serviceController.sendServiceRequest(
-                  vendorId: vendorId!,
-                  latitude: latitude,
-                  longitude: longitude,
-                  email: serviceController.emailController3,
-                  firstName: serviceController.firstNameController3,
-                  lastName: serviceController.lastNameController3,
-                  phone: serviceController.phoneController3,
-                  projectDetails: serviceController.projectDetailsController3,
-                //  image: serviceController.selectedImage.value,
-                );
-              },
-            ).paddingSymmetric(horizontal: 20.w),
-
-            Center(
-              child: TextButton(
-                onPressed: () {},
-                child: Text(
-                  'Cancel',
-                  style: getTextStyle(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w400,
-                    color: AppColors.accentNormal,
-                  ),
-                ),
-              ),
+            Obx(
+             ()=> CustomPrimaryButton(
+                text: 'Send Request for Quote',
+                color: AppColors.primaryDeepBlueNormal,
+                 isLoading: serviceController.isSubmitting.value,
+                onPressed: () {
+              
+                        
+                  serviceController.sendServiceRequest(
+                    vendorId: vendorId!,
+                    latitude: latitude,
+                    longitude: longitude,
+                    email: serviceController.emailController3,
+                   
+                    phone: serviceController.phoneController3,
+                    projectDetails: serviceController.projectDetailsController3,
+                  //  image: serviceController.selectedImage.value,
+                  );
+                },
+              ).paddingSymmetric(horizontal: 20.w),
             ),
+
+            // Center(
+            //   child: TextButton(
+            //     onPressed: () {},
+            //     child: Text(
+            //       'Cancel',
+            //       style: getTextStyle(
+            //         fontSize: 14.sp,
+            //         fontWeight: FontWeight.w400,
+            //         color: AppColors.accentNormal,
+            //       ),
+            //     ),
+            //   ),
+            // ),
 
             20.verticalSpace,
           ],
