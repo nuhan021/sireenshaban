@@ -341,6 +341,11 @@ class BusinessAndCreativeServicesScreens extends StatelessWidget {
                 color: AppColors.primaryDeepBlueNormal,
                 isLoading: serviceController.isSubmitting.value,
                 onPressed: () => serviceController.sendServiceRequest(
+                  email: serviceController.emailController,
+                  firstName: serviceController.firstNameController,
+                  lastName: serviceController.lastNameController,
+                  phone: serviceController.phoneController,
+
                   vendorId: vendorId,
                   latitude: latitude,
                   longitude: longitude,

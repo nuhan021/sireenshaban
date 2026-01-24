@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -48,10 +50,12 @@ class TrendingNearbyCard extends StatelessWidget {
                 title: title,
                 controller: controller,
                 vendorId: vendorId,
-                vendorUserId: vendorUserId,
+                
               ),
             );
+              AppLoggerHelper.debug("case 1 : businessAndCreativeServices");
             break;
+            
           case "personalCareAndEducation":
             AppHelperFunctions.navigateToScreen(
               context,
@@ -59,10 +63,10 @@ class TrendingNearbyCard extends StatelessWidget {
                 image: image,
                 title: title,
                 controller: controller,
-                vendorUserId: vendorUserId,
+                vendorId: vendorId,
               ),
             );
-
+  AppLoggerHelper.debug("case 2 : personalCareAndEducation");
           default:
             AppHelperFunctions.navigateToScreen(
               context,
@@ -73,6 +77,7 @@ class TrendingNearbyCard extends StatelessWidget {
                 vendorUserId: vendorUserId,
               ),
             );
+              AppLoggerHelper.debug("case 3 : default");
         }
       },
       child: Card(
