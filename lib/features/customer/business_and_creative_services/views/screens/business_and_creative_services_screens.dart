@@ -237,6 +237,7 @@ class BusinessAndCreativeServicesScreens extends StatelessWidget {
                   ),
 
                   IField(
+                    readOnly: true,
                     controller: serviceController.firstNameController,
                     borderColor: Color(0xFFD1D3D8),
                     filled: true,
@@ -254,6 +255,7 @@ class BusinessAndCreativeServicesScreens extends StatelessWidget {
                   ),
 
                   IField(
+                       readOnly: true,
                     controller: serviceController.lastNameController,
                     borderColor: Color(0xFFD1D3D8),
                     filled: true,

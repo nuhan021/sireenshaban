@@ -214,6 +214,7 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
                   ),
 
                   IField(
+                       readOnly: true,
                     controller: serviceController.firstNameController2,
                     borderColor: Color(0xFFD1D3D8),
                     filled: true,
