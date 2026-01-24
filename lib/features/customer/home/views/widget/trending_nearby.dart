@@ -6,7 +6,6 @@ import 'package:sireenshaban/features/customer/home/views/widget/trending_nearby
 
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
-import '../../../../../core/utils/constants/enums.dart';
 
 class TrendingNearby extends StatelessWidget {
   const TrendingNearby({super.key, required this.controller});
@@ -46,7 +45,7 @@ class TrendingNearby extends StatelessWidget {
                 group: item.servicesGroup,
                 controller: controller,
                 vendorId: item.id,
-                
+               
               );
             },
           ),

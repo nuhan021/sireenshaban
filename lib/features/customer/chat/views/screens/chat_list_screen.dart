@@ -26,7 +26,7 @@ class ChatListScreen extends StatelessWidget {
         ),
       ),
       body: Obx(() {
-        if (controller.isLoading.value) {
+        if (controller.isLoading.value && controller.conversations.isEmpty) {
           return Center(
             child: CircularProgressIndicator(
               color: AppColors.primaryDeepBlueNormal,
@@ -35,22 +35,32 @@ class ChatListScreen extends StatelessWidget {
         }
 
         if (controller.conversations.isEmpty) {
-          return Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+          return RefreshIndicator(
+            onRefresh: () => controller.refreshConversations(),
+            color: AppColors.primaryDeepBlueNormal,
+            child: ListView(
+              physics: AlwaysScrollableScrollPhysics(),
               children: [
-                Icon(
-                  Icons.chat_bubble_outline,
-                  size: 64.sp,
-                  color: Colors.grey,
-                ),
-                SizedBox(height: 16.h),
-                Text(
-                  'No conversations yet',
-                  style: getTextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w500,
-                    color: AppColors.bodyDarkGray,
+                SizedBox(height: 150.h),
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(
+                        Icons.chat_bubble_outline,
+                        size: 64.sp,
+                        color: Colors.grey,
+                      ),
+                      SizedBox(height: 16.h),
+                      Text(
+                        'No conversations yet',
+                        style: getTextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.bodyDarkGray,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -58,25 +68,29 @@ class ChatListScreen extends StatelessWidget {
           );
         }
 
-        return ListView.builder(
-          padding: EdgeInsets.symmetric(vertical: 8.h),
-          itemCount: controller.conversations.length,
-          itemBuilder: (context, index) {
-            final conversation = controller.conversations[index];
-            return ChatListTile(
-              conversation: conversation,
-              onTap: () {
-                Get.toNamed(
-                  AppRoute.chatScreen,
-                  arguments: {
-                    'receiverId': conversation.userId,
-                    'receiverName': conversation.name,
-                    'receiverAvatar': conversation.avatar,
-                  },
-                );
-              },
-            );
-          },
+        return RefreshIndicator(
+          onRefresh: () => controller.refreshConversations(),
+          color: AppColors.primaryDeepBlueNormal,
+          child: ListView.builder(
+            padding: EdgeInsets.symmetric(vertical: 8.h),
+            itemCount: controller.conversations.length,
+            itemBuilder: (context, index) {
+              final conversation = controller.conversations[index];
+              return ChatListTile(
+                conversation: conversation,
+                onTap: () {
+                  Get.toNamed(
+                    AppRoute.chatScreen,
+                    arguments: {
+                      'receiverId': conversation.userId,
+                      'receiverName': conversation.name,
+                      'receiverAvatar': conversation.avatar,
+                    },
+                  );
+                },
+              );
+            },
+          ),
         );
       }),
     );

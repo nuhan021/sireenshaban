@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import 'package:sireenshaban/core/utils/constants/enums.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
 import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/customer/business_and_creative_services/views/screens/business_and_creative_services_screens.dart';
@@ -24,6 +23,7 @@ class TrendingNearbyCard extends StatelessWidget {
     required this.group,
     required this.controller,
     required this.vendorId,
+    required this.vendorUserId,
     this.coverImage,
   });
   final String image;
@@ -32,6 +32,7 @@ class TrendingNearbyCard extends StatelessWidget {
   final String group;
   final HomeController controller;
   final int vendorId;
+  final int vendorUserId;
   final String? coverImage;
 
   @override
@@ -49,6 +50,7 @@ class TrendingNearbyCard extends StatelessWidget {
                 title: title,
                 controller: controller,
                 vendorId: vendorId,
+                
               ),
             );
               AppLoggerHelper.debug("case 1 : businessAndCreativeServices");
@@ -72,8 +74,7 @@ class TrendingNearbyCard extends StatelessWidget {
                 image: image,
                 title: title,
                 controller: controller,
-                vendorId: vendorId,
-                
+                vendorUserId: vendorUserId,
               ),
             );
               AppLoggerHelper.debug("case 3 : default");

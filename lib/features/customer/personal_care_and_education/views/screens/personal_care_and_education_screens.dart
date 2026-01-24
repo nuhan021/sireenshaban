@@ -61,6 +61,7 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
               vendorId: 0,
               vendorName: title,
               vendorAvatar: null,
+              vendorUserId: vendorUserId,
             ),
 
             40.verticalSpace,
