@@ -51,7 +51,7 @@ class ThumbnailImage extends StatelessWidget {
             alignment: Alignment.bottomLeft,
             child: Container(
               height: 30.h,
-              width: 150.w,
+              width: 140.w,
               decoration: BoxDecoration(
                 color: AppColors.bodyDarkGray.withValues(alpha: 0.7),
                 borderRadius: BorderRadius.circular(4.r),
@@ -61,21 +61,25 @@ class ThumbnailImage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  // star
-                  Icon(Icons.star_rounded, color: Color(0xFFF0C020)),
+                  Row(
+                    children: [
+                      // star
+                      Icon(Icons.star_rounded, color: Color(0xFFF0C020)),
 
-                  // star value
-                  Text(
-                    rating.toString(),
-                    style: getTextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.cardBackgroundSoftGray,
-                    ),
+                      // star value
+                      Text(
+                        rating.toString(),
+                        style: getTextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                          color: AppColors.cardBackgroundSoftGray,
+                        ),
+                      ),
+                    ],
                   ),
 
                   Text(
-                    reviews.toString(),
+                    "${reviews.toString()} reviews",
                     style: getTextStyle(
                       fontSize: 12.sp,
                       fontWeight: FontWeight.w400,

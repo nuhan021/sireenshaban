@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
+import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/customer/home/model/packages_model.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/featured_vendors_card.dart';
@@ -126,6 +127,10 @@ class _VendorsScreenState extends State<VendorsScreen> {
                   separatorBuilder: (context, index) => 10.verticalSpace,
                   itemBuilder: (context, index) {
                     final package = packages[index];
+                    final serviceGroup = package.serviceGroup;
+                    final coverImage = package.image;
+                    final vendorId = package.vendorId;
+                    AppLoggerHelper.info(serviceGroup);
                     return FeaturedVendorsCard(
                       image: package.image?.toString() ?? '',
                       title: package.title,
@@ -139,6 +144,9 @@ class _VendorsScreenState extends State<VendorsScreen> {
                       location: package.location.isNotEmpty
                           ? package.location
                           : 'Near you',
+                      serviceGroup: serviceGroup,
+                      coverImage: coverImage,
+                      vendorId: vendorId,
                     );
                   },
                 );
