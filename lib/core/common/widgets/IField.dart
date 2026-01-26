@@ -18,6 +18,7 @@ class IField extends StatelessWidget {
     this.skipValidator = false,
     this.borderColor = AppColors.primaryDeepBlueNormal,
     this.maxLine = 1,
+    this.onChanged,
     super.key,
   });
 
@@ -36,11 +37,13 @@ class IField extends StatelessWidget {
   final bool skipValidator;
   final Color borderColor;
   final int maxLine;
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      onChanged: onChanged,
       validator: skipValidator
           ? null
           : overrideValidator

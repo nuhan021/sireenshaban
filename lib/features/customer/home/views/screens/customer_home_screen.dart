@@ -35,6 +35,7 @@ class CustomerHomeScreen extends StatelessWidget {
                 onTap: () {
                   navBarController.jumpToScreen(1);
                 },
+                controller: controller,
               ),
 
               40.verticalSpace,

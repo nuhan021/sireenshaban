@@ -2,13 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/common/widgets/IField.dart';
+import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
 import '../../../../../core/utils/constants/icon_path.dart';
+import '../../../../../core/utils/helpers/app_helper.dart';
+import '../../../vendors/views/screens/vendors_screen.dart';
 
 class SearchScreen extends StatelessWidget {
-  const SearchScreen({super.key});
+  SearchScreen({super.key});
+
+  HomeController controller = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +66,9 @@ class SearchScreen extends StatelessWidget {
             ),
             child: IField(
               controller: TextEditingController(),
+              onChanged: (value) {
+                controller.searchQuery.value = value;
+              },
               filled: true,
               fillColour: AppColors.cardBackgroundSoftGray,
               hintText: "Search Services",
@@ -86,83 +94,47 @@ class SearchScreen extends StatelessWidget {
 
           10.verticalSpace,
 
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  Image.asset(
-                    IconPath.navSearch,
-                    height: 25.h,
-                    color: AppColors.primaryDeepBlueNormal,
-                  ),
-                  10.horizontalSpace,
-                  Text(
-                    "Dentist",
-                    style: getTextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.bodyDarkGray,
+          Expanded(
+            child: Obx(() {
+              final list = controller.filteredCategories;
+
+              if (list.isEmpty) {
+                return const Center(child: Text("No categories found"));
+              }
+
+              return ListView.builder(
+                itemCount: list.length,
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                itemBuilder: (context, index) {
+                  final e = list[index];
+                  return GestureDetector(
+                    onTap: () => AppHelperFunctions.navigateToScreen(
+                      context,
+                      VendorsScreen(categorySlug: e.slug),
                     ),
-                  ),
-                ],
-              ).paddingSymmetric(vertical: 10.h),
-              Row(
-                children: [
-                  Image.asset(
-                    IconPath.navSearch,
-                    height: 25.h,
-                    color: AppColors.primaryDeepBlueNormal,
-                  ),
-                  10.horizontalSpace,
-                  Text(
-                    "Restaurant",
-                    style: getTextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.bodyDarkGray,
-                    ),
-                  ),
-                ],
-              ).paddingSymmetric(vertical: 10.h),
-              Row(
-                children: [
-                  Image.asset(
-                    IconPath.navSearch,
-                    height: 25.h,
-                    color: AppColors.primaryDeepBlueNormal,
-                  ),
-                  10.horizontalSpace,
-                  Text(
-                    "Plumber",
-                    style: getTextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.bodyDarkGray,
-                    ),
-                  ),
-                ],
-              ).paddingSymmetric(vertical: 10.h),
-              Row(
-                children: [
-                  Image.asset(
-                    IconPath.navSearch,
-                    height: 25.h,
-                    color: AppColors.primaryDeepBlueNormal,
-                  ),
-                  10.horizontalSpace,
-                  Text(
-                    "Electrician",
-                    style: getTextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.bodyDarkGray,
-                    ),
-                  ),
-                ],
-              ).paddingSymmetric(vertical: 10.h),
-            ],
-          ).paddingSymmetric(horizontal: 20.w),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          IconPath.navSearch,
+                          height: 25.h,
+                          color: AppColors.primaryDeepBlueNormal,
+                        ),
+                        10.horizontalSpace,
+                        Text(
+                          e.name ?? '',
+                          style: getTextStyle(
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.bodyDarkGray,
+                          ),
+                        ),
+                      ],
+                    ).paddingSymmetric(vertical: 10.h),
+                  );
+                },
+              );
+            }),
+          ),
         ],
       ).paddingSymmetric(horizontal: 20.w),
     );

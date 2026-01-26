@@ -65,6 +65,9 @@ class HomeController extends GetxController {
   RxBool isCategoryPackagesLoading = false.obs;
   RxBool isCategoryPackagesError = false.obs;
 
+  RxBool isSearchItemLoading = false.obs;
+  RxBool isSearchItemError = false.obs;
+
   Rx<CategoriModel?> categorys = Rx<CategoriModel?>(null);
   Rx<PackagesModel?> packages = Rx<PackagesModel?>(null);
   Rx<PackagesModel?> categoryPackages = Rx<PackagesModel?>(null);
@@ -72,6 +75,18 @@ class HomeController extends GetxController {
   Rx<TrendingModel?> trending = Rx<TrendingModel?>(null);
   Rx<VendorBookingModel?> bookings = Rx<VendorBookingModel?>(null);
   Rx<VendorUserModel?> vendorUser = Rx<VendorUserModel?>(null);
+  var filterCategory = Rxn<CategoriModel>();
+  var searchQuery = ''.obs;
+  List<dynamic> get filteredCategories {
+    if (searchQuery.value.isEmpty) {
+      return categorys.value?.data ?? [];
+    }
+    return categorys.value?.data.where((category) {
+      return (category.name ?? '')
+          .toLowerCase()
+          .contains(searchQuery.value.toLowerCase());
+    }).toList() ?? [];
+  }
 
   Rx<DateTime> selectedDate = DateTime.now().obs;
 
@@ -366,4 +381,7 @@ class HomeController extends GetxController {
     isTrendingNearbyError.value = false;
     SnackBarConstant.success("Trending fetched successfully");
   }
+
+  // search item
+
 }
