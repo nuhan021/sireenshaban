@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:sireenshaban/core/utils/logging/logger.dart';
+import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
+import 'package:sireenshaban/features/customer/vendors/views/screens/vendors_screen.dart';
 
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
 import '../../../../../core/utils/constants/icon_path.dart';
+import '../../../../../core/utils/helpers/app_helper.dart';
 
 class HomeSearchBar extends StatelessWidget {
-  const HomeSearchBar({super.key, required this.onTap});
+  const HomeSearchBar({super.key, required this.onTap, required this.controller});
 
   final VoidCallback onTap;
+  final HomeController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -56,62 +61,55 @@ class HomeSearchBar extends StatelessWidget {
                   ),
                 ],
               ),
-              // child: Center(
-              //   child: TextField(
-              //     controller: searchController,
-              //     onTapOutside: (_) {
-              //       FocusScope.of(context).unfocus();
-              //     },
-              //     cursorColor: AppColors.primaryDeepBlueNormal,
-              //     decoration: InputDecoration(
-              //       hintText: "Search venues & services... ",
-              //       hintStyle: getTextStyle(
-              //         fontSize: 14.sp,
-              //         fontWeight: FontWeight.w500,
-              //         color: AppColors.secondaryInfoMediumGray,
-              //       ),
-              //       border: OutlineInputBorder(
-              //         borderSide: const BorderSide(
-              //           color: Colors.transparent,
-              //         ),
-              //       ),
-              //       enabledBorder: OutlineInputBorder(
-              //         borderSide: const BorderSide(
-              //           color: Colors.transparent,
-              //         ),
-              //       ),
-              //       focusedBorder: OutlineInputBorder(
-              //         borderSide: const BorderSide(
-              //           color: Colors.transparent,
-              //         ),
-              //       ),
-              //       suffixIcon: Icon(
-              //         Icons.mic_none_outlined,
-              //         color: AppColors.secondaryInfoMediumGray,
-              //       ),
-              //       contentPadding: const EdgeInsets.symmetric(
-              //         horizontal: 10,
-              //       ),
-              //     ),
-              //   ),
-              // ),
+
             ),
           ),
         ),
 
         10.horizontalSpace,
 
-        Container(
-          height: 47.h,
-          width: 47.w,
-          decoration: BoxDecoration(
-            color: AppColors.primaryDeepBlueNormal,
-            borderRadius: BorderRadius.circular(8.r),
+        PopupMenuButton(
+          child: Container(
+            height: 47.h,
+            width: 47.w,
+            decoration: BoxDecoration(
+              color: AppColors.primaryDeepBlueNormal,
+              borderRadius: BorderRadius.circular(8.r),
+            ),
+            alignment: Alignment.center,
+            child: Image.asset(IconPath.sliders, height: 20.h),
           ),
-          alignment: Alignment.center,
-          child: Image.asset(IconPath.sliders, height: 20.h),
-        ),
+
+          itemBuilder: (BuildContext context) {
+            return controller.categorys.value?.data.map((category) {
+              return PopupMenuItem<String>(
+                value: category.slug,
+                child: Text(
+                  category.name ?? '',
+                  style: getTextStyle(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.bodyDarkGray,
+                  ),
+                ),
+              );
+            }).toList() ??
+                [
+                  const PopupMenuItem(child: Text("No categories available"))
+                ];
+          },
+
+          onSelected: (value) {
+            AppHelperFunctions.navigateToScreen(
+              context,
+              VendorsScreen(categorySlug: value),
+            );
+          },
+        )
       ],
     ).paddingSymmetric(horizontal: 20.w);
   }
+
+
+
 }
