@@ -2,11 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
+import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 
 import '../../../../../core/utils/constants/colors.dart';
+import '../../../../../core/utils/helpers/app_helper.dart';
+import '../../../business_and_creative_services/views/screens/business_and_creative_services_screens.dart';
+import '../../../home_and_maintenance_services/views/screens/home_and_maintenance_services_screens.dart';
+import '../../../personal_care_and_education/views/screens/personal_care_and_education_screens.dart';
 
 class FeaturedVendorsCard extends StatelessWidget {
-  const FeaturedVendorsCard({
+  FeaturedVendorsCard({
     super.key,
     required this.image,
     required this.title,
@@ -15,6 +20,7 @@ class FeaturedVendorsCard extends StatelessWidget {
     required this.price,
     required this.date,
     required this.location,
+    required this.serviceGroup, required this.coverImage, required this.vendorId,
   });
 
   final String image;
@@ -24,6 +30,11 @@ class FeaturedVendorsCard extends StatelessWidget {
   final String price;
   final String date;
   final String location;
+  final String serviceGroup;
+  final String coverImage;
+  final int vendorId;
+
+  final HomeController controller = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
@@ -165,23 +176,60 @@ class FeaturedVendorsCard extends StatelessWidget {
               ),
 
               // book now button
-              Container(
-                height: 44.h,
-                width: 120.w,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(6.r),
-                  border: Border.all(
-                    color: AppColors.primaryDeepBlueNormal,
-                    width: 2,
+              GestureDetector(
+                onTap: () {
+                  switch (serviceGroup) {
+                    case "businessAndCreativeServices":
+                      AppHelperFunctions.navigateToScreen(
+                        context,
+                        BusinessAndCreativeServicesScreens(
+                          image: image,
+                          coverImage: coverImage,
+                          title: title,
+                          controller: controller,
+                          vendorId: vendorId,
+                        ),
+                      );
+                      break;
+                    case "personalCareAndEducation":
+                      AppHelperFunctions.navigateToScreen(
+                        context,
+                        PersonalCareAndEducationScreens(
+                          image: image,
+                          title: title,
+                          controller: controller,
+                        ),
+                      );
+
+                    default:
+                      AppHelperFunctions.navigateToScreen(
+                        context,
+                        HomeAndMaintenanceServicesScreens(
+                          image: image,
+                          title: title,
+                          controller: controller,
+                        ),
+                      );
+                  }
+                },
+                child: Container(
+                  height: 44.h,
+                  width: 120.w,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6.r),
+                    border: Border.all(
+                      color: AppColors.primaryDeepBlueNormal,
+                      width: 2,
+                    ),
                   ),
-                ),
-                alignment: Alignment.center,
-                child: Text(
-                  'Book Now',
-                  style: getTextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.primaryDeepBlueNormal,
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Book Now',
+                    style: getTextStyle(
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.primaryDeepBlueNormal,
+                    ),
                   ),
                 ),
               ),

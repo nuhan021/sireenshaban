@@ -104,13 +104,27 @@ class VendorHomeScreen extends StatelessWidget {
                     // ElevatedButton(onPressed: (){
                     //   // stripeController.makePayment(amount: 100, currency: 'usd');
                     // }, child: Text('Pay')),
-                    Text(
-                      controller.vendorUser.value!.vendor.businessName,
-                      style: getTextStyle(
-                        fontSize: 22.sp,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.bodyDarkGray,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          controller.vendorUser.value!.vendor.businessName,
+                          style: getTextStyle(
+                            fontSize: 22.sp,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.bodyDarkGray,
+                          ),
+                        ),
+
+                        _buildSubscriptionBadge(
+                          controller
+                              .vendorUser
+                              .value
+                              ?.vendor
+                              .user
+                              .subscriptionPlanId ?? 1,
+                        ),
+                      ],
                     ),
 
                     Text(
@@ -238,6 +252,12 @@ class VendorHomeScreen extends StatelessWidget {
 
                     TextButton(
                       onPressed: () {
+                        AppLoggerHelper.debug('The subscription is: ${controller
+                            .vendorUser
+                            .value
+                            ?.vendor
+                            .user
+                            .subscriptionPlanId}');
                         if (controller
                                     .vendorUser
                                     .value
@@ -366,7 +386,6 @@ class VendorHomeScreen extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-
                           Icon(
                             Icons.inventory_2_outlined,
                             color: Colors.grey,
@@ -423,7 +442,6 @@ class VendorHomeScreen extends StatelessWidget {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-
                           Icon(
                             Icons.inventory_2_outlined,
                             color: Colors.grey,
@@ -615,6 +633,63 @@ class VendorHomeScreen extends StatelessWidget {
             ),
           );
         }),
+      ),
+    );
+  }
+
+  Widget _buildSubscriptionBadge(int subscriptionId) {
+    String label;
+    Color badgeColor;
+    IconData iconData;
+
+    // আইডি অনুযায়ী ডাটা সেট করা
+    switch (subscriptionId) {
+      case 1:
+        label = 'Free';
+        badgeColor = Colors.grey;
+        iconData = Icons.person_outline;
+        break;
+      case 2:
+        label = 'Premium';
+        badgeColor = Colors.orange;
+        iconData = Icons.star_rounded;
+        break;
+      case 3:
+        label = 'VIP';
+        badgeColor = Colors.purple;
+        iconData = Icons.workspace_premium_rounded; // বা Icons.auto_awesome
+        break;
+      default:
+        label = 'Basic';
+        badgeColor = AppColors.primaryDeepBlueLight;
+        iconData = Icons.info_outline;
+    }
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+      decoration: BoxDecoration(
+        color: badgeColor.withOpacity(0.12),
+        borderRadius: BorderRadius.circular(12.r),
+        border: Border.all(color: badgeColor.withOpacity(0.5), width: 0.5),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            iconData,
+            size: 12.sp,
+            color: badgeColor,
+          ),
+          4.horizontalSpace,
+          Text(
+            label,
+            style: getTextStyle(
+              fontSize: 10.sp,
+              fontWeight: FontWeight.w600,
+              color: badgeColor,
+            ),
+          ),
+        ],
       ),
     );
   }
