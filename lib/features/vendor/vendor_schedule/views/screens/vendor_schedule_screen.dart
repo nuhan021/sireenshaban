@@ -89,10 +89,8 @@ class VendorScheduleScreen extends StatelessWidget {
                       firstDate: DateTime(2000),
                       lastDate: DateTime(2101),
                     );
-                    if (pickedDate != null) {
-                      controller.updateSelectedDate(pickedDate);
-                    }
-                  },
+                    controller.updateSelectedDate(pickedDate);
+                                    },
                   child: Container(
                     height: 40.h,
                     width: 40.w,

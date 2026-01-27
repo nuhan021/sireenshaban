@@ -197,10 +197,8 @@ class BusinessAndServiceController extends GetxController {
       // Add image if exists
       if (image != null) body["image"] = image;
 
-      if (resolvedLatitude != null)
-        body["location_latitude"] = resolvedLatitude;
-      if (resolvedLongitude != null)
-        body["location_longitude"] = resolvedLongitude;
+      body["location_latitude"] = resolvedLatitude;
+      body["location_longitude"] = resolvedLongitude;
 
       AppLoggerHelper.debug("Request Body: $body");
 

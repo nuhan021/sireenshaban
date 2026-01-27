@@ -8,8 +8,6 @@ import 'package:sireenshaban/features/stripe/controller/stripe_controller.dart';
 import 'package:sireenshaban/features/stripe/model/payment_intent.dart';
 import 'package:sireenshaban/features/stripe/service/stripe_service.dart';
 
-import 'auth_unite_test.dart';
-
 // Mock Classes
 class MockStripe extends Mock implements Stripe {}
 
