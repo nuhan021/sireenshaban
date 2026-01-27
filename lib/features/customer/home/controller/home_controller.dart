@@ -17,7 +17,9 @@ import 'package:sireenshaban/features/vendor/vendor_profile/model/vendor_user_mo
 import 'package:sireenshaban/routes/app_routes.dart';
 
 class HomeController extends GetxController {
-  HomeController({this.isFromVendor = false});
+  final NetworkCaller _networkCaller;
+  HomeController({this.isFromVendor = false, NetworkCaller? networkCaller}) 
+    : _networkCaller = networkCaller ?? NetworkCaller();
 
   final bool isFromVendor;
 
@@ -40,7 +42,7 @@ class HomeController extends GetxController {
     }
   }
 
-  final NetworkCaller _networkCaller = NetworkCaller();
+  
   RxBool isAdditionalServicesClose = false.obs;
   RxInt carouselCurrentIndex = 1.obs;
 
@@ -121,7 +123,8 @@ class HomeController extends GetxController {
 
   // fetch additional service
   Future<void> getAdditionalService() async {
-    isAdditionalServiceLoading.value = true;
+    try {
+      isAdditionalServiceLoading.value = true;
     final token = StorageService.token;
 
     final response = await _networkCaller.getRequest(
@@ -139,6 +142,14 @@ class HomeController extends GetxController {
     categorys.value = CategoriModel.fromJson(response.responseData);
     isAdditionalServiceLoading.value = false;
     isAdditionalServiceError.value = false;
+    } catch (e) {
+      AppLoggerHelper.error("Error in getAdditionalService: $e");
+      isAdditionalServiceLoading.value = false;
+      isAdditionalServiceError.value = true;
+      SnackBarConstant.error("An unexpected error occurred.");
+    } finally {
+      isAdditionalServiceLoading.value = false;
+    }
     // SnackBarConstant.success("Category fetched successfully");
   }
 

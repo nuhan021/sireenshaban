@@ -12,7 +12,10 @@ import 'package:sireenshaban/features/authentication/models/loginModel.dart';
 import '../../../routes/app_routes.dart';
 
 class LoginController extends GetxController {
-  final NetworkCaller _networkCaller = NetworkCaller();
+  final NetworkCaller _networkCaller;
+
+  LoginController({NetworkCaller? networkCaller}) 
+      : _networkCaller = networkCaller ?? NetworkCaller();
 
   final TextEditingController emailController = TextEditingController();
 

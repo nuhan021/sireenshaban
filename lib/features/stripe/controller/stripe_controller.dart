@@ -5,13 +5,19 @@ import 'package:sireenshaban/core/utils/constants/api_constants.dart';
 import 'package:sireenshaban/core/utils/constants/snackbar_constant.dart';
 import 'package:sireenshaban/features/stripe/model/payment_intent.dart'
     hide Stripe;
+import 'package:sireenshaban/features/stripe/service/stripe_service.dart';
 import 'package:sireenshaban/features/subscription/model/subscription_plans_model.dart';
 import '../../../../core/services/network_caller.dart';
 import '../../../../routes/app_routes.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 
 class StripeController extends GetxController {
-  final NetworkCaller _networkCaller = NetworkCaller();
+  final NetworkCaller _networkCaller;
+  final StripeService _stripeService;
+
+  StripeController({NetworkCaller? networkCaller, StripeService? stripeService}) 
+      : _networkCaller = networkCaller ?? NetworkCaller(),
+        _stripeService = stripeService ?? StripeService();
 
   RxBool isSubscriptionPlanLoading = false.obs;
   RxBool isSubscriptionPlanError = false.obs;
