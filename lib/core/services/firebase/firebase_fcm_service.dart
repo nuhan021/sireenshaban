@@ -33,7 +33,7 @@ class FirebaseFCMService {
       AppLoggerHelper.info('FCM Token: $token');
       // Store token in local storage
       await StorageService.setFCMToken(token);
-    
+
       // Listen for token refresh
       instance.onTokenRefresh.listen((newToken) {
         AppLoggerHelper.info('FCM Token Refreshed: $newToken');
