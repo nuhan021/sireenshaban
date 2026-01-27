@@ -118,11 +118,12 @@ class VendorHomeScreen extends StatelessWidget {
 
                         _buildSubscriptionBadge(
                           controller
-                              .vendorUser
-                              .value
-                              ?.vendor
-                              .user
-                              .subscriptionPlanId ?? 1,
+                                  .vendorUser
+                                  .value
+                                  ?.vendor
+                                  .user
+                                  .subscriptionPlanId ??
+                              1,
                         ),
                       ],
                     ),
@@ -252,12 +253,9 @@ class VendorHomeScreen extends StatelessWidget {
 
                     TextButton(
                       onPressed: () {
-                        AppLoggerHelper.debug('The subscription is: ${controller
-                            .vendorUser
-                            .value
-                            ?.vendor
-                            .user
-                            .subscriptionPlanId}');
+                        AppLoggerHelper.debug(
+                          'The subscription is: ${controller.vendorUser.value?.vendor.user.subscriptionPlanId}',
+                        );
                         if (controller
                                     .vendorUser
                                     .value
@@ -675,11 +673,7 @@ class VendorHomeScreen extends StatelessWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(
-            iconData,
-            size: 12.sp,
-            color: badgeColor,
-          ),
+          Icon(iconData, size: 12.sp, color: badgeColor),
           4.horizontalSpace,
           Text(
             label,

@@ -7,7 +7,6 @@ import 'package:sireenshaban/core/services/network_caller.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/core/utils/constants/api_constants.dart';
 
-
 class MockNetworkCaller extends Mock implements NetworkCaller {}
 
 void main() {
@@ -113,7 +112,6 @@ void main() {
   });
 
   group('HomeController - getDealsAndPromotions Tests', () {
-
     final mockPackagesJson = {
       "success": true,
       "data": [
@@ -428,7 +426,6 @@ void main() {
           ),
         );
 
-
         await tester.pumpWidget(GetMaterialApp(home: Container()));
 
         // Act
@@ -446,10 +443,7 @@ void main() {
 
         // Verify snackbar was triggered
         await tester.pumpAndSettle();
-        expect(
-          Get.isSnackbarOpen,
-          isFalse,
-        );
+        expect(Get.isSnackbarOpen, isFalse);
       },
     );
 
@@ -521,7 +515,6 @@ void main() {
         isFromVendor: true,
       );
 
-
       when(
         () => mockNetwork.getRequest(
           any(that: contains('booking-list-by-vendor')),
@@ -556,7 +549,6 @@ void main() {
         networkCaller: mockNetwork,
         isFromVendor: false,
       );
-
 
       when(
         () => mockNetwork.getRequest(
@@ -738,7 +730,6 @@ void main() {
         ),
       );
 
-
       await tester.pumpWidget(
         GetMaterialApp(
           initialRoute: '/',
@@ -759,139 +750,142 @@ void main() {
       expect(controller.isVendorProfileLoading.value, isFalse);
       expect(controller.vendorUser.value, isNull);
 
-
       expect(Get.currentRoute, '/vendorProfileInfo');
 
       await tester.pumpAndSettle();
     });
   });
 
-
-
-group('HomeController - getDealsAndPromotions Tests', () {
-  final mockDealsJson = {
-    "success": true,
-    "data": [
-      {
-        "id": 1,
-        "vendor_id": 10,
-        "category_id": 2,
-        "title": "Summer Special",
-        "slug": "summer-special",
-        "description": "50% off all catering",
-        "service_group": "Food",
-        "valid_until": "2026-12-31",
-        "subtitle": "Limited time",
-        "price_per_event": "100.00",
-        "capacity": 50,
-        "venue_type": "Indoor",
-        "location": "Downtown",
-        "available_slots": null,
-        "image": null,
-        "is_active": 1,
-        "category_subtype": null,
-        "tags": null,
-        "duration": 60,
-        "is_featured": 1,
-        "latitude": "40.7128",
-        "longitude": "-74.0060",
-        "created_at": "2024-01-01T00:00:00Z",
-        "updated_at": "2024-01-01T00:00:00Z",
-        "deleted_at": null,
-        "reviews_sum_rating": 5,
-        "available_dates": [
-          {
-            "id": 1,
-            "package_id": 1,
-            "event_id": null,
-            "date": "2026-06-01",
+  group('HomeController - getDealsAndPromotions Tests', () {
+    final mockDealsJson = {
+      "success": true,
+      "data": [
+        {
+          "id": 1,
+          "vendor_id": 10,
+          "category_id": 2,
+          "title": "Summer Special",
+          "slug": "summer-special",
+          "description": "50% off all catering",
+          "service_group": "Food",
+          "valid_until": "2026-12-31",
+          "subtitle": "Limited time",
+          "price_per_event": "100.00",
+          "capacity": 50,
+          "venue_type": "Indoor",
+          "location": "Downtown",
+          "available_slots": null,
+          "image": null,
+          "is_active": 1,
+          "category_subtype": null,
+          "tags": null,
+          "duration": 60,
+          "is_featured": 1,
+          "latitude": "40.7128",
+          "longitude": "-74.0060",
+          "created_at": "2024-01-01T00:00:00Z",
+          "updated_at": "2024-01-01T00:00:00Z",
+          "deleted_at": null,
+          "reviews_sum_rating": 5,
+          "available_dates": [
+            {
+              "id": 1,
+              "package_id": 1,
+              "event_id": null,
+              "date": "2026-06-01",
+              "created_at": "2024-01-01T00:00:00Z",
+              "updated_at": "2024-01-01T00:00:00Z",
+              "time_slots": [
+                {
+                  "id": 1,
+                  "date_id": 1,
+                  "time": "10:00",
+                  "period": "AM",
+                  "is_booked": 0,
+                  "created_at": "2024-01-01T00:00:00Z",
+                  "updated_at": "2024-01-01T00:00:00Z",
+                },
+              ],
+            },
+          ],
+          "vendor": {
+            "id": 10,
+            "user_id": 5,
+            "business_name": "Test Vendor",
+            "category_id": 2,
+            "account_balance": "0.00",
+            "latitude": null,
+            "longitude": null,
+            "status": 1,
             "created_at": "2024-01-01T00:00:00Z",
             "updated_at": "2024-01-01T00:00:00Z",
-            "time_slots": [
-              {
-                "id": 1,
-                "date_id": 1,
-                "time": "10:00",
-                "period": "AM",
-                "is_booked": 0,
-                "created_at": "2024-01-01T00:00:00Z",
-                "updated_at": "2024-01-01T00:00:00Z"
-              }
-            ]
-          }
-        ],
-        "vendor": {
-          "id": 10,
-          "user_id": 5,
-          "business_name": "Test Vendor",
-          "category_id": 2,
-          "account_balance": "0.00",
-          "latitude": null,
-          "longitude": null,
-          "status": 1,
-          "created_at": "2024-01-01T00:00:00Z",
-          "updated_at": "2024-01-01T00:00:00Z",
-          "deleted_at": null
+            "deleted_at": null,
+          },
+          "category": {
+            "id": 2,
+            "name": "Catering",
+            "slug": "catering",
+            "image": null,
+            "status": true,
+            "created_at": "2024-01-01T00:00:00Z",
+            "updated_at": "2024-01-01T00:00:00Z",
+            "deleted_at": null,
+          },
+          "reviews": [],
         },
-        "category": {
-          "id": 2,
-          "name": "Catering",
-          "slug": "catering",
-          "image": null,
-          "status": true,
-          "created_at": "2024-01-01T00:00:00Z",
-          "updated_at": "2024-01-01T00:00:00Z",
-          "deleted_at": null
-        },
-        "reviews": []
-      }
-    ]
-  };
+      ],
+    };
 
-  testWidgets('getDealsAndPromotions success fetches and parses deep nested objects', (tester) async {
-    when(() => mockNetwork.getRequest(
-          any(), 
-          token: any(named: 'token'),
-        )).thenAnswer((_) async => ResponseData(
-          isSuccess: true,
-          statusCode: 200,
-          responseData: mockDealsJson,
-          errorMessage: '',
-        ));
+    testWidgets(
+      'getDealsAndPromotions success fetches and parses deep nested objects',
+      (tester) async {
+        when(
+          () => mockNetwork.getRequest(any(), token: any(named: 'token')),
+        ).thenAnswer(
+          (_) async => ResponseData(
+            isSuccess: true,
+            statusCode: 200,
+            responseData: mockDealsJson,
+            errorMessage: '',
+          ),
+        );
 
-    await controller.getDealsAndPromotions();
+        await controller.getDealsAndPromotions();
 
-    expect(controller.isDealsAndPromotionLoading.value, isFalse);
-    expect(controller.isDealsAndPromotionError.value, isNotNull);
-    
-    // Verify Deep Nesting
-    final deal = controller.packages.value!.data.first;
-    expect(deal.title, "Summer Special");
-    expect(deal.availableDates.first.timeSlots.first.time, "10:00");
-    expect(deal.vendor.businessName, "Test Vendor");
-  });
+        expect(controller.isDealsAndPromotionLoading.value, isFalse);
+        expect(controller.isDealsAndPromotionError.value, isNotNull);
 
-  testWidgets('getDealsAndPromotions failure sets error flag', (tester) async {
-    when(() => mockNetwork.getRequest(any(), token: any(named: 'token')))
-        .thenAnswer((_) async => ResponseData(
+        // Verify Deep Nesting
+        final deal = controller.packages.value!.data.first;
+        expect(deal.title, "Summer Special");
+        expect(deal.availableDates.first.timeSlots.first.time, "10:00");
+        expect(deal.vendor.businessName, "Test Vendor");
+      },
+    );
+
+    testWidgets('getDealsAndPromotions failure sets error flag', (
+      tester,
+    ) async {
+      when(
+        () => mockNetwork.getRequest(any(), token: any(named: 'token')),
+      ).thenAnswer(
+        (_) async => ResponseData(
           isSuccess: false,
           statusCode: 500,
           responseData: null,
           errorMessage: 'Server Error',
-        ));
+        ),
+      );
 
-    // Pump GetMaterialApp for the snackbar call in your controller
-    await tester.pumpWidget(GetMaterialApp(home: Container()));
+      // Pump GetMaterialApp for the snackbar call in your controller
+      await tester.pumpWidget(GetMaterialApp(home: Container()));
 
-    await controller.getDealsAndPromotions();
+      await controller.getDealsAndPromotions();
 
-    expect(controller.isDealsAndPromotionError.value, isTrue);
-    expect(controller.isDealsAndPromotionLoading.value, isFalse);
-    
-    await tester.pumpAndSettle();
+      expect(controller.isDealsAndPromotionError.value, isTrue);
+      expect(controller.isDealsAndPromotionLoading.value, isFalse);
+
+      await tester.pumpAndSettle();
+    });
   });
-});
-
-
-
 }

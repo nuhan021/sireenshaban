@@ -18,7 +18,7 @@ import 'package:sireenshaban/routes/app_routes.dart';
 
 class HomeController extends GetxController {
   final NetworkCaller _networkCaller;
-  HomeController({this.isFromVendor = false, NetworkCaller? networkCaller}) 
+  HomeController({this.isFromVendor = false, NetworkCaller? networkCaller})
     : _networkCaller = networkCaller ?? NetworkCaller();
 
   final bool isFromVendor;
@@ -42,7 +42,6 @@ class HomeController extends GetxController {
     }
   }
 
-  
   RxBool isAdditionalServicesClose = false.obs;
   RxInt carouselCurrentIndex = 1.obs;
 
@@ -84,10 +83,11 @@ class HomeController extends GetxController {
       return categorys.value?.data ?? [];
     }
     return categorys.value?.data.where((category) {
-      return (category.name ?? '')
-          .toLowerCase()
-          .contains(searchQuery.value.toLowerCase());
-    }).toList() ?? [];
+          return (category.name ?? '').toLowerCase().contains(
+            searchQuery.value.toLowerCase(),
+          );
+        }).toList() ??
+        [];
   }
 
   Rx<DateTime> selectedDate = DateTime.now().obs;
@@ -125,23 +125,23 @@ class HomeController extends GetxController {
   Future<void> getAdditionalService() async {
     try {
       isAdditionalServiceLoading.value = true;
-    final token = StorageService.token;
+      final token = StorageService.token;
 
-    final response = await _networkCaller.getRequest(
-      ApiConstants.categories,
-      token: "Bearer $token",
-    );
+      final response = await _networkCaller.getRequest(
+        ApiConstants.categories,
+        token: "Bearer $token",
+      );
 
-    if (!response.isSuccess) {
-      SnackBarConstant.error(response.errorMessage);
+      if (!response.isSuccess) {
+        SnackBarConstant.error(response.errorMessage);
+        isAdditionalServiceLoading.value = false;
+        isAdditionalServiceError.value = true;
+        return;
+      }
+
+      categorys.value = CategoriModel.fromJson(response.responseData);
       isAdditionalServiceLoading.value = false;
-      isAdditionalServiceError.value = true;
-      return;
-    }
-
-    categorys.value = CategoriModel.fromJson(response.responseData);
-    isAdditionalServiceLoading.value = false;
-    isAdditionalServiceError.value = false;
+      isAdditionalServiceError.value = false;
     } catch (e) {
       AppLoggerHelper.error("Error in getAdditionalService: $e");
       isAdditionalServiceLoading.value = false;
@@ -394,5 +394,4 @@ class HomeController extends GetxController {
   }
 
   // search item
-
 }

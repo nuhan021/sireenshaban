@@ -17,13 +17,17 @@ void main() {
   late MockNetworkCaller mockNetwork;
 
   /// Helper to wrap widgets with ScreenUtil and GetX for consistent test environments.
-  Future<void> setupTestWidget(WidgetTester tester, {List<GetPage>? routes}) async {
+  Future<void> setupTestWidget(
+    WidgetTester tester, {
+    List<GetPage>? routes,
+  }) async {
     await tester.pumpWidget(
       ScreenUtilInit(
         designSize: const Size(360, 690),
         builder: (context, child) => GetMaterialApp(
           initialRoute: '/',
-          getPages: routes ?? [GetPage(name: '/', page: () => const Scaffold())],
+          getPages:
+              routes ?? [GetPage(name: '/', page: () => const Scaffold())],
         ),
       ),
     );
@@ -32,7 +36,7 @@ void main() {
   setUp(() {
     TestWidgetsFlutterBinding.ensureInitialized();
     Get.testMode = true;
-    
+
     mockNetwork = MockNetworkCaller();
     // Inject the mock network caller into the controller
     controller = LoginController(networkCaller: mockNetwork);
@@ -59,9 +63,9 @@ void main() {
   });
 
   group('LoginController Integration/Logic Tests', () {
-  
-    
-    testWidgets('Should show warning and return early if fields are empty', (tester) async {
+    testWidgets('Should show warning and return early if fields are empty', (
+      tester,
+    ) async {
       await setupTestWidget(tester);
 
       controller.emailController.text = '';
@@ -75,60 +79,66 @@ void main() {
       expect(controller.isLogInLoading.value, isFalse);
     });
 
-    testWidgets('Should succeed login and navigate when valid credentials provided', (tester) async {
-      // 1. Arrange: Define routes and mock API behavior
-      final mockPages = [
-        GetPage(name: '/', page: () => const Scaffold()),
-        GetPage(name: '/vendorBottomNavBar', page: () => const Scaffold(body: Text('Home'))),
-      ];
+    testWidgets(
+      'Should succeed login and navigate when valid credentials provided',
+      (tester) async {
+        // 1. Arrange: Define routes and mock API behavior
+        final mockPages = [
+          GetPage(name: '/', page: () => const Scaffold()),
+          GetPage(
+            name: '/vendorBottomNavBar',
+            page: () => const Scaffold(body: Text('Home')),
+          ),
+        ];
 
-      final successResponseMap = {
-        "success": true,
-        "message": "Login successful",
-        "data": {
-          "token": "fake_token",
-          "token_type": "Bearer",
-          "user": {
-            "id": 1,
-            "email": "test@example.com",
-            "role": "Vendor",
-            "is_first_time": false,
-            "subscription_type": null,
+        final successResponseMap = {
+          "success": true,
+          "message": "Login successful",
+          "data": {
+            "token": "fake_token",
+            "token_type": "Bearer",
+            "user": {
+              "id": 1,
+              "email": "test@example.com",
+              "role": "Vendor",
+              "is_first_time": false,
+              "subscription_type": null,
+            },
+            "vendor": {"id": 123},
           },
-          "vendor": {"id": 123},
-        },
-      };
+        };
 
-      when(() => mockNetwork.postRequest(any(), body: any(named: 'body')))
-          .thenAnswer((_) async => ResponseData(
-                isSuccess: true,
-                statusCode: 200,
-                responseData: successResponseMap,
-                errorMessage: '',
-              ));
+        when(
+          () => mockNetwork.postRequest(any(), body: any(named: 'body')),
+        ).thenAnswer(
+          (_) async => ResponseData(
+            isSuccess: true,
+            statusCode: 200,
+            responseData: successResponseMap,
+            errorMessage: '',
+          ),
+        );
 
-      // 2. Act: Build UI and trigger login
-      await setupTestWidget(tester, routes: mockPages);
-      controller.emailController.text = 'test@example.com';
-      controller.passwordController.text = 'password123';
+        // 2. Act: Build UI and trigger login
+        await setupTestWidget(tester, routes: mockPages);
+        controller.emailController.text = 'test@example.com';
+        controller.passwordController.text = 'password123';
 
-      final loginProcess = controller.login();
-      
-      // Verify immediate loading state
-      expect(controller.isLogInLoading.value, isTrue);
+        final loginProcess = controller.login();
 
-      await loginProcess;
+        // Verify immediate loading state
+        expect(controller.isLogInLoading.value, isTrue);
 
-      // 3. Assert: Verify state changes and navigation
-      expect(controller.isLogInLoading.value, isFalse);
-      expect(controller.loginModel.value!.data.token, "fake_token");
-      
-      // Wait for Get.offAllNamed navigation animation
-      await tester.pumpAndSettle(); 
-      expect(Get.currentRoute, '/vendorBottomNavBar');
-    });
+        await loginProcess;
+
+        // 3. Assert: Verify state changes and navigation
+        expect(controller.isLogInLoading.value, isFalse);
+        expect(controller.loginModel.value!.data.token, "fake_token");
+
+        // Wait for Get.offAllNamed navigation animation
+        await tester.pumpAndSettle();
+        expect(Get.currentRoute, '/vendorBottomNavBar');
+      },
+    );
   });
-
-
-  
 }

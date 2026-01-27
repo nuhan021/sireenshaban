@@ -15,9 +15,9 @@ class StripeController extends GetxController {
   final NetworkCaller _networkCaller;
   final StripeService _stripeService;
 
-  StripeController({NetworkCaller? networkCaller, StripeService? stripeService}) 
-      : _networkCaller = networkCaller ?? NetworkCaller(),
-        _stripeService = stripeService ?? StripeService();
+  StripeController({NetworkCaller? networkCaller, StripeService? stripeService})
+    : _networkCaller = networkCaller ?? NetworkCaller(),
+      _stripeService = stripeService ?? StripeService();
 
   RxBool isSubscriptionPlanLoading = false.obs;
   RxBool isSubscriptionPlanError = false.obs;

@@ -86,12 +86,8 @@ class _PackageBookingPageState extends State<PackageBookingPage> {
                     Expanded(
                       child: GestureDetector(
                         onTap: () {
-
-                          
                           switch (widget.group) {
-                            
                             case ServicesGroup.businessAndCreativeServices:
-                            
                               AppHelperFunctions.navigateToScreen(
                                 context,
                                 BusinessAndCreativeServicesScreens(
@@ -107,9 +103,8 @@ class _PackageBookingPageState extends State<PackageBookingPage> {
                                             .toDouble()
                                       : null,
                                 ),
-                                
                               );
-                            
+
                               break;
                             case ServicesGroup.personalCareAndEducation:
                               AppHelperFunctions.navigateToScreen(
@@ -120,7 +115,6 @@ class _PackageBookingPageState extends State<PackageBookingPage> {
                                   controller: widget.controller,
                                 ),
                               );
-                              
 
                             default:
                               AppHelperFunctions.navigateToScreen(
@@ -131,7 +125,6 @@ class _PackageBookingPageState extends State<PackageBookingPage> {
                                   controller: widget.controller,
                                 ),
                               );
-                             
                           }
                         },
                         child: Text(

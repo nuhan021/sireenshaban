@@ -33,7 +33,7 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
   final double? longitude;
 
   final TextEditingController projectScopeController = TextEditingController();
- final BusinessAndServiceController serviceController = Get.put(
+  final BusinessAndServiceController serviceController = Get.put(
     BusinessAndServiceController(),
   );
 
@@ -214,7 +214,7 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
                   ),
 
                   IField(
-                       readOnly: true,
+                    readOnly: true,
                     controller: serviceController.firstNameController2,
                     borderColor: Color(0xFFD1D3D8),
                     filled: true,
@@ -297,11 +297,11 @@ class PersonalCareAndEducationScreens extends StatelessWidget {
 
             // submit butto
             Obx(
-             ()=> CustomPrimaryButton(
+              () => CustomPrimaryButton(
                 text: 'Send Request for Quote',
                 color: AppColors.primaryDeepBlueNormal,
                 isLoading: serviceController.isSubmitting.value,
-                
+
                 onPressed: () {
                   serviceController.sendServiceRequest(
                     projectDetails: serviceController.projectDetailsController2,

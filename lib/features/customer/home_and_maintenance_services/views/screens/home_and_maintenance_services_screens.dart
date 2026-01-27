@@ -118,7 +118,7 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
                   ),
 
                   Padding(
-                    padding:  EdgeInsets.only(top: 10.sp),
+                    padding: EdgeInsets.only(top: 10.sp),
                     child: IField(
                       controller: serviceController.projectDetailsController3,
                       maxLine: 5,
@@ -309,7 +309,7 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
                   ),
 
                   IField(
-                      readOnly: true,
+                    readOnly: true,
                     controller: serviceController.lastNameController3,
                     borderColor: Color(0xFFD1D3D8),
                     filled: true,
@@ -392,22 +392,20 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
 
             // submit butto
             Obx(
-             ()=> CustomPrimaryButton(
+              () => CustomPrimaryButton(
                 text: 'Send Request for Quote',
                 color: AppColors.primaryDeepBlueNormal,
-                 isLoading: serviceController.isSubmitting.value,
+                isLoading: serviceController.isSubmitting.value,
                 onPressed: () {
-              
-                        
                   serviceController.sendServiceRequest(
                     vendorId: vendorId!,
                     latitude: latitude,
                     longitude: longitude,
                     email: serviceController.emailController3,
-                   
+
                     phone: serviceController.phoneController3,
                     projectDetails: serviceController.projectDetailsController3,
-                  //  image: serviceController.selectedImage.value,
+                    //  image: serviceController.selectedImage.value,
                   );
                 },
               ).paddingSymmetric(horizontal: 20.w),
@@ -426,7 +424,6 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
             //     ),
             //   ),
             // ),
-
             20.verticalSpace,
           ],
         ),

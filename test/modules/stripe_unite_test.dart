@@ -27,7 +27,6 @@ void main() {
     mockNetwork = MockNetworkCaller();
     mockStripe = MockStripeService();
 
-
     when(() => mockStripe.initPaymentSheet(any())).thenAnswer((_) async => {});
 
     controller = Get.put(
@@ -97,7 +96,6 @@ void main() {
         "currency": "usd",
         "status": "requires_payment_method",
         "payment_method_types": ["card"],
-
       },
     };
 

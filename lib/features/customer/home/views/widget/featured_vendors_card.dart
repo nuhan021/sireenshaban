@@ -20,7 +20,9 @@ class FeaturedVendorsCard extends StatelessWidget {
     required this.price,
     required this.date,
     required this.location,
-    required this.serviceGroup, required this.coverImage, required this.vendorId,
+    required this.serviceGroup,
+    required this.coverImage,
+    required this.vendorId,
   });
 
   final String image;
