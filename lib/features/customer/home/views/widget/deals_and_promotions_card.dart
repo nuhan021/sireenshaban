@@ -214,7 +214,6 @@ class DealsAndPromotionsCard extends StatelessWidget {
               onPressed: () => AppHelperFunctions.navigateToScreen(
                 context,
                 PackageBookingPage(
-                  
                   id: id,
                   image: image,
                   title: shopTitle,

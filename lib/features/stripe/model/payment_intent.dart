@@ -23,12 +23,13 @@ class PaymentIntentModel {
     required this.amount,
   });
 
-  factory PaymentIntentModel.fromJson(Map<String, dynamic> json) => PaymentIntentModel(
-    success: json["success"],
-    message: json["message"],
-    stripe: Stripe.fromJson(json["stripe"]),
-    amount: (json["amount"] as num).toDouble(),
-  );
+  factory PaymentIntentModel.fromJson(Map<String, dynamic> json) =>
+      PaymentIntentModel(
+        success: json["success"],
+        message: json["message"],
+        stripe: Stripe.fromJson(json["stripe"]),
+        amount: (json["amount"] as num).toDouble(),
+      );
 
   Map<String, dynamic> toJson() => {
     "success": success,

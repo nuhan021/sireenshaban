@@ -30,9 +30,9 @@ class FirebaseFCMService {
 
       // Get FCM Token
       String? token = await instance.getToken();
+      AppLoggerHelper.info('FCM Token: $token');
+      // Store token in local storage
       if (token != null) {
-        AppLoggerHelper.info('FCM Token: $token');
-        // Store token in local storage
         await StorageService.setFCMToken(token);
       }
 

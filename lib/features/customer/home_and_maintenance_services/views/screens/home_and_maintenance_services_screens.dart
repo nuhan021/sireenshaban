@@ -3,13 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/constants/icon_path.dart';
-import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/customer/business_and_creative_services/controllers/business_and_service_controller.dart';
-import 'package:sireenshaban/features/customer/confirm_booking/views/widgets/package_booking_payment_method.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/customer/personal_care_and_education/views/widgets/header.dart';
-import 'package:sireenshaban/features/customer/profile/controllers/profile_controller.dart';
-import 'package:sireenshaban/features/customer/profile/models/user_model.dart';
 import '../../../../../core/common/widgets/IField.dart';
 import '../../../../../core/common/widgets/custom_primary_button.dart';
 import '../../../../../core/utils/constants/colors.dart';
@@ -118,7 +114,7 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
                   ),
 
                   Padding(
-                    padding:  EdgeInsets.only(top: 10.sp),
+                    padding: EdgeInsets.only(top: 10.sp),
                     child: IField(
                       controller: serviceController.projectDetailsController3,
                       maxLine: 5,
@@ -309,7 +305,7 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
                   ),
 
                   IField(
-                      readOnly: true,
+                    readOnly: true,
                     controller: serviceController.lastNameController3,
                     borderColor: Color(0xFFD1D3D8),
                     filled: true,
@@ -392,22 +388,20 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
 
             // submit butto
             Obx(
-             ()=> CustomPrimaryButton(
+              () => CustomPrimaryButton(
                 text: 'Send Request for Quote',
                 color: AppColors.primaryDeepBlueNormal,
-                 isLoading: serviceController.isSubmitting.value,
+                isLoading: serviceController.isSubmitting.value,
                 onPressed: () {
-              
-                        
                   serviceController.sendServiceRequest(
                     vendorId: vendorId!,
                     latitude: latitude,
                     longitude: longitude,
                     email: serviceController.emailController3,
-                   
+
                     phone: serviceController.phoneController3,
                     projectDetails: serviceController.projectDetailsController3,
-                  //  image: serviceController.selectedImage.value,
+                    //  image: serviceController.selectedImage.value,
                   );
                 },
               ).paddingSymmetric(horizontal: 20.w),
@@ -426,7 +420,6 @@ class HomeAndMaintenanceServicesScreens extends StatelessWidget {
             //     ),
             //   ),
             // ),
-
             20.verticalSpace,
           ],
         ),

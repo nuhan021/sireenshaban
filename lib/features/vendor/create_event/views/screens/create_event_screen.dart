@@ -160,7 +160,7 @@ class _CreateEventScreenState extends State<CreateEventScreen> {
               firstDate: DateTime.now(),
               lastDate: DateTime(2030),
             );
-            if (picked != null) controller.selectedDate.value = picked;
+            controller.selectedDate.value = picked;
           },
           child: Obx(
             () => Container(

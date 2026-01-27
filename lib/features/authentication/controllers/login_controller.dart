@@ -14,8 +14,8 @@ import '../../../routes/app_routes.dart';
 class LoginController extends GetxController {
   final NetworkCaller _networkCaller;
 
-  LoginController({NetworkCaller? networkCaller}) 
-      : _networkCaller = networkCaller ?? NetworkCaller();
+  LoginController({NetworkCaller? networkCaller})
+    : _networkCaller = networkCaller ?? NetworkCaller();
 
   final TextEditingController emailController = TextEditingController();
 

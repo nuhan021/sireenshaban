@@ -315,9 +315,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Image.asset(
               icon,
               height: 20.h,
-              color: isLogout
-                  ? AppColors.primaryDeepBlueNormal
-                  : null,
+              color: isLogout ? AppColors.primaryDeepBlueNormal : null,
             ),
             10.horizontalSpace,
             Text(

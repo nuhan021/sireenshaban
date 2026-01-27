@@ -18,22 +18,24 @@ void main() {
   late MockNetworkCaller mockNetwork;
 
   Future<void> setupTestWidget(WidgetTester tester) async {
-  await tester.pumpWidget(
-    ScreenUtilInit(
-      designSize: const Size(360, 690),
-      builder: (context, child) => GetMaterialApp(
-
-        initialRoute: '/',
-        getPages: [
-          GetPage(name: '/', page: () => const Scaffold()),
-          GetPage(name: AppRoute.signUpScreen, page: () => const Scaffold()),
-          GetPage(name: AppRoute.verificationCodeSendSuccessScreen, page: () => const Scaffold()),
-          GetPage(name: AppRoute.loginScreen, page: () => const Scaffold()),
-        ],
+    await tester.pumpWidget(
+      ScreenUtilInit(
+        designSize: const Size(360, 690),
+        builder: (context, child) => GetMaterialApp(
+          initialRoute: '/',
+          getPages: [
+            GetPage(name: '/', page: () => const Scaffold()),
+            GetPage(name: AppRoute.signUpScreen, page: () => const Scaffold()),
+            GetPage(
+              name: AppRoute.verificationCodeSendSuccessScreen,
+              page: () => const Scaffold(),
+            ),
+            GetPage(name: AppRoute.loginScreen, page: () => const Scaffold()),
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
 
   setUp(() {
     TestWidgetsFlutterBinding.ensureInitialized();
@@ -62,7 +64,9 @@ void main() {
   });
 
   group('SignUpScreenController - Form Validation', () {
-    testWidgets('Should prevent API call if any field is empty', (tester) async {
+    testWidgets('Should prevent API call if any field is empty', (
+      tester,
+    ) async {
       await setupTestWidget(tester);
 
       controller.emailController.text = ''; // Empty field
@@ -72,10 +76,14 @@ void main() {
 
       expect(controller.isSignUpLoading.value, isFalse);
 
-      verifyNever(() => mockNetwork.postRequest(any(), body: any(named: 'body')));
+      verifyNever(
+        () => mockNetwork.postRequest(any(), body: any(named: 'body')),
+      );
     });
 
-    testWidgets('Should prevent API call if passwords do not match', (tester) async {
+    testWidgets('Should prevent API call if passwords do not match', (
+      tester,
+    ) async {
       await setupTestWidget(tester);
 
       controller.emailController.text = 'test@example.com';
@@ -90,50 +98,60 @@ void main() {
   });
 
   group('SignUpScreenController - API & Navigation', () {
-    testWidgets('Successful signUp should set loading and navigate to Success Screen', (tester) async {
-      // 1. Arrange
-      when(() => mockNetwork.postRequest(any(), body: any(named: 'body')))
-          .thenAnswer((_) async => ResponseData(
-                isSuccess: true,
-                statusCode: 200,
-                responseData: {"success": true},
-                errorMessage: '',
-              ));
+    testWidgets(
+      'Successful signUp should set loading and navigate to Success Screen',
+      (tester) async {
+        // 1. Arrange
+        when(
+          () => mockNetwork.postRequest(any(), body: any(named: 'body')),
+        ).thenAnswer(
+          (_) async => ResponseData(
+            isSuccess: true,
+            statusCode: 200,
+            responseData: {"success": true},
+            errorMessage: '',
+          ),
+        );
 
-      await setupTestWidget(tester);
-      controller.emailController.text = 'newuser@test.com';
-      controller.passwordController.text = 'password123';
-      controller.retypePasswordController.text = 'password123';
+        await setupTestWidget(tester);
+        controller.emailController.text = 'newuser@test.com';
+        controller.passwordController.text = 'password123';
+        controller.retypePasswordController.text = 'password123';
 
-      // 2. Act
-      final signUpFuture = controller.signUp('UserRole.vendor');
-      
-      // Assert loading state mid-flight
-      expect(controller.isSignUpLoading.value, isTrue);
-      
-      await signUpFuture;
+        // 2. Act
+        final signUpFuture = controller.signUp('UserRole.vendor');
 
-      // 3. Assert
-      expect(controller.isSignUpLoading.value, isFalse);
+        // Assert loading state mid-flight
+        expect(controller.isSignUpLoading.value, isTrue);
 
-      expect(Get.currentRoute, AppRoute.verificationCodeSendSuccessScreen);
+        await signUpFuture;
 
+        // 3. Assert
+        expect(controller.isSignUpLoading.value, isFalse);
 
-      await tester.pumpAndSettle(const Duration(seconds: 4));
-    });
+        expect(Get.currentRoute, AppRoute.verificationCodeSendSuccessScreen);
 
-    testWidgets('verifyOtp should navigate to Login on success', (tester) async {
+        await tester.pumpAndSettle(const Duration(seconds: 4));
+      },
+    );
+
+    testWidgets('verifyOtp should navigate to Login on success', (
+      tester,
+    ) async {
       // 1. Arrange
       controller.otp = '123456';
       controller.emailController.text = 'test@example.com';
 
-      when(() => mockNetwork.postRequest(any(), body: any(named: 'body')))
-          .thenAnswer((_) async => ResponseData(
-                isSuccess: true,
-                statusCode: 200,
-                responseData: {"success": true},
-                errorMessage: '',
-              ));
+      when(
+        () => mockNetwork.postRequest(any(), body: any(named: 'body')),
+      ).thenAnswer(
+        (_) async => ResponseData(
+          isSuccess: true,
+          statusCode: 200,
+          responseData: {"success": true},
+          errorMessage: '',
+        ),
+      );
 
       await setupTestWidget(tester);
 
