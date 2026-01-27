@@ -13,7 +13,7 @@ class SnackBarConstant {
     snackPosition: SnackPosition.BOTTOM,
     backgroundColor: AppColors.warning,
     colorText: Colors.black,
-    margin: EdgeInsets.all(15.w),
+    margin: EdgeInsets.all(15),
     icon: const Icon(Icons.warning_amber_rounded, color: Colors.black),
   );
 
@@ -23,7 +23,7 @@ class SnackBarConstant {
     snackPosition: SnackPosition.BOTTOM,
     backgroundColor: AppColors.error,
     colorText: Colors.black,
-    margin: EdgeInsets.all(15.w),
+    margin: EdgeInsets.all(15),
     icon: const Icon(Icons.error_outline_outlined, color: Colors.black),
   );
 
@@ -33,7 +33,7 @@ class SnackBarConstant {
     snackPosition: SnackPosition.BOTTOM,
     backgroundColor: AppColors.success,
     colorText: Colors.black,
-    margin: EdgeInsets.all(15.w),
+    margin: EdgeInsets.all(15),
     icon: const Icon(Icons.check_circle_outline_rounded, color: Colors.black),
   );
 }

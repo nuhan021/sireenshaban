@@ -8,7 +8,11 @@ import '../../../core/services/network_caller.dart';
 import '../../../core/utils/constants/api_constants.dart';
 
 class SignUpScreenController extends GetxController {
-  final NetworkCaller _networkCaller = NetworkCaller();
+  final NetworkCaller _networkCaller;
+
+
+  SignUpScreenController({NetworkCaller? networkCaller}) 
+      : _networkCaller = networkCaller ?? NetworkCaller();
   RxBool isObscurePassword = true.obs;
   RxBool isObscureRetypePassword = true.obs;
   RxBool isSignUpLoading = false.obs;
