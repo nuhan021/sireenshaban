@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'package:http/http.dart';
 
 import '../models/response_data.dart';
@@ -10,13 +9,11 @@ class NetworkCaller {
 
   // GET method
   Future<ResponseData> getRequest(String url, {String? token}) async {
-    log('GET Request: $url');
-    log('GET Token: $token');
     try {
       final Response response = await get(
         Uri.parse(url),
         headers: {
-          'Authorization': token.toString(),
+          'Authorization': 'Bearer ${token ?? ''}',
           'Content-type': 'application/json',
           'Accept': 'application/json',
         },
@@ -35,19 +32,24 @@ class NetworkCaller {
     String? token,
     Map<String, String>? headers,
   }) async {
-    log('POST Request: $url');
-    log('Request Body: ${jsonEncode(body)}');
-
     try {
+      Map<String, String> finalHeaders;
+      if (headers == null) {
+        finalHeaders = {
+          'Authorization': 'Bearer ${token ?? ''}',
+          'Content-type': 'application/json',
+          'Accept': 'application/json',
+        };
+      } else {
+        finalHeaders = Map<String, String>.from(headers);
+        if (!finalHeaders.containsKey('Authorization')) {
+          finalHeaders['Authorization'] = 'Bearer ${token ?? ''}';
+        }
+      }
+
       final Response response = await post(
         Uri.parse(url),
-        headers:
-            headers ??
-            {
-              'Authorization': token.toString(),
-              'Content-type': 'application/json',
-              'Accept': 'application/json',
-            },
+        headers: finalHeaders,
         body: jsonEncode(body),
       ).timeout(Duration(seconds: timeoutDuration));
       return _handleResponse(response);
@@ -58,10 +60,17 @@ class NetworkCaller {
 
   // Handle response
   ResponseData _handleResponse(Response response) {
-    log('Response Status: ${response.statusCode}');
-    log('Response Body: ${response.body}');
-
-    final decodedResponse = jsonDecode(response.body);
+    dynamic decodedResponse;
+    try {
+      decodedResponse = jsonDecode(response.body);
+    } catch (e) {
+      return ResponseData(
+        isSuccess: false,
+        statusCode: response.statusCode,
+        responseData: response.body,
+        errorMessage: 'Failed to parse server response',
+      );
+    }
 
     if (response.statusCode == 200 || response.statusCode == 201) {
       if (decodedResponse['success'] == true) {
@@ -116,8 +125,6 @@ class NetworkCaller {
 
   // Handle errors
   ResponseData _handleError(dynamic error) {
-    log('Request Error: $error');
-
     if (error is ClientException) {
       return ResponseData(
         isSuccess: false,

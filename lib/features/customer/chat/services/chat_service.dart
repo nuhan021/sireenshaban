@@ -31,15 +31,20 @@ class ChatService {
       debugPrint('📱 [Chat] History response: ${response.body}');
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body) as Map<String, dynamic>;
-        if (data['success'] == true) {
-          final messages = (data['messages'] as List)
-              .map((msg) => ChatMessage.fromJson(msg as Map<String, dynamic>))
-              .toList();
-          debugPrint(
-            '✅ [Chat] Successfully loaded ${messages.length} messages',
-          );
-          return messages;
+        try {
+          final data = jsonDecode(response.body) as Map<String, dynamic>;
+          if (data['success'] == true) {
+            final messages = (data['messages'] as List)
+                .map((msg) => ChatMessage.fromJson(msg as Map<String, dynamic>))
+                .toList();
+            debugPrint(
+              '✅ [Chat] Successfully loaded ${messages.length} messages',
+            );
+            return messages;
+          }
+        } catch (e) {
+          debugPrint('❌ [Chat] Failed to parse chat history response: $e');
+          return [];
         }
       }
       debugPrint('❌ [Chat] Failed to fetch history: ${response.statusCode}');
@@ -76,17 +81,22 @@ class ChatService {
       debugPrint('📱 [Chat] Send message response: ${response.body}');
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body) as Map<String, dynamic>;
-        if (data['success'] == true) {
-          final message = ChatMessage.fromJson(
-            data['message'] as Map<String, dynamic>,
-          );
-          debugPrint('✅ [Chat] Message sent successfully');
-          debugPrint('   Message ID: ${message.id}');
-          debugPrint('   From: ${message.senderId}');
-          debugPrint('   To: ${message.receiverId}');
-          debugPrint('   Text: "${message.message}"');
-          return message;
+        try {
+          final data = jsonDecode(response.body) as Map<String, dynamic>;
+          if (data['success'] == true) {
+            final message = ChatMessage.fromJson(
+              data['message'] as Map<String, dynamic>,
+            );
+            debugPrint('✅ [Chat] Message sent successfully');
+            debugPrint('   Message ID: ${message.id}');
+            debugPrint('   From: ${message.senderId}');
+            debugPrint('   To: ${message.receiverId}');
+            debugPrint('   Text: "${message.message}"');
+            return message;
+          }
+        } catch (e) {
+          debugPrint('❌ [Chat] Failed to parse send message response: $e');
+          return null;
         }
       }
       debugPrint('❌ [Chat] Failed to send message: ${response.statusCode}');
@@ -131,16 +141,21 @@ class ChatService {
       debugPrint('📱 [Chat] Voice send response: ${response.body}');
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body) as Map<String, dynamic>;
-        if (data['success'] == true) {
-          final message = ChatMessage.fromJson(
-            data['message'] as Map<String, dynamic>,
-          );
-          debugPrint(
-            '✅ [Chat] Voice message sent successfully with ID: ${message.id}',
-          );
-          debugPrint('   Voice URL: ${message.voiceUrl}');
-          return message;
+        try {
+          final data = jsonDecode(response.body) as Map<String, dynamic>;
+          if (data['success'] == true) {
+            final message = ChatMessage.fromJson(
+              data['message'] as Map<String, dynamic>,
+            );
+            debugPrint(
+              '✅ [Chat] Voice message sent successfully with ID: ${message.id}',
+            );
+            debugPrint('   Voice URL: ${message.voiceUrl}');
+            return message;
+          }
+        } catch (e) {
+          debugPrint('❌ [Chat] Failed to parse voice message response: $e');
+          return null;
         }
       }
       debugPrint(
@@ -192,13 +207,18 @@ class ChatService {
       debugPrint('📱 [Chat] User status response: ${response.body}');
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body) as Map<String, dynamic>;
-        if (data['success'] == true) {
-          final status = UserStatus.fromJson(
-            data['receiver'] as Map<String, dynamic>,
-          );
-          debugPrint('✅ [Chat] User status: ${status.statusText}');
-          return status;
+        try {
+          final data = jsonDecode(response.body) as Map<String, dynamic>;
+          if (data['success'] == true) {
+            final status = UserStatus.fromJson(
+              data['receiver'] as Map<String, dynamic>,
+            );
+            debugPrint('✅ [Chat] User status: ${status.statusText}');
+            return status;
+          }
+        } catch (e) {
+          debugPrint('❌ [Chat] Failed to parse user status response: $e');
+          return null;
         }
       }
       return null;
@@ -219,39 +239,44 @@ class ChatService {
       debugPrint('📱 [Chat] Chat list response: ${response.body}');
 
       if (response.statusCode == 200) {
-        final data = jsonDecode(response.body) as Map<String, dynamic>;
-        debugPrint('📱 [Chat] Parsing response...');
+        try {
+          final data = jsonDecode(response.body) as Map<String, dynamic>;
+          debugPrint('📱 [Chat] Parsing response...');
 
-        if (data['success'] == true) {
-          final messagesData = data['messages'];
-          debugPrint('📱 [Chat] Messages type: ${messagesData.runtimeType}');
-          debugPrint(
-            '📱 [Chat] Messages count: ${(messagesData as List?)?.length ?? 0}',
-          );
+          if (data['success'] == true) {
+            final messagesData = data['messages'];
+            debugPrint('📱 [Chat] Messages type: ${messagesData.runtimeType}');
+            debugPrint(
+              '📱 [Chat] Messages count: ${(messagesData as List?)?.length ?? 0}',
+            );
 
-          if (messagesData is List && messagesData.isNotEmpty) {
-            try {
-              final conversations = messagesData.map((msg) {
-                debugPrint('📱 [Chat] Parsing conversation:');
-                debugPrint('   User ID: ${msg['user_id']}');
-                debugPrint('   Name: ${msg['name']}');
-                debugPrint('   Last Message: ${msg['last_message']}');
-                return ChatConversation.fromJson(msg as Map<String, dynamic>);
-              }).toList();
-              debugPrint(
-                '✅ [Chat] Successfully loaded ${conversations.length} conversations',
-              );
-              return conversations;
-            } catch (e) {
-              debugPrint('❌ [Chat] Error parsing conversations: $e');
+            if (messagesData is List && messagesData.isNotEmpty) {
+              try {
+                final conversations = messagesData.map((msg) {
+                  debugPrint('📱 [Chat] Parsing conversation:');
+                  debugPrint('   User ID: ${msg['user_id']}');
+                  debugPrint('   Name: ${msg['name']}');
+                  debugPrint('   Last Message: ${msg['last_message']}');
+                  return ChatConversation.fromJson(msg as Map<String, dynamic>);
+                }).toList();
+                debugPrint(
+                  '✅ [Chat] Successfully loaded ${conversations.length} conversations',
+                );
+                return conversations;
+              } catch (e) {
+                debugPrint('❌ [Chat] Error parsing conversations: $e');
+                return [];
+              }
+            } else {
+              debugPrint('⚠️ [Chat] Messages is empty or not a list');
               return [];
             }
           } else {
-            debugPrint('⚠️ [Chat] Messages is empty or not a list');
+            debugPrint('⚠️ [Chat] Success is false');
             return [];
           }
-        } else {
-          debugPrint('⚠️ [Chat] Success is false');
+        } catch (e) {
+          debugPrint('❌ [Chat] Failed to parse chat list response: $e');
           return [];
         }
       }

@@ -27,9 +27,7 @@ void main() async {
   // If a token exists from previous session, fetch the latest profile
   try {
     if (StorageService.hasToken()) {
-      final profileFetched = await UserInfoService.fetchAndStoreProfile();
-      print('Startup profile fetch result: $profileFetched');
-      AppLoggerHelper.info('Startup profile fetch result: $profileFetched');
+      await UserInfoService.fetchAndStoreProfile();
     }
   } catch (e) {
     AppLoggerHelper.error('Startup profile fetch failed: $e');
