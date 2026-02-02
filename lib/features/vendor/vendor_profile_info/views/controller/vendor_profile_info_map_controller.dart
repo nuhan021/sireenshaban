@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
@@ -7,7 +8,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:sireenshaban/features/vendor/vendor_setup/controller/vendor_setup_screen_controller.dart';
 
 class VendorProfileInfoMapController extends GetxController {
-  final String googleApiKey = "AIzaSyA22IxMllRCaf9DcNTmyjKPcHpY5okWfhc";
+  final String googleApiKey = dotenv.env['ANDROID_GOOGLE_MAP_API'] ?? '';
 
   late GoogleMapController mapController;
 
@@ -48,13 +49,21 @@ class VendorProfileInfoMapController extends GetxController {
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      final predictions = data['predictions'] as List;
-      return predictions
-          .map(
-            (p) => {'description': p['description'], 'place_id': p['place_id']},
-          )
-          .toList();
+      try {
+        final data = json.decode(response.body);
+        final predictions = data['predictions'] as List;
+        return predictions
+            .map(
+              (p) => {
+                'description': p['description'],
+                'place_id': p['place_id'],
+              },
+            )
+            .toList();
+      } catch (e) {
+        // Malformed JSON or unexpected response shape: return empty suggestions
+        return [];
+      }
     } else {
       throw Exception("Failed to fetch suggestions");
     }
@@ -69,7 +78,14 @@ class VendorProfileInfoMapController extends GetxController {
       throw Get.snackbar("error", "Failed to fetch address");
     }
 
-    final data = json.decode(response.body);
+    dynamic data;
+    try {
+      data = json.decode(response.body);
+    } catch (e) {
+      Get.snackbar("error", "Failed to parse address response");
+      return;
+    }
+
     final results = data["results"] as List;
 
     final components = results.first["address_components"] as List;
@@ -109,10 +125,14 @@ class VendorProfileInfoMapController extends GetxController {
     final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      final location = data['result']['geometry']['location'];
-      await getLocationName(LatLng(location['lat'], location['lng']));
-      return LatLng(location['lat'], location['lng']);
+      try {
+        final data = json.decode(response.body);
+        final location = data['result']['geometry']['location'];
+        await getLocationName(LatLng(location['lat'], location['lng']));
+        return LatLng(location['lat'], location['lng']);
+      } catch (e) {
+        throw Exception("Failed to parse place details");
+      }
     } else {
       throw Exception("Failed to fetch place details");
     }
