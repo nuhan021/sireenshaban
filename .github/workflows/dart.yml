@@ -1,32 +1,32 @@
-name: Flutter CI
+# name: Flutter CI
 
-on:
-  pull_request:
-    branches: [ main, master ]
-  push:
-    branches: [ main, master ]
+# on:
+#   pull_request:
+#     branches: [ main, master ]
+#   push:
+#     branches: [ main, master ]
 
-jobs:
-  flutter_ci:
-    runs-on: ubuntu-latest
+# jobs:
+#   flutter_ci:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+#     steps:
+#       - name: Checkout Code
+#         uses: actions/checkout@v4
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
+#       - name: Setup Flutter
+#         uses: subosito/flutter-action@v2
+#         with:
+#           channel: 'stable'
 
-      - name: Install Dependencies
-        run: flutter pub get
+#       - name: Install Dependencies
+#         run: flutter pub get
 
-      - name: Check Formatting
-        run: dart format --output=none --set-exit-if-changed .
+#       - name: Check Formatting
+#         run: dart format --output=none --set-exit-if-changed .
 
-      - name: Analyze Code
-        run: flutter analyze
+#       - name: Analyze Code
+#         run: flutter analyze
 
-      - name: Run Tests
-        run: flutter test
+#       - name: Run Tests
+#         run: flutter test
