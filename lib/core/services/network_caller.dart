@@ -5,19 +5,26 @@ import 'package:http/http.dart';
 import '../models/response_data.dart';
 
 class NetworkCaller {
-  final int timeoutDuration = 20;
+  final Client client;
+  final int timeoutDuration;
+
+  NetworkCaller({Client? client, int? timeoutDuration})
+    : client = client ?? Client(),
+      timeoutDuration = timeoutDuration ?? 20;
 
   // GET method
   Future<ResponseData> getRequest(String url, {String? token}) async {
     try {
-      final Response response = await get(
-        Uri.parse(url),
-        headers: {
-          'Authorization': 'Bearer ${token ?? ''}',
-          'Content-type': 'application/json',
-          'Accept': 'application/json',
-        },
-      ).timeout(Duration(seconds: timeoutDuration));
+      final Response response = await client
+          .get(
+            Uri.parse(url),
+            headers: {
+              'Authorization': 'Bearer ${token ?? ''}',
+              'Content-type': 'application/json',
+              'Accept': 'application/json',
+            },
+          )
+          .timeout(Duration(seconds: timeoutDuration));
 
       return _handleResponse(response);
     } catch (e) {
@@ -47,11 +54,9 @@ class NetworkCaller {
         }
       }
 
-      final Response response = await post(
-        Uri.parse(url),
-        headers: finalHeaders,
-        body: jsonEncode(body),
-      ).timeout(Duration(seconds: timeoutDuration));
+      final Response response = await client
+          .post(Uri.parse(url), headers: finalHeaders, body: jsonEncode(body))
+          .timeout(Duration(seconds: timeoutDuration));
       return _handleResponse(response);
     } catch (e) {
       return _handleError(e);
