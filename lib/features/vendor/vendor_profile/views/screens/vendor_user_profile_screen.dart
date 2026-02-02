@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:sireenshaban/core/services/storage_service.dart';
-import 'package:sireenshaban/core/controllers/user_controller.dart';
+import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile/views/screens/vendor_edit_profile_screen.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile/views/widgets/vendor_profile_header.dart';
@@ -78,7 +76,8 @@ class VendorUserProfileScreen extends StatelessWidget {
 
             // first name
             Obx(() {
-              final userCtrl = Get.find<UserController>();
+              final homeController = Get.find<HomeController>();
+              final vendorUser = homeController.vendorUser.value?.vendor.user;
               return ListTile(
                 tileColor: Colors.white,
                 shape: RoundedRectangleBorder(
@@ -93,7 +92,7 @@ class VendorUserProfileScreen extends StatelessWidget {
                   ),
                 ),
                 subtitle: Text(
-                  userCtrl.firstName.value,
+                  vendorUser?.firstName ?? '-',
                   style: getTextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
@@ -107,7 +106,8 @@ class VendorUserProfileScreen extends StatelessWidget {
 
             // last name
             Obx(() {
-              final userCtrl = Get.find<UserController>();
+              final homeController = Get.find<HomeController>();
+              final vendorUser = homeController.vendorUser.value?.vendor.user;
               return ListTile(
                 tileColor: Colors.white,
                 shape: RoundedRectangleBorder(
@@ -122,7 +122,7 @@ class VendorUserProfileScreen extends StatelessWidget {
                   ),
                 ),
                 subtitle: Text(
-                  userCtrl.lastName.value,
+                  vendorUser?.lastName ?? '-',
                   style: getTextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
@@ -136,7 +136,8 @@ class VendorUserProfileScreen extends StatelessWidget {
 
             // email
             Obx(() {
-              final userCtrl = Get.find<UserController>();
+              final homeController = Get.find<HomeController>();
+              final vendorUser = homeController.vendorUser.value?.vendor.user;
               return ListTile(
                 tileColor: Colors.white,
                 shape: RoundedRectangleBorder(
@@ -151,7 +152,7 @@ class VendorUserProfileScreen extends StatelessWidget {
                   ),
                 ),
                 subtitle: Text(
-                  userCtrl.email.value,
+                  vendorUser?.email ?? '-',
                   style: getTextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
@@ -164,7 +165,8 @@ class VendorUserProfileScreen extends StatelessWidget {
             8.verticalSpace,
             // city
             Obx(() {
-              final userCtrl = Get.find<UserController>();
+              final homeController = Get.find<HomeController>();
+              final vendorUser = homeController.vendorUser.value?.vendor.user;
               return ListTile(
                 tileColor: Colors.white,
                 shape: RoundedRectangleBorder(
@@ -179,7 +181,7 @@ class VendorUserProfileScreen extends StatelessWidget {
                   ),
                 ),
                 subtitle: Text(
-                  userCtrl.city.value,
+                  vendorUser?.city ?? '-',
                   style: getTextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,
@@ -193,7 +195,8 @@ class VendorUserProfileScreen extends StatelessWidget {
 
             // Address
             Obx(() {
-              final userCtrl = Get.find<UserController>();
+              final homeController = Get.find<HomeController>();
+              final vendorUser = homeController.vendorUser.value?.vendor.user;
               return ListTile(
                 tileColor: Colors.white,
                 shape: RoundedRectangleBorder(
@@ -208,7 +211,7 @@ class VendorUserProfileScreen extends StatelessWidget {
                   ),
                 ),
                 subtitle: Text(
-                  userCtrl.address.value,
+                  vendorUser?.address ?? '-',
                   style: getTextStyle(
                     fontSize: 12.sp,
                     fontWeight: FontWeight.w400,

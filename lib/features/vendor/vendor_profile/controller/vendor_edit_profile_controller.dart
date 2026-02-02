@@ -40,6 +40,7 @@ class VendorEditProfileController extends GetxController {
   RxBool iTravelToTheClient = false.obs;
   RxBool isSubmitLoading = false.obs;
   RxBool issuccess = false.obs;
+  RxBool isvendorsuccess = false.obs;
 
   String dialCode = '';
   LatLng? shopLocation;
@@ -232,6 +233,9 @@ class VendorEditProfileController extends GetxController {
       SnackBarConstant.error("Vendor data is not available");
       return;
     }
+
+    // ignore: unnecessary_null_comparison
+   
 
     isSubmitLoading.value = true;
 

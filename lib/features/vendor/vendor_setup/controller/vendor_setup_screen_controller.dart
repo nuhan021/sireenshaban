@@ -394,7 +394,7 @@ class VendorSetupScreenController extends GetxController {
 
           final vendorId = response.data['vendor']['id'];
 
-          StorageService.savaVendorId(vendorId);
+          StorageService.saveVendorId(vendorId);
 
           AppLoggerHelper.info('The toal id is: $vendorId');
 

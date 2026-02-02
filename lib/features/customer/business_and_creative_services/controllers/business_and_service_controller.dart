@@ -8,7 +8,7 @@ import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/constants/snackbar_constant.dart';
 import 'package:sireenshaban/core/utils/logging/logger.dart';
 import 'package:sireenshaban/features/customer/business_and_creative_services/services/business_and_service.dart';
-import 'package:sireenshaban/features/customer/profile/controllers/profile_controller.dart';
+import 'package:sireenshaban/features/customer/profile/controllers/customer_profile_controller.dart';
 import 'package:sireenshaban/features/customer/profile/models/user_model.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile_info/views/controller/vendor_profile_info_map_controller.dart';
 

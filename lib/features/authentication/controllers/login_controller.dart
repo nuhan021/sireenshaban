@@ -31,10 +31,28 @@ class LoginController extends GetxController {
     isObscure.value = !isObscure.value;
   }
 
+  bool _isValidEmail(String email) {
+    final trimmed = email.trim();
+    if (trimmed.isEmpty) return false;
+    return RegExp(r'^[^\s@]+@[^\s@]+\.[^\s@]+$').hasMatch(trimmed);
+  }
+
+  Future<void> _handleAuthExpired() async {
+    await StorageService.logoutUser();
+    SnackBarConstant.error('Session expired. Please log in again.');
+  }
+
   Future<void> login() async {
-    if (emailController.text.trim().isEmpty ||
-        passwordController.text.trim().isEmpty) {
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
       SnackBarConstant.warning('Please fill all the fields');
+      return;
+    }
+
+    if (!_isValidEmail(email)) {
+      SnackBarConstant.warning('Please enter a valid email address');
       return;
     }
 
@@ -43,16 +61,23 @@ class LoginController extends GetxController {
     final response = await _networkCaller.postRequest(
       ApiConstants.login,
       body: {
-        "email": emailController.text,
-        "password": passwordController.text,
+        "email": email,
+        "password": password,
       },
     );
 
-    // Debug: print login API response
-    // This shows full decoded response map from NetworkCaller
-    print('Login response: ${response.responseData}');
-
     if (!response.isSuccess) {
+      if (response.statusCode == 401 ||
+          response.errorMessage.toLowerCase().contains('token expired')) {
+        await _handleAuthExpired();
+        isLogInLoading.value = false;
+        return;
+      }
+      if (response.statusCode == 408) {
+        SnackBarConstant.error('Network timeout. Please try again.');
+        isLogInLoading.value = false;
+        return;
+      }
       SnackBarConstant.error(response.errorMessage);
       isLogInLoading.value = false;
       return;
@@ -68,20 +93,15 @@ class LoginController extends GetxController {
       loginModel.value!.data.user.id.toString(),
     );
     await StorageService.saveRole(loginModel.value!.data.user.role);
-    await StorageService.savaVendorId(loginModel.value!.data.vendor.id);
-    AppLoggerHelper.debug("vendor ID : ${StorageService.vendorId}");
-
-    StorageService.savaVendorId(loginModel.value!.data.vendor.id);
-    AppLoggerHelper.debug(
-      'Saved Vendor ID: ${loginModel.value!.data.vendor.id}',
-    );
-
-    StorageService.savaVendorId(loginModel.value!.data.vendor.id);
+    if (loginModel.value!.data.user.role == 'Vendor' &&
+        loginModel.value!.data.vendor.id > 0) {
+      await StorageService.saveVendorId(loginModel.value!.data.vendor.id);
+    }
 
     // Fetch user profile immediately and store it for app-wide access
     try {
       final profileFetched = await UserInfoService.fetchAndStoreProfile();
-      print('Profile fetch result: $profileFetched');
+
       AppLoggerHelper.info('Profile fetch result: $profileFetched');
     } catch (e) {
       AppLoggerHelper.error('Profile fetch exception: $e');
@@ -94,8 +114,6 @@ class LoginController extends GetxController {
     } catch (e) {
       AppLoggerHelper.error('Error sending FCM token: $e');
     }
-
-    AppLoggerHelper.debug(loginModel.value!.data.token);
 
     SnackBarConstant.success("Login successful");
 
