@@ -34,7 +34,7 @@ migrate_working_dir/
 /coverage/
 
 # Environment variables and secrets
-.env
+# .env
 .env.local
 .env.*.local
 
