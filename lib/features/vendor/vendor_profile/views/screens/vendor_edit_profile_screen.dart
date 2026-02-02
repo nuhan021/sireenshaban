@@ -360,63 +360,46 @@ class _VendorEditProfileScreenState extends State<VendorEditProfileScreen> {
             20.verticalSpace,
 
             Obx(() {
-              final loading = controller.isSubmitLoading.value;
+              final role = StorageService.role?.toLowerCase();
+              final isVendor =
+                  controller.homeController.isFromVendor || role == 'vendor';
+              final loading = isVendor
+                  ? controller.isSubmitLoading.value
+                  : controller.isUpdating.value;
+
               return CustomPrimaryButton(
                 text: loading ? 'Saving...' : 'Save Change',
                 color: AppColors.primaryDeepBlueNormal,
                 isLoading: loading,
                 onPressed: () async {
-                  //for vendor update profile
                   if (loading) return;
-                  await controller.updateVendorProfile();
 
-                  if (controller.issuccess.value) {
-                    final role = StorageService.role?.toLowerCase();
-                    final isVendor =
-                        controller.homeController.isFromVendor ||
-                        role == 'vendor';
-                    if (isVendor) {
-                      final navController =
-                          Get.isRegistered<VendorBottomNavBarController>()
-                          ? Get.find<VendorBottomNavBarController>()
-                          : Get.put(VendorBottomNavBarController());
-                      navController.changeCurrentIndex(4);
-                      navController.jumpToScreen(4);
-                      Get.offAllNamed(AppRoute.getVendorBottomNavBar());
-                    } else {
-                      final navController =
-                          Get.isRegistered<CustomerBottomNavBarController>()
-                          ? Get.find<CustomerBottomNavBarController>()
-                          : Get.put(CustomerBottomNavBarController());
-                      navController.changeCurrentIndex(4);
-                      navController.jumpToScreen(4);
-                      Get.offAllNamed(AppRoute.getCustomerBottomNavBar());
-                    }
+                  if (isVendor) {
+                    controller.issuccess.value = false;
+                    await controller.updateVendorProfile();
+                    if (!controller.issuccess.value) return;
+                  } else {
+                    final success = await controller.updateProfile();
+                    if (!success) return;
                   }
-                  // // for customer update profile
 
-                  // // if (loading) return;
-                  // final success = await controller.updateProfile();
-
-                  // if (success) {
-                  //   if (homeController.isFromVendor == false) {
-                  //     final navController =
-                  //         Get.isRegistered<VendorBottomNavBarController>()
-                  //         ? Get.find<VendorBottomNavBarController>()
-                  //         : Get.put(VendorBottomNavBarController());
-                  //     navController.changeCurrentIndex(4);
-                  //     navController.jumpToScreen(4);
-                  //     Get.offAllNamed(AppRoute.getVendorBottomNavBar());
-                  //   } else {
-                  //     final navController =
-                  //         Get.isRegistered<CustomerBottomNavBarController>()
-                  //         ? Get.find<CustomerBottomNavBarController>()
-                  //         : Get.put(CustomerBottomNavBarController());
-                  //     navController.changeCurrentIndex(4);
-                  //     navController.jumpToScreen(4);
-                  //     Get.offAllNamed(AppRoute.getCustomerBottomNavBar());
-                  //   }
-                  // }
+                  if (isVendor) {
+                    final navController =
+                        Get.isRegistered<VendorBottomNavBarController>()
+                            ? Get.find<VendorBottomNavBarController>()
+                            : Get.put(VendorBottomNavBarController());
+                    navController.changeCurrentIndex(4);
+                    navController.jumpToScreen(4);
+                    Get.offAllNamed(AppRoute.getVendorBottomNavBar());
+                  } else {
+                    final navController =
+                        Get.isRegistered<CustomerBottomNavBarController>()
+                            ? Get.find<CustomerBottomNavBarController>()
+                            : Get.put(CustomerBottomNavBarController());
+                    navController.changeCurrentIndex(4);
+                    navController.jumpToScreen(4);
+                    Get.offAllNamed(AppRoute.getCustomerBottomNavBar());
+                  }
                 },
               );
             }),

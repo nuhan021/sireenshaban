@@ -8,7 +8,7 @@ import 'package:sireenshaban/features/customer/chat/views/screens/chat_list_scre
 import 'package:sireenshaban/features/customer/customer_bottom_nav_bar/controller/customer_bottom_nav_bar_controller.dart';
 import 'package:sireenshaban/features/customer/events/views/screens/events_screen.dart';
 import 'package:sireenshaban/features/customer/home/views/screens/customer_home_screen.dart';
-import 'package:sireenshaban/features/customer/profile/views/screens/profile_screen.dart';
+import 'package:sireenshaban/features/customer/profile/views/screens/customer_profile_screen.dart';
 import 'package:sireenshaban/features/customer/search/views/screens/search_screen.dart';
 
 import '../../../../../core/utils/constants/icon_path.dart';

@@ -9,7 +9,7 @@ import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
 import 'package:sireenshaban/features/customer/booking/views/screens/booking_screen.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/customer/payment_history/views/screens/payment_history_screen.dart';
-import 'package:sireenshaban/features/customer/profile/controllers/profile_controller.dart';
+import 'package:sireenshaban/features/customer/profile/controllers/customer_profile_controller.dart';
 import 'package:sireenshaban/features/customer/profile/models/user_model.dart';
 import 'package:sireenshaban/features/customer/user_profile/views/screens/user_profile_screen.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile/views/screens/vendor_user_profile_screen.dart';
@@ -239,7 +239,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               20.verticalSpace,
-
               // Profile Item
               _buildProfileMenu(
                 icon: IconPath.navProfile,
