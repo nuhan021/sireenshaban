@@ -14,28 +14,10 @@ import 'core/services/storage_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await initializeDateFormatting('en_US', "");
+  Stripe.publishableKey =
+      "pk_test_51RytrZ45hm6BjdBDwq18oaQ0oLS8Htp2mDjB2B1VZdbgIy4GMDvy13gNOdSZGmlHXFx3kjaSyK7kveIcoc24eUgF00AlXv9V6q";
   await dotenv.load(fileName: ".env");
-  final stripeKey = dotenv.env['STRIPE_PUBLISHABLE_KEY'];
-  if (stripeKey != null && stripeKey.isNotEmpty) {
-    Stripe.publishableKey = stripeKey;
-  } else {
-    AppLoggerHelper.error('Stripe publishable key not found in .env file');
-  }
   await StorageService.init();
-  
-  // Load stored token and userId into cache for quick access
-  try {
-    final cachedToken = await StorageService.getTokenAsync();
-    if (cachedToken != null) {
-      await StorageService.cacheToken(cachedToken);
-    }
-    final cachedUserId = await StorageService.getUserId();
-    if (cachedUserId != null) {
-      await StorageService.cacheUserId(cachedUserId);
-    }
-  } catch (e) {
-    AppLoggerHelper.error('Failed to cache credentials: $e');
-  }
 
   // Initialize Firebase FCM
   await FirebaseFCMService.initialize();

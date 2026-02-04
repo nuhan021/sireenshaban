@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class StorageService {
   // Constants for preference keys
@@ -14,9 +13,6 @@ class StorageService {
 
   // Singleton instance for SharedPreferences
   static SharedPreferences? _preferences;
-  
-  // Secure storage instance for sensitive data
-  static const _secureStorage = FlutterSecureStorage();
 
   // Initialize SharedPreferences (call this during app startup)
   static Future<void> init() async {
@@ -37,8 +33,8 @@ class StorageService {
 
   // Check if a token exists in local storage
   static bool hasToken() {
-    // Check secure storage first, then fall back to shared preferences for migration
-    return _preferences?.getString(_tokenKey) != null;
+    final token = _preferences?.getString(_tokenKey);
+    return token != null;
   }
 
 static Future<void> saveVendorId(int id) async {
@@ -46,38 +42,26 @@ static Future<void> saveVendorId(int id) async {
 }
 
 
-  // Save the token and user ID to secure storage
+  // Save the token and user ID to local storage
   static Future<void> saveToken(String token, String id) async {
-    // Store token in secure storage (encrypted)
-    await _secureStorage.write(key: _tokenKey, value: token);
-    // Store user ID in secure storage as well
-    await _secureStorage.write(key: _idKey, value: id);
+    await _preferences?.setString(_tokenKey, token);
+    await _preferences?.setString(_idKey, id);
   }
 
-  // Remove the token and user ID from secure storage (for logout)
+  // Remove the token and user ID from local storage (for logout)
   static Future<void> logoutUser() async {
-    await _secureStorage.delete(key: _tokenKey);
-    await _secureStorage.delete(key: _idKey);
+    await _preferences?.remove(_tokenKey);
+    await _preferences?.remove(_idKey);
     await _preferences?.remove(_role);
+    // Navigate to the login screen
+    // Get.offAllNamed('/login');
   }
 
-  // Getter for user ID (from secure storage)
-  static Future<String?> getUserId() async {
-    return await _secureStorage.read(key: _idKey);
-  }
+  // Getter for user ID
+  static String? get userId => _preferences?.getString(_idKey);
 
-  // Getter for token (from secure storage)
-  static Future<String?> getTokenAsync() async {
-    return await _secureStorage.read(key: _tokenKey);
-  }
-
-  // Synchronous token getter (returns cached value, should be populated at startup)
-  // Use getTokenAsync() for fresh values
-  static String? get token => _preferences?.getString('_token_cache');
-  
-  // Synchronous user ID getter (returns cached value)
-  // For fresh value, use getUserId() async method
-  static String? get userId => _preferences?.getString('_id_cache');
+  // Getter for token
+  static String? get token => _preferences?.getString(_tokenKey);
 
   // Getter for role
   static String? get role => _preferences?.getString(_role);
@@ -123,20 +107,4 @@ static Future<void> saveVendorId(int id) async {
 
   // Getter for vendor ID (from vendor profile data)
   // The vendor object is nested inside the user profile for vendors
-  
-  // Sync methods for backward compatibility (use these sparingly)
-  // These should only be used where async calls are not possible
-  static String? getTokenSync() {
-    // This is a workaround - better to use async version where possible
-    return _preferences?.getString('_token_cache');
-  }
-  
-  // Cache token and userId for quick access (should be called after loading from secure storage)
-  static Future<void> cacheToken(String token) async {
-    await _preferences?.setString('_token_cache', token);
-  }
-  
-  static Future<void> cacheUserId(String userId) async {
-    await _preferences?.setString('_id_cache', userId);
-  }
 }

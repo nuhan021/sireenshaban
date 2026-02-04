@@ -48,14 +48,7 @@ class VendorSetupScreenController extends GetxController {
     isCategoriLoading.value = true;
     final token = StorageService.token;
 
-    if (token == null) {
-      isCategoriLoading.value = false;
-      isCategoriError.value = true;
-      SnackBarConstant.error("Token not found. Please login again.");
-      return;
-    }
-
-    AppLoggerHelper.debug(token);
+    AppLoggerHelper.debug(token!);
 
     final response = await _networkCaller.getRequest(
       ApiConstants.categories,
