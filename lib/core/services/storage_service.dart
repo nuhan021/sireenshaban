@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StorageService {
@@ -10,6 +11,14 @@ class StorageService {
   static const String onboardingStatus = "onboarding";
   static const String _role = "role";
   static const String _profileKey = 'user_profile';
+
+  // initialize flutter secure storage
+  static const _storage = FlutterSecureStorage();
+  static String? _cachedToken;
+
+  static Future<void> initSecure() async {
+    _cachedToken = await _storage.read(key: _tokenKey);
+  }
 
   // Singleton instance for SharedPreferences
   static SharedPreferences? _preferences;
@@ -33,8 +42,7 @@ class StorageService {
 
   // Check if a token exists in local storage
   static bool hasToken() {
-    final token = _preferences?.getString(_tokenKey);
-    return token != null;
+    return _cachedToken != null;
   }
 
 static Future<void> saveVendorId(int id) async {
@@ -44,13 +52,14 @@ static Future<void> saveVendorId(int id) async {
 
   // Save the token and user ID to local storage
   static Future<void> saveToken(String token, String id) async {
-    await _preferences?.setString(_tokenKey, token);
+    await _storage.write(key: _tokenKey, value: token);
     await _preferences?.setString(_idKey, id);
   }
 
   // Remove the token and user ID from local storage (for logout)
   static Future<void> logoutUser() async {
-    await _preferences?.remove(_tokenKey);
+    // await _preferences?.remove(_tokenKey);
+    await _storage.delete(key: _tokenKey);
     await _preferences?.remove(_idKey);
     await _preferences?.remove(_role);
     // Navigate to the login screen
@@ -61,7 +70,7 @@ static Future<void> saveVendorId(int id) async {
   static String? get userId => _preferences?.getString(_idKey);
 
   // Getter for token
-  static String? get token => _preferences?.getString(_tokenKey);
+  static String? get token => _cachedToken;
 
   // Getter for role
   static String? get role => _preferences?.getString(_role);
