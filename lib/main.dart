@@ -14,9 +14,9 @@ import 'core/services/storage_service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await initializeDateFormatting('en_US', "");
-  Stripe.publishableKey =
-      "pk_test_51RytrZ45hm6BjdBDwq18oaQ0oLS8Htp2mDjB2B1VZdbgIy4GMDvy13gNOdSZGmlHXFx3kjaSyK7kveIcoc24eUgF00AlXv9V6q";
   await dotenv.load(fileName: ".env");
+  Stripe.publishableKey = dotenv.env['STRIPE_KEY'] ?? "";
+
   await StorageService.init();
 
   // Initialize Firebase FCM
