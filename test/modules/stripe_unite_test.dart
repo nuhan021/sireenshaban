@@ -64,7 +64,7 @@ void main() {
     );
 
     controller = Get.put(
-      StripeController(networkCaller: mockNetwork, stripeService: mockStripe),
+      StripeController(networkCaller: mockNetwork,),
     );
   });
 

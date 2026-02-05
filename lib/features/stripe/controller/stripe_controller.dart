@@ -1,31 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/constants/api_constants.dart';
 import 'package:sireenshaban/core/utils/constants/snackbar_constant.dart';
-import 'package:sireenshaban/features/stripe/model/payment_intent.dart'
-    hide Stripe;
-import 'package:sireenshaban/features/stripe/service/stripe_service.dart';
+import 'package:sireenshaban/core/utils/logging/logger.dart';
+import 'package:sireenshaban/routes/app_routes.dart';
+import 'package:sireenshaban/features/stripe/model/payment_intent.dart' hide Stripe;
 import 'package:sireenshaban/features/subscription/model/subscription_plans_model.dart';
 import '../../../../core/services/network_caller.dart';
-import '../../../../routes/app_routes.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 
 class StripeController extends GetxController {
   final NetworkCaller _networkCaller;
-  final StripeService _stripeService;
 
-  StripeController({NetworkCaller? networkCaller, StripeService? stripeService})
-    : _networkCaller = networkCaller ?? NetworkCaller(),
-      _stripeService = stripeService ?? StripeService();
+  StripeController({NetworkCaller? networkCaller})
+      : _networkCaller = networkCaller ?? NetworkCaller();
 
   RxBool isSubscriptionPlanLoading = false.obs;
-  RxBool isSubscriptionPlanError = false.obs;
   RxBool isPaymentProcessing = false.obs;
-
-  Rx<SubscriptionPlansModel?> subscriptionPlans = Rx<SubscriptionPlansModel?>(
-    null,
-  );
+  Rx<SubscriptionPlansModel?> subscriptionPlans = Rx<SubscriptionPlansModel?>(null);
   Rx<PaymentIntentModel?> paymentIntent = Rx<PaymentIntentModel?>(null);
 
   @override
@@ -34,30 +27,43 @@ class StripeController extends GetxController {
     getSubscriptionPlans();
   }
 
+  /// Fetch available plans
   Future<void> getSubscriptionPlans() async {
     isSubscriptionPlanLoading.value = true;
-    isSubscriptionPlanError.value = false;
-
-    final response = await _networkCaller.getRequest(
-      ApiConstants.subscriptionPlans,
-      token: 'Bearer ${StorageService.token}',
-    );
-
-    if (response.isSuccess) {
-      subscriptionPlans.value = SubscriptionPlansModel.fromJson(
-        response.responseData,
+    try {
+      final response = await _networkCaller.getRequest(
+        ApiConstants.subscriptionPlans,
+        token: 'Bearer ${StorageService.token}',
       );
-    } else {
-      isSubscriptionPlanError.value = true;
-      SnackBarConstant.error('Failed to load subscription plans');
+
+      if (response.isSuccess && response.responseData != null) {
+        subscriptionPlans.value = SubscriptionPlansModel.fromJson(response.responseData);
+      } else {
+        SnackBarConstant.error('Failed to load subscription plans');
+      }
+    } catch (e) {
+      AppLoggerHelper.error("Error fetching plans: $e");
+    } finally {
+      isSubscriptionPlanLoading.value = false;
     }
-    isSubscriptionPlanLoading.value = false;
   }
 
+  /// Main payment flow
   Future<void> makePayment(int planId) async {
+    if (!StorageService.hasToken()) {
+      SnackBarConstant.error("Session expired. Please log in again.");
+      return;
+    }
+
+    if(planId <= 0) {
+      SnackBarConstant.error("Invalid Plan Id");
+      return;
+    }
+
     try {
       isPaymentProcessing.value = true;
 
+      // 1. Get Intent from backend
       bool success = await _fetchPaymentIntent(planId);
 
       if (!success || paymentIntent.value == null) {
@@ -67,6 +73,7 @@ class StripeController extends GetxController {
 
       final String clientSecret = paymentIntent.value!.stripe.clientSecret;
 
+      // 2. Initialize Payment Sheet
       await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
           paymentIntentClientSecret: clientSecret,
@@ -75,13 +82,21 @@ class StripeController extends GetxController {
         ),
       );
 
+      // 3. Present Sheet
       await Stripe.instance.presentPaymentSheet();
 
+      // 4. Success handling (Navigation based on Role)
       SnackBarConstant.success('Subscription successful!');
-      Get.offAllNamed(AppRoute.vendorBottomNavBar);
+
+      if (StorageService.role == 'Vendor') {
+        Get.offAllNamed(AppRoute.vendorBottomNavBar);
+      } else {
+        Get.offAllNamed(AppRoute.customerBottomNavBar);
+      }
+
     } on StripeException catch (e) {
       if (e.error.code == FailureCode.Canceled) {
-        SnackBarConstant.error('Payment Canceled');
+        AppLoggerHelper.info('Payment canceled by user');
       } else {
         SnackBarConstant.error(e.error.localizedMessage ?? 'Payment Failed');
       }
@@ -99,7 +114,7 @@ class StripeController extends GetxController {
       token: 'Bearer ${StorageService.token}',
     );
 
-    if (result.isSuccess) {
+    if (result.isSuccess && result.responseData != null) {
       paymentIntent.value = PaymentIntentModel.fromJson(result.responseData);
       return true;
     }
