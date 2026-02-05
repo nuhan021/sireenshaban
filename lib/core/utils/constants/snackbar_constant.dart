@@ -9,7 +9,7 @@ class SnackBarConstant {
   static SnackbarController warning(String message) => Get.snackbar(
     'Warning',
     message,
-    snackPosition: SnackPosition.BOTTOM,
+    snackPosition: SnackPosition.TOP,
     backgroundColor: AppColors.warning,
     colorText: Colors.black,
     margin: EdgeInsets.all(15),
@@ -19,7 +19,7 @@ class SnackBarConstant {
   static SnackbarController error(String message) => Get.snackbar(
     'Error',
     message,
-    snackPosition: SnackPosition.BOTTOM,
+    snackPosition: SnackPosition.TOP,
     backgroundColor: AppColors.error,
     colorText: Colors.black,
     margin: EdgeInsets.all(15),
@@ -29,7 +29,7 @@ class SnackBarConstant {
   static SnackbarController success(String message) => Get.snackbar(
     'Success',
     message,
-    snackPosition: SnackPosition.BOTTOM,
+    snackPosition: SnackPosition.TOP,
     backgroundColor: AppColors.success,
     colorText: Colors.black,
     margin: EdgeInsets.all(15),
