@@ -5,14 +5,10 @@ import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/constants/api_constants.dart';
 import 'package:sireenshaban/core/utils/constants/snackbar_constant.dart';
 import 'package:sireenshaban/core/utils/logging/logger.dart';
-import 'package:sireenshaban/features/customer/home/model/eventModel.dart'
-    hide Datum;
-import 'package:sireenshaban/features/customer/home/model/packages_model.dart'
-    hide Datum;
-import 'package:sireenshaban/features/customer/home/model/trendingModel.dart'
-    hide Datum;
-import 'package:sireenshaban/features/customer/interest/categori_model.dart'
-    hide Datum;
+import 'package:sireenshaban/features/customer/home/model/eventModel.dart' hide Datum;
+import 'package:sireenshaban/features/customer/home/model/packages_model.dart' hide Datum;
+import 'package:sireenshaban/features/customer/home/model/trendingModel.dart' hide Datum;
+import 'package:sireenshaban/features/customer/interest/categori_model.dart' hide Datum;
 import 'package:sireenshaban/features/vendor/vendor_home/model/vendor_booking_model.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile/model/vendor_user_model.dart';
 import 'package:sireenshaban/routes/app_routes.dart';
@@ -20,14 +16,13 @@ import 'package:sireenshaban/routes/app_routes.dart';
 class HomeController extends GetxController {
   final NetworkCaller _networkCaller;
   HomeController({this.isFromVendor = false, NetworkCaller? networkCaller})
-    : _networkCaller = networkCaller ?? NetworkCaller();
+      : _networkCaller = networkCaller ?? NetworkCaller();
 
   final bool isFromVendor;
 
   @override
   void onInit() {
     super.onInit();
-
     if (isFromVendor) {
       getVendorProfile();
       getDealsAndPromotions();
@@ -39,34 +34,27 @@ class HomeController extends GetxController {
       getDealsAndPromotions();
       getCommunityEvents();
       getTrendingNearby();
-      getBooking(); // Also fetch bookings for regular users
+      getBooking();
     }
   }
 
+  // --- Observables ---
   RxBool isAdditionalServicesClose = false.obs;
   RxInt carouselCurrentIndex = 1.obs;
-
   RxBool isAdditionalServiceLoading = false.obs;
   RxBool isAdditionalServiceError = false.obs;
-
   RxBool isDealsAndPromotionLoading = false.obs;
   RxBool isDealsAndPromotionError = false.obs;
-
   RxBool isCommunityEventsLoading = false.obs;
   RxBool isCommunityEventsError = false.obs;
-
   RxBool isTrendingNearbyLoading = false.obs;
   RxBool isTrendingNearbyError = false.obs;
-
   RxBool isBookingLoading = false.obs;
   RxBool isBookingError = false.obs;
-
   RxBool isVendorProfileLoading = false.obs;
   RxBool isVendorProfileError = false.obs;
-
   RxBool isCategoryPackagesLoading = false.obs;
   RxBool isCategoryPackagesError = false.obs;
-
   RxBool isSearchItemLoading = false.obs;
   RxBool isSearchItemError = false.obs;
 
@@ -79,322 +67,225 @@ class HomeController extends GetxController {
   Rx<VendorUserModel?> vendorUser = Rx<VendorUserModel?>(null);
   var filterCategory = Rxn<CategoriModel>();
   var searchQuery = ''.obs;
+  Rx<DateTime> selectedDate = DateTime.now().obs;
+
+  // --- Getters ---
   List<dynamic> get filteredCategories {
     if (searchQuery.value.isEmpty) {
       return categorys.value?.data ?? [];
     }
     return categorys.value?.data.where((category) {
-          return (category.name ?? '').toLowerCase().contains(
-            searchQuery.value.toLowerCase(),
-          );
-        }).toList() ??
-        [];
+      return (category.name ?? '').toLowerCase().contains(searchQuery.value.toLowerCase());
+    }).toList() ?? [];
   }
-
-  Rx<DateTime> selectedDate = DateTime.now().obs;
 
   List<Datum> get filteredBookings {
     if (bookings.value == null) return [];
-
     return bookings.value!.data.where((booking) {
-      bool isSameDate =
-          booking.date.year == selectedDate.value.year &&
+      bool isSameDate = booking.date.year == selectedDate.value.year &&
           booking.date.month == selectedDate.value.month &&
           booking.date.day == selectedDate.value.day;
-
-      String status = booking.status.toLowerCase() ?? '';
+      String status = booking.status.toLowerCase();
       bool isValidStatus = status != 'completed' && status != 'pending';
-
       return isSameDate && isValidStatus;
     }).toList();
   }
 
-  // 3. Method to update date from UI
-  void updateSelectedDate(DateTime date) {
-    selectedDate.value = date;
-  }
+  // --- Utility Methods ---
+  void updateSelectedDate(DateTime date) => selectedDate.value = date;
+  void changeIsAdditionalServicesClose({required bool value}) => isAdditionalServicesClose.value = value;
+  void changeCarouselCurrentIndex({required int value}) => carouselCurrentIndex.value = value;
 
-  void changeIsAdditionalServicesClose({required bool value}) {
-    isAdditionalServicesClose.value = value;
-  }
+  // --- API Methods with Try-Catch ---
 
-  void changeCarouselCurrentIndex({required int value}) {
-    carouselCurrentIndex.value = value;
-  }
-
-  // fetch additional service
   Future<void> getAdditionalService() async {
     try {
       isAdditionalServiceLoading.value = true;
-      final token = StorageService.token;
-
-      AppLoggerHelper.warning('The token is: $token');
-
+      isAdditionalServiceError.value = false;
       final response = await _networkCaller.getRequest(
         ApiConstants.categories,
-        token: "Bearer $token",
+        token: "Bearer ${StorageService.token}",
       );
 
-      if (!response.isSuccess) {
-        SnackBarConstant.error(response.errorMessage);
-        isAdditionalServiceLoading.value = false;
+      if (response.isSuccess && response.responseData != null) {
+        categorys.value = CategoriModel.fromJson(response.responseData);
+      } else {
         isAdditionalServiceError.value = true;
-        return;
+        SnackBarConstant.error(response.errorMessage);
       }
-
-      categorys.value = CategoriModel.fromJson(response.responseData);
-      isAdditionalServiceLoading.value = false;
-      isAdditionalServiceError.value = false;
     } catch (e) {
-      AppLoggerHelper.error("Error in getAdditionalService: $e");
-      isAdditionalServiceLoading.value = false;
       isAdditionalServiceError.value = true;
-      SnackBarConstant.error("An unexpected error occurred.");
+      AppLoggerHelper.error("getAdditionalService catch: $e");
     } finally {
       isAdditionalServiceLoading.value = false;
     }
-    // SnackBarConstant.success("Category fetched successfully");
   }
 
-  // fetch deals and promotions
   Future<void> getDealsAndPromotions() async {
-    isDealsAndPromotionLoading.value = true;
-    final token = StorageService.token;
+    try {
+      isDealsAndPromotionLoading.value = true;
+      isDealsAndPromotionError.value = false;
+      String endPoint = ApiConstants.dealsAndPromotions;
 
-    String endPoint = ApiConstants.dealsAndPromotions;
+      if (isFromVendor) {
+        final vendorId = StorageService.vendorId;
+        endPoint = "${ApiConstants.dealsAndPromotions}/?vendor_id=$vendorId";
+      }
 
-    if (isFromVendor) {
-      // 🚨 Debug this line: Ensure StorageService.userId is not null or empty
-      final vendorId = StorageService.vendorId;
-      AppLoggerHelper.debug(
-        "Debugging Vendor URL: ${ApiConstants.dealsAndPromotions}/?vendor_id=$vendorId",
+      final response = await _networkCaller.getRequest(
+        endPoint,
+        token: "Bearer ${StorageService.token}",
       );
-      endPoint = "${ApiConstants.dealsAndPromotions}/?vendor_id=$vendorId";
-    }
 
-    AppLoggerHelper.debug("End");
-
-    final response = await _networkCaller.getRequest(
-      endPoint,
-      token: "Bearer $token",
-    );
-
-    if (!response.isSuccess) {
-      SnackBarConstant.error(response.errorMessage);
-      isDealsAndPromotionLoading.value = false;
+      if (response.isSuccess && response.responseData != null) {
+        packages.value = PackagesModel.fromJson(response.responseData);
+      } else {
+        isDealsAndPromotionError.value = true;
+        SnackBarConstant.error(response.errorMessage);
+      }
+    } catch (e) {
       isDealsAndPromotionError.value = true;
-      return;
+      AppLoggerHelper.error("getDealsAndPromotions catch: $e");
+    } finally {
+      isDealsAndPromotionLoading.value = false;
     }
-
-    packages.value = PackagesModel.fromJson(response.responseData);
-    isDealsAndPromotionLoading.value = false;
-    isDealsAndPromotionError.value = false;
-    // SnackBarConstant.success("Deals & Promotions fetched successfully");
   }
 
-  // fetch packages by category slug
   Future<void> getPackagesByCategory({required String categorySlug}) async {
-    isCategoryPackagesLoading.value = true;
-    final token = StorageService.token;
+    try {
+      isCategoryPackagesLoading.value = true;
+      isCategoryPackagesError.value = false;
+      final url = Uri.parse(ApiConstants.dealsAndPromotions)
+          .replace(queryParameters: {'category_slug': categorySlug});
 
-    final url = Uri.parse(
-      ApiConstants.dealsAndPromotions,
-    ).replace(queryParameters: {'category_slug': categorySlug});
+      final response = await _networkCaller.getRequest(
+        url.toString(),
+        token: "Bearer ${StorageService.token}",
+      );
 
-    final response = await _networkCaller.getRequest(
-      url.toString(),
-      token: "Bearer $token",
-    );
-
-    if (!response.isSuccess) {
-      SnackBarConstant.error(response.errorMessage);
-      isCategoryPackagesLoading.value = false;
+      if (response.isSuccess && response.responseData != null) {
+        categoryPackages.value = PackagesModel.fromJson(response.responseData);
+        SnackBarConstant.success("Packages fetched successfully");
+      } else {
+        isCategoryPackagesError.value = true;
+        SnackBarConstant.error(response.errorMessage);
+      }
+    } catch (e) {
       isCategoryPackagesError.value = true;
-      return;
+      AppLoggerHelper.error("getPackagesByCategory catch: $e");
+    } finally {
+      isCategoryPackagesLoading.value = false;
     }
-
-    categoryPackages.value = PackagesModel.fromJson(response.responseData);
-    isCategoryPackagesLoading.value = false;
-    isCategoryPackagesError.value = false;
-    SnackBarConstant.success("Packages fetched successfully");
   }
 
-  // fetch community events
   Future<void> getCommunityEvents() async {
-    isCommunityEventsLoading.value = true;
-    final token = StorageService.token;
-    final vendorId = StorageService.vendorId;
+    try {
+      isCommunityEventsLoading.value = true;
+      isCommunityEventsError.value = false;
+      String url = ApiConstants.communityEvents;
+      if (isFromVendor && StorageService.vendorId != null) {
+        url = "$url?vendor_id=${StorageService.vendorId}";
+      }
 
-    String url = ApiConstants.communityEvents;
-    if (isFromVendor && vendorId != null) {
-      url = "$url?vendor_id=$vendorId";
-    }
+      final response = await _networkCaller.getRequest(
+        url,
+        token: "Bearer ${StorageService.token}",
+      );
 
-    final response = await _networkCaller.getRequest(
-      url,
-      token: "Bearer $token",
-    );
-
-    if (!response.isSuccess) {
-      SnackBarConstant.error(response.errorMessage);
-      isCommunityEventsLoading.value = false;
+      if (response.isSuccess && response.responseData != null) {
+        communityEvents.value = EventModel.fromJson(response.responseData);
+      } else {
+        isCommunityEventsError.value = true;
+        SnackBarConstant.error(response.errorMessage);
+      }
+    } catch (e) {
       isCommunityEventsError.value = true;
-      return;
+      AppLoggerHelper.error("getCommunityEvents catch: $e");
+    } finally {
+      isCommunityEventsLoading.value = false;
     }
-
-    communityEvents.value = EventModel.fromJson(response.responseData);
-    isCommunityEventsLoading.value = false;
-    isCommunityEventsError.value = false;
-    // SnackBarConstant.success("Community events fetched successfully");
   }
 
   Future<void> getBooking() async {
-    isBookingLoading.value = true;
+    try {
+      isBookingLoading.value = true;
+      isBookingError.value = false;
 
-    final token = StorageService.token;
-    final userId = StorageService.userId;
-    final vendorId = StorageService.vendorId;
-    final userRole = StorageService.role?.toLowerCase();
+      final userRole = StorageService.role?.toLowerCase();
+      String endpoint = (isFromVendor || userRole == 'vendor')
+          ? "${ApiConstants.bookingsByVendor}/${StorageService.vendorId ?? StorageService.userId}"
+          : "${ApiConstants.bookingsByUser}/${StorageService.userId}";
 
-    // Log all relevant parameters
-    AppLoggerHelper.debug(
-      "📋 [Booking] ========== BOOKING FETCH START ==========",
-    );
-    AppLoggerHelper.debug(
-      "📋 [Booking] Token exists: ${token != null && token.isNotEmpty}",
-    );
-    AppLoggerHelper.debug("📋 [Booking] User ID: $userId");
-    AppLoggerHelper.debug("📋 [Booking] Vendor ID: $vendorId");
-    AppLoggerHelper.debug("📋 [Booking] User Role: $userRole");
-    AppLoggerHelper.debug("📋 [Booking] isFromVendor flag: $isFromVendor");
-    AppLoggerHelper.debug(
-      "📋 [Booking] Full user profile: ${StorageService.userProfile}",
-    );
-
-    // Determine the correct endpoint based on user role
-    String endpoint;
-    if (isFromVendor || userRole == 'vendor') {
-      // For vendors, use vendorId if available, otherwise fallback to userId
-      final idToUse = vendorId ?? userId;
-      endpoint = "${ApiConstants.bookingsByVendor}/$idToUse";
-      AppLoggerHelper.debug("📋 [Booking] Using VENDOR endpoint: $endpoint");
-      AppLoggerHelper.debug(
-        "📋 [Booking] Using ID: $idToUse (vendorId: $vendorId, userId: $userId)",
+      final response = await _networkCaller.getRequest(
+        endpoint,
+        token: "Bearer ${StorageService.token}",
       );
-    } else {
-      endpoint = "${ApiConstants.bookingsByUser}/$userId";
-      AppLoggerHelper.debug("📋 [Booking] Using USER endpoint: $endpoint");
-    }
 
-    final response = await _networkCaller.getRequest(
-      endpoint,
-      token: "Bearer $token",
-    );
-
-    AppLoggerHelper.debug(
-      "📋 [Booking] Response success: ${response.isSuccess}",
-    );
-    AppLoggerHelper.debug(
-      "📋 [Booking] Response status code: ${response.statusCode}",
-    );
-    AppLoggerHelper.debug(
-      "📋 [Booking] Response data: ${response.responseData}",
-    );
-
-    if (!response.isSuccess) {
-      AppLoggerHelper.debug("❌ [Booking] Error: ${response.errorMessage}");
-      SnackBarConstant.error(response.errorMessage);
-      isBookingLoading.value = false;
-      isBookingError.value = true;
-      return;
-    }
-
-    bookings.value = VendorBookingModel.fromJson(response.responseData);
-    AppLoggerHelper.debug(
-      "✅ [Booking] Parsed ${bookings.value?.data.length ?? 0} bookings",
-    );
-
-    // Log each booking status
-    if (bookings.value != null) {
-      for (var booking in bookings.value!.data) {
-        AppLoggerHelper.debug(
-          "   📌 Booking ID: ${booking.id}, Status: ${booking.status}, Date: ${booking.date}",
-        );
+      if (response.isSuccess && response.responseData != null) {
+        bookings.value = VendorBookingModel.fromJson(response.responseData);
+      } else {
+        isBookingError.value = true;
+        SnackBarConstant.error(response.errorMessage);
       }
+    } catch (e) {
+      isBookingError.value = true;
+      AppLoggerHelper.error("getBooking catch: $e");
+    } finally {
+      isBookingLoading.value = false;
     }
-
-    AppLoggerHelper.debug(
-      "📋 [Booking] ========== BOOKING FETCH END ==========",
-    );
-
-    isBookingLoading.value = false;
-    isBookingError.value = false;
-    // SnackBarConstant.success("Bookings fetched successfully");
   }
 
   Future<void> getVendorProfile() async {
-    isVendorProfileLoading.value = true;
+    try {
+      isVendorProfileLoading.value = true;
+      isVendorProfileError.value = false;
+      final vendorId = StorageService.vendorId;
 
-    final token = StorageService.token;
+      final result = await _networkCaller.getRequest(
+        "${ApiConstants.vendorProfile}/$vendorId",
+        token: "Bearer ${StorageService.token}",
+      );
 
-    final vendorId = StorageService.vendorId;
+      if (result.statusCode == 404) {
+        Get.offAllNamed(AppRoute.vendorSetupScreen);
+        return;
+      }
 
-    AppLoggerHelper.info("The actual vendor is: $vendorId");
-
-    final result = await _networkCaller.getRequest(
-      "${ApiConstants.vendorProfile}/$vendorId",
-      token: "Bearer $token",
-    );
-
-    if (result.statusCode == 404) {
-      isVendorProfileLoading.value = false;
+      if (result.isSuccess && result.responseData != null) {
+        vendorUser.value = VendorUserModel.fromJson(result.responseData);
+      } else {
+        isVendorProfileError.value = true;
+        SnackBarConstant.error(result.errorMessage);
+      }
+    } catch (e) {
       isVendorProfileError.value = true;
-      SnackBarConstant.error("Please setup first");
-      Get.offAllNamed(AppRoute.vendorSetupScreen);
-      return;
-    }
-
-    if (!result.isSuccess) {
-      SnackBarConstant.error(result.errorMessage);
+      AppLoggerHelper.error("getVendorProfile catch: $e");
+    } finally {
       isVendorProfileLoading.value = false;
-      isVendorProfileError.value = true;
-      return;
     }
-
-    vendorUser.value = VendorUserModel.fromJson(result.responseData);
-    isVendorProfileLoading.value = false;
-    isVendorProfileError.value = false;
-    AppLoggerHelper.debug(
-      "📋 [Vendor Profile] Fetched vendor profile successfully${result.responseData}",
-    );
-    AppLoggerHelper.debug(
-      "profile Image : ${vendorUser.value!.vendor.user.image}",
-    );
-    // SnackBarConstant.success("Vendor profile fetched successfully");
   }
 
-  // fetch trending nearby
   Future<void> getTrendingNearby() async {
-    isTrendingNearbyLoading.value = true;
-    final token = StorageService.token;
+    try {
+      isTrendingNearbyLoading.value = true;
+      isTrendingNearbyError.value = false;
+      final response = await _networkCaller.getRequest(
+        ApiConstants.trendingNearby,
+        token: "Bearer ${StorageService.token}",
+      );
 
-    final response = await _networkCaller.getRequest(
-      ApiConstants.trendingNearby,
-      token: "Bearer $token",
-    );
-
-    if (!response.isSuccess) {
-      SnackBarConstant.error(response.errorMessage);
-      isTrendingNearbyLoading.value = false;
+      if (response.isSuccess && response.responseData != null) {
+        trending.value = TrendingModel.fromJson(response.responseData);
+        SnackBarConstant.success("Trending fetched successfully");
+      } else {
+        isTrendingNearbyError.value = true;
+        SnackBarConstant.error(response.errorMessage);
+      }
+    } catch (e) {
       isTrendingNearbyError.value = true;
-      return;
+      AppLoggerHelper.error("getTrendingNearby catch: $e");
+    } finally {
+      isTrendingNearbyLoading.value = false;
     }
-
-    trending.value = TrendingModel.fromJson(response.responseData);
-    isTrendingNearbyLoading.value = false;
-    isTrendingNearbyError.value = false;
-    SnackBarConstant.success("Trending fetched successfully");
   }
-
-  // search item
 }
