@@ -128,6 +128,8 @@ class HomeController extends GetxController {
       isAdditionalServiceLoading.value = true;
       final token = StorageService.token;
 
+      AppLoggerHelper.warning('The token is: $token');
+
       final response = await _networkCaller.getRequest(
         ApiConstants.categories,
         token: "Bearer $token",

@@ -92,6 +92,7 @@ class LoginController extends GetxController {
       loginModel.value!.data.token,
       loginModel.value!.data.user.id.toString(),
     );
+    await StorageService.initSecure();
     await StorageService.saveRole(loginModel.value!.data.user.role);
     if (loginModel.value!.data.user.role == 'Vendor' &&
         loginModel.value!.data.vendor.id > 0) {

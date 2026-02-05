@@ -18,6 +18,7 @@ void main() async {
   Stripe.publishableKey = dotenv.env['STRIPE_KEY'] ?? "";
 
   await StorageService.init();
+  await StorageService.initSecure();
 
   // Initialize Firebase FCM
   await FirebaseFCMService.initialize();
