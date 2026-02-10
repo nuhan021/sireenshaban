@@ -116,11 +116,9 @@ class BusinessAndServiceController extends GetxController {
         // Convert XFile to standard File
         return File(pickedFile.path);
       } else {
-        print("User cancelled the picker.");
         return null;
       }
     } catch (e) {
-      print("Error picking image: $e");
       return null;
     }
   }
@@ -214,7 +212,7 @@ class BusinessAndServiceController extends GetxController {
         Get.back(); // Optional: Navigate back after success
       } else {
         SnackBarConstant.error(
-          response.errorMessage ?? 'Failed to send request',
+          response.errorMessage,
         );
       }
     } catch (e) {

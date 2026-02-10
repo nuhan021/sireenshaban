@@ -12,6 +12,7 @@ import 'package:sireenshaban/features/customer/home/views/widget/trending_nearby
 import '../../../customer_bottom_nav_bar/controller/customer_bottom_nav_bar_controller.dart';
 import '../../controller/home_controller.dart';
 
+// ignore: must_be_immutable
 class CustomerHomeScreen extends StatelessWidget {
   CustomerHomeScreen({super.key});
 

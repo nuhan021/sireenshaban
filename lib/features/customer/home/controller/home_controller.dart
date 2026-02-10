@@ -1,4 +1,3 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/services/network_caller.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
@@ -75,7 +74,7 @@ class HomeController extends GetxController {
       return categorys.value?.data ?? [];
     }
     return categorys.value?.data.where((category) {
-      return (category.name ?? '').toLowerCase().contains(searchQuery.value.toLowerCase());
+      return (category.name).toLowerCase().contains(searchQuery.value.toLowerCase());
     }).toList() ?? [];
   }
 

@@ -1,6 +1,4 @@
 import 'dart:io';
-
-import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,17 +6,13 @@ import 'package:get/get.dart';
 import 'package:iconly/iconly.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
-import 'package:sireenshaban/core/utils/constants/icon_path.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile_info/views/controller/vendor_profile_info_map_controller.dart';
 import 'package:sireenshaban/features/vendor/vendor_setup/controller/vendor_setup_screen_controller.dart';
 import 'package:sireenshaban/features/vendor/vendor_setup/views/widgets/vendor_setup_page_1st.dart';
 import 'package:sireenshaban/features/vendor/vendor_setup/views/widgets/vendor_setup_page_2nd.dart';
 import 'package:sireenshaban/features/vendor/vendor_setup/views/widgets/vendor_setup_page_3rd.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-
 import '../../../../../core/common/styles/global_text_style.dart';
-import '../../../../../core/common/widgets/IField.dart';
-import '../../../../../routes/app_routes.dart';
 
 class VendorSetupScreen extends StatelessWidget {
   VendorSetupScreen({super.key});

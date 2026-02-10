@@ -47,7 +47,6 @@ class VendorRequestStatusScreen extends StatelessWidget {
     } else {
       int days = difference.inDays;
       int hours = difference.inHours % 24;
-      int minutes = difference.inMinutes % 60;
 
       return "$days days and $hours hour left";
     }
