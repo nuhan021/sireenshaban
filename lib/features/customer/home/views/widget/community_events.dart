@@ -46,11 +46,11 @@ class CommunityEvents extends StatelessWidget {
               final item = controller.communityEvents.value!.data[index];
               return CommunityEventsCard(
                 id: item.id,
-                image: item.image ?? '',
-                title: item.title ?? '',
+                image: item.image,
+                title: item.title,
                 date:
                     "${item.eventDate.day}-${item.eventDate.month}-${item.eventDate.year}",
-                location: item.location ?? '',
+                location: item.location,
                 isFromVendor: isFromVendor,
               );
             },

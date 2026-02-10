@@ -10,6 +10,7 @@ import '../../../../../core/utils/constants/icon_path.dart';
 import '../../../../../core/utils/helpers/app_helper.dart';
 import '../../../vendors/views/screens/vendors_screen.dart';
 
+// ignore: must_be_immutable
 class SearchScreen extends StatelessWidget {
   SearchScreen({super.key});
 

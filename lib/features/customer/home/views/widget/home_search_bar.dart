@@ -87,7 +87,7 @@ class HomeSearchBar extends StatelessWidget {
                   return PopupMenuItem<String>(
                     value: category.slug,
                     child: Text(
-                      category.name ?? '',
+                      category.name,
                       style: getTextStyle(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,

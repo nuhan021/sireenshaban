@@ -10,6 +10,7 @@ import 'package:sireenshaban/features/customer/interest/views/widgets/customer_i
 
 import '../../../../../core/common/widgets/custom_primary_button.dart';
 
+// ignore: must_be_immutable
 class CustomerInterestScreen extends StatelessWidget {
   CustomerInterestScreen({super.key});
 

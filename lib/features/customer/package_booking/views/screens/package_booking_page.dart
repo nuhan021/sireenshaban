@@ -177,7 +177,7 @@ class _PackageBookingPageState extends State<PackageBookingPage> {
 
                 // description
                 Text(
-                  data.description ?? '',
+                  data.description,
                   textAlign: TextAlign.justify,
                   style: getTextStyle(
                     fontSize: 14.sp,

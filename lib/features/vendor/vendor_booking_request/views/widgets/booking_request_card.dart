@@ -23,9 +23,7 @@ class BookingRequestCard extends StatelessWidget {
     final String formattedTime = requestDate == null
         ? "-"
         : AppHelperFunctions.getFormattedDate(requestDate, format: "hh:mm a");
-    final String fullName =
-        "${request?.customer.firstName ?? ""} ${request?.customer.lastName ?? ""}"
-            .trim();
+
     final String? avatarUrl = request?.customer.image;
 
     return ListTile(

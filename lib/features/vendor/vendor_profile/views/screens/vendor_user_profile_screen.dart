@@ -4,8 +4,6 @@ import 'package:get/get.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile/views/screens/vendor_edit_profile_screen.dart';
-import 'package:sireenshaban/features/vendor/vendor_profile/views/widgets/vendor_profile_header.dart';
-
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
 import '../../../../../core/utils/constants/icon_path.dart';

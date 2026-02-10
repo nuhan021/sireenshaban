@@ -7,6 +7,7 @@ import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
 import 'package:sireenshaban/features/vendor/vendor_profile_info/views/controller/vendor_profile_info_map_controller.dart';
 
+// ignore: must_be_immutable
 class VendorProfileInfoMap extends StatefulWidget {
   VendorProfileInfoMap({super.key});
 

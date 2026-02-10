@@ -4,6 +4,7 @@ import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 
 import '../../../../../core/utils/constants/colors.dart';
 
+// ignore: must_be_immutable
 class BookingSummary extends StatelessWidget {
   BookingSummary({super.key, this.price = '0'});
 
