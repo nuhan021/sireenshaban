@@ -27,6 +27,7 @@ class CustomPrimaryButton extends StatelessWidget {
         height: 48.h,
         width: double.maxFinite,
         decoration: BoxDecoration(
+          // ignore: deprecated_member_use
           color: isLoading ? color.withOpacity(0.7) : color,
           borderRadius: BorderRadius.circular(12.r),
         ),

@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -7,7 +6,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:uuid/uuid.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
-import 'package:sireenshaban/features/customer/chat/models/chat_model.dart';
 import 'package:sireenshaban/features/customer/chat/services/chat_service.dart';
 
 class ChatController extends GetxController {
@@ -253,7 +251,7 @@ class ChatController extends GetxController {
       }
     } catch (e) {
       _updateMessageStatus(optimisticMessage.id, types.Status.error);
-      debugPrint('❌ [ChatController] Error sending voice message: $e');
+
     }
   }
 
@@ -268,105 +266,13 @@ class ChatController extends GetxController {
   }
 
   void _setupPusher() {
-    // TODO: Configure Pusher with your credentials from backend
-    // Get Pusher key and cluster from your backend configuration
-    debugPrint(
-      '🔌 [ChatController] Pusher setup deferred until chat is initialized',
-    );
+  
   }
 
-  // TODO: Activate when Pusher credentials are available
-  // ignore: unused_element
-  Future<void> _initializePusherForChat() async {
-    if (receiverId.value == 0) {
-      debugPrint('⚠️ [ChatController] Cannot init Pusher - receiver ID is 0');
-      return;
-    }
 
-    try {
-      final userId = StorageService.userId;
-      if (userId == null) {
-        debugPrint('❌ [ChatController] Cannot init Pusher - no user ID');
-        return;
-      }
 
-      // TODO: Get Pusher credentials from environment or backend config
-      // For now, this is a placeholder that logs the requirement
-      debugPrint('🔌 [ChatController] Pusher requires backend configuration');
-      debugPrint(
-        '   Get credentials from: backend env or /api/v1/pusher-auth endpoint',
-      );
 
-      // Once you have credentials, uncomment:
-      // await _chatService.setupPusherForChat(
-      //   userId,
-      //   'YOUR_PUSHER_KEY',
-      //   'YOUR_PUSHER_CLUSTER',
-      // );
-      //
-      // await _chatService.subscribeToPrivateChatChannel(
-      //   userId: userId,
-      //   otherUserId: receiverId.value,
-      //   onNewMessage: _handleNewMessage,
-      //   onStatusChange: _handleStatusChange,
-      // );
-    } catch (e) {
-      debugPrint('❌ [ChatController] Error initializing Pusher: $e');
-    }
-  }
 
-  // TODO: Activate when Pusher receives events
-  // ignore: unused_element
-  void _handleNewMessage(dynamic eventData) {
-    try {
-      debugPrint(
-        '📬 [ChatController] New message received via Pusher: $eventData',
-      );
-
-      // Parse the message and add to messages list
-      if (eventData is String) {
-        final decodedData = jsonDecode(eventData) as Map<String, dynamic>;
-        _processIncomingMessage(decodedData);
-      } else if (eventData is Map<String, dynamic>) {
-        _processIncomingMessage(eventData);
-      }
-    } catch (e) {
-      debugPrint('❌ [ChatController] Error processing new message: $e');
-    }
-  }
-
-  void _processIncomingMessage(Map<String, dynamic> messageData) {
-    try {
-      final message = ChatMessage.fromJson(messageData);
-
-      // Only add if it's from the other user
-      if (message.senderId != int.parse(currentUser.value?.id ?? '0')) {
-        final chatUIMessage = message.toChatUIMessage();
-        messages.insert(0, chatUIMessage);
-        debugPrint('✅ [ChatController] Incoming message added to list');
-      }
-    } catch (e) {
-      debugPrint('❌ [ChatController] Error processing message: $e');
-    }
-  }
-
-  // TODO: Activate when Pusher receives status change events
-  // ignore: unused_element
-  void _handleStatusChange(dynamic eventData) {
-    try {
-      debugPrint('👤 [ChatController] User status changed: $eventData');
-
-      if (eventData is Map<String, dynamic>) {
-        final isOnline = eventData['is_online'] ?? false;
-        final lastSeen = eventData['last_seen'] ?? '';
-
-        isOnline.value = isOnline as bool;
-        lastSeenText.value = isOnline ? 'Online' : lastSeen;
-      }
-    } catch (e) {
-      debugPrint('❌ [ChatController] Error processing status change: $e');
-    }
-  }
 
   @override
   void onClose() {

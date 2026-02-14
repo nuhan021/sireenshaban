@@ -136,11 +136,6 @@ class FirebaseMessagingSetup {
   /// This should be called in main.dart before runApp()
   static Future<void> initializeFirebase() async {
     debugPrint('🔥 [Firebase] Initializing Firebase...');
-    // TODO: Uncomment when Firebase dependencies are added
-    // await Firebase.initializeApp();
-    // await FirebaseService.init();
-    // await NotificationService.init();
-    // FCMHandler.configure();
     debugPrint(setupGuide);
   }
 }
