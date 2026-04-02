@@ -9,7 +9,10 @@ import 'package:sireenshaban/features/customer/personal_care_and_education/views
 
 import '../../../../../core/common/widgets/IField.dart';
 import '../../../../../core/common/widgets/custom_primary_button.dart';
+import '../../../../../core/services/storage_service.dart';
 import '../../../../../core/utils/constants/colors.dart';
+import '../../../../../core/utils/constants/snackbar_constant.dart';
+import '../../../../../routes/app_routes.dart';
 import '../../../home/views/widget/deals_and_promotions.dart';
 
 class BusinessAndCreativeServicesScreens extends StatelessWidget {
@@ -342,15 +345,21 @@ class BusinessAndCreativeServicesScreens extends StatelessWidget {
                 text: 'Send Request for Quote',
                 color: AppColors.primaryDeepBlueNormal,
                 isLoading: serviceController.isSubmitting.value,
-                onPressed: () => serviceController.sendServiceRequest(
-                  vendorId: vendorId,
-                  latitude: latitude,
-                  longitude: longitude,
-                  // Pass the controllers used in this specific screen
-                  email: serviceController.emailController,
-                  phone: serviceController.phoneController,
-                  projectDetails: serviceController.projectDetailsController,
-                ),
+                onPressed: () {
+                  if (StorageService.isGuest) {
+                    SnackBarConstant.warning('Please log in to send a quote');
+                    Get.offAllNamed(AppRoute.selectRoleScreen);
+                    return;
+                  }
+                  serviceController.sendServiceRequest(
+                    vendorId: vendorId,
+                    latitude: latitude,
+                    longitude: longitude,
+                    email: serviceController.emailController,
+                    phone: serviceController.phoneController,
+                    projectDetails: serviceController.projectDetailsController,
+                  );
+                },
               ).paddingSymmetric(horizontal: 20.w),
             ),
 

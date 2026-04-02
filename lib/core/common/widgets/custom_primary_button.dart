@@ -11,6 +11,8 @@ class CustomPrimaryButton extends StatelessWidget {
     this.textColor = AppColors.primaryDeepBlueLight,
     required this.onPressed,
     this.isLoading = false,
+    this.height,
+    this.fontSize,
   });
 
   final String text;
@@ -18,13 +20,15 @@ class CustomPrimaryButton extends StatelessWidget {
   final Color textColor;
   final VoidCallback onPressed;
   final bool isLoading;
+  final double? height;
+  final double? fontSize;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: isLoading ? null : onPressed,
       child: Container(
-        height: 48.h,
+        height: height ?? 48.h,
         width: double.maxFinite,
         decoration: BoxDecoration(
           // ignore: deprecated_member_use
@@ -44,7 +48,7 @@ class CustomPrimaryButton extends StatelessWidget {
               : Text(
                   text,
                   style: getTextStyle(
-                    fontSize: 16.sp,
+                    fontSize: fontSize ?? 16.sp,
                     fontWeight: FontWeight.w500,
                     color: textColor,
                   ),

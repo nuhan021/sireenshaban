@@ -3,12 +3,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/common/widgets/custom_loading.dart';
 import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
+import 'package:sireenshaban/core/services/storage_service.dart';
+import 'package:sireenshaban/core/utils/constants/snackbar_constant.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
 import 'package:sireenshaban/features/customer/confirm_booking/views/controller/confirm_booking_controller.dart';
 import 'package:sireenshaban/features/customer/confirm_booking/views/screens/select_time_and_date_screen.dart';
 import 'package:sireenshaban/features/customer/confirm_booking/views/widgets/booking_summary.dart';
 import 'package:sireenshaban/features/customer/confirm_booking/views/widgets/package_booking_payment_method.dart';
 import 'package:sireenshaban/features/customer/confirm_booking/views/widgets/special_concern.dart';
+import 'package:sireenshaban/routes/app_routes.dart';
 
 import '../../../../../core/common/styles/global_text_style.dart';
 import '../../../../../core/utils/constants/colors.dart';
@@ -144,11 +147,11 @@ class ConfirmBookingScreen extends StatelessWidget {
                     textColor: AppColors.cardBackgroundSoftGray,
                     color: AppColors.primaryDeepBlueNormal,
                     onPressed: () {
-                      // AppHelperFunctions.navigateToScreen(
-                      //   context,
-                      //   BookingConfirmedScreen(),
-                      // );
-
+                      if (StorageService.isGuest) {
+                        SnackBarConstant.warning('Please log in to confirm booking');
+                        Get.offAllNamed(AppRoute.selectRoleScreen);
+                        return;
+                      }
                       confirmBookingController.confirmBooking(
                         context: context,
                         datum: data,

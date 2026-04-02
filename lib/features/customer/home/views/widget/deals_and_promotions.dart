@@ -34,11 +34,11 @@ class _DealsAndPromotionsState extends State<DealsAndPromotions> {
         return Text(
           'No Deals & Promotions',
           style: getTextStyle(
-            fontSize: 18.sp,
+            fontSize: 18,
             fontWeight: FontWeight.w600,
             color: AppColors.secondaryInfoMediumGrayDarker,
           ),
-        ).paddingOnly(left: 20.w);
+        ).paddingOnly(left: 20);
       }
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,18 +47,18 @@ class _DealsAndPromotionsState extends State<DealsAndPromotions> {
           Text(
             'Deals & Promotions',
             style: getTextStyle(
-              fontSize: 18.sp,
+              fontSize: 18,
               fontWeight: FontWeight.w600,
               color: AppColors.secondaryInfoMediumGrayDarker,
             ),
-          ).paddingSymmetric(horizontal: 20.w),
+          ).paddingSymmetric(horizontal: 20),
 
-          20.verticalSpace,
+          const SizedBox(height: 20),
 
           CarouselSlider.builder(
             itemCount: widget.controller.packages.value?.data.length ?? 0,
             options: CarouselOptions(
-              height: 365.h,
+              height: 380.h,
               autoPlay: false,
               enlargeCenterPage: true,
               viewportFraction: 0.6,
@@ -75,7 +75,7 @@ class _DealsAndPromotionsState extends State<DealsAndPromotions> {
                   return Text(
                     'No Data Found!',
                     style: getTextStyle(
-                      fontSize: 12.sp,
+                      fontSize: 12,
                       fontWeight: FontWeight.w600,
                       color: AppColors.secondaryInfoMediumGrayDarker,
                     ),
@@ -101,7 +101,7 @@ class _DealsAndPromotionsState extends State<DealsAndPromotions> {
                   duration: const Duration(milliseconds: 200),
                   curve: Curves.easeOut,
                   child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12.r),
+                    borderRadius: BorderRadius.circular(12),
                     child: ImageFiltered(
                       imageFilter: isCenter
                           ? ImageFilter.blur(sigmaX: 0, sigmaY: 0)
@@ -120,6 +120,9 @@ class _DealsAndPromotionsState extends State<DealsAndPromotions> {
                         controller: widget.controller,
                         isFromVendorScreen: widget.isFromVendorScreen,
                         rating: item.reviewsSumRating,
+                        category: item.category.name,
+                        location: item.location,
+                        price: item.pricePerEvent,
                       ),
                     ),
                   ),

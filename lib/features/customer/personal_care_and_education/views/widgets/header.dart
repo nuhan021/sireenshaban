@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/utils/constants/icon_path.dart';
+import 'package:sireenshaban/core/services/storage_service.dart';
+import 'package:sireenshaban/core/utils/constants/snackbar_constant.dart';
 import 'package:sireenshaban/routes/app_routes.dart';
 
 import '../../../../../core/utils/constants/colors.dart';
@@ -126,6 +128,11 @@ class Header extends StatelessWidget {
 
             GestureDetector(
               onTap: () {
+                if (StorageService.isGuest) {
+                  SnackBarConstant.warning('Please log in to chat');
+                  Get.offAllNamed(AppRoute.selectRoleScreen);
+                  return;
+                }
                 Get.toNamed(
                   AppRoute.chatScreen,
                   arguments: {

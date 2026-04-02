@@ -88,15 +88,31 @@ class EventController extends GetxController {
     if (!response.isSuccess) {
       isEventLoading.value = false;
       SnackBarConstant.error(response.errorMessage);
+      debugPrint("Booking Request Failed: ${response.errorMessage}");
+      return;
     }
 
-    // Successfully received response from backend containing Payment Intent
-    paymentIntent.value = PaymentIntentModel.fromJson(response.responseData);
+    debugPrint("Booking Response Data: ${response.responseData}");
 
-    // EXECUTING THE PAYMENT
-    await processEventPayment(paymentIntent.value!.stripe.clientSecret);
+    try {
+      // Successfully received response from backend containing Payment Intent
+      paymentIntent.value = PaymentIntentModel.fromJson(response.responseData);
 
-    isEventLoading.value = false;
+      // EXECUTING THE PAYMENT
+      if (paymentIntent.value?.stripe.clientSecret != null &&
+          paymentIntent.value!.stripe.clientSecret.isNotEmpty) {
+        await processEventPayment(paymentIntent.value!.stripe.clientSecret);
+      } else {
+        SnackBarConstant.error("Invalid payment session received");
+        debugPrint("Error: clientSecret is null or empty");
+      }
+    } catch (e, stack) {
+      debugPrint("Parsing Error: $e");
+      debugPrint("Stack Trace: $stack");
+      SnackBarConstant.error("Failed to process payment details");
+    } finally {
+      isEventLoading.value = false;
+    }
   }
 
   Future<void> processEventPayment(String clientSecret) async {

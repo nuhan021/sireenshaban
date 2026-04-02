@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/trending_nearby_card.dart';
@@ -21,16 +20,16 @@ class TrendingNearby extends StatelessWidget {
         Text(
           'Trending Nearby',
           style: getTextStyle(
-            fontSize: 18.sp,
+            fontSize: 18,
             fontWeight: FontWeight.w600,
             color: AppColors.secondaryInfoMediumGrayDarker,
           ),
-        ).paddingSymmetric(horizontal: 20.w),
+        ).paddingSymmetric(horizontal: 20),
 
-        20.verticalSpace,
+        const SizedBox(height: 20),
 
         SizedBox(
-          height: controller.trending.value!.data.isEmpty ? 0 : 180.h,
+          height: controller.trending.value!.data.isEmpty ? 0 : 200,
           width: double.maxFinite,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,

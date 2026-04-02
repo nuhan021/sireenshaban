@@ -1,7 +1,6 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/common/widgets/IField.dart';
 import 'package:sireenshaban/core/utils/constants/icon_path.dart';
@@ -29,7 +28,7 @@ class AdditionalService extends StatelessWidget {
             Text(
               'Additional Services',
               style: getTextStyle(
-                fontSize: 18.sp,
+                fontSize: 18,
                 fontWeight: FontWeight.w600,
                 color: AppColors.secondaryInfoMediumGrayDarker,
               ),
@@ -45,13 +44,13 @@ class AdditionalService extends StatelessWidget {
                   Text(
                     'Explore All',
                     style: getTextStyle(
-                      fontSize: 12.sp,
+                      fontSize: 12,
                       fontWeight: FontWeight.w500,
                       color: AppColors.primaryDeepBlueNormal,
                     ),
                   ),
 
-                  8.horizontalSpace,
+                  const SizedBox(width: 8),
 
                   Obx(() {
                     return Icon(
@@ -65,26 +64,26 @@ class AdditionalService extends StatelessWidget {
               ),
             ),
           ],
-        ).paddingSymmetric(horizontal: 20.w),
+        ).paddingSymmetric(horizontal: 20),
 
-        26.verticalSpace,
+        const SizedBox(height: 26),
 
         // additional services
         Obx(() {
           return Container(
-            height: controller.isAdditionalServicesClose.value ? 456.h : 120.h,
+            height: controller.isAdditionalServicesClose.value ? 456 : 120,
             width: double.maxFinite,
-            padding: EdgeInsets.symmetric(horizontal: 12.w),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(color: AppColors.primaryDeepBlueLight),
-              borderRadius: BorderRadius.circular(12.r),
+              borderRadius: BorderRadius.circular(12),
             ),
             child: Column(
               children: [
                 controller.isAdditionalServicesClose.value
-                    ? 20.verticalSpace
-                    : 0.verticalSpace,
+                    ? const SizedBox(height: 20)
+                    : const SizedBox.shrink(),
                 // search bar
                 controller.isAdditionalServicesClose.value
                     ? IField(
@@ -94,7 +93,7 @@ class AdditionalService extends StatelessWidget {
                         fillColour: AppColors.softGray,
                         hintText: 'Search services provider',
                         hintTextStyle: getTextStyle(
-                          fontSize: 12.sp,
+                          fontSize: 12,
                           fontWeight: FontWeight.w500,
                         ),
 
@@ -102,14 +101,14 @@ class AdditionalService extends StatelessWidget {
                           onPressed: () {},
                           icon: Image.asset(
                             IconPath.navSearch,
-                            height: 24.h,
+                            height: 24,
                             color: Colors.grey.shade800,
                           ),
                         ),
                       )
-                    : SizedBox(),
+                    : const SizedBox(),
 
-                8.verticalSpace,
+                const SizedBox(height: 8),
 
                 if (controller.isAdditionalServicesClose.value)
                   // providers list view
@@ -125,8 +124,8 @@ class AdditionalService extends StatelessWidget {
                           ),
                           child: Container(
                             width: double.maxFinite,
-                            padding: EdgeInsets.symmetric(vertical: 12.h),
-                            decoration: BoxDecoration(
+                            padding: const EdgeInsets.symmetric(vertical: 12),
+                            decoration: const BoxDecoration(
                               border: Border(
                                 bottom: BorderSide(color: Color(0xFFE9EAEC)),
                               ),
@@ -139,7 +138,7 @@ class AdditionalService extends StatelessWidget {
                                   AppHelperFunctions.navigateToScreen(
                                     context,
                                     VendorsScreen(categorySlug: item.slug),
-                                  ), // not used since GestureDetector handles tap
+                                  ),
                             ),
                           ),
                         );
@@ -160,14 +159,14 @@ class AdditionalService extends StatelessWidget {
                                   context,
                                   VendorsScreen(categorySlug: e.slug),
                                 ),
-                          ).paddingOnly(right: 15.r);
+                          ).paddingOnly(right: 15);
                         }).toList(),
                       ),
                     ),
                   ),
               ],
             ),
-          ).paddingSymmetric(horizontal: 20.w);
+          ).paddingSymmetric(horizontal: 20);
         }),
       ],
     );

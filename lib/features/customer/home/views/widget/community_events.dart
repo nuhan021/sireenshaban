@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/customer/home/views/widget/community_events_card.dart';
@@ -28,16 +27,16 @@ class CommunityEvents extends StatelessWidget {
               ? 'No Community Events'
               : 'Community Events',
           style: getTextStyle(
-            fontSize: 18.sp,
+            fontSize: 18,
             fontWeight: FontWeight.w600,
             color: AppColors.secondaryInfoMediumGrayDarker,
           ),
-        ).paddingSymmetric(horizontal: 20.w),
+        ).paddingSymmetric(horizontal: 20),
 
-        20.verticalSpace,
+        const SizedBox(height: 20),
 
         SizedBox(
-          height: controller.communityEvents.value!.data.isEmpty ? 0.h : 305.h,
+          height: controller.communityEvents.value!.data.isEmpty ? 0 : 360,
           width: double.maxFinite,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,

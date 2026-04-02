@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
@@ -29,7 +28,7 @@ class CustomerHomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              20.verticalSpace,
+              const SizedBox(height: 20),
 
               // search bar
               HomeSearchBar(
@@ -39,7 +38,7 @@ class CustomerHomeScreen extends StatelessWidget {
                 controller: controller,
               ),
 
-              40.verticalSpace,
+              const SizedBox(height: 40),
 
               // banner
               SizedBox(
@@ -47,7 +46,7 @@ class CustomerHomeScreen extends StatelessWidget {
                 child: Image.asset(ImagePath.bannerImg, fit: BoxFit.cover),
               ),
 
-              40.verticalSpace,
+              const SizedBox(height: 40),
 
               // additional service
               Obx(() {
@@ -55,7 +54,7 @@ class CustomerHomeScreen extends StatelessWidget {
                   return Center(
                     child: LoadingAnimationWidget.dotsTriangle(
                       color: AppColors.primaryDeepBlueNormal,
-                      size: 25.h,
+                      size: 25,
                     ),
                   );
                 }
@@ -74,7 +73,7 @@ class CustomerHomeScreen extends StatelessWidget {
                 return AdditionalService(controller: controller);
               }),
 
-              40.verticalSpace,
+              const SizedBox(height: 40),
 
               // deals and promotions
               Obx(() {
@@ -82,7 +81,7 @@ class CustomerHomeScreen extends StatelessWidget {
                   return Center(
                     child: LoadingAnimationWidget.dotsTriangle(
                       color: AppColors.primaryDeepBlueNormal,
-                      size: 25.h,
+                      size: 25,
                     ),
                   );
                 }
@@ -101,7 +100,7 @@ class CustomerHomeScreen extends StatelessWidget {
                 return DealsAndPromotions(controller: controller);
               }),
 
-              40.verticalSpace,
+              const SizedBox(height: 40),
 
               // community events
               Obx(() {
@@ -109,7 +108,7 @@ class CustomerHomeScreen extends StatelessWidget {
                   return Center(
                     child: LoadingAnimationWidget.dotsTriangle(
                       color: AppColors.primaryDeepBlueNormal,
-                      size: 25.h,
+                      size: 25,
                     ),
                   );
                 }
@@ -128,7 +127,7 @@ class CustomerHomeScreen extends StatelessWidget {
                 return CommunityEvents(controller: controller);
               }),
 
-              40.verticalSpace,
+              const SizedBox(height: 40),
 
               // trending nearby
               Obx(() {
@@ -136,7 +135,7 @@ class CustomerHomeScreen extends StatelessWidget {
                   return Center(
                     child: LoadingAnimationWidget.dotsTriangle(
                       color: AppColors.primaryDeepBlueNormal,
-                      size: 25.h,
+                      size: 25,
                     ),
                   );
                 }
@@ -155,7 +154,7 @@ class CustomerHomeScreen extends StatelessWidget {
                 return TrendingNearby(controller: controller);
               }),
 
-              40.verticalSpace,
+              const SizedBox(height: 40),
             ],
           ),
         ),
