@@ -64,6 +64,26 @@ class NetworkCaller {
     }
   }
 
+  // DELETE method
+  Future<ResponseData> deleteRequest(String url, {String? token}) async {
+    try {
+      final Response response = await client
+          .delete(
+            Uri.parse(url),
+            headers: {
+              'Authorization': 'Bearer ${token ?? ''}',
+              'Content-type': 'application/json',
+              'Accept': 'application/json',
+            },
+          )
+          .timeout(Duration(seconds: timeoutDuration));
+
+      return _handleResponse(response);
+    } catch (e) {
+      return _handleError(e);
+    }
+  }
+
   // Handle response
   ResponseData _handleResponse(Response response) {
     debugPrint("HTTP STATUS: ${response.statusCode}");

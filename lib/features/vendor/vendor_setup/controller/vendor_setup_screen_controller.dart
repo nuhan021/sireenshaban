@@ -45,36 +45,48 @@ class VendorSetupScreenController extends GetxController {
   RxString selectedCategoryName = 'Select Category'.obs;
 
   Future<void> getCategory() async {
+    final token = '81|sBLBykoZP1FBoZvDRYhmyoy0NTqNnmArHOJJT4wO4effd95a';
+
+    // Check if token exists BEFORE using it
+    if (token == null || token.isEmpty) {
+      AppLoggerHelper.warning("No token found. Skipping category fetch.");
+      return;
+    }
+
     isCategoriLoading.value = true;
-    final token = StorageService.token;
+    AppLoggerHelper.debug(token); // Removed the '!'
 
-    AppLoggerHelper.debug(token!);
+    try {
+      final response = await _networkCaller.getRequest(
+        ApiConstants.categories,
+        token: "Bearer $token",
+      );
 
-    final response = await _networkCaller.getRequest(
-      ApiConstants.categories,
-      token: "Bearer $token",
-    );
+      if (response.statusCode == 401) {
+        isCategoriError.value = true;
+        isCategoriLoading.value = false;
+        SnackBarConstant.error("Unauthorized");
+        return;
+      }
 
-    if (response.statusCode == 401) {
-      isCategoriError.value = true;
+      if (!response.isSuccess) {
+        isCategoriLoading.value = false;
+        isCategoriError.value = true;
+        SnackBarConstant.error(response.errorMessage);
+        return;
+      }
+
+      isCategoriError.value = false;
+
+      categoriModel.value = CategoriModel.fromJson(response.responseData);
+
       isCategoriLoading.value = false;
-      SnackBarConstant.error("Unauthorized");
-      return;
-    }
-
-    if (!response.isSuccess) {
-      isCategoriLoading.value = false;
+      SnackBarConstant.success("Category fetched successfully");
+    } catch (e) {
       isCategoriError.value = true;
-      SnackBarConstant.error(response.errorMessage);
-      return;
+    } finally {
+      isCategoriLoading.value = false;
     }
-
-    isCategoriError.value = false;
-
-    categoriModel.value = CategoriModel.fromJson(response.responseData);
-
-    isCategoriLoading.value = false;
-    SnackBarConstant.success("Category fetched successfully");
   }
 
   final PageController pageController = PageController();

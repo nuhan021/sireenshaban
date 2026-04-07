@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/logging/logger.dart';
 
@@ -13,38 +14,75 @@ class FirebaseFCMService {
 
   static Future<void> initialize() async {
     try {
-      // Initialize Firebase first
       await Firebase.initializeApp();
       AppLoggerHelper.info('Firebase initialized successfully');
 
-      // Request user permission for notifications (iOS)
+      // Permission
       await instance.requestPermission(
         alert: true,
-        announcement: false,
         badge: true,
-        carPlay: false,
-        criticalAlert: false,
-        provisional: false,
         sound: true,
+        provisional: false,
       );
 
-      // Get FCM Token
-      String? token = await instance.getToken();
-      AppLoggerHelper.info('FCM Token: $token');
-      // Store token in local storage
-      if (token != null) {
-        await StorageService.setFCMToken(token);
+      String? fcmToken;
+
+      // iOS/Mac এর জন্য APNS handling
+      if (defaultTargetPlatform == TargetPlatform.iOS ||
+          defaultTargetPlatform == TargetPlatform.macOS) {
+        AppLoggerHelper.info('iOS detected - handling APNS token...');
+
+        String? apnsToken;
+        const int maxRetries = 5; // আরও বেশি retry
+        for (int i = 0; i < maxRetries; i++) {
+          apnsToken = await instance.getAPNSToken();
+          if (apnsToken != null) {
+            AppLoggerHelper.info(
+              '✅ APNS Token received on attempt ${i + 1}: $apnsToken',
+            );
+            break;
+          }
+          AppLoggerHelper.info(
+            'APNS token null on attempt ${i + 1}, waiting...',
+          );
+          await Future.delayed(
+            const Duration(seconds: 1),
+          ); // 1 সেকেন্ড করে অপেক্ষা
+        }
+
+        if (apnsToken == null) {
+          AppLoggerHelper.warning(
+            '⚠️ APNS token still null after retries. Continuing anyway...',
+          );
+          // এখানে crash করবেন না, শুধু warning দিন
+        }
       }
 
-      // Listen for token refresh
+      // FCM Token নেওয়ার চেষ্টা (APNS null হলেও চালিয়ে যান)
+      try {
+        fcmToken = await instance.getToken();
+        AppLoggerHelper.info('FCM Token: ${fcmToken ?? "null"}');
+      } catch (tokenError) {
+        AppLoggerHelper.error('FCM getToken failed: $tokenError');
+        // Simulator-এ error হলে ignore করুন
+      }
+
+      if (fcmToken != null) {
+        await StorageService.setFCMToken(fcmToken);
+      }
+
+      // Token refresh listener
       instance.onTokenRefresh.listen((newToken) {
         AppLoggerHelper.info('FCM Token Refreshed: $newToken');
         StorageService.setFCMToken(newToken);
       });
 
-      AppLoggerHelper.info('Firebase FCM initialized successfully');
-    } catch (e) {
-      AppLoggerHelper.error('Error initializing Firebase FCM: $e');
+      AppLoggerHelper.info(
+        'Firebase FCM initialized (with possible APNS warning)',
+      );
+    } catch (e, stack) {
+      AppLoggerHelper.error('Error initializing Firebase FCM: $e\n$stack');
+      // কখনোই main() crash করাবেন না — শুধু log করুন
     }
   }
 

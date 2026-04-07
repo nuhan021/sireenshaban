@@ -16,6 +16,7 @@ class SignUpScreenController extends GetxController {
   RxBool isSignUpLoading = false.obs;
   RxBool isOtpLoading = false.obs;
   RxBool isResendOtpLoading = false.obs;
+  RxBool termsAccepted = false.obs;
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -78,6 +79,11 @@ class SignUpScreenController extends GetxController {
 
     if (password != retypePassword) {
       SnackBarConstant.warning('Passwords do not match');
+      return;
+    }
+
+    if (!termsAccepted.value) {
+      SnackBarConstant.warning('Please agree to the Terms of Use');
       return;
     }
 

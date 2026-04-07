@@ -15,15 +15,14 @@ class ControllerBinder extends Bindings {
     // 2. Add VendorSetupScreenController HERE
     // It must be initialized before or alongside the map controller
     // if the map controller calls Get.find() immediately.
-    Get.put<VendorSetupScreenController>(
-      VendorSetupScreenController(),
-      permanent: true,
+    Get.lazyPut<VendorSetupScreenController>(
+      () => VendorSetupScreenController(),
+      fenix: true, 
     );
 
-    // 3. Initialize Map Controller
-    Get.put<VendorProfileInfoMapController>(
-      VendorProfileInfoMapController(),
-      permanent: true,
+    Get.lazyPut<VendorProfileInfoMapController>(
+      () => VendorProfileInfoMapController(),
+      fenix: true,
     );
 
     Get.lazyPut<SelectRoleController>(
