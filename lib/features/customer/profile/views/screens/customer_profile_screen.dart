@@ -15,8 +15,11 @@ import 'package:sireenshaban/features/customer/user_profile/views/screens/user_p
 import 'package:sireenshaban/features/vendor/vendor_profile/views/screens/vendor_user_profile_screen.dart';
 
 import '../../../../../core/common/styles/global_text_style.dart';
+import '../../../../../core/services/network_caller.dart';
+import '../../../../../core/utils/constants/api_constants.dart';
 import '../../../../../core/utils/constants/colors.dart';
 import '../../../../../core/utils/constants/icon_path.dart';
+import '../../../../../core/utils/constants/snackbar_constant.dart';
 import '../../../../../routes/app_routes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
@@ -278,6 +281,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
 
+              // Terms of Use Item
+              _buildProfileMenu(
+                icon: IconPath.ticket,
+                title: 'Terms of Use',
+                onTap: () => Get.toNamed(AppRoute.termsOfUseScreen),
+              ),
+
+              // Delete Account Item
+              _buildProfileMenu(
+                icon: IconPath.logout,
+                title: 'Delete Account',
+                isLogout: true,
+                onTap: () => _showDeleteAccountDialog(),
+              ),
+
               // Logout Item
               _buildProfileMenu(
                 icon: IconPath.logout,
@@ -295,7 +313,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  // কোড ক্লিন রাখার জন্য হেল্পার উইজেট
+  void _showDeleteAccountDialog() {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Delete Account'),
+        content: const Text(
+          'Are you sure you want to delete your account? This action is permanent and cannot be undone. All your data will be removed.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(ctx);
+              final token = StorageService.token;
+              final networkCaller = NetworkCaller();
+              final response = await networkCaller.deleteRequest(
+                ApiConstants.deleteAccount,
+                token: token,
+              );
+              if (response.isSuccess) {
+                SnackBarConstant.success('Account deleted successfully');
+                await StorageService.logoutUser();
+                Get.offAllNamed(AppRoute.selectRoleScreen);
+              } else {
+                SnackBarConstant.error(
+                  response.errorMessage.isNotEmpty
+                      ? response.errorMessage
+                      : 'Failed to delete account',
+                );
+              }
+            },
+            child: const Text(
+              'Delete',
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildProfileMenu({
     required String icon,
     required String title,

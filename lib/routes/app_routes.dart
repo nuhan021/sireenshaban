@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:sireenshaban/features/customer/notification/views/screens/notification_screen.dart';
 import 'package:sireenshaban/features/splash/views/screens/splash_screen.dart';
+import 'package:sireenshaban/features/common/terms/views/screens/terms_of_use_screen.dart';
 import 'package:sireenshaban/features/subscription/views/screen/subscription_screen.dart';
 import 'package:sireenshaban/features/vendor/vendor_bottom_nav_bar/views/screens/vendor_bottom_nav_bar.dart';
 import 'package:sireenshaban/features/vendor/vendor_setup/views/screens/vendor_setup_screen.dart';
@@ -38,6 +39,7 @@ class AppRoute {
   static String vendorProfileInfoMap = "/vendorProfileInfoMap";
   static String vendorSetupScreen1st = '/vendorSetupProfileScreen1st';
   static String subscriptionScreen = '/subscriptionScreen';
+  static String termsOfUseScreen = '/termsOfUseScreen';
 
   // customer bottom nav bar
   static String customerBottomNavBar = "/customerBottomNavBar";
@@ -63,6 +65,7 @@ class AppRoute {
   static String getVendorProfileInfoMap() => vendorProfileInfoMap;
   static String getVendorSetupProfileScreen1st() => vendorSetupScreen1st;
   static String getSubscriptionScreen() => subscriptionScreen;
+  static String getTermsOfUseScreen() => termsOfUseScreen;
 
   // customer bottom nav bar
   static String getCustomerBottomNavBar() => customerBottomNavBar;
@@ -104,6 +107,7 @@ class AppRoute {
     GetPage(name: vendorProfileInfoMap, page: () => VendorProfileInfoMap()),
     GetPage(name: vendorSetupScreen1st, page: () => VendorSetupScreen()),
     GetPage(name: subscriptionScreen, page: () => SubscriptionScreen()),
+    GetPage(name: termsOfUseScreen, page: () => const TermsOfUseScreen()),
 
     // customer bottom nav bar
     GetPage(name: customerBottomNavBar, page: () => CustomerBottomNavBar()),

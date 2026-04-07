@@ -1,10 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
+import 'package:sireenshaban/core/services/network_caller.dart';
+import 'package:sireenshaban/core/services/storage_service.dart';
+import 'package:sireenshaban/core/utils/constants/api_constants.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
 import 'package:sireenshaban/core/utils/constants/icon_path.dart';
+import 'package:sireenshaban/core/utils/constants/snackbar_constant.dart';
 import 'package:sireenshaban/features/customer/chat/controllers/chat_controller.dart';
 import 'package:sireenshaban/features/customer/chat/widgets/audio_player_widget.dart';
 
@@ -27,6 +35,7 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   late ChatController controller;
   late TextEditingController _messageController;
+  bool _isBlocked = false;
 
   @override
   void initState() {
@@ -61,6 +70,40 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ),
         titleSpacing: 0,
+        actions: [
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert),
+            onSelected: (value) {
+              if (value == 'block') {
+                _showBlockDialog();
+              } else if (value == 'report') {
+                _showReportDialog();
+              }
+            },
+            itemBuilder: (context) => [
+              const PopupMenuItem(
+                value: 'report',
+                child: Row(
+                  children: [
+                    Icon(Icons.flag_outlined, color: Colors.orange),
+                    SizedBox(width: 8),
+                    Text('Report User'),
+                  ],
+                ),
+              ),
+              const PopupMenuItem(
+                value: 'block',
+                child: Row(
+                  children: [
+                    Icon(Icons.block, color: Colors.red),
+                    SizedBox(width: 8),
+                    Text('Block User'),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
         title: ListTile(
           contentPadding: EdgeInsets.zero,
           leading: CircleAvatar(
@@ -221,6 +264,22 @@ class _ChatScreenState extends State<ChatScreen> {
                 },
               ),
             ),
+            if (_isBlocked)
+              Container(
+                color: Colors.white,
+                padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 14.h),
+                child: Center(
+                  child: Text(
+                    'You have blocked this user',
+                    style: getTextStyle(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.red,
+                    ),
+                  ),
+                ),
+              )
+            else
             Container(
               color: Colors.white,
               padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
@@ -285,6 +344,204 @@ class _ChatScreenState extends State<ChatScreen> {
           ],
         );
       }),
+    );
+  }
+
+  void _showBlockDialog() {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Block User'),
+        content: Text(
+          'Are you sure you want to block ${widget.receiverName}? You will no longer receive messages from this user.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('Cancel'),
+          ),
+          TextButton(
+            onPressed: () async {
+              Navigator.pop(ctx);
+              final token = StorageService.token;
+              final networkCaller = NetworkCaller();
+              final response = await networkCaller.postRequest(
+                '${ApiConstants.blockUser}/${widget.receiverId}',
+                token: token,
+              );
+              if (response.isSuccess) {
+                SnackBarConstant.success(
+                  '${widget.receiverName} has been blocked',
+                );
+                setState(() {
+                  _isBlocked = true;
+                });
+              } else {
+                SnackBarConstant.error(
+                  response.errorMessage.isNotEmpty
+                      ? response.errorMessage
+                      : 'Failed to block user',
+                );
+              }
+            },
+            child: const Text(
+              'Block',
+              style: TextStyle(color: Colors.red),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showReportDialog() {
+    final contentController = TextEditingController();
+    File? selectedImage;
+
+    showDialog(
+      context: context,
+      builder: (ctx) => StatefulBuilder(
+        builder: (context, setDialogState) => AlertDialog(
+          title: const Text('Report User'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Report ${widget.receiverName} for inappropriate behavior.',
+                  style: getTextStyle(
+                    fontSize: 13.sp,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.bodyDarkGray,
+                  ),
+                ),
+                SizedBox(height: 16.h),
+                TextField(
+                  controller: contentController,
+                  maxLines: 4,
+                  decoration: InputDecoration(
+                    hintText: 'Describe the issue...',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    filled: true,
+                    fillColor: AppColors.primaryDeepBlueLight,
+                  ),
+                ),
+                SizedBox(height: 12.h),
+                GestureDetector(
+                  onTap: () async {
+                    final picker = ImagePicker();
+                    final picked = await picker.pickImage(
+                      source: ImageSource.gallery,
+                    );
+                    if (picked != null) {
+                      setDialogState(() {
+                        selectedImage = File(picked.path);
+                      });
+                    }
+                  },
+                  child: Container(
+                    width: double.maxFinite,
+                    padding: EdgeInsets.symmetric(
+                      vertical: 12.h,
+                      horizontal: 12.w,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey),
+                      borderRadius: BorderRadius.circular(8.r),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.attach_file, color: Colors.grey),
+                        SizedBox(width: 8.w),
+                        Expanded(
+                          child: Text(
+                            selectedImage != null
+                                ? selectedImage!.path.split('/').last
+                                : 'Attach screenshot (optional)',
+                            style: getTextStyle(
+                              fontSize: 13.sp,
+                              fontWeight: FontWeight.w400,
+                              color: AppColors.secondaryInfoMediumGray,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: const Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                if (contentController.text.trim().isEmpty) {
+                  SnackBarConstant.warning('Please describe the issue');
+                  return;
+                }
+                Navigator.pop(ctx);
+
+                final token = StorageService.token;
+                final request = http.MultipartRequest(
+                  'POST',
+                  Uri.parse(ApiConstants.report),
+                );
+                request.headers.addAll({
+                  'Authorization': 'Bearer $token',
+                  'Accept': 'application/json',
+                });
+                request.fields['user_id'] = widget.receiverId.toString();
+                request.fields['content'] = contentController.text.trim();
+
+                if (selectedImage != null) {
+                  final bytes = await selectedImage!.readAsBytes();
+                  final fileName = selectedImage!.path.split('/').last;
+                  request.files.add(
+                    http.MultipartFile.fromBytes(
+                      'image',
+                      bytes,
+                      filename: fileName,
+                    ),
+                  );
+                }
+
+                try {
+                  final streamedResponse = await request.send().timeout(
+                    const Duration(seconds: 30),
+                  );
+                  final response = await http.Response.fromStream(
+                    streamedResponse,
+                  );
+                  debugPrint('Report response: ${response.statusCode} ${response.body}');
+                  if (response.statusCode == 200 ||
+                      response.statusCode == 201) {
+                    SnackBarConstant.success(
+                      'Report submitted successfully. We will review it within 24 hours.',
+                    );
+                  } else {
+                    SnackBarConstant.error('Failed to submit report: ${response.statusCode}');
+                  }
+                } catch (e) {
+                  debugPrint('Report error: $e');
+                  SnackBarConstant.error('Network error. Please try again.');
+                }
+              },
+              child: Text(
+                'Submit Report',
+                style: TextStyle(color: AppColors.primaryDeepBlueNormal),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 

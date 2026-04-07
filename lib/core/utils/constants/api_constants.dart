@@ -38,4 +38,11 @@ class ApiConstants {
   // payment
   static const String subscriptionPayment = "$baseUrl/payment/process";
   static const String subscriptionPlans = "$baseUrl/subscriptions";
+
+  // account
+  static const String deleteAccount = "$baseUrl/user/delete-account";
+
+  // block & report
+  static const String blockUser = "$baseUrl/user/block"; // append /{userId}
+  static const String report = "$baseUrl/report";
 }

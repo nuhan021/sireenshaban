@@ -10,6 +10,7 @@ import '../../../../core/common/widgets/custom_primary_button.dart';
 import '../../../../core/utils/constants/colors.dart';
 import '../../../../core/utils/helpers/app_helper.dart';
 import '../../../../routes/app_routes.dart';
+import '../../../common/terms/views/screens/terms_of_use_screen.dart';
 import '../../controllers/sign_up_screen_controller.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -164,7 +165,60 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     );
                   }),
 
-                  SizedBox(height: 40.h),
+                  SizedBox(height: 20.h),
+
+                  Obx(() {
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          height: 24.h,
+                          width: 24.w,
+                          child: Checkbox(
+                            value: widget.controller.termsAccepted.value,
+                            onChanged: (value) {
+                              widget.controller.termsAccepted.value =
+                                  value ?? false;
+                            },
+                            activeColor: AppColors.primaryDeepBlueNormal,
+                          ),
+                        ),
+                        SizedBox(width: 8.w),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const TermsOfUseScreen(),
+                              ),
+                            ),
+                            child: RichText(
+                              text: TextSpan(
+                                text: 'I agree to the ',
+                                style: getTextStyle(
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.bodyDarkGray,
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: 'Terms of Use',
+                                    style: getTextStyle(
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.primaryDeepBlueNormal,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  }),
+
+                  SizedBox(height: 20.h),
 
                   Obx(() {
                     if (widget.controller.isSignUpLoading.value) {
