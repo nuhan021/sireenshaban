@@ -3,7 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/common/widgets/custom_loading.dart';
 import 'package:sireenshaban/core/services/storage_service.dart';
+import 'package:sireenshaban/core/utils/constants/snackbar_constant.dart';
 import 'package:sireenshaban/core/utils/logging/logger.dart';
+import 'package:sireenshaban/routes/app_routes.dart';
 import 'package:sireenshaban/features/customer/community_event_booking/controller/event_controller.dart';
 import 'package:sireenshaban/features/customer/community_event_booking/views/widgets/event_schedul.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
@@ -244,6 +246,11 @@ class _CommunityEventBookingScreenState
                       textColor: AppColors.cardBackgroundSoftGray,
                       color: AppColors.primaryDeepBlueNormal,
                       onPressed: () {
+                        if (StorageService.isGuest) {
+                          SnackBarConstant.warning('Please log in to confirm booking');
+                          Get.offAllNamed(AppRoute.selectRoleScreen);
+                          return;
+                        }
                         widget.eventController.confirmBooking(data);
                       },
                     );

@@ -106,9 +106,9 @@ flutter_native_splash:
 flutter_launcher_icons:
   android: true
   ios: true
-  image_path: "assets/logo/logo_white.png"
+  image_path: "assets/logo/AppIcon_1024.png"
   adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "assets/logo/logo_green.png"
+  adaptive_icon_foreground: "assets/logo/AppIcon_1024.png"
 
 flutter:
   # The following line ensures that the Material Icons font is

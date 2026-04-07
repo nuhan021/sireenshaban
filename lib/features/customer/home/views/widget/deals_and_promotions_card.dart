@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
@@ -26,6 +25,9 @@ class DealsAndPromotionsCard extends StatelessWidget {
     required this.controller,
     this.isFromVendorScreen = false,
     required this.rating,
+    required this.category,
+    required this.location,
+    required this.price,
   });
 
   final int id;
@@ -39,16 +41,18 @@ class DealsAndPromotionsCard extends StatelessWidget {
   final HomeController controller;
   final bool isFromVendorScreen;
   final int rating;
+  final String category;
+  final String location;
+  final String price;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 364.h,
-      width: 260.w,
-      padding: EdgeInsets.all(12.w),
+      width: 260,
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: AppColors.cardBackgroundSoftGray,
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(12),
         border: Border.all(color: AppColors.primaryDeepBlueLight),
         boxShadow: [
           BoxShadow(
@@ -66,165 +70,226 @@ class DealsAndPromotionsCard extends StatelessWidget {
         ],
       ),
 
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              children: [
-                // image
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(4.r),
-                  child: CachedNetworkImage(
-                    imageUrl: image,
-                    fit: BoxFit.cover,
-                    height: 160.h,
-                    width: double.maxFinite,
-                    placeholder: (context, url) => Center(
-                      child: LoadingAnimationWidget.staggeredDotsWave(
-                        color: AppColors.primaryDeepBlueLight,
-                        size: 25.h,
-                      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Stack(
+            children: [
+              // image
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: CachedNetworkImage(
+                  imageUrl: image,
+                  fit: BoxFit.cover,
+                  height: 160,
+                  width: double.maxFinite,
+                  placeholder: (context, url) => Center(
+                    child: LoadingAnimationWidget.staggeredDotsWave(
+                      color: AppColors.primaryDeepBlueLight,
+                      size: 25,
                     ),
-                    errorWidget: (context, url, error) =>
-                        const Icon(Icons.error),
+                  ),
+                  errorWidget: (context, url, error) =>
+                      const Icon(Icons.error),
+                ),
+              ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // rating
+                  Container(
+                    height: 20,
+                    width: 50,
+                    padding: const EdgeInsets.symmetric(horizontal: 6),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: const Color(0xFFFFC70F),
+                    ),
+                    alignment: Alignment.center,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          '$rating',
+                          style: getTextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.bodyDarkGray,
+                          ),
+                        ),
+
+                        const Icon(
+                          Icons.star,
+                          color: AppColors.bodyDarkGray,
+                          size: 15,
+                        ),
+                      ],
+                    ),
+                  ).paddingOnly(left: 12),
+
+                  // favorite
+                  Container(
+                    height: 25,
+                    width: 25,
+                    decoration: const BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColors.cardBackgroundSoftGray,
+                    ),
+                    alignment: Alignment.center,
+                    child: const Icon(
+                      Icons.favorite_border,
+                      color: AppColors.bodyDarkGray,
+                      size: 15,
+                    ),
+                  ).paddingOnly(right: 12),
+                ],
+              ).paddingOnly(top: 12),
+            ],
+          ),
+
+          const SizedBox(height: 10),
+
+          // shop title and discount
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // shop title
+              Expanded(
+                child: Text(
+                  shopTitle,
+                  overflow: TextOverflow.ellipsis,
+                  style: getTextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: AppColors.bodyDarkGray,
                   ),
                 ),
+              ),
 
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // rating
-                    Container(
-                      height: 20.h,
-                      width: 50.w,
-                      padding: EdgeInsets.symmetric(horizontal: 6.w),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4.r),
-                        color: Color(0xFFFFC70F),
-                      ),
-                      alignment: Alignment.center,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Text(
-                            '$rating',
-                            style: getTextStyle(
-                              fontSize: 10.sp,
-                              fontWeight: FontWeight.w600,
-                              color: AppColors.bodyDarkGray,
-                            ),
-                          ),
+              // discount
+              Container(
+                height: 30,
+                width: 65,
+                decoration: BoxDecoration(
+                  color: AppColors.secondaryAquaNormal,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  discount,
+                  style: getTextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.secondaryTealLight,
+                  ),
+                ),
+              ),
+            ],
+          ),
 
-                          Icon(
-                            Icons.star,
-                            color: AppColors.bodyDarkGray,
-                            size: 15,
-                          ),
-                        ],
-                      ),
-                    ).paddingOnly(left: 12.w),
+          const SizedBox(height: 4),
 
-                    // favorite
-                    Container(
-                      height: 25.h,
-                      width: 25.w,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: AppColors.cardBackgroundSoftGray,
-                      ),
-                      alignment: Alignment.center,
-                      child: Icon(
-                        Icons.favorite_border,
-                        color: AppColors.bodyDarkGray,
-                        size: 15,
-                      ),
-                    ).paddingOnly(right: 12.w),
-                  ],
-                ).paddingOnly(top: 12.h),
-              ],
+          // category
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+            decoration: BoxDecoration(
+              color: AppColors.primaryDeepBlueLight,
+              borderRadius: BorderRadius.circular(4),
             ),
+            child: Text(
+              category,
+              style: getTextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.w500,
+                color: AppColors.primaryDeepBlueNormal,
+              ),
+            ),
+          ),
 
-            30.verticalSpace,
+          const SizedBox(height: 4),
 
-            // shop title and discount
+          // price
+          Text(
+            '\$$price / per event',
+            style: getTextStyle(
+              fontSize: 13,
+              fontWeight: FontWeight.w600,
+              color: AppColors.accentNormal,
+            ),
+          ),
+
+          const SizedBox(height: 4),
+
+          // location
+          if (location.isNotEmpty)
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // shop title
+                const Icon(
+                  Icons.location_on_outlined,
+                  size: 14,
+                  color: AppColors.secondaryInfoMediumGrayNormal,
+                ),
+                const SizedBox(width: 3),
                 Expanded(
                   child: Text(
-                    shopTitle,
+                    location,
                     overflow: TextOverflow.ellipsis,
                     style: getTextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.bodyDarkGray,
-                    ),
-                  ),
-                ),
-
-                // discount
-                Container(
-                  height: 30.h,
-                  width: 65.w,
-                  decoration: BoxDecoration(
-                    color: AppColors.secondaryAquaNormal,
-                    borderRadius: BorderRadius.circular(4.r),
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                    discount,
-                    style: getTextStyle(
-                      fontSize: 12.sp,
+                      fontSize: 11,
                       fontWeight: FontWeight.w400,
-                      color: AppColors.secondaryTealLight,
+                      color: AppColors.secondaryInfoMediumGrayNormal,
                     ),
                   ),
                 ),
               ],
             ),
 
-            // subtitle
-            Text(
-              subtitle,
-              style: getTextStyle(
-                fontSize: 14.sp,
-                fontWeight: FontWeight.w400,
-                color: AppColors.secondaryInfoMediumGrayNormal,
-              ),
-            ),
+          const SizedBox(height: 2),
 
-            // validity date
-            Text(
-              validityDate,
-              style: getTextStyle(
-                fontSize: 12.sp,
-                fontWeight: FontWeight.w400,
+          // validity date
+          Row(
+            children: [
+              const Icon(
+                Icons.access_time,
+                size: 14,
                 color: AppColors.secondaryTealNormal,
               ),
-            ),
-
-            27.verticalSpace,
-
-            CustomPrimaryButton(
-              text: 'View Deal',
-              color: AppColors.primaryDeepBlueNormal,
-              onPressed: () => AppHelperFunctions.navigateToScreen(
-                context,
-                PackageBookingPage(
-                  id: id,
-                  image: image,
-                  title: shopTitle,
-                  controller: controller,
-                  group: group,
-                  isFromVendorScreen: isFromVendorScreen,
+              const SizedBox(width: 3),
+              Text(
+                'Valid until $validityDate',
+                style: getTextStyle(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.secondaryTealNormal,
                 ),
               ),
+            ],
+          ),
+
+          const SizedBox(height: 12),
+
+          CustomPrimaryButton(
+            text: 'View Deal',
+            color: AppColors.primaryDeepBlueNormal,
+            height: 44,
+            fontSize: 14,
+            onPressed: () => AppHelperFunctions.navigateToScreen(
+              context,
+              PackageBookingPage(
+                id: id,
+                image: image,
+                title: shopTitle,
+                controller: controller,
+                group: group,
+                isFromVendorScreen: isFromVendorScreen,
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

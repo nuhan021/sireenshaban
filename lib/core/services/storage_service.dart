@@ -58,12 +58,10 @@ static Future<void> saveVendorId(int id) async {
 
   // Remove the token and user ID from local storage (for logout)
   static Future<void> logoutUser() async {
-    // await _preferences?.remove(_tokenKey);
     await _storage.delete(key: _tokenKey);
     await _preferences?.remove(_idKey);
     await _preferences?.remove(_role);
-    // Navigate to the login screen
-    // Get.offAllNamed('/login');
+    await _preferences?.remove(_guestKey);
   }
 
   // Getter for user ID
@@ -113,6 +111,15 @@ static Future<void> saveVendorId(int id) async {
   static Future<void> clearFCMToken() async {
     await _preferences?.remove(_fcmTokenKey);
   }
+
+  // Guest mode
+  static const String _guestKey = 'isGuest';
+
+  static Future<void> setGuestMode(bool value) async {
+    await _preferences?.setBool(_guestKey, value);
+  }
+
+  static bool get isGuest => _preferences?.getBool(_guestKey) ?? false;
 
   // Getter for vendor ID (from vendor profile data)
   // The vendor object is nested inside the user profile for vendors

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
@@ -17,30 +16,30 @@ class EventsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF4F4F4),
+      backgroundColor: const Color(0xFFF4F4F4),
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         leading: GestureDetector(
           onTap: () => Navigator.pop(context),
           child: Container(
-            height: 40.h,
-            width: 40.w,
-            padding: EdgeInsets.all(7.w),
-            decoration: BoxDecoration(
+            height: 40,
+            width: 40,
+            padding: const EdgeInsets.all(7),
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Color(0xFFE9EAEC),
             ),
             child: Image.asset(
               IconPath.arrowBack,
-              height: 15.h,
+              height: 15,
               color: AppColors.bodyDarkGray,
             ),
-          ).paddingAll(7.w),
+          ).paddingAll(7),
         ),
         title: Text(
           'Events',
           style: getTextStyle(
-            fontSize: 20.sp,
+            fontSize: 20,
             fontWeight: FontWeight.w600,
             color: AppColors.bodyDarkGray,
           ),
@@ -49,10 +48,10 @@ class EventsScreen extends StatelessWidget {
           IconButton(
             onPressed: () {},
             icon: Container(
-              height: 40.h,
-              width: 40.w,
-              padding: EdgeInsets.all(7.w),
-              decoration: BoxDecoration(
+              height: 40,
+              width: 40,
+              padding: const EdgeInsets.all(7),
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 color: Color(0xFFE9EAEC),
               ),
@@ -67,7 +66,7 @@ class EventsScreen extends StatelessWidget {
           return Center(
             child: LoadingAnimationWidget.dotsTriangle(
               color: AppColors.primaryDeepBlueNormal,
-              size: 25.h,
+              size: 25,
             ),
           );
         }
@@ -88,19 +87,19 @@ class EventsScreen extends StatelessWidget {
                 Text(
                   'Today',
                   style: getTextStyle(
-                    fontSize: 14.sp,
+                    fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: AppColors.primaryDeepBlueNormal,
                   ),
                 ),
 
                 Container(
-                  height: 40.h,
-                  width: 40.w,
-                  padding: EdgeInsets.all(8.w),
+                  height: 40,
+                  width: 40,
+                  padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: Color(0xFFE9EAEC),
-                    borderRadius: BorderRadius.circular(8.r),
+                    color: const Color(0xFFE9EAEC),
+                    borderRadius: BorderRadius.circular(8),
                   ),
 
                   child: Image.asset(
@@ -111,12 +110,12 @@ class EventsScreen extends StatelessWidget {
               ],
             ),
 
-            10.verticalSpace,
+            const SizedBox(height: 10),
 
             Expanded(
               child: ListView.separated(
                 itemCount: _homeController.communityEvents.value!.data.length,
-                separatorBuilder: (context, index) => 15.verticalSpace,
+                separatorBuilder: (context, index) => const SizedBox(height: 15),
                 itemBuilder: (context, index) {
                   final item =
                       _homeController.communityEvents.value!.data[index];
@@ -132,7 +131,7 @@ class EventsScreen extends StatelessWidget {
               ),
             ),
           ],
-        ).paddingSymmetric(horizontal: 20.w);
+        ).paddingSymmetric(horizontal: 20);
       }),
     );
   }

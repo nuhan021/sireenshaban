@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
 import 'package:sireenshaban/features/customer/vendors/views/screens/vendors_screen.dart';
@@ -27,17 +26,17 @@ class HomeSearchBar extends StatelessWidget {
           child: GestureDetector(
             onTap: onTap,
             child: Container(
-              height: 47.h,
-              padding: EdgeInsets.symmetric(horizontal: 10.w),
+              height: 47,
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               decoration: BoxDecoration(
                 color: AppColors.softGray,
                 border: Border.all(color: AppColors.deepBlueLight),
-                borderRadius: BorderRadius.circular(8.r),
+                borderRadius: BorderRadius.circular(8),
 
-                boxShadow: [
+                boxShadow: const [
                   BoxShadow(
-                    color: const Color.fromRGBO(13, 10, 44, 0.06),
-                    offset: const Offset(0, 3),
+                    color: Color.fromRGBO(13, 10, 44, 0.06),
+                    offset: Offset(0, 3),
                     blurRadius: 10,
                     spreadRadius: 0,
                   ),
@@ -50,7 +49,7 @@ class HomeSearchBar extends StatelessWidget {
                     child: Text(
                       "Search venues & services",
                       style: getTextStyle(
-                        fontSize: 14.sp,
+                        fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: AppColors.secondaryInfoMediumGray,
                       ),
@@ -68,18 +67,18 @@ class HomeSearchBar extends StatelessWidget {
           ),
         ),
 
-        10.horizontalSpace,
+        const SizedBox(width: 10),
 
         PopupMenuButton(
           child: Container(
-            height: 47.h,
-            width: 47.w,
+            height: 47,
+            width: 47,
             decoration: BoxDecoration(
               color: AppColors.primaryDeepBlueNormal,
-              borderRadius: BorderRadius.circular(8.r),
+              borderRadius: BorderRadius.circular(8),
             ),
             alignment: Alignment.center,
-            child: Image.asset(IconPath.sliders, height: 20.h),
+            child: Image.asset(IconPath.sliders, height: 20),
           ),
 
           itemBuilder: (BuildContext context) {
@@ -89,7 +88,7 @@ class HomeSearchBar extends StatelessWidget {
                     child: Text(
                       category.name,
                       style: getTextStyle(
-                        fontSize: 14.sp,
+                        fontSize: 14,
                         fontWeight: FontWeight.w500,
                         color: AppColors.bodyDarkGray,
                       ),
@@ -107,6 +106,6 @@ class HomeSearchBar extends StatelessWidget {
           },
         ),
       ],
-    ).paddingSymmetric(horizontal: 20.w);
+    ).paddingSymmetric(horizontal: 20);
   }
 }

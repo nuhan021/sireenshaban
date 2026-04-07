@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:palette_generator/palette_generator.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
@@ -56,57 +55,61 @@ class _EventCardState extends State<EventCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 390.h,
       width: double.maxFinite,
-      padding: EdgeInsets.all(12.w),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: AppColors.cardBackgroundSoftGray,
-        borderRadius: BorderRadius.circular(12.r),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // image
           ClipRRect(
-            borderRadius: BorderRadius.circular(7.r),
+            borderRadius: BorderRadius.circular(7),
             child: CachedNetworkImage(
               imageUrl: widget.bannerImage,
               fit: BoxFit.cover,
-              height: 185.h,
+              height: 185,
               width: double.maxFinite,
               placeholder: (context, url) => Center(
                 child: LoadingAnimationWidget.staggeredDotsWave(
                   color: AppColors.primaryDeepBlueLight,
-                  size: 25.h,
+                  size: 25,
                 ),
               ),
               errorWidget: (context, url, error) => const Icon(Icons.error),
             ),
           ),
 
+          const SizedBox(height: 10),
+
           // title
           Text(
             widget.title,
             style: getTextStyle(
-              fontSize: 18.sp,
+              fontSize: 16,
               fontWeight: FontWeight.w500,
               color: AppColors.bodyDarkGray,
             ),
           ),
 
+          const SizedBox(height: 6),
+
           // date
           Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.calendar_month_outlined,
                 color: AppColors.secondaryInfoMediumGrayNormal,
+                size: 18,
               ),
-              5.horizontalSpace,
+              const SizedBox(width: 5),
               Text(
                 widget.date,
                 style: getTextStyle(
-                  fontSize: 12.sp,
+                  fontSize: 12,
                   fontWeight: FontWeight.w400,
                   color: AppColors.secondaryInfoMediumGrayNormal,
                 ),
@@ -114,39 +117,46 @@ class _EventCardState extends State<EventCard> {
             ],
           ),
 
+          const SizedBox(height: 6),
+
           // location
           Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.location_on_outlined,
                 color: AppColors.secondaryInfoMediumGrayNormal,
+                size: 18,
               ),
-
-              5.horizontalSpace,
-              Text(
-                widget.location,
-                style: getTextStyle(
-                  fontSize: 12.sp,
-                  fontWeight: FontWeight.w400,
-                  color: AppColors.secondaryAquaNormal,
+              const SizedBox(width: 5),
+              Expanded(
+                child: Text(
+                  widget.location,
+                  overflow: TextOverflow.ellipsis,
+                  style: getTextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: AppColors.secondaryAquaNormal,
+                  ),
                 ),
               ),
             ],
           ),
 
+          const SizedBox(height: 6),
+
           // ticket price
           Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.airplane_ticket_rounded,
                 color: AppColors.accentNormal,
+                size: 18,
               ),
-
-              5.horizontalSpace,
+              const SizedBox(width: 5),
               Text(
                 "\$ ${widget.ticketPrice}/ per ticket",
                 style: getTextStyle(
-                  fontSize: 12.sp,
+                  fontSize: 12,
                   fontWeight: FontWeight.w400,
                   color: AppColors.accentNormal,
                 ),
@@ -154,9 +164,13 @@ class _EventCardState extends State<EventCard> {
             ],
           ),
 
+          const SizedBox(height: 10),
+
           CustomPrimaryButton(
             text: "View details",
             color: dominantColor ?? AppColors.primaryDeepBlueNormal,
+            height: 48,
+            fontSize: 16,
             onPressed: () => AppHelperFunctions.navigateToScreen(
               context,
               CommunityEventBookingScreen(

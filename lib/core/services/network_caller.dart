@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 
 import '../models/response_data.dart';
@@ -65,10 +66,13 @@ class NetworkCaller {
 
   // Handle response
   ResponseData _handleResponse(Response response) {
+    debugPrint("HTTP STATUS: ${response.statusCode}");
+    
     dynamic decodedResponse;
     try {
       decodedResponse = jsonDecode(response.body);
     } catch (e) {
+      debugPrint("RAW ERROR RESPONSE (Not JSON): ${response.body}");
       return ResponseData(
         isSuccess: false,
         statusCode: response.statusCode,
@@ -86,50 +90,65 @@ class NetworkCaller {
           errorMessage: '',
         );
       } else {
+        debugPrint("API ERROR RESPONSE: $decodedResponse");
         return ResponseData(
           isSuccess: false,
           statusCode: response.statusCode,
           responseData: decodedResponse,
-          errorMessage: decodedResponse['message'] ?? 'Unknown error occurred',
+          errorMessage: _extractErrorMessages(decodedResponse),
         );
       }
-    } else if (response.statusCode == 400) {
-      return ResponseData(
-        isSuccess: false,
-        statusCode: response.statusCode,
-        responseData: decodedResponse,
-        errorMessage: _extractErrorMessages(decodedResponse['errorSources']),
-      );
-    } else if (response.statusCode == 500) {
-      return ResponseData(
-        isSuccess: false,
-        statusCode: response.statusCode,
-        responseData: '',
-        errorMessage:
-            decodedResponse['message'] ?? 'An unexpected error occurred!',
-      );
     } else {
+      debugPrint("RAW ERROR RESPONSE: ${response.body}");
       return ResponseData(
         isSuccess: false,
         statusCode: response.statusCode,
         responseData: decodedResponse,
-        errorMessage: decodedResponse['message'] ?? 'An unknown error occurred',
+        errorMessage: _extractErrorMessages(decodedResponse),
       );
     }
   }
 
-  // Extract error messages for status 400
-  String _extractErrorMessages(dynamic errorSources) {
-    if (errorSources is List) {
-      return errorSources
+  // Extract error messages from various formats
+  String _extractErrorMessages(dynamic responseData) {
+    if (responseData == null) return 'An unknown error occurred';
+
+    // 1. Check for 'errors' map (Common in Laravel/Rails)
+    if (responseData['errors'] != null && responseData['errors'] is Map) {
+      List<String> messages = [];
+      (responseData['errors'] as Map).forEach((key, value) {
+        if (value is List) {
+          messages.add(value.join(' '));
+        } else {
+          messages.add(value.toString());
+        }
+      });
+      if (messages.isNotEmpty) return messages.join('\n');
+    }
+
+    // 2. Check for 'message' field
+    if (responseData['message'] != null) {
+      return responseData['message'].toString();
+    }
+
+    // 3. Check for 'errorSources' (Old logic)
+    if (responseData['errorSources'] != null && responseData['errorSources'] is List) {
+      return (responseData['errorSources'] as List)
           .map((error) => error['message'] ?? 'Unknown error')
           .join(', ');
     }
-    return 'Validation error';
+
+    // 4. Check for 'error' field
+    if (responseData['error'] != null) {
+      return responseData['error'].toString();
+    }
+
+    return 'An unknown error occurred';
   }
 
   // Handle errors
   ResponseData _handleError(dynamic error) {
+    debugPrint("NETWORK CALLER ERROR: $error");
     if (error is ClientException) {
       return ResponseData(
         isSuccess: false,

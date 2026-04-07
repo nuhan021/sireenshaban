@@ -87,7 +87,13 @@ class LoginController extends GetxController {
 
     isLogInLoading.value = false;
 
+    // Clear guest mode on login
+    await StorageService.setGuestMode(false);
+
     // Save token and role
+    debugPrint('========== LOGIN TOKEN ==========');
+    debugPrint(loginModel.value!.data.token);
+    debugPrint('================================');
     await StorageService.saveToken(
       loginModel.value!.data.token,
       loginModel.value!.data.user.id.toString(),

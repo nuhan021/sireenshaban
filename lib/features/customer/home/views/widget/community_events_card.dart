@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
@@ -41,60 +40,64 @@ class CommunityEventsCard extends StatelessWidget {
       ),
       child: Card(
         child: Container(
-          height: 305.h,
-          width: 261.w,
-          padding: EdgeInsets.all(12.w),
+          width: 261,
+          padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: AppColors.cardBackgroundSoftGray,
-            borderRadius: BorderRadius.circular(12.r),
+            borderRadius: BorderRadius.circular(12),
             border: Border.all(color: AppColors.primaryDeepBlueLight),
           ),
 
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // thumbnail image
               ClipRRect(
-                borderRadius: BorderRadius.circular(4.r),
+                borderRadius: BorderRadius.circular(4),
                 child: CachedNetworkImage(
                   imageUrl: image,
                   fit: BoxFit.cover,
-                  height: 187.h,
+                  height: 187,
                   width: double.maxFinite,
                   placeholder: (context, url) => Center(
                     child: LoadingAnimationWidget.staggeredDotsWave(
                       color: AppColors.primaryDeepBlueLight,
-                      size: 25.h,
+                      size: 25,
                     ),
                   ),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
               ),
 
+              const SizedBox(height: 8),
+
               // title
               Text(
                 title,
                 overflow: TextOverflow.ellipsis,
                 style: getTextStyle(
-                  fontSize: 18.sp,
+                  fontSize: 16,
                   fontWeight: FontWeight.w600,
                   color: AppColors.secondaryInfoMediumGrayDarker,
                 ),
               ),
 
+              const SizedBox(height: 4),
+
               // date
               Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.calendar_month_outlined,
                     color: AppColors.secondaryInfoMediumGrayNormal,
+                    size: 16,
                   ),
-                  5.horizontalSpace,
+                  const SizedBox(width: 5),
                   Text(
                     date,
                     style: getTextStyle(
-                      fontSize: 12.sp,
+                      fontSize: 12,
                       fontWeight: FontWeight.w400,
                       color: AppColors.secondaryInfoMediumGrayNormal,
                     ),
@@ -102,21 +105,26 @@ class CommunityEventsCard extends StatelessWidget {
                 ],
               ),
 
+              const SizedBox(height: 4),
+
               // location
               Row(
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.location_on_outlined,
                     color: AppColors.secondaryInfoMediumGrayNormal,
+                    size: 16,
                   ),
-
-                  5.horizontalSpace,
-                  Text(
-                    location,
-                    style: getTextStyle(
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.secondaryAquaNormal,
+                  const SizedBox(width: 5),
+                  Expanded(
+                    child: Text(
+                      location,
+                      overflow: TextOverflow.ellipsis,
+                      style: getTextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
+                        color: AppColors.secondaryAquaNormal,
+                      ),
                     ),
                   ),
                 ],
@@ -124,7 +132,7 @@ class CommunityEventsCard extends StatelessWidget {
             ],
           ),
         ),
-      ).paddingOnly(left: 20.w),
+      ).paddingOnly(left: 20),
     );
   }
 }

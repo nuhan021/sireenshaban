@@ -25,10 +25,10 @@ class PaymentIntentModel {
 
   factory PaymentIntentModel.fromJson(Map<String, dynamic> json) =>
       PaymentIntentModel(
-        success: json["success"],
-        message: json["message"],
-        stripe: Stripe.fromJson(json["stripe"]),
-        amount: (json["amount"] as num).toDouble(),
+        success: json["success"] ?? false,
+        message: json["message"] ?? '',
+        stripe: Stripe.fromJson(json["stripe"] ?? {}),
+        amount: (json["amount"] as num?)?.toDouble() ?? 0.0,
       );
 
   Map<String, dynamic> toJson() => {
@@ -127,45 +127,45 @@ class Stripe {
   });
 
   factory Stripe.fromJson(Map<String, dynamic> json) => Stripe(
-    id: json["id"],
-    object: json["object"],
-    amount: json["amount"],
-    amountCapturable: json["amount_capturable"],
-    amountDetails: AmountDetails.fromJson(json["amount_details"]),
-    amountReceived: json["amount_received"],
+    id: json["id"] ?? '',
+    object: json["object"] ?? '',
+    amount: json["amount"] ?? 0,
+    amountCapturable: json["amount_capturable"] ?? 0,
+    amountDetails: AmountDetails.fromJson(json["amount_details"] ?? {}),
+    amountReceived: json["amount_received"] ?? 0,
     application: json["application"],
     applicationFeeAmount: json["application_fee_amount"],
     automaticPaymentMethods: AutomaticPaymentMethods.fromJson(
-      json["automatic_payment_methods"],
+      json["automatic_payment_methods"] ?? {},
     ),
     canceledAt: json["canceled_at"],
     cancellationReason: json["cancellation_reason"],
-    captureMethod: json["capture_method"],
-    clientSecret: json["client_secret"],
-    confirmationMethod: json["confirmation_method"],
-    created: json["created"],
-    currency: json["currency"],
+    captureMethod: json["capture_method"] ?? '',
+    clientSecret: json["client_secret"] ?? '',
+    confirmationMethod: json["confirmation_method"] ?? '',
+    created: json["created"] ?? 0,
+    currency: json["currency"] ?? '',
     customer: json["customer"],
     customerAccount: json["customer_account"],
-    description: json["description"],
+    description: json["description"] ?? '',
     excludedPaymentMethodTypes: json["excluded_payment_method_types"],
     lastPaymentError: json["last_payment_error"],
     latestCharge: json["latest_charge"],
-    livemode: json["livemode"],
-    metadata: Metadata.fromJson(json["metadata"]),
+    livemode: json["livemode"] ?? false,
+    metadata: Metadata.fromJson(json["metadata"] ?? {}),
     nextAction: json["next_action"],
     onBehalfOf: json["on_behalf_of"],
     paymentMethod: json["payment_method"],
     paymentMethodConfigurationDetails:
         PaymentMethodConfigurationDetails.fromJson(
-          json["payment_method_configuration_details"],
+          json["payment_method_configuration_details"] ?? {},
         ),
     paymentMethodOptions: PaymentMethodOptions.fromJson(
-      json["payment_method_options"],
+      json["payment_method_options"] ?? {},
     ),
-    paymentMethodTypes: List<String>.from(
-      json["payment_method_types"].map((x) => x),
-    ),
+    paymentMethodTypes: json["payment_method_types"] == null
+        ? []
+        : List<String>.from(json["payment_method_types"].map((x) => x)),
     processing: json["processing"],
     receiptEmail: json["receipt_email"],
     review: json["review"],
@@ -174,7 +174,7 @@ class Stripe {
     source: json["source"],
     statementDescriptor: json["statement_descriptor"],
     statementDescriptorSuffix: json["statement_descriptor_suffix"],
-    status: json["status"],
+    status: json["status"] ?? '',
     transferData: json["transfer_data"],
     transferGroup: json["transfer_group"],
   );
@@ -233,7 +233,7 @@ class AmountDetails {
   AmountDetails({required this.tip});
 
   factory AmountDetails.fromJson(Map<String, dynamic> json) =>
-      AmountDetails(tip: List<dynamic>.from(json["tip"].map((x) => x)));
+      AmountDetails(tip: json["tip"] == null ? [] : List<dynamic>.from(json["tip"].map((x) => x)));
 
   Map<String, dynamic> toJson() => {
     "tip": List<dynamic>.from(tip.map((x) => x)),
@@ -251,8 +251,8 @@ class AutomaticPaymentMethods {
 
   factory AutomaticPaymentMethods.fromJson(Map<String, dynamic> json) =>
       AutomaticPaymentMethods(
-        allowRedirects: json["allow_redirects"],
-        enabled: json["enabled"],
+        allowRedirects: json["allow_redirects"] ?? '',
+        enabled: json["enabled"] ?? false,
       );
 
   Map<String, dynamic> toJson() => {
@@ -273,7 +273,7 @@ class Metadata {
   });
 
   factory Metadata.fromJson(Map<String, dynamic> json) => Metadata(
-    paymentId: json["payment_id"],
+    paymentId: json["payment_id"] ?? '',
     planId: json["plan_id"] ?? '',
     userId: json["user_id"] ?? '',
   );
@@ -294,7 +294,7 @@ class PaymentMethodConfigurationDetails {
   factory PaymentMethodConfigurationDetails.fromJson(
     Map<String, dynamic> json,
   ) =>
-      PaymentMethodConfigurationDetails(id: json["id"], parent: json["parent"]);
+      PaymentMethodConfigurationDetails(id: json["id"] ?? '', parent: json["parent"]);
 
   Map<String, dynamic> toJson() => {"id": id, "parent": parent};
 }
@@ -307,8 +307,8 @@ class PaymentMethodOptions {
 
   factory PaymentMethodOptions.fromJson(Map<String, dynamic> json) =>
       PaymentMethodOptions(
-        card: Card.fromJson(json["card"]),
-        link: Link.fromJson(json["link"]),
+        card: Card.fromJson(json["card"] ?? {}),
+        link: Link.fromJson(json["link"] ?? {}),
       );
 
   Map<String, dynamic> toJson() => {
@@ -334,7 +334,7 @@ class Card {
     installments: json["installments"],
     mandateOptions: json["mandate_options"],
     network: json["network"],
-    requestThreeDSecure: json["request_three_d_secure"],
+    requestThreeDSecure: json["request_three_d_secure"] ?? '',
   );
 
   Map<String, dynamic> toJson() => {

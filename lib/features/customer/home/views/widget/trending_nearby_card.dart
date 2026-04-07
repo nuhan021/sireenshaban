@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
@@ -79,36 +78,37 @@ class TrendingNearbyCard extends StatelessWidget {
       },
       child: Card(
         child: Container(
-          height: 180.h,
-          width: 220.w,
-          padding: EdgeInsets.all(12.w),
+          width: 220,
+          padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: AppColors.cardBackgroundSoftGray,
-            borderRadius: BorderRadius.circular(12.r),
+            borderRadius: BorderRadius.circular(12),
             border: Border.all(color: AppColors.primaryDeepBlueLight),
           ),
 
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // thumbnail image
               ClipRRect(
-                borderRadius: BorderRadius.circular(4.r),
+                borderRadius: BorderRadius.circular(4),
                 child: CachedNetworkImage(
                   imageUrl: image,
                   fit: BoxFit.cover,
-                  height: 113.h,
+                  height: 113,
                   width: double.maxFinite,
                   placeholder: (context, url) => Center(
                     child: LoadingAnimationWidget.staggeredDotsWave(
                       color: AppColors.primaryDeepBlueLight,
-                      size: 25.h,
+                      size: 25,
                     ),
                   ),
                   errorWidget: (context, url, error) => const Icon(Icons.error),
                 ),
               ),
+
+              const SizedBox(height: 8),
 
               Row(
                 children: [
@@ -118,28 +118,28 @@ class TrendingNearbyCard extends StatelessWidget {
                       title,
                       overflow: TextOverflow.ellipsis,
                       style: getTextStyle(
-                        fontSize: 14.sp,
+                        fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: AppColors.secondaryInfoMediumGrayDarker,
                       ),
                     ),
                   ),
 
-                  5.horizontalSpace,
+                  const SizedBox(width: 5),
 
                   // status
                   Container(
-                    height: 25.h,
-                    padding: EdgeInsets.symmetric(horizontal: 10.w),
+                    height: 25,
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
                       color: AppColors.accentNormal,
-                      borderRadius: BorderRadius.circular(4.r),
+                      borderRadius: BorderRadius.circular(4),
                     ),
                     alignment: Alignment.center,
                     child: Text(
                       status,
                       style: getTextStyle(
-                        fontSize: 12.sp,
+                        fontSize: 12,
                         fontWeight: FontWeight.w400,
                         color: Colors.white,
                       ),
@@ -150,7 +150,7 @@ class TrendingNearbyCard extends StatelessWidget {
             ],
           ),
         ),
-      ).paddingOnly(left: 20.w),
+      ).paddingOnly(left: 20),
     );
   }
 }

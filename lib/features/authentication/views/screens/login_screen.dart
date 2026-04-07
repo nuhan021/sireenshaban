@@ -1,9 +1,8 @@
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sireenshaban/core/common/styles/global_text_style.dart';
 import 'package:sireenshaban/core/common/widgets/custom_loading.dart';
 import 'package:sireenshaban/core/common/widgets/custom_primary_button.dart';
+import 'package:sireenshaban/core/services/storage_service.dart';
 import 'package:sireenshaban/core/utils/constants/colors.dart';
-import 'package:sireenshaban/core/utils/helpers/app_helper.dart';
 import 'package:sireenshaban/features/authentication/controllers/login_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -37,172 +36,199 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // leading: IconButton(onPressed: () => Get.back(), icon: Icon(Icons.arrow_back)),
         centerTitle: false,
         title: Text(
           'Log In',
           style: getTextStyle(
-            fontSize: 22.sp,
+            fontSize: 22,
             fontWeight: FontWeight.w600,
             color: AppColors.secondaryInfoMediumGray,
           ),
         ),
       ),
 
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 35.h),
-
-            Form(
-              key: _formKey,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Email',
-                    style: getTextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.bodyDarkGray,
-                    ),
-                  ),
-
-                  SizedBox(height: 5.h),
-
-                  IField(
-                    controller: widget.controller.emailController,
-                    hintText: "Enter your email",
-                    keyboardType: TextInputType.emailAddress,
-                    filled: true,
-                    hintTextStyle: getTextStyle(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      color: AppColors.secondaryInfoMediumGray,
-                    ),
-                    fillColour: AppColors.primaryDeepBlueLight,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Email is required";
-                      }
-                      if (!value.contains("@")) {
-                        return "Enter a valid email";
-                      }
-                      return null;
-                    },
-                    overrideValidator: true, // use custom validator
-                  ),
-
-                  SizedBox(height: 20.h),
-
-                  Text(
-                    'Password',
-                    style: getTextStyle(
-                      fontSize: 16.sp,
-                      fontWeight: FontWeight.w400,
-                      color: AppColors.bodyDarkGray,
-                    ),
-                  ),
-
-                  SizedBox(height: 5.h),
-
-                  Obx(() {
-                    return IField(
-                      controller: widget.controller.passwordController,
-                      hintText: "Enter your password",
-                      keyboardType: TextInputType.emailAddress,
-                      filled: true,
-                      hintTextStyle: getTextStyle(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.secondaryInfoMediumGray,
-                      ),
-                      fillColour: AppColors.primaryDeepBlueLight,
-                      obscureText: widget.controller.isObscure.value,
-                      suffixIcon: InkWell(
-                        onTap: widget.controller.togglePasswordVisibility,
-                        child: Icon(
-                          widget.controller.isObscure.value
-                              ? Icons.visibility_off_outlined
-                              : Icons.visibility_outlined,
-                          size: 18.w,
-                        ),
-                      ),
-                    );
-                  }),
-
-                  SizedBox(height: 40.h),
-
-                  Obx(() {
-                    if (widget.controller.isLogInLoading.value) {
-                      return CustomLoading();
-                    }
-                    return CustomPrimaryButton(
-                      text: 'Log In',
-                      color: AppColors.primaryDeepBlueNormal,
-                      onPressed: () {
-                        widget.controller.login();
-                        // // Get.offAllNamed(AppRoute.customerInterestScreen);
-                        // if(widget.selectRoleController.role.value == UserRole.customer) {
-                        //   // Get.offAllNamed(AppRoute.customerBottomNavBar);
-                        //   Get.offAllNamed(AppRoute.customerInterestScreen);
-                        // } else {
-                        //   Get.offAllNamed(AppRoute.vendorBottomNavBar);
-                        // }
-                      },
-                    );
-                  }),
-
-                  SizedBox(height: 16.h),
-
-                  Align(
-                    alignment: Alignment.center,
-                    child: TextButton(
-                      onPressed: () =>
-                          Get.toNamed(AppRoute.forgetPasswordScreen),
-                      child: Text(
-                        'Forgot Password?',
-                        style: getTextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: AppColors.primaryDeepBlueNormal,
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  SizedBox(height: AppHelperFunctions.screenHeight() * 0.24),
-
-                  GestureDetector(
-                    onTap: () => Get.toNamed(AppRoute.signUpScreen),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        const SizedBox(height: 35),
+
                         Text(
-                          'Do not have an account?',
+                          'Email',
                           style: getTextStyle(
-                            fontSize: 12.sp,
+                            fontSize: 16,
                             fontWeight: FontWeight.w400,
                             color: AppColors.bodyDarkGray,
                           ),
                         ),
 
+                        const SizedBox(height: 5),
+
+                        IField(
+                          controller: widget.controller.emailController,
+                          hintText: "Enter your email",
+                          keyboardType: TextInputType.emailAddress,
+                          filled: true,
+                          hintTextStyle: getTextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: AppColors.secondaryInfoMediumGray,
+                          ),
+                          fillColour: AppColors.primaryDeepBlueLight,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Email is required";
+                            }
+                            if (!value.contains("@")) {
+                              return "Enter a valid email";
+                            }
+                            return null;
+                          },
+                          overrideValidator: true,
+                        ),
+
+                        const SizedBox(height: 20),
+
                         Text(
-                          '  Sign Up',
+                          'Password',
                           style: getTextStyle(
-                            fontSize: 12.sp,
+                            fontSize: 16,
                             fontWeight: FontWeight.w400,
+                            color: AppColors.bodyDarkGray,
+                          ),
+                        ),
+
+                        const SizedBox(height: 5),
+
+                        Obx(() {
+                          return IField(
+                            controller: widget.controller.passwordController,
+                            hintText: "Enter your password",
+                            keyboardType: TextInputType.emailAddress,
+                            filled: true,
+                            hintTextStyle: getTextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.secondaryInfoMediumGray,
+                            ),
+                            fillColour: AppColors.primaryDeepBlueLight,
+                            obscureText: widget.controller.isObscure.value,
+                            suffixIcon: InkWell(
+                              onTap: widget.controller.togglePasswordVisibility,
+                              child: Icon(
+                                widget.controller.isObscure.value
+                                    ? Icons.visibility_off_outlined
+                                    : Icons.visibility_outlined,
+                                size: 18,
+                              ),
+                            ),
+                          );
+                        }),
+
+                        const SizedBox(height: 40),
+
+                        Obx(() {
+                          if (widget.controller.isLogInLoading.value) {
+                            return CustomLoading();
+                          }
+                          return CustomPrimaryButton(
+                            text: 'Log In',
                             color: AppColors.primaryDeepBlueNormal,
+                            height: 56,
+                            fontSize: 16,
+                            onPressed: () {
+                              widget.controller.login();
+                            },
+                          );
+                        }),
+
+                        const SizedBox(height: 16),
+
+                        Align(
+                          alignment: Alignment.center,
+                          child: TextButton(
+                            onPressed: () =>
+                                Get.toNamed(AppRoute.forgetPasswordScreen),
+                            child: Text(
+                              'Forgot Password?',
+                              style: getTextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: AppColors.primaryDeepBlueNormal,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ).paddingSymmetric(horizontal: 20),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 30),
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () => Get.toNamed(AppRoute.signUpScreen),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Do not have an account?',
+                                style: getTextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.bodyDarkGray,
+                                ),
+                              ),
+                              Text(
+                                '  Sign Up',
+                                style: getTextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: AppColors.primaryDeepBlueNormal,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        TextButton(
+                          onPressed: () async {
+                            await StorageService.setGuestMode(true);
+                            await StorageService.saveToken(
+                              '81|sBLBykoZP1FBoZvDRYhmyoy0NTqNnmArHOJJT4wO4effd95a',
+                              '0',
+                            );
+                            await StorageService.initSecure();
+                            await StorageService.saveRole('Customer');
+                            Get.offAllNamed(AppRoute.customerBottomNavBar);
+                          },
+                          child: Text(
+                            'Continue as Guest',
+                            style: getTextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: AppColors.secondaryInfoMediumGrayNormal,
+                            ),
                           ),
                         ),
                       ],
                     ),
                   ),
                 ],
-              ).paddingSymmetric(horizontal: 20.w),
+              ),
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
