@@ -50,17 +50,25 @@ class AdditionalServiceCard extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(5),
-              child: CachedNetworkImage(
-                imageUrl: img,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => Center(
-                  child: LoadingAnimationWidget.staggeredDotsWave(
-                    color: AppColors.primaryDeepBlueLight,
-                    size: 25,
-                  ),
-                ),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-              ),
+              child: (img.isEmpty)
+                  ? const Icon(Icons.image_not_supported_outlined,
+                      color: Colors.grey)
+                  : CachedNetworkImage(
+                      imageUrl: img,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Center(
+                        child: LoadingAnimationWidget.staggeredDotsWave(
+                          color: AppColors.primaryDeepBlueLight,
+                          size: 25,
+                        ),
+                      ),
+                      errorWidget: (context, url, error) {
+                        debugPrint(
+                            'IMAGE LOAD FAILED -> url="$url" error=$error');
+                        return const Icon(Icons.broken_image_outlined,
+                            color: Colors.grey);
+                      },
+                    ),
             ),
           ),
           const SizedBox(width: 7),
@@ -105,17 +113,25 @@ class AdditionalServiceCard extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(5),
-              child: CachedNetworkImage(
-                imageUrl: img,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => Center(
-                  child: LoadingAnimationWidget.staggeredDotsWave(
-                    color: AppColors.primaryDeepBlueLight,
-                    size: 25,
-                  ),
-                ),
-                errorWidget: (context, url, error) => const Icon(Icons.error),
-              ),
+              child: (img.isEmpty)
+                  ? const Icon(Icons.image_not_supported_outlined,
+                      color: Colors.grey)
+                  : CachedNetworkImage(
+                      imageUrl: img,
+                      fit: BoxFit.cover,
+                      placeholder: (context, url) => Center(
+                        child: LoadingAnimationWidget.staggeredDotsWave(
+                          color: AppColors.primaryDeepBlueLight,
+                          size: 25,
+                        ),
+                      ),
+                      errorWidget: (context, url, error) {
+                        debugPrint(
+                            'IMAGE LOAD FAILED -> url="$url" error=$error');
+                        return const Icon(Icons.broken_image_outlined,
+                            color: Colors.grey);
+                      },
+                    ),
             ),
           ),
           const SizedBox(height: 7),
