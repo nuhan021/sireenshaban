@@ -70,6 +70,14 @@ class AdditionalService extends StatelessWidget {
 
         // additional services
         Obx(() {
+          // DEBUG: print image URLs so we can verify what the API returns
+          final cats = controller.categorys.value?.data ?? [];
+          debugPrint('========== ADDITIONAL SERVICE IMAGES ==========');
+          for (final c in cats) {
+            debugPrint('• ${c.name} (slug=${c.slug}) -> "${c.image}"');
+          }
+          debugPrint('==============================================');
+
           return Container(
             height: controller.isAdditionalServicesClose.value ? 456 : 120,
             width: double.maxFinite,
