@@ -2,7 +2,6 @@ import 'dart:ui';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:sireenshaban/core/utils/constants/enums.dart';
 import 'package:sireenshaban/features/customer/home/controller/home_controller.dart';
@@ -58,7 +57,7 @@ class _DealsAndPromotionsState extends State<DealsAndPromotions> {
           CarouselSlider.builder(
             itemCount: widget.controller.packages.value?.data.length ?? 0,
             options: CarouselOptions(
-              height: 380.h,
+              height: 440,
               autoPlay: false,
               enlargeCenterPage: true,
               viewportFraction: 0.6,
